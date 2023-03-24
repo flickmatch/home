@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## README
 
 This file houses the different commands to run this project.
@@ -41,3 +42,8 @@ https-preview is the same, but with HTTPS. It's handy for testing your PWA capab
 Home of FlickMatch.in
 Please create a new folder here if you feel that the thing you're working on won't fit in any of the existing ones.
 >>>>>>> 3b40b82 (Update README.md)
+=======
+Home of FlickMatch.in ⚽️
+
+Please create a new folder 🗂 here if you feel that the thing you're working on won't fit ❌ in any of the existing ones.
+>>>>>>> 4be8484 (Update README.md)
