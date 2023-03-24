@@ -1,0 +1,123 @@
+type Query {
+    bookById(id: ID): Book
+    moderators: [Moderator!]
+    moderator(id: ID): Moderator
+    sportsVenues: [SportsVenue!]
+    events(city: City!) : [EVENT!]
+}
+
+type Mutation {
+    registerModerator(input: RegisterModeratorInput!) :  MutationResult!
+    createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
+    createEvent(input: CreateEventInput!): MutationResult!
+    joinEvent(input: JoinEventInput!): MutationResult!
+}
+
+input CreateEventInput {
+    city: City!
+    status: Status
+    dateTime: String!
+    moderatorId: ID!
+    charges: Float!
+    sportsVenueId: ID!
+    players: [PlayerInput!]
+}
+
+input JoinEventInput {
+    eventId: ID!
+    player: PlayerInput!
+}
+
+input CreateSportsVenueInput {
+    city: City!
+    name: String!
+    googleMapsLink: String!
+    coordinates: String
+    contactNumber: Int!
+    availableSports: [String!]!
+}
+
+
+
+input RegisterModeratorInput {
+    city: City!
+    firstName: String!
+    lastName: String
+    contactNumber: Int!
+}
+
+input PlayerInput {
+    whatsAppNumber: Int!
+    firstName: String!
+    lastName: String
+}
+
+type MutationResult {
+    isSuccessful: Boolean!
+    errorMessage: String
+}
+
+type Moderator {
+    city: City!
+    moderatorId: String!
+    contactNumber: Int!
+    firstName: String!
+    lastName: String
+}
+
+type Player {
+    whatsAppNumber: Int!
+    firstName: String!
+    lastName: String
+}
+
+type SportsVenue {
+    city: City!
+    sportsVenueId: String!
+    name: String!
+    googleMapsLink: String!
+    coordinates: String
+    contactNumber: Int!
+    availableSports: [String!]!
+}
+
+type EVENT {
+    eventId: ID!
+    city: City!
+    status: Status!
+    dateTime: String!
+    moderator: Moderator!
+    charges: Float!
+    venue: SportsVenue!
+    players: [Player]
+}
+
+interface Person {
+    firstName: String!
+    lastName: String
+}
+
+enum City {
+    GURGAON
+    DELHI
+    HYDERABAD
+}
+
+enum Status {
+    BOOKING_OPEN
+    SCHEDULED
+}
+
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    author: Author
+}
+
+type Author {
+    id: ID
+    firstName: String
+    lastName: String
+}
+
