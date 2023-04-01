@@ -8,11 +8,11 @@ import java.util.List;
 @Getter
 @Builder
 public class CreateEventInput {
-    String city;
-    String status;
-    String dateTime;
+    String cityId;
+    String startTime;
+    String endTime;
     Double charges;
-    String moderatorId;
     String sportsVenueId;
-    List<PlayerInput> players;
+    Integer reservedPlayersCount;
+    Integer waitListPlayersCount;
 }

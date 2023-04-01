@@ -13,25 +13,40 @@ For further reference, please consider the following sections:
 * [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.4/gradle-plugin/reference/html/#build-image)
 * [Spring for GraphQL](https://docs.spring.io/spring-boot/docs/3.0.4/reference/html/web.html#web.graphql)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.0.4/reference/htmlsingle/#data.sql.jpa-and-spring-data)
+* [Spring Data DynamoDB](https://github.com/boostchicken/spring-data-dynamodb/blob/develop/README.md)
+* [Amazon DynamoDB developer guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
+* [AWS Java SDK for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.html)
 
 ### Guides
 The following guides illustrate how to use some features concretely:
 
 * [Building a GraphQL service](https://spring.io/guides/gs/graphql-server/)
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+* [Cheat sheet for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CheatSheet.html)
 
-###Local Testing
+##Local Testing
 
+###Running Dynamodb instance locally
+
+* [One time setup] Use this guide to install and run dynamodb in local [DynamoDBLocal.DownloadingAndRunning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
+* [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
+
+###Running Application
 ####Using IDE
 
 **Initial setup**
 * Install IntelliJ
-* Open project
+* Run IntelliJ, click open and select platform directory (not home) in repo. 
 * Setup project SDK to coretto-17
 * Go to setting/preferences, search gradle. In Build tools>Gradle select coretto-17
-* Run PlatformApplication
+* Go to Run>Edit Configurations and add `spring.profiles.active=dev` in environment variables
+* Run PlatformApplication.java by clicking play icon in file.
 
-**Testing Queries/mutations**
+####Using Terminal
+
+//TODO
+
+###Testing Queries/mutations
 * Once server is up, open http://localhost:8080/graphiql
 * Try queries/mutation
 * Sample queries
@@ -83,9 +98,7 @@ mutation {
 ```
 
 
-####Using Terminal
 
-//TODO
 
 ### Additional Links
 These additional references should also help you:

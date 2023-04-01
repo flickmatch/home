@@ -1,55 +1,80 @@
 type Query {
-    bookById(id: ID): Book
-    moderators: [Moderator!]
-    moderator(id: ID): Moderator
-    sportsVenues: [SportsVenue!]
-    events(city: City!) : [EVENT!]
+    cities: [City!]!
+    city(cityId: ID!): City
 }
 
 type Mutation {
-    registerModerator(input: RegisterModeratorInput!) :  MutationResult!
     createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
     createEvent(input: CreateEventInput!): MutationResult!
     joinEvent(input: JoinEventInput!): MutationResult!
+    """
+    This is not implemented yet, will be required for P1
+    """
+    registerModerator(input: RegisterModeratorInput!) :  MutationResult!
 }
 
 input CreateEventInput {
-    city: City!
-    status: Status
-    dateTime: String!
-    moderatorId: ID!
+    cityId: ID!
+    """
+    Input Format should be yyyy-MM-dd'T'HH:mmZ
+    e.g. "2023-03-27T20:00+0530"
+    """
+    startTime:String!
+    """
+    Input Format should be yyyy-MM-dd'T'HH:mmZ
+    e.g. "2023-03-27T20:00+0530"
+    """
+    endTime: String!
     charges: Float!
     sportsVenueId: ID!
-    players: [PlayerInput!]
+    reservedPlayersCount: Int!
+    waitListPlayersCount: Int!
+    """
+    Not required for P0, will be defaulted to FOOTBALL
+    """
+    sportId: ID
+    """
+    Not required for P0
+    """
+    status: Status
+    """
+    Not required for P0
+    """
+    moderatorId: ID
 }
 
 input JoinEventInput {
     eventId: ID!
+    cityId: ID!
     player: PlayerInput!
 }
 
 input CreateSportsVenueInput {
-    city: City!
-    name: String!
+    cityId: ID!
+    displayName: String!
     googleMapsLink: String!
+    """
+    Not required for P0
+    """
     coordinates: String
-    contactNumber: Int!
-    availableSports: [String!]!
+    """
+    Not required for P0, will be defaulted to FOOTBALL
+    """
+    availableSportsIds: [ID!]
 }
 
 
 
 input RegisterModeratorInput {
-    city: City!
+    cityId: ID!
     firstName: String!
     lastName: String
     contactNumber: Int!
 }
 
 input PlayerInput {
-    whatsAppNumber: Int!
-    firstName: String!
-    lastName: String
+    waNumber: Int!
+    name: String!
 }
 
 type MutationResult {
@@ -57,6 +82,40 @@ type MutationResult {
     errorMessage: String
 }
 
+type City {
+    cityId: ID!
+    cityName: String
+    sportsVenues: [SportsVenue!]
+    events: [EVENT]
+}
+
+type EVENT {
+    displayId: String!
+    displayTitle: String!
+    venueLocationLink: String!
+    charges: Float!
+    reservedPlayersList: [Player]
+    waitListPlayers: [Player]
+}
+
+type Player {
+    displayName: String!
+}
+
+type SportsVenue {
+    sportsVenueId: ID!
+    displayName: String!
+    googleMapsLink: String!
+    availableSportsIds: [ID!]
+}
+
+type Sport {
+    displayName: String!
+}
+
+"""
+Not required for P0
+"""
 type Moderator {
     city: City!
     moderatorId: String!
@@ -65,42 +124,9 @@ type Moderator {
     lastName: String
 }
 
-type Player {
-    whatsAppNumber: Int!
-    firstName: String!
-    lastName: String
-}
-
-type SportsVenue {
-    city: City!
-    sportsVenueId: String!
-    name: String!
-    googleMapsLink: String!
-    coordinates: String
-    contactNumber: Int!
-    availableSports: [String!]!
-}
-
-type EVENT {
-    eventId: ID!
-    city: City!
-    status: Status!
-    dateTime: String!
-    moderator: Moderator!
-    charges: Float!
-    venue: SportsVenue!
-    players: [Player]
-}
-
 interface Person {
     firstName: String!
     lastName: String
-}
-
-enum City {
-    GURGAON
-    DELHI
-    HYDERABAD
 }
 
 enum Status {
@@ -120,4 +146,5 @@ type Author {
     firstName: String
     lastName: String
 }
+
 

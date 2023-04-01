@@ -13,18 +13,10 @@ import java.util.List;
 @Controller
 public class ModeratorController {
 
-    //Hack to set Id until DB in integrated
-    private static int id = 1;
-
     @MutationMapping
     public MutationResult registerModerator(@Argument RegisterModeratorInput input) {
         try {
-            Moderator moderator = new Moderator(Integer.toString(id),
-                    input.getFirstName(),
-                    input.getLastName(),
-                    input.getContactNumber());
-            Moderator.addModerator(moderator);
-            id++;
+            //ToDo
         } catch (Exception ex) {
             return MutationResult.builder()
                     .errorMessage("Sample Error message")
@@ -35,16 +27,5 @@ public class ModeratorController {
                 .isSuccessful(true)
                 .build();
     }
-
-    @QueryMapping(name = "moderator")
-    public Moderator getModerator(@Argument String moderatorId) {
-        return Moderator.getModerator(moderatorId);
-    }
-
-    @QueryMapping(name = "moderators")
-    public List<Moderator> getModerators() {
-        return Moderator.getModerators();
-    }
-
 
 }
