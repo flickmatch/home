@@ -6,7 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class PlayerInput {
-    String firstName;
-    String lastName;
-    int whatsAppNumber;
+    String name;
+    int waNumber;
 }

@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 public class JoinEventInput {
     String eventId;
+    String cityId;
     PlayerInput player;
 }

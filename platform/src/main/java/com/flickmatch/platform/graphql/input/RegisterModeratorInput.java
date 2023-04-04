@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RegisterModeratorInput {
+    private String cityId;
     private String firstName;
     private String lastName;
     private int contactNumber;

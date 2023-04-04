@@ -3,6 +3,7 @@ package com.flickmatch.platform.graphql.type;
 import lombok.Builder;
 
 @Builder
-public class Player {
-    String displayName;
+public class Sport {
+    private String sportId;
+    private String sportName;
 }
