@@ -163,7 +163,7 @@ public class Event {
     @DynamoDBDocument
     public static class PlayerDetails {
         String name;
-        Integer waNumber;
+        String waNumber;
 
         @DynamoDBAttribute(attributeName = "name")
         public String getName() {
@@ -175,11 +175,11 @@ public class Event {
         }
 
         @DynamoDBAttribute(attributeName = "waNumber")
-        public Integer getWaNumber() {
+        public String getWaNumber() {
             return waNumber;
         }
 
-        public void setWaNumber(Integer waNumber) {
+        public void setWaNumber(String waNumber) {
             this.waNumber = waNumber;
         }
     }

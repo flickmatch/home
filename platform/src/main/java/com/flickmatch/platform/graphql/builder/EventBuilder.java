@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -60,6 +57,12 @@ public class EventBuilder {
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
                     .stream().filter(eventDetails -> eventDetails.getIndex().equals(index)).findFirst();
             if (selectedEvent.isPresent()) {
+                //TODO: Add check to disallow eventId from past
+                Date currentTime = new Date(System.currentTimeMillis());
+                if (currentTime.after(selectedEvent.get().getStartTime())) {
+                    throw new IllegalArgumentException("Invalid Event selected");
+                }
+
                 Event.PlayerDetails playerDetails = new Event.PlayerDetails();
                 playerDetails.setName(input.getPlayer().getName());
                 playerDetails.setWaNumber(input.getPlayer().getWaNumber());
@@ -149,7 +152,9 @@ public class EventBuilder {
 
     private String formatDateTimeForTitle(Date startTime, Date endTime) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");
+        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         return dateFormatter.format(startTime) + " "
                 + timeFormatter.format(startTime) + "-"
                 + timeFormatter.format(endTime);

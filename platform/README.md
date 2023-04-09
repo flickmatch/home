@@ -54,30 +54,38 @@ The following guides illustrate how to use some features concretely:
 ```aidl
 mutation {
   createEvent(input: {
-    city: GURGAON
-    dateTime: "18-03-2023"
-    moderatorId: "1"
-    charges: 300
-    sportsVenueId: "1"
-    players:{
-      whatsAppNumber: 12345
-      firstName: "Harsh"
-    }
+    cityId: "1"
+    charges: 200
+    sportsVenueId: "1680632179435"
+    startTime: "2023-04-05T11:00+0530"
+    endTime: "2023-04-05T12:00+0530"
+    reservedPlayersCount: 14,
+    waitListPlayersCount: 5
   }) {
     isSuccessful
   }
 }
 ```
-  * Search event
+  * Search event, sports venues
 ```aidl
 query {
-  events(city: GURGAON) {
-    eventId
-    city
-    dateTime
-    players {
-      whatsAppNumber
-      firstName
+  city(cityId: "1") {
+    cityId
+    cityName
+    sportsVenues {
+      sportsVenueId
+      displayName
+      googleMapsLink
+      availableSportsIds
+    }
+    events {
+      displayId
+      displayTitle
+      venueLocationLink
+      charges
+      reservedPlayersList {
+        displayName
+      }
     }
   }
 }
@@ -88,7 +96,7 @@ mutation {
   joinEvent(input: {
     eventId: "1"
     player:{
-      whatsAppNumber: 9876
+      whatsAppNumber: "9876"
       firstName: "Vardhan"
     }
   }) {
