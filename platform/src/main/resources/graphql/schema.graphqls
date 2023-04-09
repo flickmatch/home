@@ -73,7 +73,7 @@ input RegisterModeratorInput {
 }
 
 input PlayerInput {
-    waNumber: Int!
+    waNumber: String!
     name: String!
 }
 

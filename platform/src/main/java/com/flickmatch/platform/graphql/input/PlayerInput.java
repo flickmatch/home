@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class PlayerInput {
     String name;
-    int waNumber;
+    String waNumber;
 }
