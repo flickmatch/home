@@ -2,7 +2,9 @@ console.log('hello');
 import qrcode from 'qrcode-terminal';
 import pkg from 'whatsapp-web.js';
 const { Client , LocalAuth } = pkg;
-import { getEvents } from './proxy.js';
+import { getEvents, getPlayers, joinEvent } from './src/proxy.js';
+import { parseContent } from './src/inputParser.js';
+import { InputKey, Operation } from './src/constants.js';
 
 
 const client = new Client({
@@ -27,23 +29,46 @@ client.on('ready', () => {
 client.initialize();
 
 client.on('message', async msg => {
-    //console.log(await msg.getContact());
+    const contact = await msg.getContact();
     const chat = await msg.getChat();
-    //console.log(chat);
+    console.log(contact.number);
     let content = msg.body;
-    if(content !== null) {
-	    content = content.replaceAll(' ', '');
-	    content = content.toLowerCase();
+    if(!content || content === ''){
+	    return;
     }
-    if(chat.name == 'Test group ' && (content === 'showgames' || content === 'showgame'))
+    if(chat.name == 'Test group ')
     {
-	Promise.resolve(getEvents()).then(message => {
-            var out = '';
-            message.forEach(mes => {
-                out = out.concat(mes, '\n');
-            });
-            //console.log(out);
-	    msg.reply(out);
-        });
+	try {
+        	let contentMap = null;
+        	try {
+            		contentMap = parseContent(content);
+        	} catch (error) {
+            		console.error('Error while parsing content')
+            		console.error(error);
+        	}
+
+        	if(contentMap) {
+            		if(contentMap.get(InputKey.OPERATION) === Operation.SHOW_GAMES) {
+                		Promise.resolve(getEvents()).then(message => {
+                    			msg.reply(message);
+                		});
+            		} else if (contentMap.get(InputKey.OPERATION) === Operation.LIST_PLAYERS){
+                		Promise.resolve(getPlayers(contentMap.get(InputKey.EVENT_ID))).then(message => {{
+                    			msg.reply(message);
+                		}});
+            		} else if (contentMap.get(InputKey.OPERATION) === Operation.JOIN_GAME){
+                		Promise.resolve(joinEvent(contentMap.get(InputKey.EVENT_ID), contact.number, contentMap.get(InputKey.NAME)))
+                		.then(message => {
+                    			msg.reply(message);
+                		});
+            		} else if (contentMap.get(InputKey.OPERATION) === Operation.INVALID) {
+                		msg.reply('Invalid event');
+            		}
+        	}
+        
+    	} catch (error) {
+        	console.error('Error while operation')
+        	console.error(error);
+    	}
     }
 });
