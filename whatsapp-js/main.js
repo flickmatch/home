@@ -7,7 +7,7 @@ import { parseContent } from './src/inputParser.js';
 import { InputKey, Operation } from './src/constants.js';
 
 console.log(process.platform);
-var isLinux = process.platform != 'win32' || process.platform != 'darwin'
+export const isLinux = process.platform != 'win32' || process.platform != 'darwin'
 
 const client = isLinux ? new Client({
 	authStrategy: new LocalAuth(),

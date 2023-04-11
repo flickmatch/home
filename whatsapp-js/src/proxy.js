@@ -1,8 +1,9 @@
 //require('isomorphic-fetch');
 import fetch from 'isomorphic-fetch';
 import { parseGetEvents, parseGetPlayers } from './responseParser.js';
+import { isLinux } from '../main.js';
 
-const ENDPOINT = 'http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql';
+const ENDPOINT = isLinux ? 'http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql' : 'http://localhost:8080/graphiql';
 
 const callGraqhQLService = (body) => {
   return fetch( ENDPOINT, {
