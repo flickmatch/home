@@ -1,18 +1,21 @@
 //require('isomorphic-fetch');
-import fetch from 'isomorphic-fetch';
-import { parseGetEvents, parseGetPlayers } from './responseParser.js';
+import fetch from "isomorphic-fetch";
+import { parseGetEvents, parseGetPlayers } from "./responseParser.js";
+import { isLinux } from "../main.js";
 
-const ENDPOINT = 'http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql';
+const ENDPOINT = isLinux
+  ? "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
+  : "http://localhost:8080/graphql";
 
 const callGraqhQLService = (body) => {
-  return fetch( ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: body
+  return fetch(ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 };
 
-const ERR_REPLY = 'Something went wrong.';
+const ERR_REPLY = "Something went wrong.";
 
 export const getEvents = () => {
   const body = JSON.stringify({
@@ -28,19 +31,19 @@ export const getEvents = () => {
           charges
         }
       }
-    }`
+    }`,
   });
   const replyMsg = callGraqhQLService(body)
-    .then(res => res.json())
-    .then(res => {
+    .then((res) => res.json())
+    .then((res) => {
       return parseGetEvents(res);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       return ERR_REPLY;
     });
   return replyMsg;
-}
+};
 
 export const joinEvent = (eventId, waNumber, name) => {
   const body = JSON.stringify({
@@ -56,28 +59,28 @@ export const joinEvent = (eventId, waNumber, name) => {
       }) {
           isSuccessful
       }
-  }`
-    });
-  
-  const replyMsg = callGraqhQLService(body)
-  .then(res => res.json())
-  .then(async res => {
-    //console.log(JSON.stringify(res));
-    if(res?.data?.joinEvent.isSuccessful) {
-      let msg = 'Successfully added.';
-      msg = msg.concat('\n', 'Updated List:');
-      const getPlayersResonse = await getPlayers(eventId);
-      msg = msg.concat('\n', getPlayersResonse);
-      return msg;
-    }
-    return "Can't add player.";
-  })
-  .catch(err => {
-    console.log(err);
-    return ERR_REPLY;
+  }`,
   });
+
+  const replyMsg = callGraqhQLService(body)
+    .then((res) => res.json())
+    .then(async (res) => {
+      //console.log(JSON.stringify(res));
+      if (res?.data?.joinEvent.isSuccessful) {
+        let msg = "Successfully added.";
+        msg = msg.concat("\n", "Updated List:");
+        const getPlayersResonse = await getPlayers(eventId);
+        msg = msg.concat("\n", getPlayersResonse);
+        return msg;
+      }
+      return "Can't add player.";
+    })
+    .catch((err) => {
+      console.log(err);
+      return ERR_REPLY;
+    });
   return replyMsg;
-}
+};
 
 export const getPlayers = (eventId) => {
   const body = JSON.stringify({
@@ -94,17 +97,16 @@ export const getPlayers = (eventId) => {
           }
         }
       }
-    }`
+    }`,
   });
   const replyMsg = callGraqhQLService(body)
-  .then(res => res.json())
-  .then(res => {
-    return parseGetPlayers(res, eventId);
-  })
-  .catch(err => {
-    console.log(err);
-    return ERR_REPLY;
-  });
+    .then((res) => res.json())
+    .then((res) => {
+      return parseGetPlayers(res, eventId);
+    })
+    .catch((err) => {
+      console.log(err);
+      return ERR_REPLY;
+    });
   return replyMsg;
-}
-
+};
