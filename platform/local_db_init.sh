@@ -59,3 +59,22 @@ aws dynamodb put-item \
         "sportName": {"S": "Football"} }' \
     --return-consumed-capacity TOTAL \
     --endpoint-url http://localhost:8000
+
+aws dynamodb put-item \
+  --table-name SportsVenue \
+  --item '{
+    "cityId": {"S": "1"},
+    "sportsVenuesInCity": {
+      "L": [
+        { "M" : {
+          "sportsVenueId": {"S": "1680632179435"},
+          "displayName": {"S": "Gallant, Sector 29"},
+          "googleMapsLink": {"S": "abc.xyz.com"},
+          "availableSportsIds": {"L": [{"S": "1"}]}
+          }
+        }
+      ]
+    }
+  }' \
+  --return-consumed-capacity TOTAL \
+  --endpoint-url http://localhost:8000
