@@ -50,15 +50,15 @@ The following guides illustrate how to use some features concretely:
 * Once server is up, open http://localhost:8080/graphiql
 * Try queries/mutation
 * Sample queries
-  *  Add event
+  *  Add event (Only add 1/2 days future date-time to view this while querying city)
 ```aidl
 mutation {
   createEvent(input: {
     cityId: "1"
     charges: 200
     sportsVenueId: "1680632179435"
-    startTime: "2023-04-05T11:00+0530"
-    endTime: "2023-04-05T12:00+0530"
+    startTime: "2023-04-13T11:00+0530"
+    endTime: "2023-04-13T12:00+0530"
     reservedPlayersCount: 14,
     waitListPlayersCount: 5
   }) {
