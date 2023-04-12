@@ -94,6 +94,11 @@ type EVENT {
     displayTitle: String!
     venueLocationLink: String!
     charges: Float!
+    date: String!
+    time: String!
+    venueName: String!
+    reservedPlayersCount: Int!
+    waitListPlayersCount: Int!
     reservedPlayersList: [Player]
     waitListPlayers: [Player]
 }

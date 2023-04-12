@@ -56,9 +56,9 @@ mutation {
   createEvent(input: {
     cityId: "1"
     charges: 200
-    sportsVenueId: "1680632179435"
-    startTime: "2023-04-13T11:00+0530"
-    endTime: "2023-04-13T12:00+0530"
+    sportsVenueId: "1680632179435" // update this with sportsVenueId in local, check value by running query mentioned below.
+    startTime: "2023-04-13T11:00+0530" //Update it.
+    endTime: "2023-04-13T12:00+0530" //Update it.
     reservedPlayersCount: 14,
     waitListPlayersCount: 5
   }) {

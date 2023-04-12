@@ -30,6 +30,7 @@ public class EventBuilder {
     }
 
     public void createEvent(CreateEventInput input) throws ParseException {
+        isStartTimeInPast(DateUtil.parseDateFromString(input.getStartTime()));
         String date = DateUtil.extractDateFromISOFormatString(input.getStartTime());
         Optional<Event> eventsInCity =
                 eventRepository.findById(new Event.EventId(input.getCityId(),date));
@@ -47,6 +48,7 @@ public class EventBuilder {
     }
 
     public void joinEvent(JoinEventInput input) {
+        //TODO: Remove hardcoded value once whatsApp is not used for joining event
         String date = "2023-" + input.getEventId().substring(0, 5);
         int index = Integer.valueOf(input.getEventId().substring(6));
         log.info(date);
@@ -57,11 +59,8 @@ public class EventBuilder {
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
                     .stream().filter(eventDetails -> eventDetails.getIndex().equals(index)).findFirst();
             if (selectedEvent.isPresent()) {
-                //TODO: Add check to disallow eventId from past
-                Date currentTime = new Date(System.currentTimeMillis());
-                if (currentTime.after(selectedEvent.get().getStartTime())) {
-                    throw new IllegalArgumentException("Invalid Event selected");
-                }
+                //check to disallow eventId from past
+                isStartTimeInPast(selectedEvent.get().getStartTime());
 
                 Event.PlayerDetails playerDetails = new Event.PlayerDetails();
                 playerDetails.setName(input.getPlayer().getName());
@@ -130,6 +129,7 @@ public class EventBuilder {
     }
 
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
+        //TODO: Use full date once whatsApp is not used for joining event
         String displayId = date.substring(5) + "-" +eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         log.info(eventDetails.getReservedPlayersCount());
@@ -144,20 +144,21 @@ public class EventBuilder {
         return com.flickmatch.platform.graphql.type.Event.builder()
                 .displayId(displayId)
                 .displayTitle(title)
+                .date(getFormattedEventDate(eventDetails.getStartTime()))
+                .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime()))
+                .venueName(eventDetails.getVenueName())
                 .charges(eventDetails.getCharges())
                 .venueLocationLink(eventDetails.getVenueLocationLink())
                 .reservedPlayersList(reservedPlayers)
+                .reservedPlayersCount(eventDetails.getReservedPlayersCount())
+                .waitListPlayers(waitListPlayers)
+                .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
                 .build();
     }
 
     private String formatDateTimeForTitle(Date startTime, Date endTime) {
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");
-        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
-        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
-        return dateFormatter.format(startTime) + " "
-                + timeFormatter.format(startTime) + "-"
-                + timeFormatter.format(endTime);
+        return getFormattedEventDate(startTime) + " "
+                + getFormattedEventTime(startTime, endTime);
     }
 
     private void createPlayerQueue(Event.EventDetails eventDetails,
@@ -175,6 +176,26 @@ public class EventBuilder {
             }
             counter.getAndIncrement();
         });
+    }
+
+    private String getFormattedEventDate(Date startTime) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+        return dateFormatter.format(startTime);
+    }
+
+    private String getFormattedEventTime(Date startTime, Date endTime) {
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");
+        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+        return timeFormatter.format(startTime) + "-"
+                + timeFormatter.format(endTime);
+    }
+
+    private void isStartTimeInPast(Date startTime) {
+        Date currentTime = new Date(System.currentTimeMillis());
+        if (currentTime.after(startTime)) {
+            throw new IllegalArgumentException("Selected past event/Time");
+        }
     }
 
     
