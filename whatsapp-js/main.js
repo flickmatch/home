@@ -7,7 +7,7 @@ import { parseContent } from "./src/inputParser.js";
 import { InputKey, Operation } from "./src/constants.js";
 
 console.log(process.platform);
-export const isLinux =
+export var isLinux =
   process.platform != "win32" || process.platform != "darwin";
 
 const client = isLinux
@@ -39,7 +39,7 @@ client.on("message", async (msg) => {
   if (!content || content === "") {
     return;
   }
-  if (chat.name == "Test group ") {
+  if (chat.name == "Tg") {
     try {
       let contentMap = null;
       try {
