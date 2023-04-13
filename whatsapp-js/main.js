@@ -39,7 +39,7 @@ client.on("message", async (msg) => {
   if (!content || content === "") {
     return;
   }
-  if (chat.name == "Tg") {
+  if (chat.name == "Test group ") {
     try {
       let contentMap = null;
       try {
