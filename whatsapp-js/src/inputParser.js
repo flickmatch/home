@@ -1,4 +1,5 @@
 import { InputKey, Operation } from "./constants.js";
+import { getEvents, getPlayers, joinEvent } from "./proxy.js";
 
 const pattern1 = /^[0-9][0-9]$/;
 const pattern2 = /^[0-9]$/;
@@ -30,6 +31,54 @@ const validateEventId = (splittedContent, contentMap, operationValue) => {
     contentMap.set(InputKey.OPERATION, Operation.INVALID);
   }
 };
+
+export const processGroup = (msg) => {
+  const contact = msg.getContact();
+  const chat =  msg.getChat();
+  let content = msg.body;
+  try {
+    let contentMap = null;
+    try {
+      contentMap = parseContent(content);
+    } catch (error) {
+      console.error("Error while parsing content");
+      console.error(error);
+    }
+
+    if (contentMap) {
+      if (contentMap.get(InputKey.OPERATION) === Operation.SHOW_GAMES) {
+        Promise.resolve(getEvents()).then((message) => {
+          msg.reply(message);
+        });
+      } else if (
+        contentMap.get(InputKey.OPERATION) === Operation.LIST_PLAYERS
+      ) {
+        Promise.resolve(getPlayers(contentMap.get(InputKey.EVENT_ID))).then(
+          (message) => {
+            {
+              msg.reply(message);
+            }
+          }
+        );
+      } else if (contentMap.get(InputKey.OPERATION) === Operation.JOIN_GAME) {
+        Promise.resolve(
+          joinEvent(
+            contentMap.get(InputKey.EVENT_ID),
+            contact.number,
+            contentMap.get(InputKey.NAME)
+          )
+        ).then((message) => {
+          msg.reply(message);
+        });
+      } else if (contentMap.get(InputKey.OPERATION) === Operation.INVALID) {
+        msg.reply("Invalid event");
+      }
+    }
+  } catch (error) {
+    console.error("Error while operation");
+    console.error(error);
+  }
+}
 
 export const parseContent = (content) => {
   const contentMap = new Map();
