@@ -21,4 +21,13 @@ public class DateUtil {
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         return parser.parse(dateTime);
     }
+
+    public static Date parseDateFromInput(String date) throws ParseException {
+        return formatter.parse(date);
+    }
+
+    public static Date parseTimeFromInput(String startTime) throws ParseException {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mma");
+        return timeFormat.parse(startTime);
+    }
 }
