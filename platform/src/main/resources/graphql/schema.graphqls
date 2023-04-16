@@ -7,6 +7,7 @@ type Mutation {
     createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
     createEvent(input: CreateEventInput!): MutationResult!
     joinEvent(input: JoinEventInput!): MutationResult!
+    updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -63,7 +64,14 @@ input CreateSportsVenueInput {
     availableSportsIds: [ID!]
 }
 
-
+input UpdatePlayerListInput {
+    cityId: ID!
+    startTime: String!
+    venueName: String!
+    date: String!
+    reservedPlayersList: [PlayerInput]!
+    waitListPlayers: [PlayerInput]!
+}
 
 input RegisterModeratorInput {
     cityId: ID!
@@ -73,8 +81,9 @@ input RegisterModeratorInput {
 }
 
 input PlayerInput {
-    waNumber: String!
+    waNumber: String
     name: String!
+    paymentStatus: PaymentStatus
 }
 
 type MutationResult {
@@ -132,6 +141,11 @@ type Moderator {
 interface Person {
     firstName: String!
     lastName: String
+}
+
+enum PaymentStatus {
+    PENDING
+    PAID
 }
 
 enum Status {
