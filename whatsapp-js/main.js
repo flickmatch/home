@@ -2,23 +2,21 @@ console.log("hello");
 import qrcode from "qrcode-terminal";
 import pkg from "whatsapp-web.js";
 const { Client, LocalAuth } = pkg;
-import { getEvents, getPlayers, joinEvent } from "./src/proxy.js";
-import { parseContent } from "./src/inputParser.js";
-import { InputKey, Operation } from "./src/constants.js";
+import { processGroup } from "./src/inputParser.js";
 
-console.log(process.platform);
-export var isLinux =
-  process.platform != "win32" || process.platform != "darwin";
+// Maybe change this to flag.
+export var isProd =
+  process.platform != "win32" && process.platform != "darwin";
+var groupName = isProd? "FlickMatch ⚽ Gurugram South City / Sector-29 🍺 Pickup." : "Tg";
+//"Test group "
 
-const client = isLinux
-  ? new Client({
+const client =new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
         headless: true,
         args: ["--no-sandbox"],
       },
-    })
-  : new Client();
+    });
 
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
@@ -39,48 +37,7 @@ client.on("message", async (msg) => {
   if (!content || content === "") {
     return;
   }
-  if (chat.name == "Test group ") {
-    try {
-      let contentMap = null;
-      try {
-        contentMap = parseContent(content);
-      } catch (error) {
-        console.error("Error while parsing content");
-        console.error(error);
-      }
-
-      if (contentMap) {
-        if (contentMap.get(InputKey.OPERATION) === Operation.SHOW_GAMES) {
-          Promise.resolve(getEvents()).then((message) => {
-            msg.reply(message);
-          });
-        } else if (
-          contentMap.get(InputKey.OPERATION) === Operation.LIST_PLAYERS
-        ) {
-          Promise.resolve(getPlayers(contentMap.get(InputKey.EVENT_ID))).then(
-            (message) => {
-              {
-                msg.reply(message);
-              }
-            }
-          );
-        } else if (contentMap.get(InputKey.OPERATION) === Operation.JOIN_GAME) {
-          Promise.resolve(
-            joinEvent(
-              contentMap.get(InputKey.EVENT_ID),
-              contact.number,
-              contentMap.get(InputKey.NAME)
-            )
-          ).then((message) => {
-            msg.reply(message);
-          });
-        } else if (contentMap.get(InputKey.OPERATION) === Operation.INVALID) {
-          msg.reply("Invalid event");
-        }
-      }
-    } catch (error) {
-      console.error("Error while operation");
-      console.error(error);
-    }
+  if (chat.name == groupName) {
+    processGroup(msg);
   }
 });
