@@ -1,4 +1,3 @@
-//require('isomorphic-fetch');
 import fetch from "isomorphic-fetch";
 import { parseGetEvents, parseGetPlayers } from "./responseParser.js";
 import { isProd } from "../main.js";
