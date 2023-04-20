@@ -19,10 +19,6 @@ Add your name to the list:
 12.
 13. Abhimanyu
 14.
-15.
-16.
-17.
-18.
 
 Waitlist
 1. Abhimanyu
@@ -53,10 +49,7 @@ const expected = {
     "",
     "",
     "Abhimanyu",
-    "",
-    "",
-    "",
-    "",
+    ""
   ],
   waitlist: ["Abhimanyu", "", "", ""],
 };
