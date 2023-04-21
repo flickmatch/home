@@ -29,12 +29,13 @@ Waitlist
 Please pay at 9818678977 on Paytm or GPay to confirm your spot.`;
 
 const expected = {
+  isSuccessful: true,
   location: "Gallant Play Arena South City 1, Gurgaon",
   startTime: "12:08 PM",
   endTime: "09:30 PM",
   date: "19-04-2023",
   format: "7v7",
-  cost: 200,
+  cost: '200',
   listOfPlayers: [
     "Abhishek",
     "Sarthak",
