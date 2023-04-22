@@ -7,7 +7,8 @@ import { processGroup } from "./src/inputParser.js";
 // Maybe change this to flag.
 export var isProd =
   process.platform != "win32" && process.platform != "darwin";
-var groupName = isProd? "FlickMatch ⚽ Gurugram South City / Sector-29 🍺 Pickup." : "Tg";
+//var groupName = isProd? "FlickMatch ⚽ Gurugram South City / Sector-29 🍺 Pickup." : "Test group ";
+var groupName = "Test group ";
 //"Test group "
 
 const client =new Client({
