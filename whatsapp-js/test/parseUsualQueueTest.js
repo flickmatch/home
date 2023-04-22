@@ -37,22 +37,63 @@ const expected = {
   format: "7v7",
   cost: '200',
   listOfPlayers: [
-    "Abhishek",
-    "Sarthak",
-    "Uday",
-    "Maulik",
-    "Aditya R",
-    "Govind",
-    "Nishant",
-    "Mridul",
-    "",
-    "",
-    "",
-    "",
-    "Abhimanyu",
-    ""
+    {
+      "name": "Abhishek"
+    },
+    {
+      "name": "Sarthak"
+    },
+    {
+      "name": "Uday"
+    },
+    {
+      "name": "Maulik"
+    },
+    {
+      "name": "Aditya R"
+    },
+    {
+      "name": "Govind"
+    },
+    {
+      "name": "Nishant"
+    },
+    {
+      "name": "Mridul"
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": "Abhimanyu"
+    },
+    {
+      "name": ""
+    }
   ],
-  waitlist: ["Abhimanyu", "", "", ""],
+  waitlist: [
+    {
+      "name": "Abhimanyu"
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": ""
+    },
+    {
+      "name": ""
+    }
+  ],
 };
 
 const result = parseMessage(message);

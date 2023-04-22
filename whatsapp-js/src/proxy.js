@@ -109,3 +109,35 @@ export const getPlayers = (eventId) => {
     });
   return replyMsg;
 };
+
+export const updatePlayerList = (inputData) => {
+  const body = JSON.stringify({
+    variables: {
+      reservedPlayersList : inputData.listOfPlayers,
+      waitListPlayers: inputData.waitlist
+    },
+    query: `
+    mutation updatePlayers($reservedPlayersList: [PlayerInput!]!, 
+      $waitListPlayers: [PlayerInput!]!) {
+      updatePlayerList (input: {
+        date : "${inputData.date}"
+        startTime: "${inputData.startTime}"
+        cityId: "1"
+        venueName: "${inputData.location}"
+        reservedPlayersList : $reservedPlayersList
+        waitListPlayers : $waitListPlayers
+      }) {
+          isSuccessful
+      }
+    }`
+    });
+  const replyMsg = callGraqhQLService(body)
+    .then((res) => res.json())
+    .then((res) => {
+      if(res?.data?.updatePlayerList.isSuccessful) {
+        return "Updated!"
+      }
+      return "Update Failed!";
+    });
+  return replyMsg;
+}

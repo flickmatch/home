@@ -2,6 +2,8 @@ package com.flickmatch.platform.graphql.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateUtil {
@@ -29,5 +31,11 @@ public class DateUtil {
     public static Date parseTimeFromInput(String startTime) throws ParseException {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mma");
         return timeFormat.parse(startTime);
+    }
+
+    public static String getDateInInternationalFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter).format(formatter2);
     }
 }

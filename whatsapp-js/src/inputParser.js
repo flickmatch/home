@@ -1,5 +1,6 @@
 import { InputKey, Operation } from "./constants.js";
-import { getEvents, getPlayers, joinEvent } from "./proxy.js";
+import { parseMessage } from "./parseUsualQueue.js";
+import { getEvents, getPlayers, joinEvent, updatePlayerList } from "./proxy.js";
 
 const pattern1 = /^[0-9][0-9]$/;
 const pattern2 = /^[0-9]$/;
@@ -36,6 +37,23 @@ export const processGroup = (msg) => {
   const contact = msg.getContact();
   const chat =  msg.getChat();
   let content = msg.body;
+  try {
+    const inputData = parseMessage(content);
+    if(inputData?.isSuccessful) {
+      Promise.resolve(updatePlayerList(inputData)).then(
+        (message) => {
+          {
+            msg.reply(message);
+          }
+        }
+      );
+    }
+  } catch (error) {
+    console.error("Error while updating player List");
+    console.error(error);
+  }
+
+
   try {
     let contentMap = null;
     try {
