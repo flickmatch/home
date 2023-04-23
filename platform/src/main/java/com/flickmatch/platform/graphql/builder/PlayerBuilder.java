@@ -8,9 +8,10 @@ import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Log4j2
@@ -24,20 +25,23 @@ public class PlayerBuilder {
     EventRepository eventRepository;
 
     public void updatePlayerList(UpdatePlayerListInput input) {
-        validateInputs(input);
-        Optional<Event> eventsInCity = eventRepository.findById(new Event.EventId(input.getCityId(),input.getDate()));
+        validateStartTime(input.getStartTime());
+        String date = validateAndFormateDate(input.getDate());
+        Optional<Event> eventsInCity = eventRepository.findById(new Event.EventId(input.getCityId(), date));
         if (eventsInCity.isPresent()) {
             List<Event.EventDetails> eventsInSelectedVenue = eventsInCity.get().getEventDetailsList().stream()
-                    .filter(eventDetails -> {
-                return eventDetails.getVenueName().equals(input.getVenueName());
-            }).toList();
+                    .filter(eventDetails -> compareVenueName(eventDetails.getVenueName(),input.getVenueName()))
+                    .toList();
             if (!eventsInSelectedVenue.isEmpty()) {
                 Optional<Event.EventDetails> selectedEvent = eventsInSelectedVenue.stream()
                         .filter(eventDetails ->
-                        input.getStartTime().equals(getFormattedEventTime(eventDetails.getStartTime())))
+                        input.getStartTime().toLowerCase(Locale.ROOT)
+                                .equals(getFormattedEventTime(eventDetails.getStartTime())))
                         .findFirst();
-                selectedEvent.ifPresent(eventDetails -> eventDetails.setPlayerDetailsList(
-                        buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers())));
+
+                selectedEvent.ifPresentOrElse(eventDetails -> eventDetails.setPlayerDetailsList(
+                        buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers())),
+                        () -> {throw new IllegalArgumentException("Invalid Event selected");});
                 eventRepository.save(eventsInCity.get());
                 return;
             }
@@ -47,6 +51,10 @@ public class PlayerBuilder {
 
     private List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
                                                       List<PlayerInput> waitListPlayers) {
+        reservedPlayersList = reservedPlayersList.stream()
+                .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
+        waitListPlayers = waitListPlayers.stream()
+                .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
         if (CollectionUtils.isEmpty(reservedPlayersList) && CollectionUtils.isEmpty(waitListPlayers)) {
             throw new IllegalArgumentException("Invalid player list");
         }
@@ -64,18 +72,33 @@ public class PlayerBuilder {
         return playerDetailsList;
     }
 
-    private void validateInputs(UpdatePlayerListInput input) {
+    private String validateAndFormateDate(String date) {
         try {
-            DateUtil.parseDateFromInput(input.getDate());
-            DateUtil.parseTimeFromInput(input.getStartTime());
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Date or time is invalid, Please check format");
+            return DateUtil.getDateInInternationalFormat(date);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Date is invalid, Please check format");
         }
     }
 
+    private void validateStartTime(String time) {
+        try {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+            timeFormat.parse(time);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Time is invalid, Please check format");
+        }
+
+    }
+
     private String getFormattedEventTime(Date startTime) {
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
         timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+        System.out.println(timeFormatter.format(startTime));
         return timeFormatter.format(startTime);
+    }
+
+    private boolean compareVenueName(String venueName, String inputName) {
+        return venueName.replace(" ", "").toLowerCase()
+                .equals(inputName.replace(" ", "").toLowerCase());
     }
 }

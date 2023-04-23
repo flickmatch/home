@@ -54,7 +54,7 @@ export function parseMessage(message) {
   if (playersRegexSearchResult) {
     playersStr = playersRegexSearchResult[0];
     playersWithIndex = playersStr.split("\n");
-    players = playersWithIndex.map((line) => removeIndex(line));
+    players = playersWithIndex.map((line) => {return {name : removeIndex(line)}});
   }
 
   const waitlistRegex = /(?<=Waitlist\n)([\d\D]*)(?=\nPlease)/; // Regex to extract the waitlist
@@ -65,7 +65,7 @@ export function parseMessage(message) {
   if (waitlistRegexSearchResult) {
     waitlistStr = waitlistRegexSearchResult[0];
     waitlistWithIndex = waitlistStr.split("\n").slice(0, -1);
-    waitlist = waitlistWithIndex.map((line) => removeIndex(line));
+    waitlist = waitlistWithIndex.map((line) => {return {name : removeIndex(line)}});
   }
 
   const isSuccessful = !(
