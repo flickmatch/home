@@ -11,8 +11,10 @@ import java.util.List;
 public class UpdatePlayerListInput {
     private String date;
     private String startTime;
-    private String cityId;
     private String venueName;
+    private String endTime;
+    private String charges;
+    private String format;
     private List<PlayerInput> reservedPlayersList;
     private List<PlayerInput> waitListPlayers;
 }

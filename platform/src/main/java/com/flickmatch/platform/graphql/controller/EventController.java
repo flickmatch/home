@@ -26,7 +26,7 @@ public class EventController {
     @MutationMapping
     public MutationResult createEvent(@Argument CreateEventInput input) {
         try {
-            eventBuilder.createEvent(input);
+            eventBuilder.createEvent(input, true);
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return MutationResult.builder()

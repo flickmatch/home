@@ -65,10 +65,12 @@ input CreateSportsVenueInput {
 }
 
 input UpdatePlayerListInput {
-    cityId: ID!
     startTime: String!
+    endTime: String!
     venueName: String!
     date: String!
+    charges: String!
+    format: String!
     reservedPlayersList: [PlayerInput]!
     waitListPlayers: [PlayerInput]!
 }

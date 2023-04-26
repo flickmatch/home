@@ -29,21 +29,23 @@ public class EventBuilder {
         this.eventRepository = eventRepository;
     }
 
-    public void createEvent(CreateEventInput input) throws ParseException {
-        isStartTimeInPast(DateUtil.parseDateFromString(input.getStartTime()));
+    public Event createEvent(CreateEventInput input, boolean shouldValidateStartTime) throws ParseException {
+        if (shouldValidateStartTime) {
+            isStartTimeInPast(DateUtil.parseDateFromString(input.getStartTime()));
+        }
         String date = DateUtil.extractDateFromISOFormatString(input.getStartTime());
         Optional<Event> eventsInCity =
                 eventRepository.findById(new Event.EventId(input.getCityId(),date));
         if (eventsInCity.isPresent()) {
             List<Event.EventDetails> eventDetailsList = eventsInCity.get().getEventDetailsList();
             eventDetailsList.add(buildEventDetails(input, eventDetailsList.size()+1));
-            eventRepository.save(eventsInCity.get());
+            return eventRepository.save(eventsInCity.get());
         } else {
             Event newEvent = new Event();
             newEvent.setCityId(input.getCityId());
             newEvent.setDate(date);
             newEvent.setEventDetailsList(List.of(buildEventDetails(input, 1)));
-            eventRepository.save(newEvent);
+            return eventRepository.save(newEvent);
         }
     }
 
