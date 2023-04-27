@@ -31,23 +31,21 @@ public class PlayerBuilder {
     @Autowired
     EventBuilder eventBuilder;
 
-    private EventRepository eventRepository;
-    private SportsVenueRepository sportsVenueRepository;
+    private final EventRepository eventRepository;
+    private final SportsVenueRepository sportsVenueRepository;
 
     public void updatePlayerList(UpdatePlayerListInput input) throws ParseException {
         validateStartTime(input.getStartTime());
-        String date = validateAndFormateDate(input.getDate());
+        String date = validateAndFormatDate(input.getDate());
         AtomicReference<String> cityId = new AtomicReference<>();
         AtomicReference<String> sportsVenueId = new AtomicReference<>();
         //Todo: This will not be required if we can pass cityId, sportsVenueId in input
-        sportsVenueRepository.findAll().forEach(sportsVenues -> {
-            sportsVenues.getSportsVenuesInCity().forEach(sportsVenue -> {
-                if (compareVenueName(sportsVenue.getDisplayName(), input.getVenueName())) {
-                    cityId.set(sportsVenues.getCityId());
-                    sportsVenueId.set(sportsVenue.getSportsVenueId());
-                }
-            });
-        });
+        sportsVenueRepository.findAll().forEach(sportsVenues -> sportsVenues.getSportsVenuesInCity().forEach(sportsVenue -> {
+            if (compareVenueName(sportsVenue.getDisplayName(), input.getVenueName())) {
+                cityId.set(sportsVenues.getCityId());
+                sportsVenueId.set(sportsVenue.getSportsVenueId());
+            }
+        }));
 
         if (!StringUtils.hasLength(cityId.get())) {
             throw new IllegalArgumentException("Invalid Venue selected");
@@ -108,7 +106,7 @@ public class PlayerBuilder {
         return playerDetailsList;
     }
 
-    private String validateAndFormateDate(String date) {
+    private String validateAndFormatDate(String date) {
         try {
             return DateUtil.getDateInInternationalFormat(date);
         } catch (DateTimeParseException e) {
@@ -134,7 +132,7 @@ public class PlayerBuilder {
     }
 
     private boolean compareVenueName(String venueName, String inputName) {
-        return venueName.replace(" ", "").toLowerCase()
-                .equals(inputName.replace(" ", "").toLowerCase());
+        return venueName.replace(" ", "")
+                .equalsIgnoreCase(inputName.replace(" ", ""));
     }
 }

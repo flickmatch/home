@@ -13,19 +13,17 @@ import java.util.Optional;
 @Log4j2
 public class CityBuilder {
 
-    private CityRepository cityRepository;
+    private final CityRepository cityRepository;
 
     public CityBuilder(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
 
     public List<City> getCities() {
-        return cityRepository.findAll().stream().map(city -> {
-            return City.builder()
-                    .cityId(city.getCityId())
-                    .cityName(city.getCityName())
-                    .build();
-        }).toList();
+        return cityRepository.findAll().stream().map(city -> City.builder()
+                .cityId(city.getCityId())
+                .cityName(city.getCityName())
+                .build()).toList();
     }
 
     public City getCity(final String cityId) {
