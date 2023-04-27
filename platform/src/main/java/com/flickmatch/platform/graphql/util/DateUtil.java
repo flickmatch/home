@@ -9,7 +9,7 @@ import java.util.Date;
 public class DateUtil {
     private DateUtil() {}
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public static String extractDateFromISOFormatString(String startTime) throws ParseException {
         return formatter.format(parseDateFromString(startTime));

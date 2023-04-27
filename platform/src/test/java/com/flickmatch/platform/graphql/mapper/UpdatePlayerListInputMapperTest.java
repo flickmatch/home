@@ -2,8 +2,6 @@ package com.flickmatch.platform.graphql.mapper;
 
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +10,6 @@ import java.text.ParseException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UpdatePlayerListInputMapperTest {
 

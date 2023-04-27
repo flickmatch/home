@@ -1,6 +1,5 @@
 package com.flickmatch.platform.graphql.input;
 
-import com.flickmatch.platform.graphql.type.Player;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -52,7 +52,7 @@ public class EventBuilder {
     public void joinEvent(JoinEventInput input) {
         //TODO: Remove hardcoded value once whatsApp is not used for joining event
         String date = "2023-" + input.getEventId().substring(0, 5);
-        int index = Integer.valueOf(input.getEventId().substring(6));
+        int index = Integer.parseInt(input.getEventId().substring(6));
         log.info(date);
         log.info(index);
         Optional<Event> eventsInCity =
@@ -93,9 +93,7 @@ public class EventBuilder {
             //filter events before current time
             List<com.flickmatch.platform.graphql.type.Event> todayEventList =
                     eventData.get().getEventDetailsList().stream()
-                    .filter(eventDetails -> {
-                        return eventDetails.getStartTime().after(currentTime);
-                    }).map(eventDetails -> mapEventToGQLType(eventDetails, currentDate)).toList();
+                    .filter(eventDetails -> eventDetails.getStartTime().after(currentTime)).map(eventDetails -> mapEventToGQLType(eventDetails, currentDate)).toList();
             eventList.addAll(todayEventList);
         }
         eventData = eventRepository.findById(new Event.EventId(cityId,tomorrowDate));
@@ -113,7 +111,7 @@ public class EventBuilder {
         List<SportsVenue> sportsVenueList = sportsVenueBuilder.getSportsVenues(input.getCityId());
         Optional<SportsVenue> sportsVenue = sportsVenueList.stream()
                 .filter(entity -> entity.getSportsVenueId().equals(input.getSportsVenueId())).findFirst();
-        if (!sportsVenue.isPresent()) {
+        if (sportsVenue.isEmpty()) {
             throw new IllegalArgumentException("Incorrect sports venue");
         }
         Event.EventDetails eventDetails = new Event.EventDetails();
