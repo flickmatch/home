@@ -9,7 +9,7 @@ import java.util.List;
 //TODO: Using this for development, Create a type instead of record when DB is integrated
 public record Moderator(String moderatorId, String firstName, String lastName, int contactNumber) {
 
-    private static List<Moderator> moderators = new ArrayList<>();
+    private static final List<Moderator> moderators = new ArrayList<>();
 
     public static void addModerator(final Moderator moderator) {
         moderators.add(moderator);
