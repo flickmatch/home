@@ -14,7 +14,7 @@ import java.util.Optional;
 @Log4j2
 public class SportsVenueBuilder {
 
-    private SportsVenueRepository sportsVenueRepository;
+    private final SportsVenueRepository sportsVenueRepository;
 
     public SportsVenueBuilder(final SportsVenueRepository sportsVenueRepository) {
         this.sportsVenueRepository = sportsVenueRepository;
@@ -37,17 +37,14 @@ public class SportsVenueBuilder {
 
     public List<SportsVenue> getSportsVenues(final String cityId) {
         Optional<SportsVenues> sportsVenues = sportsVenueRepository.findById(cityId);
-        if (sportsVenues.isPresent()) {
-            return sportsVenues.get().getSportsVenuesInCity().stream()
-                    .map(sportsVenue -> SportsVenue.builder()
-                            .sportsVenueId(sportsVenue.getSportsVenueId())
-                            .displayName(sportsVenue.getDisplayName())
-                            .googleMapsLink(sportsVenue.getGoogleMapsLink())
-                            .availableSportsIds(sportsVenue.getAvailableSportsIds())
-                            .build())
-                    .toList();
-        }
-        return null;
+        return sportsVenues.map(venues -> venues.getSportsVenuesInCity().stream()
+                .map(sportsVenue -> SportsVenue.builder()
+                        .sportsVenueId(sportsVenue.getSportsVenueId())
+                        .displayName(sportsVenue.getDisplayName())
+                        .googleMapsLink(sportsVenue.getGoogleMapsLink())
+                        .availableSportsIds(sportsVenue.getAvailableSportsIds())
+                        .build())
+                .toList()).orElse(null);
     }
 
     private SportsVenues.SportsVenue createSportsVenueInCity(final CreateSportsVenueInput input) {
