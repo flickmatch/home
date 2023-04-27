@@ -122,8 +122,10 @@ export const updatePlayerList = (inputData) => {
       updatePlayerList (input: {
         date : "${inputData.date}"
         startTime: "${inputData.startTime}"
-        cityId: "1"
+        endTime: "${inputData.endTime}"
+        charges: "${inputData.cost}"
         venueName: "${inputData.location}"
+        format: "${inputData.format}"
         reservedPlayersList : $reservedPlayersList
         waitListPlayers : $waitListPlayers
       }) {
