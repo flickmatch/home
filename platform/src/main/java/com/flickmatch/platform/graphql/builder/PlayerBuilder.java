@@ -78,8 +78,7 @@ public class PlayerBuilder {
         return eventsInCity.get().getEventDetailsList().stream()
                 .filter(eventDetails -> compareVenueName(eventDetails.getVenueName(), input.getVenueName()))
                 .filter(eventDetails ->
-                        input.getStartTime().toLowerCase(Locale.ROOT)
-                                .equals(getFormattedEventTime(eventDetails.getStartTime())))
+                        input.getStartTime().equalsIgnoreCase(getFormattedEventTime(eventDetails.getStartTime())))
                 .findFirst();
     }
 
