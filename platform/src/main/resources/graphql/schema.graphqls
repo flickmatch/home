@@ -98,6 +98,7 @@ type City {
     cityName: String
     sportsVenues: [SportsVenue!]
     events: [EVENT]
+    pastEvents (inDays: Int!): [EVENT]!
 }
 
 type EVENT {
