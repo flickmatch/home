@@ -60,4 +60,9 @@ public class EventController {
         return eventBuilder.getEvents(city.getCityId());
     }
 
+    @SchemaMapping(typeName = "City", field = "pastEvents")
+    public List<Event> getPastEvents(City city, @Argument Integer inDays) {
+        return eventBuilder.getPastEvents(city.getCityId(), inDays);
+    }
+
 }
