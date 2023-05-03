@@ -107,6 +107,28 @@ public class EventBuilder {
         return eventList;
     }
 
+    public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays) {
+        List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
+        Date currentTime = new Date(System.currentTimeMillis());
+        Date dateBeforeThirtyDays = Date.from(currentTime.toInstant().minus(30, ChronoUnit.DAYS));
+
+        eventRepository.findAll().forEach(event -> {
+            if (event.getCityId().equals(cityId)) {
+                List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity =
+                        event.getEventDetailsList().stream()
+                        .filter(eventDetails ->
+                        eventDetails.getStartTime().before(currentTime) &&
+                                eventDetails.getStartTime().after(dateBeforeThirtyDays)
+                ).map(eventDetails ->
+                        mapEventToGQLType(eventDetails, event.getDate())
+                ).toList();
+                pastEventList.addAll(pastEventsInCity);
+            }
+        });
+
+        return pastEventList;
+    }
+
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
         List<SportsVenue> sportsVenueList = sportsVenueBuilder.getSportsVenues(input.getCityId());
         Optional<SportsVenue> sportsVenue = sportsVenueList.stream()
@@ -132,7 +154,7 @@ public class EventBuilder {
         //TODO: Use full date once whatsApp is not used for joining event
         String displayId = date.substring(5) + "-" +eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
-        log.info(eventDetails.getReservedPlayersCount());
+        //log.info(eventDetails.getReservedPlayersCount());
         String eventType = players + "v" + players;
         String title = eventType + " "
                 + formatDateTimeForTitle(eventDetails.getStartTime(), eventDetails.getEndTime())
