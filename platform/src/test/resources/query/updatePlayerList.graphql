@@ -1,0 +1,19 @@
+mutation updatePlayers($reservedPlayersList: [PlayerInput!]!,
+    $waitListPlayers: [PlayerInput!]!,
+    $date: String!,
+    $startTime: String!
+    $endTime: String!
+) {
+    updatePlayerList (input: {
+        date : $date
+        startTime: $startTime
+        endTime: $endTime
+        charges: "300"
+        venueName: "HotFut GachiBowli"
+        format: "5v5"
+        reservedPlayersList : $reservedPlayersList
+        waitListPlayers : $waitListPlayers
+    }) {
+        isSuccessful
+    }
+}
