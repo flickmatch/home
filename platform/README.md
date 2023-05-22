@@ -24,6 +24,16 @@ The following guides illustrate how to use some features concretely:
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Cheat sheet for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CheatSheet.html)
 
+###IDE Setup
+
+####IntelliJ
+* Install IntelliJ
+* Run IntelliJ, click open and select platform directory (not home) in repo.
+* Setup project SDK to coretto-17
+* Go to setting/preferences, search gradle. In Build tools>Gradle select coretto-17
+
+**Note**: If you prefer to use other IDEs, please add steps in this section.
+
 ##Local Testing
 
 ###Running Dynamodb instance locally
@@ -32,19 +42,15 @@ The following guides illustrate how to use some features concretely:
 * [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
 
 ###Running Application
-####Using IDE
-
-**Initial setup**
-* Install IntelliJ
-* Run IntelliJ, click open and select platform directory (not home) in repo. 
-* Setup project SDK to coretto-17
-* Go to setting/preferences, search gradle. In Build tools>Gradle select coretto-17
-* Go to Run>Edit Configurations and add `spring.profiles.active=dev` in environment variables
-* Run PlatformApplication.java by clicking play icon in file.
 
 ####Using Terminal
 
-//TODO
+* Run command `./gradlew bootRun --args='--spring.profiles.active=dev'` in **/platform/* directory.
+
+####Running application using IntelliJ
+
+* Go to Run>Edit Configurations and add `spring.profiles.active=dev` in environment variables
+* Run PlatformApplication.java by clicking play icon in file.
 
 ###Testing Queries/mutations
 * Once server is up, open http://localhost:8080/graphiql
@@ -108,8 +114,7 @@ mutation {
 
 
 
-### Additional Links
+### Additional Resources
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
-
