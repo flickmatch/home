@@ -24,9 +24,16 @@ The following guides illustrate how to use some features concretely:
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Cheat sheet for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CheatSheet.html)
 
-###IDE Setup
+### Basic setup
+* Install Java coretto-17, Gradle. Verify installation by running `java --version` and `gradle --version` in terminal.
+* Install postman.
+* [Optional] install aws CLI
+* Set up AWS credentials using SOP https://docs.google.com/document/d/1CKlucg8TiFdQLcRTRgTmlalzUyMWF-HF2WzFVLqI474/edit?usp=sharing
 
-####IntelliJ
+
+### IDE Setup
+
+#### IntelliJ
 * Install IntelliJ
 * Run IntelliJ, click open and select platform directory (not home) in repo.
 * Setup project SDK to coretto-17
@@ -34,29 +41,24 @@ The following guides illustrate how to use some features concretely:
 
 **Note**: If you prefer to use other IDEs, please add steps in this section.
 
-##Local Testing
+## Local Testing
 
-###Running Dynamodb instance locally
+### Running Application
 
-* [One time setup] Use this guide to install and run dynamodb in local [DynamoDBLocal.DownloadingAndRunning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
-* [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
+* Run command `./gradlew bootRun --args='--spring.profiles.active=beta'` in **/platform/* directory.
+* This command will start the application in local which will use beta dynamoDB tables.
+* If you want to use local instance of dynamoDB for development follow steps mentioned in addition resources.
 
-###Running Application
+### Testing Queries/mutations
 
-####Using Terminal
+* Add integration tests, and run `gradle clean build`. This command will run all tests and build application.
 
-* Run command `./gradlew bootRun --args='--spring.profiles.active=dev'` in **/platform/* directory.
-
-####Running application using IntelliJ
-
-* Go to Run>Edit Configurations and add `spring.profiles.active=dev` in environment variables
-* Run PlatformApplication.java by clicking play icon in file.
-
-###Testing Queries/mutations
-* Once server is up, open http://localhost:8080/graphiql
+#### Manual testing
+* Once server is up, open http://localhost:8080/graphiql in browser. (or http://localhost:8080/graphql in postman)
 * Try queries/mutation
 * Sample queries
-  *  Add event (Only add 1/2 days future date-time to view this while querying city)
+  * Add event (Only add 1/2 days future date-time to view this while querying city)
+  * SOP: https://docs.google.com/document/d/1ApqofKwYePEf5YEsPg8hUQHKw_op0win-yzkzDfY9c0/edit#heading=h.vubfe6ogz3q0
 ```aidl
 mutation {
   createEvent(input: {
@@ -111,10 +113,13 @@ mutation {
 }
 ```
 
-
-
-
 ### Additional Resources
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
+
+#### Running Dynamodb instance locally
+
+* [One time setup] Use this guide to install and run dynamodb in local [DynamoDBLocal.DownloadingAndRunning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
+* [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
+* To hit local dynamoDB set `spring.profiles.active=dev` in command to start application.
