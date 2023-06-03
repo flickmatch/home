@@ -1,0 +1,19 @@
+1.  DATA VERSION 
+
+https://github.com/metrica-sports/sample-data/tree/master/data
+
+2.  Pipeline for video summarization : 
+
+https://github.com/varadhbhatnagar/Video-Summarization-for-Football
+
+3.  Youtube Link for Football Analysis :
+
+https://www.youtube.com/watch?v=8TrleFklEsE
+
+4.  Highlight Generator through Audio 
+
+https://github.com/arghyadeep99/Sports-Highlights-Generator
+
+5.  Google  Sheets Maintain
+
+
