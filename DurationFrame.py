@@ -1,4 +1,17 @@
+# purpose of the code -> To convert a given video into frames of desired fps that too creating separate folders for each such durations within specified output_path .
+# constants for example uses 
+# video_path -> specify the folder where the video to be processed is placed/available 
+# output_path -> specify the folder where you wish to store output frames 
+
+
+video_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\FlickMatch Gachibowli, Hyderabad - 28_05_2023 06_00 PM - 07_00 PM.mp4"
+output_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\OutputVideo\\Hyderabad_28_05_2023"
+durations = [] # Start and end times for each duration
+frame_rate = 1 # Extract 1 frames per second # if frame rate is 2 , resultant video will contain fps/frame_rate frames per second .
+
+
 import cv2
+import os
 
 def extract_frames(video_path, output_path, durations, frame_rate=1):
     # Open the video file
@@ -9,62 +22,50 @@ def extract_frames(video_path, output_path, durations, frame_rate=1):
         print("Error opening video file")
         return
 
-    # Create a directory for saving the frames
-    import os
+    # Create the main output directory
     os.makedirs(output_path, exist_ok=True)
 
-    # Calculate the frame numbers for each duration based on the given time
+    # Calculate the frame numbers for each duration
     fps = video.get(cv2.CAP_PROP_FPS)
     print(fps)
-    frame_durations = [(int(start_time * fps / frame_rate), int(end_time * fps / frame_rate)) for start_time, end_time in durations]
-
-    # Initialize variables
-    frame_count = 0
-    duration_index = 0
-    success = True
+    frame_numbers = [(int(start_time * fps), int(end_time * fps)) for start_time, end_time in durations]
 
     # Calculate the delay between frames
-    
+    #delay = 1 / frame_rate
 
-    # Read the video frames
-    while success:
-        # Read a frame from the video
-        success, frame = video.read()
+    # Iterate over each start and end frame number pair
+    for i, (start_frame, end_frame) in enumerate(frame_numbers):
+        # Create a subdirectory for each duration
+        duration_output_path = os.path.join(output_path, f"Goal{i+1}")
+        os.makedirs(duration_output_path, exist_ok=True)
 
-        if success:
-            # Check if the current frame is within the current duration
-            if frame_count >= frame_durations[duration_index][0] and frame_count <= frame_durations[duration_index][1]:
-                # Save the frame as an image file
-                frame_path = os.path.join(output_path, f"frame_{frame_count:04d}.jpg")
+        # Set the frame position to the start frame
+        video.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
+
+        # Initialize variables for this iteration
+        frame_count = start_frame
+        success = True
+
+        # Read the video frames until the end frame
+        while success and frame_count <= end_frame:
+            # Read a frame from the video
+            success, frame = video.read()
+
+            if success:
+                # Save the frame as an image file within the duration subdirectory
+                frame_path = os.path.join(duration_output_path, f"frame_{frame_count:04d}.jpg")
                 cv2.imwrite(frame_path, frame)
 
+                # Increment frame count
+                frame_count += 1
+
                 # Delay before extracting the next frame
-                import time
-               # time.sleep(delay)
-
-            # Increment frame count
-            frame_count += 1
-
-            # Check if the current duration has ended
-            if frame_count > frame_durations[duration_index][1]:
-                duration_index += 1
-
-                # Check if all durations have been processed
-                if duration_index >= len(frame_durations):
-                    break
+                #import time
+                #time.sleep(delay)
 
     # Release the video file
     video.release()
 
-# Example usage
-video_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\FlickMatch_-_Gachibowli%2C%C2%A0Hyderabad_26_05_23(720p).mp4"
-output_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\OutputVideo"
-frame_rate = 1
-#frames_per_second = 30//frame_rate
-durations = [(1656.0, 1660.0)]  # List of start and end times for each duration
-#durations = durations*frames_per_second 
- # Extract fps/frame_rate frames per second
 
 extract_frames(video_path, output_path, durations, frame_rate)
-
 
