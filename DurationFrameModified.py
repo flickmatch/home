@@ -1,3 +1,15 @@
+# purpose of the code -> To convert a given video into frames of desired fps that too creating separate folders for each such durations within specified output_path .
+# constants for example uses 
+# video_path -> specify the folder where the video to be processed is placed/available 
+# output_path -> specify the folder where you wish to store output frames 
+
+
+video_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\FlickMatch Gachibowli, Hyderabad - 28_05_2023 06_00 PM - 07_00 PM.mp4"
+output_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\OutputVideo\\Hyderabad_28_05_2023"
+durations = [(10,12)] # Start and end times for each duration
+frame_rate = 1 # Extract 1 frames per second # if frame rate is 2 , resultant video will contain fps/frame_rate frames per second .
+
+
 import cv2
 import os
 
@@ -24,7 +36,7 @@ def extract_frames(video_path, output_path, durations, frame_rate=1):
     # Iterate over each start and end frame number pair
     for i, (start_frame, end_frame) in enumerate(frame_numbers):
         # Create a subdirectory for each duration
-        duration_output_path = os.path.join(output_path, f"duration_{i+1}")
+        duration_output_path = os.path.join(output_path, f"Goal{i+1}")
         os.makedirs(duration_output_path, exist_ok=True)
 
         # Set the frame position to the start frame
@@ -54,10 +66,6 @@ def extract_frames(video_path, output_path, durations, frame_rate=1):
     # Release the video file
     video.release()
 
-# Example usage
-video_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\South_gurgaon_03_06_2023.mp4"
-output_path = "C:\\Users\\shiva\\OneDrive - solutions.com\\Desktop\\FlickMatchDatabase\\OutputVideo"
-durations = [(10.0, 15.0)]  # Start and end times for each duration
-frame_rate = 1 # Extract 2 frames per second
 
 extract_frames(video_path, output_path, durations, frame_rate)
+
