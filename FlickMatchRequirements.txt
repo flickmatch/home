@@ -1,19 +1,12 @@
-1.  DATA VERSION 
-
-https://github.com/metrica-sports/sample-data/tree/master/data
-
-2.  Pipeline for video summarization : 
-
-https://github.com/varadhbhatnagar/Video-Summarization-for-Football
-
-3.  Youtube Link for Football Analysis :
-
-https://www.youtube.com/watch?v=8TrleFklEsE
-
-4.  Highlight Generator through Audio 
-
-https://github.com/arghyadeep99/Sports-Highlights-Generator
-
-5.  Google  Sheets Maintain
-
-
+1. Essential Requirements (Libraries/Modules) used for Highlights-ml
+   1.1 argparse
+   1.2 cv2 
+   1.3 Pandas 
+   1.4 Python 
+   1.5 opencv-python
+   1.6 pip 
+   1.7 matplotlib
+   1.8 Scikit-learn
+   1.9 json
+   1.10 Pytube
+   
