@@ -1,0 +1,12 @@
+1. Essential Requirements (Libraries/Modules) used for Highlights-ml
+   1.1 argparse
+   1.2 cv2 
+   1.3 Pandas 
+   1.4 Python 
+   1.5 opencv-python
+   1.6 pip 
+   1.7 matplotlib
+   1.8 Scikit-learn
+   1.9 json
+   1.10 Pytube
+   
