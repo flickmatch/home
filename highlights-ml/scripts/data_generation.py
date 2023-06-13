@@ -1,9 +1,12 @@
 r"""Script to generate labelled data for Flickmatch YouTube Videos.
 
 """
-
+import pandas as pd
 import argparse
 import json
+import pytube
+import cv2
+import os
 
 
 def parse_arguments():
@@ -17,7 +20,7 @@ def parse_arguments():
             frame_rate: The number of frames we require per second. These need to be uniformly spaced
                 for maximum variation among frames.
             frames_save_folder: Path to save the frames for this video. 
-            goal_frames_with_durations_json_save_path: Json save path.  
+            video_name: Name of the video to save.
     """
     parser = argparse.ArgumentParser(
         prog='data_generation',
@@ -55,26 +58,31 @@ def parse_arguments():
         help="Final saving folder for the goal frames."
     )
     parser.add_argument(
-        '--goal_frames_with_durations_json_save_path',
+        '--video_name',
         type=str,
         required=True, 
-        help="Final saving folder for the json of goals against frames."
+        help="Final saving name for the downloaded video."
     )
     args = parser.parse_args()
     return args
 
 
-def download_video(video_url, video_save_folder):
+def download_video(video_url, video_save_folder, video_name):
     r"""Download video from youtube and save.
     
     Keyword Arguments:
         video_url: YouTube URL for video.
         video_save_folder: Path to folder to save downloaded video.
+        video_name. Name/title of the video.
 
     Returns:
-        None. Saves `video` in the provided `video_save_folder` location.
+        None. Saves the video to the `video_save_folder` with `video_name`.
     """
-    pass
+    print('Downloading video from url={}'.format(video_url))
+    youtube = pytube.YouTube(video_url)
+    video = youtube.streams.get_highest_resolution()
+    video.download(video_save_folder, video_name)
+    print('Successfully downloaded video name={} from url={}'.format(video_name, video_url))
 
 
 def get_annotations(video_url, annotations_file_path):
@@ -94,10 +102,19 @@ def get_annotations(video_url, annotations_file_path):
     Returns:
         goal_durations
     """
-    pass
+    print("Fetching annotations from file path={}".format(annotations_file_path))
+    data = pd.read_excel(annotations_file_path)
+    video_url_column_name = 'Link'
+    start_duration_column_name = 'Start'
+    end_duration_column_name = 'End'
+    start_times = data.loc[data[video_url_column_name]==video_url][start_duration_column_name]
+    end_times = data.loc[data[video_url_column_name]==video_url][end_duration_column_name]
+    goal_durations = list(zip(start_times.values, end_times.values))
+    print("Successfully fetched annotations.")
+    return goal_durations
 
 
-def extract_frames(video_save_folder, goal_duration, frame_rate):
+def extract_frames(video_save_folder, video_name, goal_duration, frame_rate):
     r"""Extracts frames from the video from the specified duration at the
     specified frame rate.
 
@@ -110,6 +127,7 @@ def extract_frames(video_save_folder, goal_duration, frame_rate):
     Keyword Arguments:
         video_save_folder: Folder location of the saved video extracted from YouTube in function
             `download_video`.
+        video_name: Name of the video returned from `download_video` function.
         goal_duration: One tuple of `goal_durations` from `get_annotations` function. Particularly,
             (start_time, end_time)
         frame_rate: The number of frames we require per second. These need to be uniformly spaced
@@ -118,7 +136,28 @@ def extract_frames(video_save_folder, goal_duration, frame_rate):
     Returns:
         goal_frames: Frames for that particular durations `goal_duration` goals.
     """
-    pass
+    print("Extracting relevant frames at frame rate={}".format(frame_rate))
+    video_path = os.path.join(video_save_folder, video_name)
+    cap = cv2.VideoCapture(video_path)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frames_start_index = int(fps * goal_duration[0])
+    frames_end_index = int(fps * goal_duration[1])
+
+    goal_frames = []
+    frame_index = 0
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if ret:
+            if (frame_index >= frames_start_index and frame_index < frames_end_index):
+                goal_frames.append(frame)
+            frame_index += 1
+        else:
+            break
+    cap.release()
+    
+    print("Extracted frames.")
+    return goal_frames[::int(fps//frame_rate)]
 
 
 def save_frames(frames, frames_save_folder):
@@ -131,52 +170,48 @@ def save_frames(frames, frames_save_folder):
     Returns:
         None. Saves the frames at the specified location.
     """
-    pass
+    for i, frame in enumerate(frames):
+        frame_path = f"{frames_save_folder}/frame_{i}.jpg"
+        cv2.imwrite(frame_path, frame)
 
 
-def save_dictionary_as_json(all_goal_frames_with_durations, goal_frames_with_durations_json_save_path):
-    r"""Saves the dictionary `all_goal_frames_with_durations` to a specified location 
-        `goal_frames_with_durations_json_save_path`.
-    
-    Keyword Arguments:
-        all_goal_frames_with_durations: {(start_time, end_time):[[], []...]}
-        goal_frames_with_durations_json_save_path: Json save path.  
-    
-    Returns:
-        None. Saves the dictionary as json at the specified location.
-    """
-    pass
+def main():    
 
+    #TODO(shivam): Write a test case.
+    # Helpful values for debugging. 
+    # video_url = "https://www.youtube.com/watch?v=JK06897mSIg"
+    # video_name = "test.mp4"
+    # video_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/videos"
+    # annotations_file_path = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/data_labels_clean.xlsx"
+    # frame_rate = 5
+    # frames_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/frames"
 
-def main():
     # Parse arguments
     args = parse_arguments()
     video_url = args.video_url
+    video_name = args.video_name
     video_save_folder = args.video_save_folder
     annotations_file_path = args.annotations_file_path
     frame_rate = args.frame_rate
-    goal_frames_with_durations_json_save_path = args.goal_frames_with_durations_json_save_path
     frames_save_folder = args.frames_save_folder
 
     # Saves the video at the `save_folder` location.
-    download_video(video_url, video_save_folder) 
+    download_video(video_url, video_save_folder, video_name) 
 
     # Get goal durations
     goal_durations = get_annotations(video_url, annotations_file_path) 
 
     # Create dictionary of all the goals with their timings.
-    all_goal_frames_with_durations = {} 
+    all_frames = []
 
     # Get positive goal samples for each duration.
     for (start_time, end_time) in goal_durations:
-        current_goal_frames =  extract_frames(video_save_folder, (start_time, end_time), frame_rate)
-        all_goal_frames_with_durations[(start_time, end_time)] = current_goal_frames
-    frames = all_goal_frames_with_durations.values()
+        current_goal_frames =  extract_frames(video_save_folder, video_name, (start_time, end_time), frame_rate)
+        all_frames.extend(current_goal_frames)
 
     # Save required frames and dictionary.
-    save_dictionary_as_json(all_goal_frames_with_durations, goal_frames_with_durations_json_save_path) # Simply saves the dictionary as a json file.
-    save_frames(frames, frames_save_folder)
+    save_frames(all_frames, frames_save_folder)
 
 
-if __name__ == __main__:
+if __name__ == '__main__':
     main()
