@@ -1,13 +1,14 @@
-r"""Script for generating positive samples for flickMatch Youtube videos 
+r""" Positive data generation  script for flickMatch youtube videos 
 """
 import pandas as pd
 import argparse
-import cv2
 import os
+from utils import save_frame
 
 
 def parse_arguments():
-    r"""Arguments Parser for all the command line arguments required by the code.
+    """
+    Arguments Parser for all the command line arguments required by the code.
 
     Returns:
         args containing:
@@ -15,6 +16,7 @@ def parse_arguments():
             frames_save_folder: Path to save the frames for this video.
             video_path: Path to the video file.
             video_id: Video ID to match in the annotations file.
+            frame_interval: Interval in frames for saving frames.
     """
     parser = argparse.ArgumentParser(
         prog='data_generation',
@@ -45,28 +47,36 @@ def parse_arguments():
         required=True,
         help="Video ID to match in the annotations file."
     )
+    parser.add_argument(
+        '--frame_interval',
+        type=int,
+        default=1,
+        help="Interval in frames for saving frames. Default is 1 (save every frame)."
+    )
 
     args = parser.parse_args()
     return args
 
 
 def get_annotations(annotations_file_path):
-    r"""Get annotations from the annotations spreadsheet.
+    """
+    Get annotations from the annotations spreadsheet.
 
     This function loads the spreadsheet from the provided `annotations_file_path`.
-    It reads the `video_id`, `start`, and `end` columns from the spreadsheet and returns a list of tuples.
+    It reads the `video_id`, `start`, and `end` columns from the spreadsheet and returns a dictionary of video annotations.
 
-    Keyword Arguments:
+    Args:
         annotations_file_path: Path to the spreadsheet of annotations.
 
     Returns:
-        annotations: List of tuples containing (video_id, start, end) values.
+        video_annotations: Dictionary of video annotations with video ID as the key and a list of (start, end) tuples as the value.
     """
     print("Fetching annotations from file path={}".format(annotations_file_path))
     data = pd.read_excel(annotations_file_path)
     columns = ['video_id', 'start', 'end']
 
-    annotations = []
+    video_annotations = {}
+
     for _, row in data.iterrows():
         video_id = row['video_id']
         start = row['start']
@@ -74,73 +84,37 @@ def get_annotations(annotations_file_path):
         if pd.isna(video_id) or pd.isna(start) or pd.isna(end):
             continue  # Skip rows with missing values
 
-        annotations.append((int(video_id), int(start), int(end)))
+        if video_id not in video_annotations:
+            video_annotations[video_id] = []
+
+        video_annotations[video_id].append((int(start), int(end)))
 
     print("Successfully fetched annotations.")
-    return annotations
+    return video_annotations
 
-
-def extract_frames(video_path, frames_save_folder, start_time, end_time):
-    r"""Extracts frames from the video between the specified start and end times.
-
-    This function extracts all frames from the video between the specified start and end times,
-    using the time in seconds as the reference.
-
-    Keyword Arguments:
-        video_path: Path to the video file.
-        frames_save_folder: Path to save the frames for this video.
-        start_time: Starting time in seconds to extract frames from.
-        end_time: Ending time in seconds to extract frames to.
-
-    Returns:
-        None. Saves the frames at the specified location.
-    """
-    cap = cv2.VideoCapture(video_path)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    start_frame = int(start_time * fps)
-    end_frame = int(end_time * fps)
-
-    cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
-
-    frame_index = start_frame
-
-    while cap.isOpened() and frame_index <= end_frame:
-        ret, frame = cap.read()
-        if ret:
-            # Save frame to specified folder
-            frame_name = f"frame_{frame_index}.jpg"
-            frame_path = os.path.join(frames_save_folder, frame_name)
-            cv2.imwrite(frame_path, frame)
-
-            frame_index += 1
-        else:
-            break
-
-    cap.release()
-
-    print("Frames saved at location={}".format(frames_save_folder))
 
 def main():
+    """
+    Main function that handles the execution of the script.
+    """
     args = parse_arguments()
     annotations_file_path = args.annotations_file_path
     frames_save_folder = args.frames_save_folder
     video_path = args.video_path
     video_id = args.video_id
+    frame_interval = args.frame_interval
 
     os.makedirs(frames_save_folder, exist_ok=True)
 
-    annotations = get_annotations(annotations_file_path)
+    video_annotations = get_annotations(annotations_file_path)
 
-    match_found = False
-
-    for video_id_, start, end in annotations:
-        if video_id_ == video_id:
-            match_found = True
-            extract_frames(video_path, frames_save_folder, start, end)
-
-    if not match_found:
-        print("No annotations found for the provided video ID.")
+    if video_id in video_annotations:
+        durations = video_annotations[video_id]
+        for start, end in durations:
+            save_frame(video_path, frames_save_folder, start, end, frame_interval)
+    else:
+        print("No annotations found for video ID={}".format(video_id))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
