@@ -12,7 +12,8 @@
     "prepare": "cd .. && husky install react-fm/.husky",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
