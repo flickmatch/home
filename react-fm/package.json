@@ -1,6 +1,7 @@
 {
   "name": "react-fm",
   "version": "1.0.0",
+  "homepage": "https://flickmatch.github.io/home",
   "description": "Frontend for Flickmatch.in",
   "license": "MIT",
   "scripts": {
@@ -8,7 +9,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "https-preview": "serve dist",
-    "prepare": "cd .. && husky install react-fm/.husky"
+    "prepare": "cd .. && husky install react-fm/.husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -39,6 +43,7 @@
     "eslint": "^8.24.0",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "https-localhost": "^4.7.1",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
@@ -59,11 +64,5 @@
     "name": "Rohan Sood",
     "email": "rohans@flickmatch.in",
     "url": "http://flickmatch.in/"
-  },
-  "keywords": [
-    "react",
-    "pwa",
-    "starter-kit",
-    "vite"
-  ]
+  }
 }
