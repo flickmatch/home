@@ -16,10 +16,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 class PlayerControllerTest {
 
@@ -102,11 +101,38 @@ class PlayerControllerTest {
         MutationResult result = playerController.updatePlayerList(input);
 
         // Verify the behavior
-        assertTrue(result.isSuccessful());
+        assertThat(result.isSuccessful(), is(true));
 
         // Verify that playerBuilder.updatePlayerList(input) was called with the expected argument
         ArgumentCaptor<UpdatePlayerListInput> argumentCaptor = ArgumentCaptor.forClass(UpdatePlayerListInput.class);
         verify(playerBuilder).updatePlayerList(argumentCaptor.capture());
-        assertEquals(input, argumentCaptor.getValue());
+        assertThat(argumentCaptor.getValue(), equalTo(input));
     }
+
+    @Test
+    void testUpdatePlayerList_Exception() throws ParseException {
+        // Prepare test data
+        UpdatePlayerListInput input = createSampleInput();
+        Exception exception = new Exception("Some error message");
+
+        // Mock the behavior of playerBuilder.updatePlayerList(input) to throw an exception
+        doThrow(new RuntimeException("Some error message")).when(playerBuilder).updatePlayerList(input);
+
+
+        // Perform the test
+        MutationResult result = playerController.updatePlayerList(input);
+
+        // Verify the behavior
+        assertThat(result.isSuccessful(), is(false));
+        assertThat(result.getErrorMessage(), equalTo(exception.getMessage()));
+
+        // Verify that playerBuilder.updatePlayerList(input) was called with the expected argument
+        ArgumentCaptor<UpdatePlayerListInput> argumentCaptor = ArgumentCaptor.forClass(UpdatePlayerListInput.class);
+        verify(playerBuilder).updatePlayerList(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue(), equalTo(input));
+    }
+
+
+
 }
+
