@@ -1,10 +1,12 @@
 package com.flickmatch.platform.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import lombok.Builder;
 
 import java.util.List;
 
 @DynamoDBTable(tableName="SportsVenue")
+@Builder
 public class SportsVenues {
 
     private String cityId;
@@ -29,6 +31,7 @@ public class SportsVenues {
     }
 
     @DynamoDBDocument
+    @Builder
     public static class SportsVenue {
         private String sportsVenueId;
         private String displayName;
