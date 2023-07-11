@@ -1,7 +1,8 @@
-r""" Positive data generation  script for flickMatch youtube videos 
+r""" Negative data generation script for flickMatch Youtube videos 
 """
 import pandas as pd
 import argparse
+import cv2
 import os
 from utils import save_frame
 
@@ -16,10 +17,9 @@ def parse_arguments():
             frames_save_folder: Path to save the frames for this video.
             video_path: Path to the video file.
             video_id: Video ID to match in the annotations file.
-            frame_interval: Interval in frames for saving frames.
     """
     parser = argparse.ArgumentParser(
-        prog='data_generation',
+        prog='negative_data_generation',
         description='Generates Data from YouTube Video and Annotations File.'
     )
 
@@ -46,12 +46,6 @@ def parse_arguments():
         type=int,
         required=True,
         help="Video ID to match in the annotations file."
-    )
-    parser.add_argument(
-        '--frame_interval',
-        type=int,
-        default=1,
-        help="Interval in frames for saving frames. Default is 1 (save every frame)."
     )
 
     args = parser.parse_args()
@@ -102,19 +96,30 @@ def main():
     frames_save_folder = args.frames_save_folder
     video_path = args.video_path
     video_id = args.video_id
-    frame_interval = args.frame_interval
 
     os.makedirs(frames_save_folder, exist_ok=True)
 
     video_annotations = get_annotations(annotations_file_path)
 
+    match_found = False
+    prev_end_frame = -1
+
     if video_id in video_annotations:
-        durations = video_annotations[video_id]
-        for start, end in durations:
-            save_frame(video_path, frames_save_folder, start, end, frame_interval)
-    else:
-        print("No annotations found for video ID={}".format(video_id))
+        match_found = True
+
+        for start, end in video_annotations[video_id]:
+            if prev_end_frame < start - 1:
+                save_frame(video_path, frames_save_folder, 150, prev_end_frame + 1, start - 1)
+
+            prev_end_frame = end
+
+    video_length = cv2.VideoCapture(video_path).get(cv2.CAP_PROP_FRAME_COUNT)
+    if prev_end_frame < video_length - 1:
+        save_frame(video_path, frames_save_folder, 150, prev_end_frame + 1, int(video_length) - 1)
+
+    if not match_found:
+        print("No annotations found for the provided video ID.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
