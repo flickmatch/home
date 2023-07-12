@@ -1,12 +1,17 @@
 package com.flickmatch.platform.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
 
 @DynamoDBTable(tableName="Event")
+@Builder
+@AllArgsConstructor
 public class Event {
 
     // Composite key guide https://medium.com/@leohoc/dynamodb-and-spring-data-a81c546a1305
@@ -56,6 +61,7 @@ public class Event {
     }
 
     @DynamoDBDocument
+    @Builder
     public static class EventDetails {
         Integer index;
         Date startTime;
@@ -161,6 +167,7 @@ public class Event {
     }
 
     @DynamoDBDocument
+    @Builder
     public static class PlayerDetails {
         String name;
         String waNumber;
@@ -184,6 +191,7 @@ public class Event {
         }
     }
 
+    @Builder
     public static class EventId {
         private String cityId;
         //Date in yyyy-MM-dd format

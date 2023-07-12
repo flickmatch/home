@@ -64,9 +64,12 @@ public class EventBuilder {
                 //check to disallow eventId from past
                 isStartTimeInPast(selectedEvent.get().getStartTime());
 
-                Event.PlayerDetails playerDetails = new Event.PlayerDetails();
-                playerDetails.setName(input.getPlayer().getName());
-                playerDetails.setWaNumber(input.getPlayer().getWaNumber());
+                Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
+                        .name(input.getPlayer().getName())
+                        .waNumber(input.getPlayer().getWaNumber())
+                        .build();
+//                playerDetails.setName(input.getPlayer().getName());
+//                playerDetails.setWaNumber(input.getPlayer().getWaNumber());
                 if (selectedEvent.get().getPlayerDetailsList().size() ==
                 selectedEvent.get().getReservedPlayersCount() + selectedEvent.get().getWaitListPlayersCount()) {
                     throw new IllegalStateException("We are full");
@@ -136,17 +139,28 @@ public class EventBuilder {
         if (sportsVenue.isEmpty()) {
             throw new IllegalArgumentException("Incorrect sports venue");
         }
-        Event.EventDetails eventDetails = new Event.EventDetails();
-        eventDetails.setIndex(index);
-        eventDetails.setStartTime(DateUtil.parseDateFromString(input.getStartTime()));
-        eventDetails.setEndTime(DateUtil.parseDateFromString(input.getEndTime()));
-        eventDetails.setCharges(input.getCharges());
-        eventDetails.setReservedPlayersCount(input.getReservedPlayersCount());
-        eventDetails.setWaitListPlayersCount(input.getWaitListPlayersCount());
-        eventDetails.setSportName("Football");
-        eventDetails.setVenueName(sportsVenue.get().getDisplayName());
-        eventDetails.setVenueLocationLink(sportsVenue.get().getGoogleMapsLink());
-        eventDetails.setPlayerDetailsList(new ArrayList<>());
+        Event.EventDetails eventDetails =  Event.EventDetails.builder()
+                .index(index)
+                .startTime(DateUtil.parseDateFromString(input.getStartTime()))
+                .endTime(DateUtil.parseDateFromString(input.getEndTime()))
+                .charges(input.getCharges())
+                .reservedPlayersCount(input.getReservedPlayersCount())
+                .waitListPlayersCount(input.getWaitListPlayersCount())
+                .sportName("Football")
+                .venueName(sportsVenue.get().getDisplayName())
+                .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
+                .playerDetailsList(new ArrayList<>())
+                .build();
+//        eventDetails.setIndex(index);
+//        eventDetails.setStartTime(DateUtil.parseDateFromString(input.getStartTime()));
+//        eventDetails.setEndTime(DateUtil.parseDateFromString(input.getEndTime()));
+//        eventDetails.setCharges(input.getCharges());
+//        eventDetails.setReservedPlayersCount(input.getReservedPlayersCount());
+//        eventDetails.setWaitListPlayersCount(input.getWaitListPlayersCount());
+//        eventDetails.setSportName("Football");
+//        eventDetails.setVenueName(sportsVenue.get().getDisplayName());
+//        eventDetails.setVenueLocationLink(sportsVenue.get().getGoogleMapsLink());
+//        eventDetails.setPlayerDetailsList(new ArrayList<>());
         return eventDetails;
     }
 
