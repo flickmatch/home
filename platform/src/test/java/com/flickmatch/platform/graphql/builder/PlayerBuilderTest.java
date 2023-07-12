@@ -1,15 +1,13 @@
-package com.flickmatch.platform;
+package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
-import com.flickmatch.platform.graphql.builder.EventBuilder;
 
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
 import org.junit.jupiter.api.Test;
-//import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 
@@ -36,12 +34,17 @@ public class PlayerBuilderTest {
     @Mock
     private static EventBuilder eventBuilder;
 
+    @Mock
+    private static PlayerBuilder PlayerBuilder;
+
     @BeforeEach
     public void init()
     {
         eventRepository = mock(EventRepository.class);
         sportsVenueRepository = mock(SportsVenueRepository.class);
         eventBuilder = mock(EventBuilder.class);
+        PlayerBuilder = mock(PlayerBuilder.class);
+
         List<SportsVenues> sportsVenues  = createSportsVenueMockData();
         List<Event> event = createEventMockData();
 
@@ -112,6 +115,30 @@ public class PlayerBuilderTest {
             assertTrue(sportsVenue.getDisplayName().equalsIgnoreCase("displayName"));
         }));
     }
+
+    @Test
+    public void testUpdatePlayerList_Unsuccessful() {
+        // Prepare test data
+        List<SportsVenues> sportsVenues = createSportsVenueMockData();
+
+        // Modify the mock behavior to simulate an invalid displayName
+        sportsVenues.get(0).getSportsVenuesInCity().get(0).setDisplayName("InvalidDisplayName");
+
+        // Mock the behavior of sportsVenueRepository.findAll()
+        when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
+
+        // Perform the test
+
+        PlayerBuilderTest playerBuilderTest = new PlayerBuilderTest();
+        assertThrows(AssertionError.class, () -> {
+            playerBuilderTest.testUpdatePlayerList_Successful();
+        });
+
+        // Verify the outcome
+        // In this case, we expect an assertion error to be thrown because the displayName check fails
+    }
+
+
 
     private static List<SportsVenues> createSportsVenueMockData() {
         // Create a list of sample sports venues
@@ -190,6 +217,38 @@ public class PlayerBuilderTest {
         // Add more waitlist players as needed
 
         return waitListPlayers;
+    }
+
+
+
+    @Test
+    public void testBuildPlayerList_Successful() {
+        // Prepare test data
+        List<PlayerInput> reservedPlayers = createReservedPlayers();
+        List<PlayerInput> waitListPlayers = createWaitListPlayers();
+
+        // Perform the test
+        PlayerBuilder playerBuilder = new PlayerBuilder(null, null);
+
+        List<Event.PlayerDetails> playerDetailsList = playerBuilder.buildPlayerList(reservedPlayers, waitListPlayers);
+
+
+        // Verify the outcome
+
+        // Verify that the playerDetailsList is not null and has the expected size
+        assertNotNull(playerDetailsList);
+        assertEquals(4, playerDetailsList.size());
+
+        // Verify the names of the players in the list
+        List<String> playerNames = new ArrayList<>();
+
+        playerDetailsList.forEach(playerDetails -> playerNames.add(playerDetails.getName()));
+
+        assertTrue(playerNames.contains("John Doe"));
+        assertTrue(playerNames.contains("Jane Smith"));
+        assertTrue(playerNames.contains("Bob Johnson"));
+        assertTrue(playerNames.contains("Alice Brown"));
+
     }
 
 }

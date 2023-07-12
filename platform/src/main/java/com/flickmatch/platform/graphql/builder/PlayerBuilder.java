@@ -7,6 +7,7 @@ import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.mapper.UpdatePlayerListInputMapper;
 import com.flickmatch.platform.graphql.util.DateUtil;
+import graphql.VisibleForTesting;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class PlayerBuilder {
 
     private final EventRepository eventRepository;
     private final SportsVenueRepository sportsVenueRepository;
+
 
     public void updatePlayerList(UpdatePlayerListInput input) throws ParseException {
         validateStartTime(input.getStartTime());
@@ -81,9 +83,9 @@ public class PlayerBuilder {
                         input.getStartTime().equalsIgnoreCase(getFormattedEventTime(eventDetails.getStartTime())))
                 .findFirst();
     }
-
-    private List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
-                                                      List<PlayerInput> waitListPlayers) {
+    @VisibleForTesting
+    List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
+                                              List<PlayerInput> waitListPlayers) {
         reservedPlayersList = reservedPlayersList.stream()
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
         waitListPlayers = waitListPlayers.stream()
