@@ -83,7 +83,7 @@ public class PlayerBuilder {
                         input.getStartTime().equalsIgnoreCase(getFormattedEventTime(eventDetails.getStartTime())))
                 .findFirst();
     }
-    @VisibleForTesting
+
     List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
                                               List<PlayerInput> waitListPlayers) {
         reservedPlayersList = reservedPlayersList.stream()
