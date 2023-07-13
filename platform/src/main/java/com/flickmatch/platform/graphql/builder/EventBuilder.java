@@ -68,8 +68,7 @@ public class EventBuilder {
                         .name(input.getPlayer().getName())
                         .waNumber(input.getPlayer().getWaNumber())
                         .build();
-//                playerDetails.setName(input.getPlayer().getName());
-//                playerDetails.setWaNumber(input.getPlayer().getWaNumber());
+
                 if (selectedEvent.get().getPlayerDetailsList().size() ==
                 selectedEvent.get().getReservedPlayersCount() + selectedEvent.get().getWaitListPlayersCount()) {
                     throw new IllegalStateException("We are full");
@@ -151,16 +150,6 @@ public class EventBuilder {
                 .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
                 .playerDetailsList(new ArrayList<>())
                 .build();
-//        eventDetails.setIndex(index);
-//        eventDetails.setStartTime(DateUtil.parseDateFromString(input.getStartTime()));
-//        eventDetails.setEndTime(DateUtil.parseDateFromString(input.getEndTime()));
-//        eventDetails.setCharges(input.getCharges());
-//        eventDetails.setReservedPlayersCount(input.getReservedPlayersCount());
-//        eventDetails.setWaitListPlayersCount(input.getWaitListPlayersCount());
-//        eventDetails.setSportName("Football");
-//        eventDetails.setVenueName(sportsVenue.get().getDisplayName());
-//        eventDetails.setVenueLocationLink(sportsVenue.get().getGoogleMapsLink());
-//        eventDetails.setPlayerDetailsList(new ArrayList<>());
         return eventDetails;
     }
 

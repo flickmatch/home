@@ -98,14 +98,12 @@ public class PlayerBuilder {
             Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                     .name(reservedPlayer.getName())
                     .build();
-          //  playerDetails.setName(reservedPlayer.getName());
             playerDetailsList.add(playerDetails);
         });
         waitListPlayers.forEach(waitListPlayer -> {
             Event.PlayerDetails playerDetails =  Event.PlayerDetails.builder()
                     .name(waitListPlayer.getName())
                     .build();
-//            playerDetails.setName(waitListPlayer.getName());
             playerDetailsList.add(playerDetails);
         });
         return playerDetailsList;

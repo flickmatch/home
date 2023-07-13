@@ -32,8 +32,6 @@ public class SportsVenueBuilder {
                     .cityId(input.getCityId())
                     .sportsVenuesInCity(List.of(createSportsVenueInCity(input)))
                     .build();
-//            newSportsVenues.setCityId(input.getCityId());
-//            newSportsVenues.setSportsVenuesInCity(List.of(createSportsVenueInCity(input)));
             sportsVenueRepository.save(newSportsVenues);
         }
     }
@@ -51,18 +49,12 @@ public class SportsVenueBuilder {
     }
 
     private SportsVenues.SportsVenue createSportsVenueInCity(final CreateSportsVenueInput input) {
-        //TODO: Can we use builder?
         SportsVenues.SportsVenue sportsVenue = SportsVenues.SportsVenue.builder()
                 .displayName(input.getDisplayName())
                 .googleMapsLink(input.getGoogleMapsLink())
                 .availableSportsIds(List.of("1"))
                 .sportsVenueId(String.valueOf(System.currentTimeMillis()))
                 .build();
-//        sportsVenue.setDisplayName(input.getDisplayName());
-//        sportsVenue.setGoogleMapsLink(input.getGoogleMapsLink());
-//        sportsVenue.setAvailableSportsIds(List.of("1"));
-//        //Generate incremental unique Id
-//        sportsVenue.setSportsVenueId(String.valueOf(System.currentTimeMillis()));
         return sportsVenue;
     }
 }
