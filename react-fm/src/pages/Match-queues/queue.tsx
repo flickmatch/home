@@ -3,10 +3,10 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
-function MatchQue() {
+function MatchQueue() {
   return (
     <>
-      <Meta title="Match Queus" />
+      <Meta title="Match Queues" />
       <FullSizeCenteredFlexBox>
         <Typography variant="h3">Match Queues</Typography>
       </FullSizeCenteredFlexBox>
@@ -14,4 +14,4 @@ function MatchQue() {
   );
 }
 
-export default MatchQue;
+export default MatchQueue;

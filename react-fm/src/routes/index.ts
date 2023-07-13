@@ -21,8 +21,8 @@ const routes: Routes = {
     title: 'Page 1',
     icon: GitHubIcon,
   },
-  [Pages.MatchQue]: {
-    component: asyncComponentLoader(() => import('@/pages/Match-ques')),
+  [Pages.MatchQueue]: {
+    component: asyncComponentLoader(() => import('@/pages/Match-queues')),
     path: '/match-queues',
     title: 'Match Queues',
     icon: AddToQueueIcon,
