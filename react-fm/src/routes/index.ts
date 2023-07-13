@@ -2,7 +2,7 @@ import AddTaskIcon from '@mui/icons-material/AddTask';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import HomeIcon from '@mui/icons-material/Home';
-import TerrainIcon from '@mui/icons-material/Terrain';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -27,7 +27,12 @@ const routes: Routes = {
     title: 'Match Queues',
     icon: AddToQueueIcon,
   },
-
+  [Pages.NotFound]: {
+    component: asyncComponentLoader(() => import('@/pages/NotFound')),
+    path: '/not-found',
+    title: 'Not Found',
+    icon: SmartToyIcon,
+  },
 };
 
 export default routes;
