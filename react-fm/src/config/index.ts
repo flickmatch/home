@@ -55,7 +55,6 @@ export {
   notifications,
   dateFormat,
   messages,
-  repository,
   email,
   title,
   defaultMetaTags,
