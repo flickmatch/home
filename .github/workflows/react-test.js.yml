@@ -23,12 +23,12 @@ jobs:
     
     steps:
       - name: Checkout to the repository
-        uses: actions/checkout@v2
-          with:
+        uses: actions/checkout@v3
+        with:
           fetch-depth: 0
         
       - name: Set up NodeJS environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with: 
           node-version: ${{ matrix.node-version }}
         
@@ -36,7 +36,6 @@ jobs:
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
-        working-directory: react-fm
         env:
           cache-name: cache-node-modules
         with:
