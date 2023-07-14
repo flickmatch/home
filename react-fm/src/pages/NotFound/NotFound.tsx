@@ -1,6 +1,8 @@
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { BrowserRouter as Link } from "react-router-dom";
+
 
 import { CenteredFlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import { giphy404, messages } from '@/config';
@@ -25,7 +27,8 @@ function NotFound() {
           <Typography variant="h4" sx={{ color: (theme) => theme.palette.info.main }}>
             {messages[404]}
           </Typography>
-        </CenteredFlexBox>
+          
+        </CenteredFlexBox>  
       </FullSizeCenteredFlexBox>
     </Container>
   );

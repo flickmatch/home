@@ -6,8 +6,6 @@ const title = 'Flickmatch';
 
 const email = 'auther-email@gmail.com';
 
-const repository = 'https://github.com/suren-atoyan/react-pwa';
-
 const messages = {
   app: {
     crash: {
