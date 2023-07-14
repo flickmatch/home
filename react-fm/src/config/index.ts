@@ -2,11 +2,9 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'React PWA';
+const title = 'Flickmatch';
 
 const email = 'auther-email@gmail.com';
-
-const repository = 'https://github.com/suren-atoyan/react-pwa';
 
 const messages = {
   app: {
