@@ -1,0 +1,1 @@
+import{M as r}from"./Meta.55d5f230.js";import{F as t,T as a}from"./App.d6d923c7.js";import{B as i,F as o,j as e}from"./index.e5e5a45d.js";import"./index.module.39b194e7.js";import"./index.480eb035.js";function l(){return i(o,{children:[e(r,{title:"Match Queues"}),e(t,{children:e(a,{variant:"h3",children:"Match Queues"})})]})}export{l as default};
