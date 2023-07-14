@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { SnackbarKey, useSnackbar } from 'notistack';
+import type { SnackbarKey } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 import useNotifications from '@/store/notifications';
 
