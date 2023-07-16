@@ -4,7 +4,7 @@ import type { Notifications } from './types';
 
 const title = 'Flickmatch';
 
-const email = 'auther-email@gmail.com';
+const email = 'flickmatch@gmail.com';
 
 const messages = {
   app: {
