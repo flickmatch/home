@@ -69,14 +69,20 @@ public class PlayerBuilder {
             selectedEvent = getSelectedEvent(input, eventsInCity);
         }
 
-        selectedEvent.ifPresentOrElse(eventDetails -> eventDetails.setPlayerDetailsList(
-                        buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers())),
-                () -> {throw new IllegalArgumentException("Invalid Event selected");});
+        selectedEvent.ifPresentOrElse(eventDetails ->
+                {
+                    eventDetails.getPlayerDetailsList().stream().filter(playerDetails -> validWaNumber(playerDetails));
+                    eventDetails.setPlayerDetailsList(
+                            buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers()));
+                },
+                () -> {
+                    throw new IllegalArgumentException("Invalid Event selected");
+                });
         eventRepository.save(eventsInCity.get());
 
     }
 
-    private Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity) {
+    Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity) {
         return eventsInCity.get().getEventDetailsList().stream()
                 .filter(eventDetails -> compareVenueName(eventDetails.getVenueName(), input.getVenueName()))
                 .filter(eventDetails ->
@@ -101,7 +107,7 @@ public class PlayerBuilder {
             playerDetailsList.add(playerDetails);
         });
         waitListPlayers.forEach(waitListPlayer -> {
-            Event.PlayerDetails playerDetails =  Event.PlayerDetails.builder()
+            Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                     .name(waitListPlayer.getName())
                     .build();
             playerDetailsList.add(playerDetails);
@@ -137,5 +143,14 @@ public class PlayerBuilder {
     private boolean compareVenueName(String venueName, String inputName) {
         return venueName.replace(" ", "")
                 .equalsIgnoreCase(inputName.replace(" ", ""));
+    }
+
+    boolean validWaNumber(Event.PlayerDetails playerDetails) {
+        if (playerDetails.getWaNumber().startsWith("+") && playerDetails.getWaNumber().length() == 13) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }
