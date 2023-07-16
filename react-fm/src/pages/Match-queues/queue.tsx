@@ -25,7 +25,7 @@ function MatchQueue() {
 
       <div style={{width: '80%', margin: 'auto', marginTop: 30}}>
         <Typography style={{color: 'rgb(76, 233, 90)', fontSize: 32, marginBottom: 15, fontWeight: 600}}>Gurugram <img style={{height: 40}} src={delhiIcon} alt="" /></Typography>
-        <Accordion style={{background: '#000', fontFamily: 'serif'}}>
+        <Accordion style={{background: '#1a1919', fontFamily: 'serif'}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
@@ -53,7 +53,7 @@ function MatchQueue() {
               </FlexBox>
 
               <FlexBox style={{marginTop: 25, color: '#fff'}} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{marginLeft: 20, alignItems: 'center'}}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{marginLeft: 20, alignItems: 'center', marginBottom: 10}}>
                   <Grid item xs={2} sm={4} md={4}>
                     <Typography style={{color: '#4CE95A', fontSize: 18, fontWeight: 'bold'}}>
                       Google Map <LocationOnIcon style={{marginLeft: 15, marginBottom: -3, color: '#fff'}}/>
@@ -182,7 +182,7 @@ function MatchQueue() {
       {/* For Hyderabad */}
       <div style={{width: '80%', margin: 'auto', marginTop: 30}}>
         <Typography style={{color: 'rgb(76, 233, 90)', fontSize: 32, marginBottom: 15, fontWeight: 600}}>Hyderabad <img style={{height: 40}} src={charminar} alt="" /></Typography>
-        <Accordion style={{background: '#000', fontFamily: 'serif'}}>
+        <Accordion style={{background: '#1a1919', fontFamily: 'serif'}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
@@ -210,7 +210,7 @@ function MatchQueue() {
               </FlexBox>
 
               <FlexBox style={{marginTop: 25, color: '#fff'}} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{marginLeft: 20, alignItems: 'center'}}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{marginLeft: 20, alignItems: 'center', marginBottom: 10}}>
                   <Grid item xs={2} sm={4} md={4}>
                     <Typography style={{color: '#4CE95A', fontSize: 18, fontWeight: 'bold'}}>
                       Google Map <LocationOnIcon style={{marginLeft: 15, color: 'white', marginBottom: -3}}/>
