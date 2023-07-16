@@ -13,7 +13,7 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <FullSizeCenteredFlexBox>
-        <Typography variant="h3">Welcome! to Home</Typography>
+        <Typography variant="h3">Welcome Home!</Typography>
       </FullSizeCenteredFlexBox>
     </>
   );
