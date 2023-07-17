@@ -1,12 +1,11 @@
 r"""Script to generate labelled data for Flickmatch YouTube Videos.
 
 """
-import pandas as pd
+from utils import _VIDEO_URL_COLUMN_NAME, _START_DURATION_COLUMN_NAME, _END_DURATION_COLUMN_NAME, get_annotations, download_video, save_frames
 import argparse
-import json
-import pytube
 import cv2
 import os
+import numpy as np
 
 
 def parse_arguments():
@@ -52,10 +51,16 @@ def parse_arguments():
         help="Frame Rate to define the number of frames per second needed to be extracted."
     )
     parser.add_argument(
-        '--frames_save_folder',
+        '--positive_frames_save_folder',
         type=str,
         required=True, 
-        help="Final saving folder for the goal frames."
+        help="Final saving folder for the positive goal frames."
+    )
+    parser.add_argument(
+        '--negative_frames_save_folder',
+        type=str,
+        required=True, 
+        help="Final saving folder for the negative goal frames."
     )
     parser.add_argument(
         '--video_name',
@@ -63,58 +68,43 @@ def parse_arguments():
         required=True, 
         help="Final saving name for the downloaded video."
     )
+    parser.add_argument(
+        '--generate_negative_data',
+        action='store_true',
+        required=False, 
+        help="Final saving folder for the goal frames."
+    )
     args = parser.parse_args()
     return args
 
 
-def download_video(video_url, video_save_folder, video_name):
-    r"""Download video from youtube and save.
+def resize_image(image, target_shape):
+    r"""Resize image to provided target_shape including padding effort for no distortion.
     
-    Keyword Arguments:
-        video_url: YouTube URL for video.
-        video_save_folder: Path to folder to save downloaded video.
-        video_name. Name/title of the video.
-
-    Returns:
-        None. Saves the video to the `video_save_folder` with `video_name`.
-    """
-    print('Downloading video from url={}'.format(video_url))
-    youtube = pytube.YouTube(video_url)
-    video = youtube.streams.get_highest_resolution()
-    video.download(video_save_folder, video_name)
-    print('Successfully downloaded video name={} from url={}'.format(video_name, video_url))
-
-
-def get_annotations(video_url, annotations_file_path):
-    r"""Get annotations for a video from annotations spreadsheet.
-
-    This function first loads the spreadsheet from the provided `annotations_file_path`. 
-    Then it loads the respective goal durations that have been annotated against 
-    the given `video_url`. It returns a list of tuples `goal_durations` that contains the
-    (start_time, end_time) of every goal that occured in that video.
+    Args:
+        image: image to resize
+        target_shape: target shape (height, width)
     
-    Keyword Arguments:
-        video_url: URL of the video. #TODO(@shivam15668): This is a primary key 
-            of our spreadsheet database. Check if it is referenced by video_name or video_url 
-            and update accordingly. 
-        annotations_file_path: Path to the spreadsheet of annotations.
-
     Returns:
-        goal_durations
+        resized image
     """
-    print("Fetching annotations from file path={}".format(annotations_file_path))
-    data = pd.read_excel(annotations_file_path)
-    video_url_column_name = 'Link'
-    start_duration_column_name = 'Start'
-    end_duration_column_name = 'End'
-    start_times = data.loc[data[video_url_column_name]==video_url][start_duration_column_name]
-    end_times = data.loc[data[video_url_column_name]==video_url][end_duration_column_name]
-    goal_durations = list(zip(start_times.values, end_times.values))
-    print("Successfully fetched annotations.")
-    return goal_durations
+    width = image.shape[0]
+    height = image.shape[1]
+
+    if height == width:
+        return cv2.resize(image, target_shape)
+    
+    if height > width:
+        padding = (height - width) // 2
+        image = np.pad(image, ((padding, padding), (0, 0), (0, 0)), mode='constant')
+    else:
+        padding = (width - height) // 2
+        image = np.pad(image, ((0, 0), (padding, padding), (0, 0)), mode='constant')
+
+    return cv2.resize(image, target_shape)
 
 
-def extract_frames(video_save_folder, video_name, goal_duration, frame_rate):
+def extract_frames(video_save_folder, video_name, goal_durations, frame_rate):
     r"""Extracts frames from the video from the specified duration at the
     specified frame rate.
 
@@ -140,39 +130,42 @@ def extract_frames(video_save_folder, video_name, goal_duration, frame_rate):
     video_path = os.path.join(video_save_folder, video_name)
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
-    frames_start_index = int(fps * goal_duration[0])
-    frames_end_index = int(fps * goal_duration[1])
+    goal_durations = sorted(goal_durations)
+    goal_durations = np.array(goal_durations)
+    goal_durations = fps * goal_durations
 
-    goal_frames = []
-    frame_index = 0
+    all_frames = []
 
     while cap.isOpened():
         ret, frame = cap.read()
         if ret:
-            if (frame_index >= frames_start_index and frame_index < frames_end_index):
-                goal_frames.append(frame)
-            frame_index += 1
+            frame = resize_image(frame, target_shape=(224, 224))
+            all_frames.append(frame)
         else:
             break
     cap.release()
-    
-    print("Extracted frames.")
-    return goal_frames[::int(fps//frame_rate)]
 
+    # segregate positive and negative frames
+    goal_frames = []
+    goal_indices = []
 
-def save_frames(frames, frames_save_folder):
-    r"""Saves the frames to a specified location `frames_save_folder`.
+    all_frames = np.array(all_frames)
+
+    # generate positive frames
+    for (start, end) in goal_durations:
+        current_goal_frames = all_frames[int(start):int(end):int(fps//frame_rate)]
+        goal_indices.extend(range(int(start), int(end)))
+        goal_frames.extend(current_goal_frames)
+
+    # generate negative frames in equal amounts
+    mask = np.full(len(all_frames), True, dtype=bool)
+    mask[goal_indices] = False
+    non_goal_frames = np.array(all_frames[mask])
+    np.random.shuffle(non_goal_frames)
+    non_goal_frames = non_goal_frames[:len(goal_frames)]
     
-    Keyword Arguments:
-        frames: Video frames to save
-        frames_save_folder: Path to save the frames for this video. 
-    
-    Returns:
-        None. Saves the frames at the specified location.
-    """
-    for i, frame in enumerate(frames):
-        frame_path = f"{frames_save_folder}/frame_{i}.jpg"
-        cv2.imwrite(frame_path, frame)
+    print(f"Extracted num={len(goal_frames)} positive and num={len(non_goal_frames)} negative frames.")
+    return goal_frames, non_goal_frames
 
 
 def main():    
@@ -184,7 +177,9 @@ def main():
     # video_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/videos"
     # annotations_file_path = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/data_labels_clean.xlsx"
     # frame_rate = 5
-    # frames_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/frames"
+    # positive_frames_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/positive"
+    # negative_frames_save_folder = "/Users/shefalisrivastava/Desktop/home/highlights-ml/data/negative"
+    # generate_negative_data = True
 
     # Parse arguments
     args = parse_arguments()
@@ -193,24 +188,25 @@ def main():
     video_save_folder = args.video_save_folder
     annotations_file_path = args.annotations_file_path
     frame_rate = args.frame_rate
-    frames_save_folder = args.frames_save_folder
+    positive_frames_save_folder = args.positive_frames_save_folder
+    negative_frames_save_folder = args.negative_frames_save_folder
+    generate_negative_data = args.generate_negative_data
 
-    # Saves the video at the `save_folder` location.
-    download_video(video_url, video_save_folder, video_name) 
+    # Saves the video at the `save_folder` location. Currently commented out due to some issue with youtube video downloading.
+    # download_video(video_url, video_save_folder, video_name) 
 
     # Get goal durations
     goal_durations = get_annotations(video_url, annotations_file_path) 
 
-    # Create dictionary of all the goals with their timings.
-    all_frames = []
-
-    # Get positive goal samples for each duration.
-    for (start_time, end_time) in goal_durations:
-        current_goal_frames =  extract_frames(video_save_folder, video_name, (start_time, end_time), frame_rate)
-        all_frames.extend(current_goal_frames)
+    # Get positive and negative goal samples for each duration.
+    positive_frames, negative_frames = extract_frames(video_save_folder, video_name, goal_durations, frame_rate)
 
     # Save required frames and dictionary.
-    save_frames(all_frames, frames_save_folder)
+    save_frames(positive_frames, positive_frames_save_folder)
+    
+    # Save negative data if required.
+    if generate_negative_data:
+        save_frames(negative_frames, negative_frames_save_folder)
 
 
 if __name__ == '__main__':
