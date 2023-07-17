@@ -10,9 +10,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
+import { title } from '@/config';
 import mainlogo from './logo.png'
 import useHotKeysDialog from '@/store/hotkeys';
-
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
