@@ -1,9 +1,6 @@
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
-<<<<<<< HEAD
-import { FullSizeCenteredFlexBox } from '@/components/styled';
-=======
 import { FlexBox, Box, FullSizeCenteredFlexBox } from '@/components/styled';
 
 import Accordion from '@mui/material/Accordion';
@@ -20,17 +17,11 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import './style.css'
->>>>>>> 47894beb5c1db136f15b10ed5daa0c9f1b1e7298
 
 function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
-<<<<<<< HEAD
-      <FullSizeCenteredFlexBox>
-        <Typography variant="h3">Match Queues</Typography>
-      </FullSizeCenteredFlexBox>
-=======
 
       <div id='container'>
         <Typography id="cityname">Gurugram <img style={{height: 40}} src={delhiIcon} alt="" /></Typography>
@@ -340,7 +331,6 @@ function MatchQueue() {
         </Accordion>
       </div>
 
->>>>>>> 47894beb5c1db136f15b10ed5daa0c9f1b1e7298
     </>
   );
 }
