@@ -4,6 +4,7 @@ import { FullSizeCenteredFlexBox } from '@/components/styled';
 
 //import useOrientation from '@/hooks/useOrientation';
 
+
 function Welcome() {
   // const isPortrait = useOrientation();
 
