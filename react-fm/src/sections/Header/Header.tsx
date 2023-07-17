@@ -9,10 +9,16 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 
+
 import { FlexBox } from '@/components/styled';
 import { title } from '@/config';
+<<<<<<< HEAD
 import useHotKeysDialog from '@/store/hotkeys';
 
+=======
+import mainlogo from './logo.png'
+import useHotKeysDialog from '@/store/hotkeys';
+>>>>>>> 47894beb5c1db136f15b10ed5daa0c9f1b1e7298
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
@@ -38,9 +44,15 @@ function Header() {
             >
               <MenuIcon />
             </IconButton>
+<<<<<<< HEAD
             <Button color="info">
               {title}
             </Button>
+=======
+            
+              <img src={mainlogo} alt="logo" style={{height: 42}}/>
+            
+>>>>>>> 47894beb5c1db136f15b10ed5daa0c9f1b1e7298
           </FlexBox>
           <FlexBox>
             <FlexBox>
