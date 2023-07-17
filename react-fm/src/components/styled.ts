@@ -20,4 +20,4 @@ const CardBox = styled(FlexBox)({
   fontFamily: 'Montserrat'
 });
 
-export { FlexBox, CenteredFlexBox, FullSizeCenteredFlexBox, CardBox, Box };
+export { FlexBox, CenteredFlexBox, FullSizeCenteredFlexBox, CardBox };

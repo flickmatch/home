@@ -1,7 +1,8 @@
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
-import { FlexBox, Box, FullSizeCenteredFlexBox } from '@/components/styled';
+import Box from '@mui/material/Box';
+import { FlexBox } from '@/components/styled';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
