@@ -30,10 +30,20 @@
   align-items: center;
 }
 
+#box {
+  margin-top: 20px;
+  margin-left: 25px;
+}
+
 #title {
   color: #4CE95A;
   font-size: 18px;
   font-weight: bold;
+}
+
+#grid {
+  display: flex;
+  align-items: center;
 }
 
 #title span {
