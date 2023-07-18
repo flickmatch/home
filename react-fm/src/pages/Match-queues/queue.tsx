@@ -50,7 +50,7 @@ function MatchQueue() {
                   </Grid>
                   <Grid item xs={4} sm={4} md={4}>
                     <Typography className={styles.title}>
-                      Date <span>16/07/2023 8PM-9PM</span>
+                      Date <span>19/07/2023 8PM-9PM</span>
                     </Typography>
                   </Grid>
                 </Grid>
@@ -208,7 +208,7 @@ function MatchQueue() {
                   </Grid>
                   <Grid item xs={4} sm={4} md={4}>
                     <Typography className={styles.title}>
-                      Date <span>16/07/2023 8PM-9PM</span>
+                      Date <span>19/07/2023 8PM-9PM</span>
                     </Typography>
                   </Grid>
                 </Grid>

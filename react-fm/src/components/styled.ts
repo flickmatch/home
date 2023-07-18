@@ -15,8 +15,4 @@ const FullSizeCenteredFlexBox = styled(CenteredFlexBox)({
   height: '100%',
 });
 
-const CardBox = styled(FlexBox)({
-  justifyContent: 'space-around',
-});
-
-export { FlexBox, CenteredFlexBox, FullSizeCenteredFlexBox, CardBox };
+export { FlexBox, CenteredFlexBox, FullSizeCenteredFlexBox };
