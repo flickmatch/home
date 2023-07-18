@@ -2,27 +2,64 @@
   display: none;
 }
 
-#container {
+.container {
   width: 80%;
   margin: auto;
   margin-top: 30px;
 }
 
-#cityname {
+.accordion {
+  background: #1a1919;
+}
+
+.flexbox {
+  flex-flow: column;
+  width: 100%;
+} 
+
+.eventDetails {
+  margin-top: 25px;
+  color: #fff;
+}
+
+.queDetails1, .queDetails2 {
+  margin-left: 20px;
+}
+
+.queDetails2 {
+  margin-bottom: 10px;
+}
+
+.locationIcon {
+  margin-left: 15px;
+  margin-bottom: -3px;
+  color: #fff;
+}
+
+.cityname {
   color: rgb(76, 233, 90);
   font-size: 32px;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
-#localtybar {
+.cityname img {
+  height: 40px;
+}
+
+.area {
   width: 100%;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-#localty {
+.area Button {
+  background: #4CE95A;
+  color: black;
+}
+
+.areaName {
   color: #fff;
   font-weight: bold;
   font-size: 21px;
@@ -30,38 +67,52 @@
   align-items: center;
 }
 
-#box {
+.sportsIcon {
+  margin-right: 5px;
+  color: #4CE95A;
+}
+
+.box {
   margin-top: 20px;
   margin-left: 25px;
 }
 
-#title {
+.title {
   color: #4CE95A;
   font-size: 18px;
   font-weight: bold;
 }
 
-#grid {
+.grid {
   display: flex;
   align-items: center;
 }
 
-#title span {
+.title span {
   color: #fff;
   margin-left: 15px;
 }
 
-#avatar {
+.currencyIcon {
+  font-size: 22px;
+  margin-bottom: -4px;
+}
+
+.avatar, .accountIcon {
   margin-right: 15px;
 }
 
-#names {
+.accountIcon {
+  font-size: 42px;
+}
+
+.playerNames {
   color: #fff;
   font-size: 16px;
   font-weight: bold;
 }
 
-#reserved, #unreserved {
+.reserved, .unreserved {
   color: #4CE95A;
   margin-bottom: 15px;
   font-size: 20px;
