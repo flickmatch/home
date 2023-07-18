@@ -6,11 +6,14 @@ name: CI
 on:
   push:
     branches:
-      # We can define multiple branches as well      
       - main
+    paths: 
+      - 'react-fm/**'
   pull_request:
     branches:
       - main
+    paths: 
+      - 'react-fm/**'
       
 jobs:
   build:

@@ -3,6 +3,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
+import styles from './Welcome.module.scss';
+
 // import useOrientation from '@/hooks/useOrientation';
 
 function Welcome() {
@@ -15,7 +17,9 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <FullSizeCenteredFlexBox>
-        <Typography variant="h3">Welcome! to Home</Typography>
+        <Typography variant="h3" className={styles.test}>
+          Welcome! to Home
+        </Typography>
       </FullSizeCenteredFlexBox>
     </>
   );
