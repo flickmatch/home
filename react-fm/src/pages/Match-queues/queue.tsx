@@ -21,7 +21,6 @@ import useOrientation from '@/hooks/useOrientation';
 
 function MatchQueue() {
     const isPortrait = useOrientation();
-    console.log(isPortrait)
 
   return (
     <>

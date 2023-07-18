@@ -15,6 +15,7 @@ import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
 import { HotKeysButton } from './styled';
+import styles from './Header.module.scss'
 
 function Header() {
   const [, sidebarActions] = useSidebar();
@@ -37,7 +38,7 @@ function Header() {
               <MenuIcon />
             </IconButton>
             
-              <img src={mainlogo} alt="logo" style={{height: 42}}/>
+              <img src={mainlogo} alt="logo" className={styles.logo}/>
             
           </FlexBox>
           <FlexBox>
