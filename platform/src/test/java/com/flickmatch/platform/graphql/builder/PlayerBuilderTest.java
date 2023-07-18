@@ -1,10 +1,8 @@
 package com.flickmatch.platform.graphql.builder;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,6 +26,11 @@ public class PlayerBuilderTest {
     private static final String playerName3 = "Bob Johnson";
     private static final String playerName4 = "Alice Brown";
 
+    private static final String validWaNumber = "+910123456789";
+
+    private static final String invalidWaNumber = "1234";
+
+
     @Mock
     private EventRepository eventRepository;
 
@@ -36,28 +39,35 @@ public class PlayerBuilderTest {
 
     @InjectMocks
     private EventBuilder eventBuilder;
-    @InjectMocks
-    private PlayerBuilder playerBuilder;
+
+     @InjectMocks
+     private PlayerBuilder playerBuilder;
+
+
 
     @BeforeEach
     public void init() {
         eventRepository = mock(EventRepository.class);
         sportsVenueRepository = mock(SportsVenueRepository.class);
         eventBuilder = mock(EventBuilder.class);
-        playerBuilder = mock(PlayerBuilder.class);
+
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
+
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
+
+        playerBuilder = new PlayerBuilder(eventRepository, sportsVenueRepository);
     }
+
 
     @Test
     public void testCreateSportsVenue_Successful(){
         List<SportsVenues> sportsVenues= (List<SportsVenues>) sportsVenueRepository.findAll();
-
         assertThat(sportsVenues, notNullValue());
         assertThat(sportsVenues, hasSize(1));
     }
+
 
     @Test
     public void testCreateEvent_Successful(){
@@ -66,11 +76,24 @@ public class PlayerBuilderTest {
         assertThat(eventList, hasSize(1));
     }
 
+
+
     @Test
-    public void testUpdatePlayerList_Successful() {
+    public void testUpdatePlayerList_Successful(){
+
         sportsVenueRepository.findAll().forEach(sportsVenues -> sportsVenues.getSportsVenuesInCity().forEach(sportsVenue -> {
             assertThat(sportsVenue.getDisplayName(), equalToIgnoringCase("displayName"));
         }));
+        eventRepository.findAll().forEach(event -> event.getEventDetailsList().forEach( eventDetails -> {
+            eventDetails.getPlayerDetailsList().forEach(playerDetails1 -> {
+                assertThat(playerDetails1, notNullValue());
+                assertEquals(validWaNumber, playerDetails1.getWaNumber());
+                 assertFalse(playerBuilder.validWaNumber(playerDetails1));
+                //assertTrue(playerBuilder.validWaNumber(playerDetails1));
+                assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
+            });
+        }));
+
     }
 
     @Test
@@ -142,15 +165,17 @@ public class PlayerBuilderTest {
 
         PlayerInput player1 = PlayerInput.builder()
                 .name(playerName3)
-                .waNumber("27")
+                .waNumber(validWaNumber)
                 .build();
         waitListPlayers.add(player1);
 
         PlayerInput player2 = PlayerInput.builder()
                 .name(playerName4)
-                .waNumber("32")
+                .waNumber(validWaNumber)
                 .build();
         waitListPlayers.add(player2);
+
+        // Add more waitlist players as needed
 
         return waitListPlayers;
     }
@@ -160,17 +185,15 @@ public class PlayerBuilderTest {
 
         PlayerInput player1 = PlayerInput.builder()
                 .name(playerName1)
-                .waNumber("25")
+                .waNumber(validWaNumber)
                 .build();
         reservedPlayers.add(player1);
 
         PlayerInput player2 = PlayerInput.builder()
                 .name(playerName2)
-                .waNumber("30")
+                .waNumber(validWaNumber)
                 .build();
         reservedPlayers.add(player2);
-
-        // Add more reserved players as needed
 
         return reservedPlayers;
     }
@@ -186,7 +209,7 @@ public class PlayerBuilderTest {
 
         Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                 .name("name")
-                .waNumber("waNumber")
+                .waNumber(validWaNumber)
                 .build();
 
         List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
@@ -210,6 +233,7 @@ public class PlayerBuilderTest {
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build();
+
         List<Event> eventList = new ArrayList<>();
         eventList.add(event);
 

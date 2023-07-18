@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -68,12 +69,17 @@ public class PlayerBuilder {
                     false));
             selectedEvent = getSelectedEvent(input, eventsInCity);
         }
+        selectedEvent.ifPresentOrElse(eventDetails -> {
+                    List<Event.PlayerDetails> validPlayerDetailsList = eventDetails.getPlayerDetailsList().stream()
+                            .filter(this::validWaNumber)
+                            .collect(Collectors.toList());
 
-        selectedEvent.ifPresentOrElse(eventDetails ->
-                {
-                    eventDetails.getPlayerDetailsList().stream().filter(playerDetails -> validWaNumber(playerDetails));
-                    eventDetails.setPlayerDetailsList(
-                            buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers()));
+                    // Set the validPlayerDetailsList as the new playerDetailsList
+                    eventDetails.setPlayerDetailsList(validPlayerDetailsList);
+
+                    // Build the new player details list using input and set it in the event
+                    List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
+                    eventDetails.setPlayerDetailsList(newPlayerDetailsList);
                 },
                 () -> {
                     throw new IllegalArgumentException("Invalid Event selected");
