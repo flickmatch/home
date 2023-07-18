@@ -9,7 +9,7 @@ This file houses the different commands to run this project.
 **TODO**
 
 ### Basic setup
-* Intall `node` and `npm` with the latest versions.
+* Install `node` and `npm` with the latest versions.
 * Change your current working directory to `react-fm`.
 * Run the command `npm install`.
 
