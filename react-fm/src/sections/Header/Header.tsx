@@ -3,20 +3,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
-import { title } from '@/config';
+import mainlogo from '/logo.png'
 import useHotKeysDialog from '@/store/hotkeys';
-
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
 import { HotKeysButton } from './styled';
+import styles from './Header.module.scss'
 
 function Header() {
   const [, sidebarActions] = useSidebar();
@@ -38,9 +37,9 @@ function Header() {
             >
               <MenuIcon />
             </IconButton>
-            <Button color="info">
-              {title}
-            </Button>
+            
+              <img src={mainlogo} alt="logo" className={styles.logo}/>
+            
           </FlexBox>
           <FlexBox>
             <FlexBox>
