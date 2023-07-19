@@ -11,7 +11,7 @@ export default defineConfig({
   base: '/',
   css: {
     preprocessorOptions: {
-      scss: {},
+      scss: { additionalData: `@import "./src/theme/_main.module.scss";` },
     },
   },
   plugins: [
