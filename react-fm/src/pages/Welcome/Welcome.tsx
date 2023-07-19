@@ -3,13 +3,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
-// import useOrientation from '@/hooks/useOrientation';
-
 function Welcome() {
-  // const isPortrait = useOrientation();
-
-  // const width = isPortrait ? '40%' : '30%';
-  // const height = isPortrait ? '30%' : '40%';
+  const isPortrait = useOrientation();
 
   return (
     <>
