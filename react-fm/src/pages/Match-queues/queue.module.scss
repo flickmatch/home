@@ -15,14 +15,15 @@
 .flexbox {
   flex-flow: column;
   width: 100%;
-} 
+}
 
 .eventDetails {
   margin-top: 25px;
   color: #fff;
 }
 
-.queueDetails1, .queueDetails2 {
+.queueDetails1,
+.queueDetails2 {
   margin-left: 20px;
 }
 
@@ -55,7 +56,7 @@
 }
 
 .area Button {
-  background: #4CE95A !important;
+  background: #4ce95a !important;
   color: black;
 }
 
@@ -69,7 +70,7 @@
 
 .sportsIcon {
   margin-right: 5px;
-  color: #4CE95A;
+  color: #4ce95a;
 }
 
 .box {
@@ -78,7 +79,7 @@
 }
 
 .title {
-  color: #4CE95A;
+  color: #4ce95a;
   font-size: 18px;
   font-weight: bold;
 }
@@ -98,7 +99,8 @@
   margin-bottom: -4px;
 }
 
-.avatar, .accountIcon {
+.avatar,
+.accountIcon {
   margin-right: 15px;
 }
 
@@ -112,8 +114,9 @@
   font-weight: bold;
 }
 
-.reserved, .unReserved {
-  color: #4CE95A;
+.reserved,
+.unReserved {
+  color: #4ce95a;
   margin-bottom: 15px;
   font-size: 20px;
   font-weight: 600;
