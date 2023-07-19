@@ -15,9 +15,7 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <FullSizeCenteredFlexBox>
-        <Typography variant="h3" className={styles.test}>
-          Welcome! to Home
-        </Typography>
+        <Typography variant="h3">Welcome! to Home</Typography>
       </FullSizeCenteredFlexBox>
     </>
   );
