@@ -1,2 +1,1 @@
-cd react-fm
 npx lint-staged
