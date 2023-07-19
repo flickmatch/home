@@ -73,12 +73,9 @@ public class PlayerBuilder {
                     List<Event.PlayerDetails> validPlayerDetailsList = eventDetails.getPlayerDetailsList().stream()
                             .filter(this::validWaNumber)
                             .collect(Collectors.toList());
-
-                    // Set the validPlayerDetailsList as the new playerDetailsList
-                    eventDetails.setPlayerDetailsList(validPlayerDetailsList);
-
                     // Build the new player details list using input and set it in the event
                     List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
+                 //   Set the validPlayerDetailsList as the new playerDetailsList
                     eventDetails.setPlayerDetailsList(newPlayerDetailsList);
                 },
                 () -> {
@@ -129,14 +126,14 @@ public class PlayerBuilder {
         }
     }
 
-    private void validateStartTime(String time) {
+    public Date validateStartTime(String time) {
         try {
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-            timeFormat.parse(time);
+            return timeFormat.parse(time);
+
         } catch (Exception e) {
             throw new IllegalArgumentException("Time is invalid, Please check format");
         }
-
     }
 
     private String getFormattedEventTime(Date startTime) {
@@ -150,13 +147,12 @@ public class PlayerBuilder {
         return venueName.replace(" ", "")
                 .equalsIgnoreCase(inputName.replace(" ", ""));
     }
-
     boolean validWaNumber(Event.PlayerDetails playerDetails) {
-        if (playerDetails.getWaNumber().startsWith("+") && playerDetails.getWaNumber().length() == 13) {
+        if(playerDetails.getWaNumber() != null && playerDetails.getWaNumber().length() >= 10)
+         {
             return false;
         } else {
             return true;
         }
-
     }
 }

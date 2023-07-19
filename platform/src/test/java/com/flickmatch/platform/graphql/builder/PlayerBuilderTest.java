@@ -1,6 +1,7 @@
 package com.flickmatch.platform.graphql.builder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +27,7 @@ public class PlayerBuilderTest {
     private static final String playerName3 = "Bob Johnson";
     private static final String playerName4 = "Alice Brown";
 
-    private static final String validWaNumber = "+910123456789";
+    private static final String validWaNumber = "910123456789";
 
     private static final String invalidWaNumber = "1234";
 
@@ -93,8 +94,9 @@ public class PlayerBuilderTest {
                 assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
             });
         }));
-
     }
+
+
 
     @Test
     public void testUpdatePlayerList_Unsuccessful() {
@@ -236,7 +238,6 @@ public class PlayerBuilderTest {
 
         List<Event> eventList = new ArrayList<>();
         eventList.add(event);
-
         return eventList;
     }
 }
