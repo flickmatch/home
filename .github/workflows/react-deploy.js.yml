@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "react-fm/**"
+      - 'react-fm/**'
 
 permissions:
   contents: write
