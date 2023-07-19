@@ -1,8 +1,7 @@
 import Typography from '@mui/material/Typography';
+
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
-
-import styles from './Welcome.module.scss';
 
 // import useOrientation from '@/hooks/useOrientation';
 
