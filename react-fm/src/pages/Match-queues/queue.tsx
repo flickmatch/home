@@ -27,7 +27,7 @@ function MatchQueue() {
       <Meta title="Match Queues" />
 
       <div className={styles.container}>
-        <Typography className={styles.cityname}>Gurugram <img src={delhiIcon} alt="" /></Typography>
+        <Typography className={styles.cityName}>Gurugram <img src={delhiIcon} alt="" /></Typography>
         <Accordion className={styles.accordion}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -42,7 +42,7 @@ function MatchQueue() {
 
               {/*Event Details*/ }
               <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queDetails1}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails1}>
                   <Grid item xs={4} sm={4} md={4}>
                     <Typography className={styles.title}>
                       Price <span><CurrencyRupeeSharp className={styles.currencyIcon}/>200</span>
@@ -56,7 +56,7 @@ function MatchQueue() {
                 </Grid>
               </FlexBox>
               <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queDetails2}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails2}>
                     <Grid item xs={4} sm={4} md={4}>
                       <Typography className={styles.title}>
                         Google Map <LocationOnIcon className={styles.locationIcon}/>
@@ -156,7 +156,7 @@ function MatchQueue() {
                 </Grid>
             </Box>
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.unreserved}>
+                <Typography className={styles.unReserved}>
                     Un Reserved Players
                 </Typography> 
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -186,7 +186,7 @@ function MatchQueue() {
 
       {/* For Hyderabad */}
       <div className={styles.container}>
-        <Typography className={styles.cityname}>Hyderabad <img src={charminar} alt="" /></Typography>
+        <Typography className={styles.cityName}>Hyderabad <img src={charminar} alt="" /></Typography>
         <Accordion className={styles.accordion}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -200,7 +200,7 @@ function MatchQueue() {
               </FlexBox>
 
               <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queDetails1}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails1}>
                   <Grid item xs={4} sm={4} md={4}>
                     <Typography className={styles.title}>
                       Price <span><CurrencyRupeeSharp className={styles.currencyIcon}/>350</span>
@@ -215,7 +215,7 @@ function MatchQueue() {
               </FlexBox>
 
               <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queDetails2}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails2}>
                   <Grid item xs={4} sm={4} md={4}>
                     <Typography className={styles.title}>
                       Google Map <LocationOnIcon className={styles.locationIcon}/>
@@ -317,7 +317,7 @@ function MatchQueue() {
             </Box>
             
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.unreserved}>
+                <Typography className={styles.unReserved}>
                     Un Reserved Players
                 </Typography> 
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

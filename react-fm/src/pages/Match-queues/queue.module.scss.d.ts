@@ -1,0 +1,23 @@
+declare const classNames: {
+  readonly container: 'container';
+  readonly accordion: 'accordion';
+  readonly flexbox: 'flexbox';
+  readonly eventDetails: 'eventDetails';
+  readonly queueDetails1: 'queueDetails1';
+  readonly queueDetails2: 'queueDetails2';
+  readonly locationIcon: 'locationIcon';
+  readonly cityName: 'cityName';
+  readonly area: 'area';
+  readonly areaName: 'areaName';
+  readonly sportsIcon: 'sportsIcon';
+  readonly box: 'box';
+  readonly title: 'title';
+  readonly grid: 'grid';
+  readonly currencyIcon: 'currencyIcon';
+  readonly avatar: 'avatar';
+  readonly accountIcon: 'accountIcon';
+  readonly playerNames: 'playerNames';
+  readonly reserved: 'reserved';
+  readonly unReserved: 'unReserved';
+};
+export = classNames;
