@@ -1,7 +1,7 @@
 {
   "name": "react-fm",
   "version": "1.0.0",
-  "homepage": "https://flickmatch.github.io/",
+  "homepage": "https://stag.flickmatch.in/",
   "description": "Frontend for Flickmatch.in",
   "license": "MIT",
   "scripts": {
