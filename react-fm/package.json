@@ -12,7 +12,8 @@
     "prepare": "cd .. && husky install react-fm/.husky",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "predeploy": "npm run build",
+    "add-domain": "echo stag.flickmatch.in > ./build/CNAME",
+    "predeploy": "npm run add-domain && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
