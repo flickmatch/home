@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    paths: 
-      - 'react-fm/**'
+    paths:
+      - "react-fm/**"
 
 permissions:
   contents: write
@@ -48,3 +48,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./react-fm/dist
+          cname: stag.flickmatch.in
