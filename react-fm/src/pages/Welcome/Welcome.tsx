@@ -4,8 +4,6 @@ import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
 function Welcome() {
-  const isPortrait = useOrientation();
-
   return (
     <>
       <Meta title="Welcome" />
