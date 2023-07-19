@@ -2,8 +2,14 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 
+<<<<<<< HEAD
 //import useOrientation from '@/hooks/useOrientation';
 
+=======
+import styles from './Welcome.module.scss';
+
+// import useOrientation from '@/hooks/useOrientation';
+>>>>>>> 9d4bec37e13146dc84de31bdcdc883fc5dfa0641
 
 function Welcome() {
   // const isPortrait = useOrientation();
@@ -15,7 +21,9 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <FullSizeCenteredFlexBox>
-        <Typography variant="h3">Welcome! to Home</Typography>
+        <Typography variant="h3" className={styles.test}>
+          Welcome! to Home
+        </Typography>
       </FullSizeCenteredFlexBox>
     </>
   );
