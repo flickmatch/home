@@ -1,350 +1,312 @@
-import Typography from '@mui/material/Typography';
-import Meta from '@/components/Meta';
-import Box from '@mui/material/Box';
-import { FlexBox } from '@/components/styled';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
-import Avatar from '@mui/material/Avatar';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { CurrencyRupeeSharp } from '@mui/icons-material';
+import { useEffect, useState } from 'react';
 
-import delhiIcon from '/gate-of-india.png';
-import charminar from '/hyderabad-charminar.png'
-import styles from './queue.module.scss'
+import { CurrencyRupeeSharp } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+
+import Meta from '@/components/Meta';
+import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import styles from './queue.module.scss';
+import delhiIcon from '/gate-of-india.png';
+import charminar from '/hyderabad-charminar.png';
+
 function MatchQueue() {
-    const isPortrait = useOrientation();
+  const [citiesData, setCitiesData] = useState([]);
+  const isPortrait = useOrientation();
+
+  interface cityDetails {
+    cityId: string;
+    cityName: string;
+    events: any;
+  }
+
+  interface eventsDetails {
+    charges: number;
+    date: string;
+    displayId: string;
+    reservedPlayersCount: number;
+    reservedPlayersList: any;
+    time: string;
+    venueLocationLink: string;
+    venueName: string;
+    waitListPlayers: any;
+    waitListPlayersCount: number;
+  }
+
+  interface reservedPlayerDetails {
+    displayName: string;
+  }
+
+  interface unReservedPlayerDetails {
+    displayName: string;
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const fetchData = async () => {
+      try {
+        const apiUrl =
+          'http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql';
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          signal: signal,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `query {
+              cities {
+                cityId
+                cityName
+                events {
+                  displayId
+                  date
+                  time
+                  venueName
+                  reservedPlayersCount
+                  waitListPlayersCount
+                  venueLocationLink
+                  charges
+                  reservedPlayersList {
+                    displayName
+                  }
+                  waitListPlayers {
+                    displayName
+                  }
+                }
+              }
+            }`,
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data.data.cities);
+        setCitiesData(data.data.cities);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        console.log('finally fetched');
+      }
+    };
+    fetchData();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   return (
     <>
       <Meta title="Match Queues" />
+      {citiesData.length > 0
+        ? citiesData.map((city: cityDetails, i) => {
+            return (
+              <div
+                className={isPortrait ? styles.mobile_container : styles.container}
+                key={city.cityId}
+              >
+                <Typography className={styles.citiesName} key={city.cityId}>
+                  {city.cityName} <img src={delhiIcon} alt="" />
+                </Typography>
+                {city.events.map((playingEvent: eventsDetails, j) => {
+                  return (
+                    <Accordion
+                      className={isPortrait ? styles.mobileAccordion : styles.accordion}
+                      key={playingEvent.displayId}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <FlexBox className={styles.flexbox}>
+                          <FlexBox className={styles.area}>
+                            <Typography
+                              className={isPortrait ? styles.mobileAreaName : styles.areaName}
+                            >
+                              <SportsSoccerIcon className={styles.sportsIcon} />
+                              {playingEvent.venueName}
+                            </Typography>
+                            {isPortrait ? null : (
+                              <Button variant="contained" onClick={() => alert('Joined')}>
+                                Join Queue
+                              </Button>
+                            )}
+                          </FlexBox>
 
-      <div className={styles.container}>
-        <Typography className={styles.cityName}>Gurugram <img src={delhiIcon} alt="" /></Typography>
-        <Accordion className={styles.accordion}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <FlexBox className={styles.flexbox}>
-              <FlexBox className={styles.area}>
-                <Typography className={styles.areaName}><SportsSoccerIcon className={styles.sportsIcon} />Gallant Play Arena South City</Typography>
-                {isPortrait ? null : <Button variant="contained" onClick={() => alert('Joined')}>Join Queue</Button>}
-              </FlexBox>
-
-              {/*Event Details*/ }
-              <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails1}>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                      Price <span><CurrencyRupeeSharp className={styles.currencyIcon}/>200</span>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                      Date <span>19/07/2023 8PM-9PM</span>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </FlexBox>
-              <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails2}>
-                    <Grid item xs={4} sm={4} md={4}>
-                      <Typography className={styles.title}>
-                        Google Map <LocationOnIcon className={styles.locationIcon}/>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4}>
-                      <Typography className={styles.title}>
-                          Number of Players <span>14</span>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4}>
-                      <Typography className={styles.title}>
-                          Players Required <span>2</span>
-                      </Typography>
-                    </Grid>
-                    {isPortrait ? 
-                      <Grid item xs={4} sm={4} md={4}>
-                        <FlexBox className={styles.area}>
-                          <Button variant="contained" onClick={() => alert('Joined')}>Join Queue</Button>
+                          {/*Event Details*/}
+                          <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                              className={
+                                isPortrait ? styles.mobileQueueDetails1 : styles.queueDetails1
+                              }
+                            >
+                              <Grid item xs={4} sm={4} md={4}>
+                                <Typography className={styles.title}>
+                                  Price{' '}
+                                  <span>
+                                    <CurrencyRupeeSharp className={styles.currencyIcon} />
+                                    {playingEvent.charges}
+                                  </span>
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={4} sm={6} md={4}>
+                                <Typography className={styles.title}>
+                                  Date{' '}
+                                  <span>
+                                    {playingEvent.date} {playingEvent.time}
+                                  </span>
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </FlexBox>
+                          <FlexBox
+                            className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+                            sx={{ flexGrow: 1 }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                              className={
+                                isPortrait ? styles.mobileQueueDetails2 : styles.queueDetails2
+                              }
+                            >
+                              <Grid item xs={4} sm={4} md={4}>
+                                <Typography className={styles.title}>
+                                  Google Map{' '}
+                                  <a href={playingEvent.venueLocationLink} target="_blank">
+                                    <LocationOnIcon className={styles.locationIcon} />
+                                  </a>
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={4} sm={4} md={4}>
+                                <Typography className={styles.title}>
+                                  Number of Players <span>{playingEvent.reservedPlayersCount}</span>
+                                </Typography>
+                              </Grid>
+                              {playingEvent.waitListPlayersCount > 0 ? null : (
+                                <Grid item xs={4} sm={4} md={4}>
+                                  <Typography className={styles.title}>
+                                    Players Required{' '}
+                                    <span>{14 - playingEvent.reservedPlayersCount}</span>
+                                  </Typography>
+                                </Grid>
+                              )}
+                              {isPortrait ? (
+                                <Grid item xs={4} sm={4} md={4}>
+                                  <FlexBox className={styles.area}>
+                                    <Button
+                                      className={styles.joinNow}
+                                      variant="contained"
+                                      onClick={() => alert('Joined')}
+                                    >
+                                      Join Queue
+                                    </Button>
+                                  </FlexBox>
+                                </Grid>
+                              ) : null}
+                            </Grid>
+                          </FlexBox>
                         </FlexBox>
-                      </Grid>      
-                    : null}            
-                </Grid>
-              </FlexBox>
-            </FlexBox>
-          </AccordionSummary>
+                      </AccordionSummary>
 
-          {/*Players Details*/ }
-          <AccordionDetails>
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.reserved}>
-                    Reserved Players
-                </Typography> 
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s" />
-                    <Typography className={styles.playerNames}>
-                      Abhishek
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://pbs.twimg.com/media/FoUoGo3XsAMEPFr?format=jpg&name=4096x4096" />
-                    <Typography className={styles.playerNames}>
-                      Uday
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIYZ5Ug1CDMppuput1FGd-kwYNoZwcJwDY2fCPmlsK8Q&s" />
-                    <Typography className={styles.playerNames}>
-                      Nishant
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp1f10Ha21IUV3t0oABQAcNI1ncGs5o3ohWA&usqp=CAU" />
-                    <Typography className={styles.playerNames}>
-                      Shubham
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1OmtCTmW8kQi4I5LnRFkvVIhdKIs2RSnVTQ&usqp=CAU" />
-                    <Typography className={styles.playerNames}>
-                      Abhinav
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://cdn.futbin.com/content/fifa19/img/players/p246525.png?v=23" />
-                    <Typography className={styles.playerNames}>
-                      Vaibhav
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://i.pinimg.com/originals/9a/23/b0/9a23b044d3ae8bb33087200aaf983c15.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Harsh
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <AccountCircleIcon className={styles.accountIcon}/>
-                    <Typography className={styles.playerNames}>
-                      (Empty)
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <AccountCircleIcon className={styles.accountIcon}/>
-                    <Typography className={styles.playerNames}>
-                      (Empty)
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.unReserved}>
-                    Un Reserved Players
-                </Typography> 
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://i.pinimg.com/736x/f0/8e/1e/f08e1ec7ab1589419d515b7fbb60d88b.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Sahil
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://cdn.futbin.com/content/fifa23/img/players/p50529093.png" />
-                    <Typography className={styles.playerNames}>
-                      Shubham
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://e0.pxfuel.com/wallpapers/762/930/desktop-wallpaper-allison-becker-baseball-glove-sports-jersey-thumbnail.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Gourav
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-
-      {/* For Hyderabad */}
-      <div className={styles.container}>
-        <Typography className={styles.cityName}>Hyderabad <img src={charminar} alt="" /></Typography>
-        <Accordion className={styles.accordion}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <FlexBox className={styles.flexbox}>
-              <FlexBox className={styles.area}>
-                <Typography className={styles.areaName}><SportsSoccerIcon className={styles.sportsIcon} />Bsporty, Hyderabad</Typography>
-                {isPortrait ? null : <Button variant="contained" onClick={() => alert('Joined')}>Join Queue</Button>}
-              </FlexBox>
-
-              <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails1}>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                      Price <span><CurrencyRupeeSharp className={styles.currencyIcon}/>350</span>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                      Date <span>19/07/2023 8PM-9PM</span>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </FlexBox>
-
-              <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className={styles.queueDetails2}>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                      Google Map <LocationOnIcon className={styles.locationIcon}/>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                        Number of Players <span>14</span>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} sm={4} md={4}>
-                    <Typography className={styles.title}>
-                        Players Required <span>2</span>
-                    </Typography>
-                  </Grid>
-                  {isPortrait ? 
-                      <Grid item xs={4} sm={4} md={4}>
-                        <FlexBox className={styles.area}>
-                          <Button variant="contained" onClick={() => alert('Joined')}>Join Queue</Button>
-                        </FlexBox>
-                      </Grid>      
-                    : null}
-                </Grid>
-             </FlexBox>
-            </FlexBox>
-          </AccordionSummary>
-
-          <AccordionDetails>
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.reserved}>
-                    Reserved Players
-                </Typography> 
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s" />
-                    <Typography className={styles.playerNames}>
-                      Abhishek
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://pbs.twimg.com/media/FoUoGo3XsAMEPFr?format=jpg&name=4096x4096" />
-                    <Typography className={styles.playerNames}>
-                      Uday
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIYZ5Ug1CDMppuput1FGd-kwYNoZwcJwDY2fCPmlsK8Q&s" />
-                    <Typography className={styles.playerNames}>
-                      Nishant
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp1f10Ha21IUV3t0oABQAcNI1ncGs5o3ohWA&usqp=CAU" />
-                    <Typography className={styles.playerNames}>
-                      Shubham
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1OmtCTmW8kQi4I5LnRFkvVIhdKIs2RSnVTQ&usqp=CAU" />
-                    <Typography className={styles.playerNames}>
-                      Abhinav
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://cdn.futbin.com/content/fifa19/img/players/p246525.png?v=23" />
-                    <Typography className={styles.playerNames}>
-                      Vaibhav
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://i.pinimg.com/originals/9a/23/b0/9a23b044d3ae8bb33087200aaf983c15.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Harsh
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <AccountCircleIcon className={styles.accountIcon}/>
-                    <Typography className={styles.playerNames}>
-                      (Empty)
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <AccountCircleIcon className={styles.accountIcon}/>
-                    <Typography className={styles.playerNames}>
-                      (Empty)
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-            
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                <Typography className={styles.unReserved}>
-                    Un Reserved Players
-                </Typography> 
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://i.pinimg.com/736x/f0/8e/1e/f08e1ec7ab1589419d515b7fbb60d88b.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Sahil
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://cdn.futbin.com/content/fifa23/img/players/p50529093.png" />
-                    <Typography className={styles.playerNames}>
-                      Shubham
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={4} md={4} className={styles.grid}>
-                    <Avatar className={styles.avatar} alt="profile" src="https://e0.pxfuel.com/wallpapers/762/930/desktop-wallpaper-allison-becker-baseball-glove-sports-jersey-thumbnail.jpg" />
-                    <Typography className={styles.playerNames}>
-                      Gourav
-                    </Typography>
-                  </Grid>
-                </Grid>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-
+                      {/*Players Details*/}
+                      <AccordionDetails>
+                        <Box className={styles.box} sx={{ flexGrow: 1 }}>
+                          <Typography className={styles.reserved}>Reserved Players</Typography>
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                          >
+                            {playingEvent.reservedPlayersList.map(
+                              (player: reservedPlayerDetails, y) => {
+                                return (
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    sm={6}
+                                    md={4}
+                                    className={styles.grid}
+                                    key={player.displayName}
+                                  >
+                                    <Avatar
+                                      className={styles.avatar}
+                                      alt="profile"
+                                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s"
+                                    />
+                                    <Typography className={styles.playerNames}>
+                                      {player.displayName}
+                                    </Typography>
+                                  </Grid>
+                                );
+                              },
+                            )}
+                          </Grid>
+                        </Box>
+                        {playingEvent.waitListPlayersCount > 0 ? (
+                          <Box className={styles.box} sx={{ flexGrow: 1 }}>
+                            <Typography className={styles.unReserved}>
+                              Un Reserved Players
+                            </Typography>
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              {playingEvent.waitListPlayers.map(
+                                (player: unReservedPlayerDetails, y) => {
+                                  return (
+                                    <Grid
+                                      item
+                                      xs={2}
+                                      sm={6}
+                                      md={4}
+                                      lg={3}
+                                      className={styles.grid}
+                                      key={player.displayName}
+                                    >
+                                      <Avatar
+                                        className={styles.avatar}
+                                        alt="profile"
+                                        src="https://i.pinimg.com/736x/f0/8e/1e/f08e1ec7ab1589419d515b7fbb60d88b.jpg"
+                                      />
+                                      <Typography className={styles.playerNames}>
+                                        {player.displayName}
+                                      </Typography>
+                                    </Grid>
+                                  );
+                                },
+                              )}
+                            </Grid>
+                          </Box>
+                        ) : null}
+                      </AccordionDetails>
+                    </Accordion>
+                  );
+                })}
+              </div>
+            );
+          })
+        : null}
+      <footer className={styles.footer}>&#169; Flickmatch 2023</footer>
     </>
   );
 }

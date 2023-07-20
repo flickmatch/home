@@ -1,16 +1,23 @@
 declare const classNames: {
   readonly container: 'container';
+  readonly mobile_container: 'mobile_container';
   readonly accordion: 'accordion';
+  readonly mobileAccordion: 'mobileAccordion';
   readonly flexbox: 'flexbox';
   readonly eventDetails: 'eventDetails';
+  readonly mobileEventDetails: 'mobileEventDetails';
   readonly queueDetails1: 'queueDetails1';
   readonly queueDetails2: 'queueDetails2';
+  readonly mobileQueueDetails1: 'mobileQueueDetails1';
+  readonly mobileQueueDetails2: 'mobileQueueDetails2';
   readonly locationIcon: 'locationIcon';
-  readonly cityName: 'cityName';
+  readonly citiesName: 'citiesName';
   readonly area: 'area';
   readonly areaName: 'areaName';
+  readonly mobileAreaName: 'mobileAreaName';
   readonly sportsIcon: 'sportsIcon';
   readonly box: 'box';
+  readonly joinNow: 'joinNow';
   readonly title: 'title';
   readonly grid: 'grid';
   readonly currencyIcon: 'currencyIcon';
@@ -19,5 +26,6 @@ declare const classNames: {
   readonly playerNames: 'playerNames';
   readonly reserved: 'reserved';
   readonly unReserved: 'unReserved';
+  readonly footer: 'footer';
 };
 export = classNames;

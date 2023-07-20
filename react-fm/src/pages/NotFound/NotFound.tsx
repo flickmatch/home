@@ -7,6 +7,7 @@ import { giphy404, messages } from '@/config';
 import styles from './NotFound.module.scss'
 
 function NotFound() {
+
   return (
     <Container sx={{ height: '100%' }}>
       <FullSizeCenteredFlexBox flexDirection="column">
@@ -26,7 +27,6 @@ function NotFound() {
           <Typography variant="h4" sx={{ color: (theme) => theme.palette.info.main }}>
             {messages[404]}
           </Typography>
-          
         </CenteredFlexBox>  
       </FullSizeCenteredFlexBox>
     </Container>
