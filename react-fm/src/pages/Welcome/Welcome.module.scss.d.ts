@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly test: 'test';
-};
-export = classNames;
+    readonly test: 'test';
+  };
+  export = classNames;

@@ -93,7 +93,6 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-        console.log(data.data.cities);
         setCitiesData(data.data.cities);
       } catch (error) {
         console.log(error);

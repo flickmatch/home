@@ -1,6 +1,5 @@
 import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -10,6 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
 import mainlogo from '/logo.png'
+
 import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
