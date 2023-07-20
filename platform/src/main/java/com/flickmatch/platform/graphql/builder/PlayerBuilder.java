@@ -93,8 +93,8 @@ public class PlayerBuilder {
                 .findFirst();
     }
 
-    List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
-                                              List<PlayerInput> waitListPlayers) {
+    public List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
+                                                     List<PlayerInput> waitListPlayers) {
         reservedPlayersList = reservedPlayersList.stream()
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
         waitListPlayers = waitListPlayers.stream()
