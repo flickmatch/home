@@ -4,9 +4,10 @@ import Typography from '@mui/material/Typography';
 import { BrowserRouter as Link } from "react-router-dom";
 
 
-// import { BrowserRouter as Link } from "react-router-dom";
 import { CenteredFlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import { giphy404, messages } from '@/config';
+
+import styles from './NotFound.module.scss';
 
 function NotFound() {
   return (
@@ -16,7 +17,7 @@ function NotFound() {
           src={giphy404}
           width="100%"
           height="50%"
-          style={{ maxHeight: '60%', maxWidth: '100%' }}
+          className={styles.frames}
           frameBorder="0"
           allowFullScreen
         />

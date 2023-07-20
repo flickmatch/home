@@ -1,9 +1,7 @@
 import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,13 +9,18 @@ import Tooltip from '@mui/material/Tooltip';
 
 
 import { FlexBox } from '@/components/styled';
+<<<<<<< HEAD
 import { title } from '@/config';
 import mainlogo from './logo.png'
+=======
+>>>>>>> 53a0d7d001e5b1e75d1de956b83898c1d1e03566
 import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
+import styles from './Header.module.scss';
 import { HotKeysButton } from './styled';
+import mainlogo from '/logo.png';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
@@ -39,9 +42,14 @@ function Header() {
             >
               <MenuIcon />
             </IconButton>
+<<<<<<< HEAD
             
               <img src={mainlogo} alt="logo" style={{height: 42}}/>
             
+=======
+
+            <img src={mainlogo} alt="logo" className={styles.logo} />
+>>>>>>> 53a0d7d001e5b1e75d1de956b83898c1d1e03566
           </FlexBox>
           <FlexBox>
             <FlexBox>
