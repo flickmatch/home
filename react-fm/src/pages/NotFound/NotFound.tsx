@@ -4,7 +4,8 @@ import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import { giphy404, messages } from '@/config';
-import styles from './NotFound.module.scss'
+
+import styles from './NotFound.module.scss';
 
 function NotFound() {
   return (
@@ -26,8 +27,7 @@ function NotFound() {
           <Typography variant="h4" sx={{ color: (theme) => theme.palette.info.main }}>
             {messages[404]}
           </Typography>
-          
-        </CenteredFlexBox>  
+        </CenteredFlexBox>
       </FullSizeCenteredFlexBox>
     </Container>
   );

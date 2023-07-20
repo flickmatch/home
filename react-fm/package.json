@@ -12,7 +12,9 @@
     "prepare": "cd .. && husky install react-fm/.husky",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "predeploy": "npm run build",
+    "gh-pages:404": "cp ./404.html ./dist",
+    "add-domain": "echo stag.flickmatch.in > dist/CNAME",
+    "predeploy": "npm run build && npm run gh-pages:404 && npm run add-domain",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -50,17 +52,16 @@
     "https-localhost": "^4.7.1",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "2.7.1",
+    "prettier": "^2.7.1",
     "sass": "^1.63.6",
     "typescript": "^4.8.3",
     "vite": "^3.1.3",
-    "vite-plugin-pwa": "^0.13.1",
-    "vite-plugin-sass-dts": "^1.3.8"
+    "vite-plugin-pwa": "^0.13.1"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "npx prettier --write",
-      "npx eslint"
+      "npx prettier . --write",
+      "npx eslint ."
     ]
   },
   "author": {
