@@ -15,3 +15,28 @@ export const avatars =
     "https://pbs.twimg.com/profile_images/1156116511284531200/L7eHjbtY_400x400.jpg",
     "https://tmssl.akamaized.net/images/foto/galerie/jeje-lalpekhlua-india-1588160906-37351.jpg?lm=1588160914"
 ]
+
+export const query = JSON.stringify({
+    query: `query {
+      cities {
+        cityId
+        cityName
+        events {
+          displayId
+          date
+          time
+          venueName
+          reservedPlayersCount
+          waitListPlayersCount
+          venueLocationLink
+          charges
+          reservedPlayersList {
+            displayName
+          }
+          waitListPlayers {
+            displayName
+          }
+        }
+      }
+    }`,
+  });

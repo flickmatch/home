@@ -18,8 +18,9 @@ import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { Cities } from './Events-components/cities';
+import { query, avatars } from './constants';
 import styles from './queue.module.scss';
-import delhiIcon from '/gate-of-india.png';
 import charminar from '/hyderabad-charminar.png';
 
 function MatchQueue() {
@@ -66,38 +67,13 @@ function MatchQueue() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            query: `query {
-              cities {
-                cityId
-                cityName
-                events {
-                  displayId
-                  date
-                  time
-                  venueName
-                  reservedPlayersCount
-                  waitListPlayersCount
-                  venueLocationLink
-                  charges
-                  reservedPlayersList {
-                    displayName
-                  }
-                  waitListPlayers {
-                    displayName
-                  }
-                }
-              }
-            }`,
-          }),
+          body: query,
         });
 
         const data = await response.json();
         setCitiesData(data.data.cities);
       } catch (error) {
         console.log(error);
-      } finally {
-        console.log('finally fetched');
       }
     };
     fetchData();
@@ -117,9 +93,8 @@ function MatchQueue() {
                 className={isPortrait ? styles.mobile_container : styles.container}
                 key={city.cityId}
               >
-                <Typography className={styles.citiesName} key={city.cityId}>
-                  {city.cityName} <img src={delhiIcon} alt="" />
-                </Typography>
+                <Cities cityName={city.cityName} cityId={city.cityId} />
+
                 {city.events.map((playingEvent: eventsDetails, j) => {
                   return (
                     <Accordion
@@ -147,18 +122,16 @@ function MatchQueue() {
                           </FlexBox>
 
                           {/*Event Details*/}
-                          <FlexBox className={styles.eventDetails} sx={{ flexGrow: 1 }}>
+                          <FlexBox className={styles.eventSchedule} sx={{ flexGrow: 1 }}>
                             <Grid
                               container
                               spacing={{ xs: 2, md: 3 }}
                               columns={{ xs: 4, sm: 8, md: 12 }}
-                              className={
-                                isPortrait ? styles.mobileQueueDetails1 : styles.queueDetails1
-                              }
+                              className={isPortrait ? styles.mobileEventSection1 : styles.eventSection1}
                             >
-                              <Grid item xs={4} sm={4} md={4}>
+                              <Grid item xs={4} sm={6} md={4}>
                                 <Typography className={styles.title}>
-                                  Price{' '}
+                                  Price
                                   <span>
                                     <CurrencyRupeeSharp className={styles.currencyIcon} />
                                     {playingEvent.charges}
@@ -167,7 +140,7 @@ function MatchQueue() {
                               </Grid>
                               <Grid item xs={4} sm={6} md={4}>
                                 <Typography className={styles.title}>
-                                  Date{' '}
+                                  Date
                                   <span>
                                     {playingEvent.date} {playingEvent.time}
                                   </span>
@@ -176,16 +149,14 @@ function MatchQueue() {
                             </Grid>
                           </FlexBox>
                           <FlexBox
-                            className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+                            className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
                             sx={{ flexGrow: 1 }}
                           >
                             <Grid
                               container
                               spacing={{ xs: 2, md: 3 }}
                               columns={{ xs: 4, sm: 8, md: 12 }}
-                              className={
-                                isPortrait ? styles.mobileQueueDetails2 : styles.queueDetails2
-                              }
+                              className={isPortrait ? styles.mobileEventSection2 : styles.eventSection2}
                             >
                               <Grid item xs={4} sm={4} md={4}>
                                 <Typography className={styles.title}>
@@ -203,8 +174,7 @@ function MatchQueue() {
                               {playingEvent.waitListPlayersCount > 0 ? null : (
                                 <Grid item xs={4} sm={4} md={4}>
                                   <Typography className={styles.title}>
-                                    Players Required{' '}
-                                    <span>{14 - playingEvent.reservedPlayersCount}</span>
+                                    Players Required <span>{14 - playingEvent.reservedPlayersCount}</span>
                                   </Typography>
                                 </Grid>
                               )}
@@ -222,7 +192,7 @@ function MatchQueue() {
                                 </Grid>
                               ) : null}
                             </Grid>
-                          </FlexBox>
+                          </FlexBox>        
                         </FlexBox>
                       </AccordionSummary>
 
@@ -230,11 +200,7 @@ function MatchQueue() {
                       <AccordionDetails>
                         <Box className={styles.box} sx={{ flexGrow: 1 }}>
                           <Typography className={styles.reserved}>Reserved Players</Typography>
-                          <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                          >
+                          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                             {playingEvent.reservedPlayersList.map(
                               (player: reservedPlayerDetails, y) => {
                                 return (
@@ -246,11 +212,7 @@ function MatchQueue() {
                                     className={styles.grid}
                                     key={player.displayName}
                                   >
-                                    <Avatar
-                                      className={styles.avatar}
-                                      alt="profile"
-                                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s"
-                                    />
+                                    <Avatar className={styles.avatar} alt="profile" src={avatars[y]} />
                                     <Typography className={styles.playerNames}>
                                       {player.displayName}
                                     </Typography>
@@ -265,11 +227,7 @@ function MatchQueue() {
                             <Typography className={styles.unReserved}>
                               Un Reserved Players
                             </Typography>
-                            <Grid
-                              container
-                              spacing={{ xs: 2, md: 3 }}
-                              columns={{ xs: 4, sm: 8, md: 12 }}
-                            >
+                            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                               {playingEvent.waitListPlayers.map(
                                 (player: unReservedPlayerDetails, y) => {
                                   return (
@@ -282,11 +240,7 @@ function MatchQueue() {
                                       className={styles.grid}
                                       key={player.displayName}
                                     >
-                                      <Avatar
-                                        className={styles.avatar}
-                                        alt="profile"
-                                        src="https://i.pinimg.com/736x/f0/8e/1e/f08e1ec7ab1589419d515b7fbb60d88b.jpg"
-                                      />
+                                      <Avatar className={styles.avatar} alt="profile" src={avatars[y]} />
                                       <Typography className={styles.playerNames}>
                                         {player.displayName}
                                       </Typography>
@@ -305,7 +259,9 @@ function MatchQueue() {
             );
           })
         : null}
-      <footer className={styles.footer}>&#169; Flickmatch 2023</footer>
+        {citiesData.length > 0 ?
+          <footer className={styles.footer}>&#169; Flickmatch 2023</footer>
+      : null}
     </>
   );
 }
