@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Accordion from '@mui/material/Accordion';
