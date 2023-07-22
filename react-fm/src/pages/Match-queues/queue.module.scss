@@ -8,26 +8,46 @@
   margin-top: 30px;
 }
 
+.mobile_container {
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
+}
+
 .accordion {
   background: #1a1919;
+  margin-bottom: 35px;
+}
+
+.mobileAccordion {
+  margin-bottom: 20px;
 }
 
 .flexbox {
   flex-flow: column;
   width: 100%;
-}
+} 
 
-.eventDetails {
+//Event Schedule styles
+.eventSchedule {
   margin-top: 25px;
   color: #fff;
 }
 
-.queueDetails1,
-.queueDetails2 {
+.mobileEventSchedule {
+  margin-top: 22px;
+  width: 105% !important;
+}
+
+.eventSection1, .eventSection2 {
   margin-left: 20px;
 }
 
-.queueDetails2 {
+.mobileEventSection1, .mobileEventSection2 {
+  margin-left: 0px;
+}
+
+.mobileEventSection2 {
   margin-bottom: 10px;
 }
 
@@ -37,30 +57,30 @@
   color: #fff;
 }
 
-.cityName {
+.citiesName {
   color: rgb(76, 233, 90);
   font-size: 32px;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
-.cityName img {
+.citiesName img {
   height: 40px;
 }
 
-.area {
+.venue {
   width: 100%;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-.area Button {
-  background: #4ce95a !important;
+.venue Button {
+  background: #4CE95A !important;
   color: black;
 }
 
-.areaName {
+.venueName {
   color: #fff;
   font-weight: bold;
   font-size: 21px;
@@ -68,9 +88,17 @@
   align-items: center;
 }
 
+.mobileVenueName {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
 .sportsIcon {
   margin-right: 5px;
-  color: #4ce95a;
+  color: #4CE95A;
 }
 
 .box {
@@ -78,8 +106,13 @@
   margin-left: 25px;
 }
 
+.joinNow {
+  width: 80%;
+  margin: auto;
+}
+
 .title {
-  color: #4ce95a;
+  color: #4CE95A;
   font-size: 18px;
   font-weight: bold;
 }
@@ -99,8 +132,7 @@
   margin-bottom: -4px;
 }
 
-.avatar,
-.accountIcon {
+.avatar, .accountIcon {
   margin-right: 15px;
 }
 
@@ -114,10 +146,18 @@
   font-weight: bold;
 }
 
-.reserved,
-.unReserved {
-  color: #4ce95a;
+.reserved, .unReserved {
+  color: #4CE95A;
   margin-bottom: 15px;
   font-size: 20px;
+  font-weight: 600;
+}
+
+.footer {
+  height: 40px;
+  text-align: center;
+  font-size: 19px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  color: #4CE95A;
   font-weight: 600;
 }
