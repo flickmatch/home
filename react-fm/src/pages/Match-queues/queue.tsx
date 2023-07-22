@@ -27,7 +27,7 @@ function MatchQueue() {
   interface cityDetails {
     cityId: string;
     cityName: string;
-    events: unknown;
+    events: any;
   }
 
   interface eventsDetails {
@@ -35,11 +35,11 @@ function MatchQueue() {
     date: string;
     displayId: string;
     reservedPlayersCount: number;
-    reservedPlayersList: unknown;
+    reservedPlayersList: any;
     time: string;
     venueLocationLink: string;
     venueName: string;
-    waitListPlayers: unknown;
+    waitListPlayers: any;
     waitListPlayersCount: number;
   }
 
