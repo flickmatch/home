@@ -9,11 +9,14 @@ import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
+import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,14 +37,15 @@ public class PlayerBuilderTest {
     @InjectMocks
     private EventBuilder eventBuilder;
 
-    @InjectMocks
+    @Autowired
     private PlayerBuilder playerBuilder;
 
     @BeforeEach
     public void init() {
         eventRepository = mock(EventRepository.class);
         sportsVenueRepository = mock(SportsVenueRepository.class);
-        eventBuilder = mock(EventBuilder.class);
+        //eventBuilder = mock(EventBuilder.class);
+        eventBuilder = new EventBuilder(eventRepository);
         playerBuilder = mock(PlayerBuilder.class);
 
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
@@ -226,5 +230,22 @@ public class PlayerBuilderTest {
         eventList.add(event);
 
         return eventList;
+    }
+
+    @Test
+    public void joinEvent_Successful()
+    {
+        PlayerInput playerInput = PlayerInput.builder()
+                .name("name")
+                .waNumber("waNumber")
+                .build();
+        JoinEventInput joinEventInput = JoinEventInput.builder()
+                .cityId("cityId")
+                .eventId("eventIda")
+                .player(playerInput)
+                .build();
+
+        eventBuilder.joinEvent(joinEventInput);
+
     }
 }
