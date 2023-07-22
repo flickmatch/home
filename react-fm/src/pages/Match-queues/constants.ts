@@ -1,4 +1,4 @@
-export const avatars = 
+const avatars = 
 [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s", 
     "https://pbs.twimg.com/media/FoUoGo3XsAMEPFr?format=jpg&name=4096x4096", 
@@ -16,7 +16,7 @@ export const avatars =
     "https://tmssl.akamaized.net/images/foto/galerie/jeje-lalpekhlua-india-1588160906-37351.jpg?lm=1588160914"
 ]
 
-export const query = JSON.stringify({
+const query = JSON.stringify({
     query: `query {
       cities {
         cityId
@@ -40,3 +40,7 @@ export const query = JSON.stringify({
       }
     }`,
   });
+
+  const apiUrl = 'http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql'
+
+  export {avatars, query, apiUrl}

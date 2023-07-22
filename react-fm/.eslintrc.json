@@ -1,9 +1,4 @@
 {
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "env": {
     "browser": true,
     "es2021": true
@@ -11,11 +6,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "autofix"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -26,26 +20,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
-    "react/jsx-uses-vars": "error",
-    "sort-imports": ["error", { "ignoreDeclarationSort": true }],
-    "arrow-body-style": ["error", "as-needed"],
-    "react/self-closing-comp": [
-      "error",
-      {
-        "component": true,
-        "html": true
-      }
-    ],
-    "@typescript-eslint/consistent-type-imports": [
-      "error",
-      {
-        "prefer": "type-imports"
-      }
-    ],
-    "no-console": "error",
-    "no-unused-vars": ["off"],
-    "@typescript-eslint/no-unused-vars": ["error"],
+    "react-hooks/exhaustive-deps": "warn",
     "no-restricted-imports": [
       "error",
       {

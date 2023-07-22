@@ -36,6 +36,7 @@
 
 .mobileEventSchedule {
   margin-top: 22px;
+  width: 105% !important;
 }
 
 .eventSection1, .eventSection2 {
@@ -43,7 +44,7 @@
 }
 
 .mobileEventSection1, .mobileEventSection2 {
-  margin-left: 9px;
+  margin-left: 0px;
 }
 
 .mobileEventSection2 {
@@ -67,19 +68,19 @@
   height: 40px;
 }
 
-.area {
+.venue {
   width: 100%;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-.area Button {
+.venue Button {
   background: #4CE95A !important;
   color: black;
 }
 
-.areaName {
+.venueName {
   color: #fff;
   font-weight: bold;
   font-size: 21px;
@@ -87,7 +88,7 @@
   align-items: center;
 }
 
-.mobileAreaName {
+.mobileVenueName {
   color: #fff;
   font-weight: bold;
   font-size: 20px;
@@ -158,5 +159,5 @@
   font-size: 19px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   color: #4CE95A;
-  font-weight: 600
+  font-weight: 600;
 }
