@@ -50,16 +50,24 @@ public class EventBuilder {
     }
 
     public void joinEvent(JoinEventInput input) {
+        int index = 0;
         //TODO: Remove hardcoded value once whatsApp is not used for joining event
-        String date = "2023-" + input.getEventId().substring(0, 5);
-        int index = Integer.parseInt(input.getEventId().substring(6));
+        String date = input.getEventId().substring(0, 5);
+        try{
+             index = Integer.parseInt(input.getEventId().substring(6));
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Error: The given string cannot be converted to an integer.");
+        }
         log.info(date);
         log.info(index);
         Optional<Event> eventsInCity =
                 eventRepository.findById(new Event.EventId(input.getCityId(),date));
         if (eventsInCity.isPresent()) {
+            int finalIndex = index;
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
-                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(index)).findFirst();
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
             if (selectedEvent.isPresent()) {
                 //check to disallow eventId from past
                 isStartTimeInPast(selectedEvent.get().getStartTime());
@@ -155,7 +163,7 @@ public class EventBuilder {
 
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
         //TODO: Use full date once whatsApp is not used for joining event
-        String displayId = date.substring(5) + "-" +eventDetails.getIndex();
+        String eventId = date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         //log.info(eventDetails.getReservedPlayersCount());
         String eventType = players + "v" + players;
@@ -167,7 +175,7 @@ public class EventBuilder {
         List<Player> waitListPlayers = new ArrayList<>();
         createPlayerQueue(eventDetails, reservedPlayers, waitListPlayers);
         return com.flickmatch.platform.graphql.type.Event.builder()
-                .displayId(displayId)
+                .eventId(eventId)
                 .displayTitle(title)
                 .date(getFormattedEventDate(eventDetails.getStartTime()))
                 .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime()))
@@ -216,7 +224,7 @@ public class EventBuilder {
                 + timeFormatter.format(endTime);
     }
 
-    private void isStartTimeInPast(Date startTime) {
+     private void isStartTimeInPast(Date startTime) {
         Date currentTime = new Date(System.currentTimeMillis());
         if (currentTime.after(startTime)) {
             throw new IllegalArgumentException("Selected past event/Time");
