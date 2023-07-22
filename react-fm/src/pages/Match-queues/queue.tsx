@@ -84,7 +84,7 @@ function MatchQueue() {
     <>
       <Meta title="Match Queues" />
       {citiesData.length > 0
-        ? citiesData.map((city: cityDetails, i) => {
+        ? citiesData.map((city: cityDetails) => {
             return (
               <div
                 className={isPortrait ? styles.mobile_container : styles.container}
@@ -92,7 +92,7 @@ function MatchQueue() {
               >
                 <Cities cityName={city.cityName} cityId={city.cityId} />
 
-                {city.events.map((playingEvent: eventsDetails, j) => {
+                {city.events.map((playingEvent: eventsDetails) => {
                   return (
                     <Accordion
                       className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -140,12 +140,12 @@ function MatchQueue() {
                             columns={{ xs: 4, sm: 8, md: 12 }}
                           >
                             {playingEvent.reservedPlayersList.map(
-                              (player: reservedPlayerDetails, y) => {
+                              (player: reservedPlayerDetails, i:number) => {
                                 return (
                                   <PlayerDetails
                                     displayName={player.displayName}
-                                    index={y}
-                                    key={y}
+                                    index={i}
+                                    key={i}
                                   />
                                 );
                               },
@@ -163,12 +163,12 @@ function MatchQueue() {
                               columns={{ xs: 4, sm: 8, md: 12 }}
                             >
                               {playingEvent.waitListPlayers.map(
-                                (player: unReservedPlayerDetails, y) => {
+                                (player: unReservedPlayerDetails, i:number) => {
                                   return (
                                     <PlayerDetails
                                       displayName={player.displayName}
-                                      index={y}
-                                      key={y}
+                                      index={i}
+                                      key={i}
                                     />
                                   );
                                 },
