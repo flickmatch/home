@@ -18,7 +18,7 @@ import useOrientation from '@/hooks/useOrientation';
 import { Cities } from './Events-components/cities';
 import { EventsCard } from './Events-components/events';
 import { PlayerDetails } from './Events-components/players';
-import { query, apiUrl } from './constants';
+import { apiUrl, query } from './constants';
 import styles from './queue.module.scss';
 
 function MatchQueue() {
@@ -28,7 +28,7 @@ function MatchQueue() {
   interface cityDetails {
     cityId: string;
     cityName: string;
-    events: any;
+    events: unknown;
   }
 
   interface eventsDetails {
@@ -36,11 +36,11 @@ function MatchQueue() {
     date: string;
     displayId: string;
     reservedPlayersCount: number;
-    reservedPlayersList: any;
+    reservedPlayersList: unknown;
     time: string;
     venueLocationLink: string;
     venueName: string;
-    waitListPlayers: any;
+    waitListPlayers: unknown;
     waitListPlayersCount: number;
   }
 
@@ -70,6 +70,7 @@ function MatchQueue() {
         const data = await response.json();
         setCitiesData(data.data.cities);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
       }
     };
@@ -84,16 +85,14 @@ function MatchQueue() {
     <>
       <Meta title="Match Queues" />
       {citiesData.length > 0
-        ? citiesData.map((city: cityDetails) => {
-            return (
+        ? citiesData.map((city: cityDetails) => (
               <div
                 className={isPortrait ? styles.mobile_container : styles.container}
                 key={city.cityId}
               >
                 <Cities cityName={city.cityName} cityId={city.cityId} />
 
-                {city.events.map((playingEvent: eventsDetails) => {
-                  return (
+                {city.events.map((playingEvent: eventsDetails) => (
                     <Accordion
                       className={isPortrait ? styles.mobileAccordion : styles.accordion}
                       key={playingEvent.displayId}
@@ -140,15 +139,13 @@ function MatchQueue() {
                             columns={{ xs: 4, sm: 8, md: 12 }}
                           >
                             {playingEvent.reservedPlayersList.map(
-                              (player: reservedPlayerDetails, i:number) => {
-                                return (
+                              (player: reservedPlayerDetails, i:number) => (
                                   <PlayerDetails
                                     displayName={player.displayName}
                                     index={i}
                                     key={i}
                                   />
-                                );
-                              },
+                                ),
                             )}
                           </Grid>
                         </Box>
@@ -163,26 +160,22 @@ function MatchQueue() {
                               columns={{ xs: 4, sm: 8, md: 12 }}
                             >
                               {playingEvent.waitListPlayers.map(
-                                (player: unReservedPlayerDetails, i:number) => {
-                                  return (
+                                (player: unReservedPlayerDetails, i:number) => (
                                     <PlayerDetails
                                       displayName={player.displayName}
                                       index={i}
                                       key={i}
                                     />
-                                  );
-                                },
+                                  ),
                               )}
                             </Grid>
                           </Box>
                         ) : null}
                       </AccordionDetails>
                     </Accordion>
-                  );
-                })}
+                  ))}
               </div>
-            );
-          })
+            ))
         : null}
       {citiesData.length > 0 ? (
         <footer className={styles.footer}>&#169; Flickmatch 2023</footer>

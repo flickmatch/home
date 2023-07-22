@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
@@ -49,7 +49,7 @@ export const EventsCard: FC<Props> = ({
           </Grid>
           <Grid item xs={4} sm={6} md={4}>
             <Typography className={styles.title}>
-              Date{' '}
+              Date{''}
               <span>
                 {date} {time}
               </span>
@@ -70,7 +70,7 @@ export const EventsCard: FC<Props> = ({
           <Grid item xs={4} sm={4} md={4}>
             <Typography className={styles.title}>
               Google Map{' '}
-              <a href={venueLocationLink} target="_blank">
+              <a href={venueLocationLink} target="_blank" rel="noreferrer">
                 <LocationOnIcon className={styles.locationIcon} />
               </a>
             </Typography>
