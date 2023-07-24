@@ -37,7 +37,13 @@ public class EventBuilderTest {
     public void testJoinEvent() throws ParseException {
         // Mock input data
         String cityId = "cityId";
-        String eventId = "2023345";
+        String eventId = "2023-07-24-01";
+
+
+        String[] parts = eventId.split("-");
+        String date =  parts[0] + "-" + parts[1] + "-" + parts[2];
+        int index = Integer.parseInt(parts[3]);
+
         String playerName = "John Doe";
         String playerWaNumber = "1234567890";
         // Create the join event input
@@ -50,8 +56,6 @@ public class EventBuilderTest {
                 .cityId(cityId)
                 .player(player)
                 .build();
-
-        int finalIndex = Integer.parseInt(joinEventInput.getEventId().substring(6));;
 
         Event.EventDetails existingEventDetails = Event.EventDetails.builder()
                 .index(1)
