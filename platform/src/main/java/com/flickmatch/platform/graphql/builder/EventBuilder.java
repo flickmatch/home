@@ -52,9 +52,11 @@ public class EventBuilder {
     public void joinEvent(JoinEventInput input) {
         int index = 0;
         //TODO: Remove hardcoded value once whatsApp is not used for joining event
-        String date = input.getEventId().substring(0, 5);
+        String date = input.getEventId();
+        String[] parts = date.split("-");
         try{
-             index = Integer.parseInt(input.getEventId().substring(6));
+             date =  parts[0] + "-" + parts[1] + "-" + parts[2];
+             index = Integer.parseInt(parts[3]);
         }
         catch (NumberFormatException e)
         {
@@ -224,13 +226,10 @@ public class EventBuilder {
                 + timeFormatter.format(endTime);
     }
 
-     private void isStartTimeInPast(Date startTime) {
+        private void isStartTimeInPast(Date startTime) {
         Date currentTime = new Date(System.currentTimeMillis());
         if (currentTime.after(startTime)) {
             throw new IllegalArgumentException("Selected past event/Time");
         }
     }
-
-    
-
 }
