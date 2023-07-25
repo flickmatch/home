@@ -8,18 +8,10 @@ import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
-import styles from '../queue.module.scss';
+import styles from './Events.module.scss';
+import type { EventsDetails } from '../interface'
 
-interface Props {
-  charges: number;
-  date: string;
-  reservedPlayersCount: number;
-  time: string;
-  venueLocationLink: string;
-  waitListPlayersCount: number
-}
-
-export const EventsCard: FC<Props> = ({
+export const EventsCard: FC<EventsDetails> = ({
   charges,
   date,
   time,
@@ -36,7 +28,7 @@ export const EventsCard: FC<Props> = ({
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventSection1 : styles.eventSection1}
+          className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
         >
           <Grid item xs={4} sm={4} md={4}>
             <Typography className={styles.title}>
@@ -65,7 +57,7 @@ export const EventsCard: FC<Props> = ({
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventSection1 : styles.eventSection2}
+          className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
         >
           <Grid item xs={4} sm={4} md={4}>
             <Typography className={styles.title}>
@@ -89,9 +81,8 @@ export const EventsCard: FC<Props> = ({
           )}
           {isPortrait ? (
             <Grid item xs={4} sm={4} md={4}>
-              <FlexBox className={styles.venue}>
+              <FlexBox className={styles.joinNow}>
                 <Button
-                  className={styles.joinNow}
                   variant="contained"
                   onClick={() => alert('Joined')}
                 >

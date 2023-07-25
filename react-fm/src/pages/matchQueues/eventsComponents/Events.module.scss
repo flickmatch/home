@@ -1,0 +1,54 @@
+.eventSchedule {
+  margin-top: 25px;
+  color: #fff;
+}
+
+.mobileEventSchedule {
+  margin-top: 22px;
+  width: 105% !important;
+}
+
+.eventDetails, .eventPlayersDetail {
+  margin-left: 20px;
+}
+
+.mobileEventDetails, .mobileEventPlayersDetail {
+  margin-left: 0px;
+}
+
+.mobileEventPlayersDetail {
+  margin-bottom: 10px;
+}
+
+.locationIcon {
+  margin-left: 15px;
+  margin-bottom: -3px;
+  color: #fff;
+}
+
+.title {
+  color: #4CE95A;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.title span {
+  color: #fff;
+  margin-left: 15px;
+}
+
+.currencyIcon {
+  font-size: 22px;
+  margin-bottom: -4px;
+}
+
+.joinNow {
+  margin-bottom: 3px;
+}
+
+.joinNow Button {
+  width: 80%;
+  margin: auto;
+  background: #4CE95A !important;
+  color: black;
+}

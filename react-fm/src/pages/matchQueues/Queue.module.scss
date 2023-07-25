@@ -8,7 +8,7 @@
   margin-top: 30px;
 }
 
-.mobile_container {
+.mobileContainer {
   width: 90%;
   margin: auto;
   margin-top: 30px;
@@ -27,46 +27,6 @@
   flex-flow: column;
   width: 100%;
 } 
-
-//Event Schedule styles
-.eventSchedule {
-  margin-top: 25px;
-  color: #fff;
-}
-
-.mobileEventSchedule {
-  margin-top: 22px;
-  width: 105% !important;
-}
-
-.eventSection1, .eventSection2 {
-  margin-left: 20px;
-}
-
-.mobileEventSection1, .mobileEventSection2 {
-  margin-left: 0px;
-}
-
-.mobileEventSection2 {
-  margin-bottom: 10px;
-}
-
-.locationIcon {
-  margin-left: 15px;
-  margin-bottom: -3px;
-  color: #fff;
-}
-
-.citiesName {
-  color: rgb(76, 233, 90);
-  font-size: 32px;
-  margin-bottom: 15px;
-  font-weight: 600;
-}
-
-.citiesName img {
-  height: 40px;
-}
 
 .venue {
   width: 100%;
@@ -106,47 +66,7 @@
   margin-left: 25px;
 }
 
-.joinNow {
-  width: 80%;
-  margin: auto;
-}
-
-.title {
-  color: #4CE95A;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.grid {
-  display: flex;
-  align-items: center;
-}
-
-.title span {
-  color: #fff;
-  margin-left: 15px;
-}
-
-.currencyIcon {
-  font-size: 22px;
-  margin-bottom: -4px;
-}
-
-.avatar, .accountIcon {
-  margin-right: 15px;
-}
-
-.accountIcon {
-  font-size: 42px;
-}
-
-.playerNames {
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.reserved, .unReserved {
+.reservedPlayers, .unReservedPlayers {
   color: #4CE95A;
   margin-bottom: 15px;
   font-size: 20px;

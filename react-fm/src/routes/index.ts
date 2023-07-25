@@ -23,13 +23,13 @@ const routes: Routes = {
     icon: GitHubIcon,
   },
   [Pages.MatchQueue]: {
-    component: asyncComponentLoader(() => import('@/pages/Match-queues')),
+    component: asyncComponentLoader(() => import('@/pages/matchQueues')),
     path: '/match-queues',
     title: 'Match Queues',
     icon: AddToQueueIcon,
   },
   [Pages.NotFound]: {
-    component: asyncComponentLoader(() => import('@/pages/NotFound')),
+    component: asyncComponentLoader(() => import('@/pages/notFound')),
     path: '/not-found',
     title: 'Not Found',
     icon: SmartToyIcon,
