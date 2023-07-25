@@ -195,7 +195,6 @@ public class EventBuilder {
         return getFormattedEventDate(startTime) + " "
                 + getFormattedEventTime(startTime, endTime);
     }
-
     private void createPlayerQueue(Event.EventDetails eventDetails,
                                    List<Player> reservedPlayers,
                                    List<Player> waitListPlayers) {
@@ -212,7 +211,6 @@ public class EventBuilder {
             counter.getAndIncrement();
         });
     }
-
     private String getFormattedEventDate(Date startTime) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
         dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
@@ -225,7 +223,6 @@ public class EventBuilder {
         return timeFormatter.format(startTime) + "-"
                 + timeFormatter.format(endTime);
     }
-
         private void isStartTimeInPast(Date startTime) {
         Date currentTime = new Date(System.currentTimeMillis());
         if (currentTime.after(startTime)) {

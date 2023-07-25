@@ -1,7 +1,10 @@
 package com.flickmatch.platform.graphql.builder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,14 +12,11 @@ import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
-import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,26 +36,20 @@ public class PlayerBuilderTest {
 
     @InjectMocks
     private EventBuilder eventBuilder;
-
-    @Autowired
+    @InjectMocks
     private PlayerBuilder playerBuilder;
 
     @BeforeEach
     public void init() {
         eventRepository = mock(EventRepository.class);
         sportsVenueRepository = mock(SportsVenueRepository.class);
-        //eventBuilder = mock(EventBuilder.class);
-        eventBuilder = new EventBuilder(eventRepository);
+        eventBuilder = mock(EventBuilder.class);
         playerBuilder = mock(PlayerBuilder.class);
-
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
-
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
     }
-
-    // Rest of the code...
 
     @Test
     public void testCreateSportsVenue_Successful(){
@@ -65,15 +59,12 @@ public class PlayerBuilderTest {
         assertThat(sportsVenues, hasSize(1));
     }
 
-
     @Test
     public void testCreateEvent_Successful(){
         List<Event> eventList= (List<Event>) eventRepository.findAll();
         assertThat(eventList, notNullValue());
         assertThat(eventList, hasSize(1));
     }
-
-
 
     @Test
     public void testUpdatePlayerList_Successful() {
@@ -98,11 +89,7 @@ public class PlayerBuilderTest {
             testUpdatePlayerList_Successful();
         });
 
-        // Verify the outcome
-        // In this case, we expect an assertion error to be thrown because the displayName check fails
     }
-
-    // Rest of the code...
 
     @Test
     public void testBuildPlayerList_Successful() {
@@ -165,8 +152,6 @@ public class PlayerBuilderTest {
                 .build();
         waitListPlayers.add(player2);
 
-        // Add more waitlist players as needed
-
         return waitListPlayers;
     }
 
@@ -225,27 +210,9 @@ public class PlayerBuilderTest {
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build();
-
         List<Event> eventList = new ArrayList<>();
         eventList.add(event);
 
         return eventList;
-    }
-
-    @Test
-    public void joinEvent_Successful()
-    {
-        PlayerInput playerInput = PlayerInput.builder()
-                .name("name")
-                .waNumber("waNumber")
-                .build();
-        JoinEventInput joinEventInput = JoinEventInput.builder()
-                .cityId("cityId")
-                .eventId("eventIda")
-                .player(playerInput)
-                .build();
-
-        eventBuilder.joinEvent(joinEventInput);
-
     }
 }

@@ -11,8 +11,8 @@ import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class EventBuilderTest {
 
     @Mock
     private EventRepository eventRepository;
-    @Autowired
+    @InjectMocks
     private EventBuilder eventBuilder;
 
     @BeforeEach
@@ -38,12 +38,9 @@ public class EventBuilderTest {
         // Mock input data
         String cityId = "cityId";
         String eventId = "2023-07-24-01";
-
-
         String[] parts = eventId.split("-");
         String date =  parts[0] + "-" + parts[1] + "-" + parts[2];
         int index = Integer.parseInt(parts[3]);
-
         String playerName = "John Doe";
         String playerWaNumber = "1234567890";
         // Create the join event input
@@ -56,7 +53,6 @@ public class EventBuilderTest {
                 .cityId(cityId)
                 .player(player)
                 .build();
-
         Event.EventDetails existingEventDetails = Event.EventDetails.builder()
                 .index(1)
                 .startTime(new Time(9,0,0))
