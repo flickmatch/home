@@ -1,12 +1,12 @@
-interface ReservedPlayerDetails {
+type ReservedPlayerDetails = {
   displayName: string;
 }
 
-interface UnReservedPlayerDetails {
+type UnReservedPlayerDetails = {
   displayName: string;
 }
 
-interface EventsDetails {
+type EventsDetails = {
   charges: number;
   date: string;
   displayId: string;
@@ -19,7 +19,7 @@ interface EventsDetails {
   waitListPlayersCount: number;
 }
 
-interface CityDetails {
+type CityDetails = {
   cityId: string;
   cityName: string;
   events: EventsDetails[];
