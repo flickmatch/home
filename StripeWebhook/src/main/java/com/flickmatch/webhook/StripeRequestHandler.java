@@ -49,7 +49,7 @@ public class StripeRequestHandler implements RequestStreamHandler {
                     // Deserialization failed, probably due to an API version mismatch.
                     // Refer to the Javadoc documentation on `EventDataObjectDeserializer` for
                     // instructions on how to handle this case, or return an error here.
-                    logger.log(" Deserialization failed : " + event.toString());
+                    throw new InvalidObjectException(" Deserialization failed : " + event.toString());
                 }
                 // Handle the event
                 switch (event.getType()) {
@@ -64,11 +64,14 @@ public class StripeRequestHandler implements RequestStreamHandler {
                         // Then define and call a method to handle the successful attachment of a PaymentMethod.
                         // handlePaymentMethodAttached(paymentMethod);
                         logger.log("Payment for " + checkoutSession.getAmountTotal() + " succeeded.");
-                        logger.log("Number: " + checkoutSession.getAmountTotal());
+                        logger.log("Payment link Id:" + checkoutSession.getPaymentLink());
                         logger.log("Name on card: " + checkoutSession.getCustomerDetails().getName());
                         logger.log("Email: " + checkoutSession.getCustomerDetails().getEmail());
+                        //Following fields will be used for calling joinEvent mutation
                         logger.log("Player Name: " + getPlayerName(checkoutSession.getCustomFields()));
-                        logger.log("Payment link Id:" + checkoutSession.getPaymentLink());
+                        logger.log("Number: " + checkoutSession.getCustomerDetails().getPhone());
+                        logger.log("CityId: " + checkoutSession.getMetadata().get("cityId"));
+                        logger.log("EventId: " + checkoutSession.getClientReferenceId());
                         break;
                     default:
                         logger.log("Unhandled event type: " + event.getType());
