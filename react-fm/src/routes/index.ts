@@ -11,13 +11,13 @@ import { Pages } from './types';
 
 const routes: Routes = {
   [Pages.Welcome]: {
-    component: asyncComponentLoader(() => import('@/pages/Welcome')),
+    component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/',
     title: 'Home',
     icon: HomeIcon,
   },
   [Pages.Page1]: {
-    component: asyncComponentLoader(() => import('@/pages/Page1')),
+    component: asyncComponentLoader(() => import('@/pages/page1')),
     path: '/page-1',
     title: 'Page 1',
     icon: GitHubIcon,
