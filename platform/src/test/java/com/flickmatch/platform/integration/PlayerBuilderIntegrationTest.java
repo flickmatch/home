@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,12 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.*;
 
 
 public class PlayerBuilderIntegrationTest {
@@ -62,7 +59,6 @@ public class PlayerBuilderIntegrationTest {
             eventRepository = mock(EventRepository.class);
             sportsVenueRepository = mock(SportsVenueRepository.class);
             eventBuilder = mock(EventBuilder.class);
-
             List<SportsVenues> sportsVenues = createSportsVenueMockData();
             List<Event> event = createEventMockData();
 
@@ -100,8 +96,6 @@ public class PlayerBuilderIntegrationTest {
         List<Event.PlayerDetails> playerDetailsList = playerBuilder.buildPlayerList(reservedPlayers, waitListPlayers);
         assertThat(playerDetailsList, notNullValue());
         assertThat(playerDetailsList, hasSize(4));
-
-
     }
 
     @Test
@@ -240,10 +234,27 @@ public class PlayerBuilderIntegrationTest {
         List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
         playerDetailsList.add(playerDetails);
         Integer number = 1;
+        Date isValidStartTime;
+        Date isValidEndTime;
+        try {
+            Method method = PlayerBuilder.class.getDeclaredMethod("validateStartTime", String.class);
+            method.setAccessible(true);
+            PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
+            String startTime = "09:00 AM";
+            String endTime = "10:00 AM";
+            isValidStartTime = (Date) method.invoke(playerBuilder1, startTime);
+            isValidEndTime = (Date) method.invoke(playerBuilder1, endTime);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         Event.EventDetails eventDetails = Event.EventDetails.builder()
                 .index(number)
-                .startTime(playerBuilder.validateStartTime("09:00 AM"))
-                .endTime(playerBuilder.validateStartTime("10:00 AM"))
+                .startTime(isValidStartTime)
+                .endTime(isValidEndTime)
                 .charges(10.0)
                 .reservedPlayersCount(1)
                 .waitListPlayersCount(1)
@@ -263,5 +274,4 @@ public class PlayerBuilderIntegrationTest {
         eventList.add(event);
         return eventList;
     }
-
 }

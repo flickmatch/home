@@ -1,7 +1,5 @@
 package com.flickmatch.platform.graphql.builder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
@@ -9,7 +7,9 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
@@ -21,6 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,11 +45,11 @@ public class PlayerBuilderTest {
     @Mock
     private SportsVenueRepository sportsVenueRepository;
 
-    @InjectMocks
+    @Mock
     private EventBuilder eventBuilder;
 
-     @InjectMocks
-     private PlayerBuilder playerBuilder;
+    @Mock
+    private PlayerBuilder playerBuilder;
 
 
 
@@ -55,7 +57,6 @@ public class PlayerBuilderTest {
     public void init() {
         eventRepository = mock(EventRepository.class);
         sportsVenueRepository = mock(SportsVenueRepository.class);
-        eventBuilder = mock(EventBuilder.class);
 
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
@@ -63,7 +64,7 @@ public class PlayerBuilderTest {
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
 
-        playerBuilder = new PlayerBuilder(eventRepository, sportsVenueRepository);
+
     }
 
 
@@ -93,9 +94,20 @@ public class PlayerBuilderTest {
         eventRepository.findAll().forEach(event -> event.getEventDetailsList().forEach( eventDetails -> {
             eventDetails.getPlayerDetailsList().forEach(playerDetails1 -> {
                 assertThat(playerDetails1, notNullValue());
-                assertEquals(validWaNumber, playerDetails1.getWaNumber());
-                 assertFalse(playerBuilder.validWaNumber(playerDetails1));
-                //assertTrue(playerBuilder.validWaNumber(playerDetails1));
+                 assertEquals(validWaNumber, playerDetails1.getWaNumber());
+                 try {
+                    Method method = PlayerBuilder.class.getDeclaredMethod("validWaNumber", Event.PlayerDetails.class);
+                    method.setAccessible(true);
+                    PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
+                    boolean result = (boolean) method.invoke(playerBuilder1, playerDetails1);
+                    assertFalse(result);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
                 assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
             });
         }));

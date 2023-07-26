@@ -126,7 +126,7 @@ public class PlayerBuilder {
         }
     }
 
-    public Date validateStartTime(String time) {
+    private Date validateStartTime(String time) {
         try {
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
             return timeFormat.parse(time);
@@ -147,7 +147,7 @@ public class PlayerBuilder {
         return venueName.replace(" ", "")
                 .equalsIgnoreCase(inputName.replace(" ", ""));
     }
-    boolean validWaNumber(Event.PlayerDetails playerDetails) {
+      private boolean validWaNumber(Event.PlayerDetails playerDetails) {
         if(playerDetails.getWaNumber() != null && playerDetails.getWaNumber().length() >= 10)
          {
             return false;
