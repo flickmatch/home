@@ -1,0 +1,1 @@
+import{M as r}from"./Meta.004d5d2c.js";import{F as a,T as o}from"./App.b7e45c11.js";import{D as e,F as i,j as t}from"./index.f583ef8d.js";import"./index.module.2d9be543.js";import"./index.7e00dae3.js";function p(){return e(i,{children:[t(r,{title:"Contact Us"}),t(a,{children:t(o,{variant:"h4",children:"flickmatch@gmail.com"})})]})}export{p as default};
