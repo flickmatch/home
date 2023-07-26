@@ -6,7 +6,7 @@ type UnReservedPlayerDetails = {
   displayName: string;
 }
 
-type EventsDetails = {
+type EventDetails = {
   charges: number;
   date: string;
   displayId: string;
@@ -22,7 +22,7 @@ type EventsDetails = {
 type CityDetails = {
   cityId: string;
   cityName: string;
-  events: EventsDetails[];
+  events: EventDetails[];
 }
 
-export type { CityDetails, ReservedPlayerDetails, UnReservedPlayerDetails, EventsDetails };
+export type { CityDetails, ReservedPlayerDetails, UnReservedPlayerDetails, EventDetails };

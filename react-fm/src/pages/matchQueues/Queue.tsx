@@ -18,7 +18,7 @@ import { EventsCard } from './eventsComponents/Events';
 import { PlayerDetails } from './eventsComponents/Players';
 import { apiUrl, query } from './constants';
 import styles from './Queue.module.scss';
-import type {CityDetails, EventsDetails, ReservedPlayerDetails, UnReservedPlayerDetails} from './types/Events.types'
+import type {CityDetails, EventDetails, ReservedPlayerDetails, UnReservedPlayerDetails} from './types/Events.types'
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState([]);
@@ -61,7 +61,7 @@ function MatchQueue() {
         >
           <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
 
-          {city.events.map((playingEvent: EventsDetails) => (
+          {city.events.map((playingEvent: EventDetails) => (
             <Accordion
               className={isPortrait ? styles.mobileAccordion : styles.accordion}
               key={playingEvent.displayId}
@@ -150,15 +150,10 @@ function MatchQueue() {
         </div>
     )) : null
 
-  const footer = () => citiesData.length > 0 ? (
-    <footer className={styles.footer}>&#169; Flickmatch 2023</footer>
-  ) : null  
-
   return (
     <>
       <Meta title="Match Queues" />
       {events()}
-      {footer()}
     </>
   );
 }

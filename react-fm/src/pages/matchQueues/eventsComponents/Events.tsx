@@ -9,9 +9,9 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Events.module.scss';
-import type { EventsDetails } from '../types/Events.types'
+import type { EventDetails } from '../types/Events.types'
 
-export const EventsCard: FC<EventsDetails> = ({
+export const EventsCard: FC<EventDetails> = ({
   charges,
   date,
   time,

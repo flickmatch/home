@@ -1,8 +1,7 @@
-// import AddTaskIcon from '@mui/icons-material/AddTask';
-import AddToQueueIcon from '@mui/icons-material/AddToQueue';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import InfoIcon from '@mui/icons-material/Info';
 import HomeIcon from '@mui/icons-material/Home';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -16,23 +15,23 @@ const routes: Routes = {
     title: 'Home',
     icon: HomeIcon,
   },
-  [Pages.Page1]: {
-    component: asyncComponentLoader(() => import('@/pages/page1')),
-    path: '/page-1',
-    title: 'Page 1',
-    icon: GitHubIcon,
+  [Pages.AboutUs]: {
+    component: asyncComponentLoader(() => import('@/pages/aboutUs')),
+    path: '/about-us',
+    title: 'About Us',
+    icon: InfoIcon,
   },
   [Pages.MatchQueue]: {
     component: asyncComponentLoader(() => import('@/pages/matchQueues')),
     path: '/match-queues',
     title: 'Match Queues',
-    icon: AddToQueueIcon,
+    icon: SportsSoccerIcon,
   },
-  [Pages.NotFound]: {
-    component: asyncComponentLoader(() => import('@/pages/notFound')),
-    path: '/not-found',
-    title: 'Not Found',
-    icon: SmartToyIcon,
+  [Pages.ContactUs]: {
+    component: asyncComponentLoader(() => import('@/pages/contactUs')),
+    path: '/contact-us',
+    title: 'Contact Us',
+    icon: ContactPageIcon,
   },
 };
 
