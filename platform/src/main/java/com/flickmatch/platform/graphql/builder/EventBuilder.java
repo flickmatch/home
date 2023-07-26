@@ -67,7 +67,7 @@ public class EventBuilder {
         Optional<Event> eventsInCity =
                 eventRepository.findById(new Event.EventId(input.getCityId(),date));
         if (eventsInCity.isPresent()) {
-            int finalIndex = index;
+            final int finalIndex = index;
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
                     .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
             if (selectedEvent.isPresent()) {
