@@ -8,6 +8,8 @@ import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.mapper.UpdatePlayerListInputMapper;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import graphql.VisibleForTesting;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,15 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+
 public class PlayerBuilder {
 
     public PlayerBuilder(EventRepository eventRepository, SportsVenueRepository sportsVenueRepository) {
         this.eventRepository = eventRepository;
         this.sportsVenueRepository = sportsVenueRepository;
     }
+
+
 
     @Autowired
     EventBuilder eventBuilder;
@@ -76,6 +81,8 @@ public class PlayerBuilder {
                     // Build the new player details list using input and set it in the event
                     List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
                  //   Set the validPlayerDetailsList as the new playerDetailsList
+                    newPlayerDetailsList.add((Event.PlayerDetails)validPlayerDetailsList);
+
                     eventDetails.setPlayerDetailsList(newPlayerDetailsList);
                 },
                 () -> {
@@ -85,7 +92,7 @@ public class PlayerBuilder {
 
     }
 
-    Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity) {
+    private Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity) {
         return eventsInCity.get().getEventDetailsList().stream()
                 .filter(eventDetails -> compareVenueName(eventDetails.getVenueName(), input.getVenueName()))
                 .filter(eventDetails ->
@@ -99,6 +106,7 @@ public class PlayerBuilder {
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
         waitListPlayers = waitListPlayers.stream()
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
+
         if (CollectionUtils.isEmpty(reservedPlayersList) && CollectionUtils.isEmpty(waitListPlayers)) {
             throw new IllegalArgumentException("Invalid player list");
         }

@@ -19,7 +19,6 @@ import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -63,8 +62,6 @@ public class PlayerBuilderTest {
 
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
-
-
     }
 
 

@@ -16,16 +16,19 @@ import org.mockito.MockitoAnnotations;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Date;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 
 public class PlayerBuilderIntegrationTest {
 
@@ -37,8 +40,6 @@ public class PlayerBuilderIntegrationTest {
     private static final String validWaNumber = "910123456789";
 
     private static final String invalidWaNumber = "1234";
-
-
 
     @Mock
     private EventRepository eventRepository;
@@ -52,23 +53,18 @@ public class PlayerBuilderIntegrationTest {
     @InjectMocks
     private PlayerBuilder playerBuilder;
 
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
 
-            eventRepository = mock(EventRepository.class);
-            sportsVenueRepository = mock(SportsVenueRepository.class);
-            eventBuilder = mock(EventBuilder.class);
-            List<SportsVenues> sportsVenues = createSportsVenueMockData();
-            List<Event> event = createEventMockData();
+        List<SportsVenues> sportsVenues = createSportsVenueMockData();
+        List<Event> event = createEventMockData();
 
-            when(eventRepository.findAll()).thenReturn(event);
-            when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
+        when(eventRepository.findAll()).thenReturn(event);
+        when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
 
-            playerBuilder = new PlayerBuilder(eventRepository, sportsVenueRepository);
-        }
-
-
+    }
 
     @Test
     public void testUpdatePlayerList_ValidInput_SuccessfulUpdate() throws ParseException {
@@ -176,6 +172,7 @@ public class PlayerBuilderIntegrationTest {
 
         return reservedPlayers;
     }
+
     private static List<PlayerInput> createWaitListPlayers() {
         List<PlayerInput> waitListPlayers = new ArrayList<>();
 
@@ -195,6 +192,7 @@ public class PlayerBuilderIntegrationTest {
 
         return waitListPlayers;
     }
+
     private static List<SportsVenues> createSportsVenueMockData() {
         List<SportsVenues> sportsVenues = new ArrayList<>();
 
