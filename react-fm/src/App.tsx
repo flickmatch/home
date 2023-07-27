@@ -8,6 +8,7 @@ import { withErrorHandler } from '@/error-handling';
 import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
 import Pages from '@/routes/Pages';
 import Header from '@/sections/Header';
+import Footer from '@/sections/Footer';
 import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
@@ -25,6 +26,7 @@ function App() {
         <Header />
         <Sidebar />
         <Pages />
+        <Footer />
       </BrowserRouter>
     </Fragment>
   </StyledEngineProvider>
