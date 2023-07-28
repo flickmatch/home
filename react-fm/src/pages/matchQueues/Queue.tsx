@@ -18,11 +18,21 @@ import { EventsCard } from './eventsComponents/Events';
 import { PlayerDetails } from './eventsComponents/Players';
 import { apiUrl, query } from './constants';
 import styles from './Queue.module.scss';
+import dummyData from './data'
 import type {CityDetails, EventDetails, ReservedPlayerDetails, UnReservedPlayerDetails} from './types/Events.types'
 
 function MatchQueue() {
-  const [citiesData, setCitiesData] = useState([]);
+  const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
+  const [dummyEvents, setDummyEvents] = useState(false)
   const isPortrait = useOrientation();
+
+  //getting next day date
+  const today = new Date();
+  today.setDate(today.getDate() + 1)
+  const dateToString = today.toString()
+  const index = dateToString.indexOf('2023')
+  const date = dateToString.substring(0, index)
+  
 
   useEffect(() => {
     const controller = new AbortController();
@@ -40,10 +50,23 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-        setCitiesData(data.data.cities);
+        if (data) {
+          setCitiesData(data.data.cities);
+        } else {
+          //showing dummy events 
+          setDummyEvents(true)
+          setCitiesData(dummyData.data.cities);
+        }
+        
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
+        if (error instanceof Error) {
+          if (error.name === 'TypeError') {
+            setDummyEvents(true)
+            setCitiesData(dummyData.data.cities);          
+          }
+          // eslint-disable-next-line no-console
+          console.log(error.name);
+        }        
       }
     };
     fetchData();
@@ -89,7 +112,7 @@ function MatchQueue() {
                   {/*Event Details*/}
                   <EventsCard
                     charges={playingEvent.charges}
-                    date={playingEvent.date}
+                    date={dummyEvents ? date : playingEvent.date}
                     time={playingEvent.time}
                     venueLocationLink={playingEvent.venueLocationLink}
                     reservedPlayersCount={playingEvent.reservedPlayersCount}
@@ -153,6 +176,7 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
+      <Typography className={styles.title}>Come Play With Us</Typography>
       {events()}
     </>
   );
