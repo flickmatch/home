@@ -134,10 +134,10 @@ public class PlayerBuilder {
         }
     }
 
-    private Date validateStartTime(String time) {
+    private void validateStartTime(String time) {
         try {
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-            return timeFormat.parse(time);
+             timeFormat.parse(time);
 
         } catch (Exception e) {
             throw new IllegalArgumentException("Time is invalid, Please check format");

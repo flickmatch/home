@@ -19,7 +19,6 @@ import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,25 +36,13 @@ public class PlayerBuilderTest {
 
     private static final String invalidWaNumber = "1234";
 
-
-    @Mock
     private EventRepository eventRepository;
-
-    @Mock
     private SportsVenueRepository sportsVenueRepository;
-
-    @Mock
-    private EventBuilder eventBuilder;
-
-    @Mock
-    private PlayerBuilder playerBuilder;
-
-
 
     @BeforeEach
     public void init() {
-        eventRepository = mock(EventRepository.class);
-        sportsVenueRepository = mock(SportsVenueRepository.class);
+       eventRepository = mock(EventRepository.class);
+       sportsVenueRepository = mock(SportsVenueRepository.class);
 
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();

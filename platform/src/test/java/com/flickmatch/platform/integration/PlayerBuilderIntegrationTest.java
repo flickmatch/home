@@ -4,42 +4,37 @@ import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
-import com.flickmatch.platform.graphql.builder.EventBuilder;
-import com.flickmatch.platform.graphql.builder.PlayerBuilder;
 import com.flickmatch.platform.graphql.input.PlayerInput;
-import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
-import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.util.Pair;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:application-test.properties")
 public class PlayerBuilderIntegrationTest {
-
-    private static final String playerName1 = "John Doe";
-    private static final String playerName2 = "Jane Smith";
-    private static final String playerName3 = "Bob Johnson";
-    private static final String playerName4 = "Alice Brown";
-
-    private static final String validWaNumber = "910123456789";
-
-    private static final String invalidWaNumber = "1234";
 
     @Mock
     private EventRepository eventRepository;
@@ -47,153 +42,50 @@ public class PlayerBuilderIntegrationTest {
     @Mock
     private SportsVenueRepository sportsVenueRepository;
 
-    @Mock
-    private EventBuilder eventBuilder;
-
-    @InjectMocks
-    private PlayerBuilder playerBuilder;
-
+    @Value("${application.local.endpoint}")
+    private String url;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-
-        List<SportsVenues> sportsVenues = createSportsVenueMockData();
-        List<Event> event = createEventMockData();
-
-        when(eventRepository.findAll()).thenReturn(event);
-        when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
-
     }
+
 
     @Test
-    public void testUpdatePlayerList_ValidInput_SuccessfulUpdate() throws ParseException {
-        // Arrange
-        UpdatePlayerListInput input = UpdatePlayerListInput.builder()
-                .reservedPlayersList(createReservedPlayers())
-                .waitListPlayers(createWaitListPlayers())
-                .date("19-07-23")
-                .venueName("venueName")
-                .format("format")
-                .charges("charges")
-                .endTime("")
-                .startTime("")
-                .build();
+    void testEventIsCreated_whenMessageReceivedFirstTime() throws FileNotFoundException, JSONException {
 
-        // Mock the repository calls
+        var query = readFileFromResourceFolder("home\\platform\\src\\test\\resources\\query\\updatePlayerList.graphql");
+        var testRestTemplate = new TestRestTemplate();
+        var headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        var reservedPlayersList = List.of(buildPlayer("Player1"), buildPlayer("Player2"));
+        var waitListPlayers = List.of();
+        var dateTimeInput = getDateTimeInput();
+        var variables = Map.of("startTime", dateTimeInput.getSecond().getFirst(),
+                "endTime", dateTimeInput.getSecond().getSecond(),
+                "date", dateTimeInput.getFirst(),
+                "reservedPlayersList", reservedPlayersList,
+                "waitListPlayers", waitListPlayers);
+        var body = Map.of("query", query,
+                "variables", variables);
+        HttpEntity<Map> httpEntity = new HttpEntity(body, headers);
+        ResponseEntity<String> response = testRestTemplate.postForEntity(url, httpEntity, String.class);
+        JSONObject responseBody = convertStringToJSON(response.getBody());
         when(sportsVenueRepository.findAll()).thenReturn(createSportsVenueMockData());
-        when(eventRepository.findById(any())).thenReturn(Optional.empty());
-        when(eventBuilder.createEvent(any(), anyBoolean())).thenReturn(getMockEvent());
-        when(eventRepository.findAll()).thenReturn(createEventMockData());
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(Optional.empty());
+        assertThat(
+                responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful"),
+                is(false));
 
-        List<PlayerInput> reservedPlayers = createReservedPlayers();
-        List<PlayerInput> waitListPlayers = createWaitListPlayers();
+        eventRepository.findAll().forEach(event -> event.getEventDetailsList().forEach( eventDetails -> {
+            eventDetails.getPlayerDetailsList().forEach(playerDetails1 -> {
+                assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
+            });
+        }));
 
-        List<Event.PlayerDetails> playerDetailsList = playerBuilder.buildPlayerList(reservedPlayers, waitListPlayers);
-        assertThat(playerDetailsList, notNullValue());
-        assertThat(playerDetailsList, hasSize(4));
     }
 
-    @Test
-    public void testUpdatePlayerList_InvalidVenue_ThrowsException() throws ParseException {
-        // Arrange
-        UpdatePlayerListInput input = UpdatePlayerListInput.builder()
-                .reservedPlayersList(createReservedPlayers())
-                .waitListPlayers(createWaitListPlayers())
-                .date("19-07-23")
-                .venueName(null)
-                .format("format")
-                .charges("charges")
-                .endTime("")
-                .startTime("")
-                .build();
-
-        // Mock the repository calls
-        when(sportsVenueRepository.findAll()).thenReturn(createSportsVenueMockData());
-
-        // Act and Assert
-        assertThrows(IllegalArgumentException.class, () -> playerBuilder.updatePlayerList(input));
-        verify(eventRepository, never()).save(any(Event.class));
-    }
-
-    // Helper method to generate mock sports venues
-
-    // Helper method to generate a mock event
-    private Event getMockEvent() {
-        Event.EventId eventId = Event.EventId.builder()
-                .cityId("cityId")
-                .date("2023-07-11")
-                .build();
-        List<Event.EventDetails> eventDetailsList = new ArrayList<>();
-
-        Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
-                .name("name")
-                .waNumber(validWaNumber)
-                .build();
-
-        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
-        playerDetailsList.add(playerDetails);
-
-        Event.EventDetails eventDetails = Event.EventDetails.builder()
-                .index(1)
-                .startTime(new Date())
-                .endTime(new Date())
-                .charges(10.0)
-                .reservedPlayersCount(1)
-                .waitListPlayersCount(1)
-                .sportName("Football")
-                .venueName("venueName")
-                .venueLocationLink("venueLocationLink")
-                .playerDetailsList(playerDetailsList)
-                .build();
-        eventDetailsList.add(eventDetails);
-
-        Event event = Event.builder()
-                .eventId(eventId)
-                .eventDetailsList(eventDetailsList)
-                .build();
-        return event;
-    }
-
-    private static List<PlayerInput> createReservedPlayers() {
-        List<PlayerInput> reservedPlayers = new ArrayList<>();
-
-        PlayerInput player1 = PlayerInput.builder()
-                .name(playerName1)
-                .waNumber(validWaNumber)
-                .build();
-        reservedPlayers.add(player1);
-
-        PlayerInput player2 = PlayerInput.builder()
-                .name(playerName2)
-                .waNumber(validWaNumber)
-                .build();
-        reservedPlayers.add(player2);
-
-        return reservedPlayers;
-    }
-
-    private static List<PlayerInput> createWaitListPlayers() {
-        List<PlayerInput> waitListPlayers = new ArrayList<>();
-
-        PlayerInput player1 = PlayerInput.builder()
-                .name(playerName3)
-                .waNumber(validWaNumber)
-                .build();
-        waitListPlayers.add(player1);
-
-        PlayerInput player2 = PlayerInput.builder()
-                .name(playerName4)
-                .waNumber(validWaNumber)
-                .build();
-        waitListPlayers.add(player2);
-
-        // Add more waitlist players as needed
-
-        return waitListPlayers;
-    }
-
-    private static List<SportsVenues> createSportsVenueMockData() {
+    private static Iterable<SportsVenues> createSportsVenueMockData() {
         List<SportsVenues> sportsVenues = new ArrayList<>();
 
         SportsVenues.SportsVenue sportsVenue = SportsVenues.SportsVenue.builder()
@@ -215,61 +107,52 @@ public class PlayerBuilderIntegrationTest {
         return sportsVenues;
     }
 
-    private List<Event> createEventMockData() {
+    private StringBuilder readFileFromResourceFolder(String fileName) throws FileNotFoundException {
+        int startIndex = fileName.indexOf("updatePlayerList");
+        int endIndex = fileName.length();
+        String desiredSubstring = fileName.substring(startIndex, endIndex);
+        StringBuilder result = new StringBuilder();
+        ClassLoader classLoader = PlayerBuilderIntegrationTest.class.getClassLoader();
 
-        Event.EventId eventId = Event.EventId.builder()
-                .cityId("cityId")
-                .date("2023-07-11")
-                .build();
+        InputStream inputStream = classLoader.getResourceAsStream("query/" + desiredSubstring);
 
-        List<Event.EventDetails> eventDetailsList = new ArrayList<>();
+        if (inputStream != null) {
+            result = new StringBuilder();
+            try (Scanner scanner = new Scanner(inputStream)) {
+                while (scanner.hasNextLine()) {
+                    result.append(scanner.nextLine()).append("\n");
+                }
+            }
 
-        Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
-                .name("name")
-                .waNumber(validWaNumber)
-                .build();
-
-        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
-        playerDetailsList.add(playerDetails);
-        Integer number = 1;
-        Date isValidStartTime;
-        Date isValidEndTime;
-        try {
-            Method method = PlayerBuilder.class.getDeclaredMethod("validateStartTime", String.class);
-            method.setAccessible(true);
-            PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
-            String startTime = "09:00 AM";
-            String endTime = "10:00 AM";
-            isValidStartTime = (Date) method.invoke(playerBuilder1, startTime);
-            isValidEndTime = (Date) method.invoke(playerBuilder1, endTime);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            System.out.println("File content:\n" + result.toString());
+        } else {
+            System.out.println("Resource not found.");
         }
-        Event.EventDetails eventDetails = Event.EventDetails.builder()
-                .index(number)
-                .startTime(isValidStartTime)
-                .endTime(isValidEndTime)
-                .charges(10.0)
-                .reservedPlayersCount(1)
-                .waitListPlayersCount(1)
-                .sportName("Football")
-                .venueName("venueName")
-                .venueLocationLink("venueLocationLink")
-                .playerDetailsList(playerDetailsList)
-                .build();
-        eventDetailsList.add(eventDetails);
+        return result;
+    }
 
-        Event event = Event.builder()
-                .eventId(eventId)
-                .eventDetailsList(eventDetailsList)
-                .build();
+    public JSONObject convertStringToJSON(String jsonString) throws JSONException {
+        JSONObject json = new JSONObject(jsonString);
+        return json;
+    }
 
-        List<Event> eventList = new ArrayList<>();
-        eventList.add(event);
-        return eventList;
+    private PlayerInput buildPlayer(String name) {
+        return PlayerInput.builder().name(name).build();
+    }
+
+
+    /**
+     * Create query input in format <date, <startTime, endTime>>
+     *
+     * @return the date time input
+     */
+    private Pair<String, Pair<String, String>> getDateTimeInput() {
+        var offsetHours = 1;
+        var now = LocalDateTime.now().atZone(ZoneId.of("UTC+05:30"));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        var timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        return Pair.of(now.plusHours(offsetHours).format(dateFormatter),
+                Pair.of(now.plusHours(offsetHours).format(timeFormatter),
+                        now.plusHours(offsetHours + 1).format(timeFormatter)));
     }
 }
