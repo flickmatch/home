@@ -32,6 +32,7 @@ public class UpdatePlayerListInputMapper {
         timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         Date isoDate = timeFormatter.parse(date + " " + time);
         SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        isoFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         return isoFormatter.format(isoDate);
     }
 
