@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 public class Event {
-    private String displayId;
+    private String eventId;
     //TODO: Remove displayTitle and logic from mapEventToGQLType,
     // after WA client start using individual fields
     private String displayTitle;

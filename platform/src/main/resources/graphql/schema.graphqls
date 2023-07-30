@@ -102,7 +102,7 @@ type City {
 }
 
 type EVENT {
-    displayId: String!
+    eventId: String!
     displayTitle: String!
     venueLocationLink: String!
     charges: Float!
