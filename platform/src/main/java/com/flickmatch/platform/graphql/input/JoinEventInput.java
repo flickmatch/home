@@ -6,6 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class JoinEventInput {
+
     String eventId;
     String cityId;
     PlayerInput player;
