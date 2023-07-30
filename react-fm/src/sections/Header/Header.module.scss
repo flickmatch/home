@@ -8,6 +8,7 @@
   font-weight: 600;
   position: relative;
   text-decoration: none;
+  transition: 0.3s;
 }
 
 .menuItem::after {
@@ -23,6 +24,10 @@
 
 .menuItem:hover::after {
   width: 100%;
+}
+
+.menuItem:hover {
+  transform: translateY(-3px);
 }
 
 .divider {

@@ -74,7 +74,7 @@ function Header() {
           </FlexBox>
           <FlexBox>
             {menus()}
-            <Divider className={styles.divider} orientation="vertical" flexItem />
+            <Divider className={styles.divider} orientation="horizontal" flexItem />
             <Tooltip title="Switch theme" arrow>
               <IconButton color="info" edge="end" size="large" onClick={themeActions.toggle}>
                 <ThemeIcon />

@@ -1,0 +1,130 @@
+.appBar {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.mobileAppBar {
+  flex-flow: column;
+}
+
+.logo {
+  height: 35px;
+}
+
+.box {
+  display: flex;
+  justify-content: space-around;
+}
+
+.companyName {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.companyDetails {
+  width: 50%;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.mobileCompanyDetails {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.menuDetails {
+  align-items: center;
+  width: 50%;
+  justify-content: space-around;
+  margin-right: 25px;
+  flex-wrap: wrap;
+}
+
+.mobileMenuDetails {
+  width: 90%;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.menuItem {
+  color: #4CE95A;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.menuItem:hover {
+  transform: translateY(-5px);
+  font-weight: 600;
+}
+
+.mobileMenuItem {
+  width: 170px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #4CE95A;
+  font-size: 17px;
+}
+
+.divider {
+  width: 100%;
+}
+
+.companyGrid {
+  display: flex;
+  align-items: center;
+}
+
+.menuGrid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mailId, .contactNo {
+  width: 35%;
+  justify-content: center;
+}
+
+.email, .number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4CE95A;
+}
+
+.socialIcons {
+  width: 25%;
+  justify-content: space-around;
+}
+
+.youtubeIcon, .instaIcon, .whatsappIcon, .linkedInIcon {
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.youtubeIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-3px);
+}
+
+.instaIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}
+
+.whatsappIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}
+
+.linkedInIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}
