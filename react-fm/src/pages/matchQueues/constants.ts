@@ -4,7 +4,7 @@ const avatars =
     "https://pbs.twimg.com/media/FoUoGo3XsAMEPFr?format=jpg&name=4096x4096", 
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIYZ5Ug1CDMppuput1FGd-kwYNoZwcJwDY2fCPmlsK8Q&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp1f10Ha21IUV3t0oABQAcNI1ncGs5o3ohWA&usqp=CAU", 
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1OmtCTmW8kQi4I5LnRFkvVIhdKIs2RSnVTQ&usqp=CAU",
+    "https://upload.wikimedia.org/wikipedia/commons/6/69/Johan_Cruyff_1974c.jpg",
     "https://cdn.futbin.com/content/fifa19/img/players/p246525.png?v=23", 
     "https://i.pinimg.com/originals/9a/23/b0/9a23b044d3ae8bb33087200aaf983c15.jpg",
     "https://i.pinimg.com/736x/f0/8e/1e/f08e1ec7ab1589419d515b7fbb60d88b.jpg", 

@@ -1,5 +1,7 @@
 import type { FC } from 'react';
+
 import { CurrencyRupeeSharp } from '@mui/icons-material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -8,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
-import type { EventDetails } from '../types/Events.types'
 
 export const EventsCard: FC<EventDetails> = ({
   charges,
@@ -17,22 +19,29 @@ export const EventsCard: FC<EventDetails> = ({
   time,
   venueLocationLink,
   reservedPlayersCount,
-  waitListPlayersCount
+  reservedPlayersList,
+  venueName,
 }) => {
   const isPortrait = useOrientation();
+  const openSpots = reservedPlayersCount - reservedPlayersList.length;
 
-  const price = () => 
+  const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          <CurrencyRupeeSharp className={styles.currencyIcon} />
+          {venueName === 'Shoreline Athletic Fields' ? (
+            <AttachMoneyIcon className={styles.currencyIcon} />
+          ) : (
+            <CurrencyRupeeSharp className={styles.currencyIcon} />
+          )}
           {charges}
         </span>
       </Typography>
     </Grid>
+  );
 
-  const dateTime = () => 
+  const dateTime = () => (
     <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Date{''}
@@ -41,8 +50,9 @@ export const EventsCard: FC<EventDetails> = ({
         </span>
       </Typography>
     </Grid>
+  );
 
-  const googleLocation = () => 
+  const googleLocation = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Google Map{' '}
@@ -51,24 +61,26 @@ export const EventsCard: FC<EventDetails> = ({
         </a>
       </Typography>
     </Grid>
+  );
 
-  const numberOfPlayers = () => 
+  const numberOfPlayers = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Number of Players <span>{reservedPlayersCount}</span>
       </Typography>
     </Grid>
+  );
 
-  const playersRequired = () => 
-    waitListPlayersCount > 0 ? null : (
+  const playersRequired = () =>
+    openSpots > 0 ? (
       <Grid item xs={4} sm={4} md={4}>
         <Typography className={styles.title}>
-          Players Required <span>{14 - reservedPlayersCount}</span>
+          Open Spots <span>{openSpots}</span>
         </Typography>
       </Grid>
-    )
+    ) : null;
 
-  const joinNow = () => 
+  const joinNow = () =>
     isPortrait ? (
       <Grid item xs={4} sm={4} md={4}>
         <FlexBox className={styles.joinNow}>
@@ -77,11 +89,14 @@ export const EventsCard: FC<EventDetails> = ({
           </Button>
         </FlexBox>
       </Grid>
-    ) : null
+    ) : null;
 
   return (
     <>
-      <FlexBox className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule} sx={{ flexGrow: 1 }}>
+      <FlexBox
+        className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+        sx={{ flexGrow: 1 }}
+      >
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}

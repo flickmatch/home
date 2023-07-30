@@ -25,4 +25,8 @@ type CityDetails = {
   events: EventDetails[];
 }
 
-export type { CityDetails, ReservedPlayerDetails, UnReservedPlayerDetails, EventDetails };
+type dummyDataArrays = {
+  data: CityDetails[]
+}
+
+export type { CityDetails, ReservedPlayerDetails, UnReservedPlayerDetails, EventDetails, dummyDataArrays };
