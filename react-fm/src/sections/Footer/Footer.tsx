@@ -3,10 +3,10 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
-import WifiCallingIcon from '@mui/icons-material/WifiCalling';
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 
 import { FlexBox } from '@/components/styled';
@@ -33,10 +33,18 @@ function Footer() {
 
   const socialIcons = () => (
     <>
+    <Tooltip title="Connect on YouTube" arrow>
       <YouTubeIcon className={styles.youtubeIcon} />
+      </Tooltip>
+      <Tooltip title="Connect via Instagram" arrow>
       <InstagramIcon className={styles.instaIcon} />
+      </Tooltip>
+      <Tooltip title="Message on Whatsapp" arrow>
       <WhatsAppIcon className={styles.whatsappIcon} />
+      </Tooltip>
+      <Tooltip title="Follow on LinkedIn" arrow>
       <LinkedInIcon className={styles.linkedInIcon} />
+      </Tooltip>
     </>
   );
 
@@ -52,14 +60,12 @@ function Footer() {
 
       <Divider className={styles.divider} orientation="horizontal" flexItem />
 
-      <FlexBox className={styles.appBar}>
-        <FlexBox className={styles.mailId}>
-        <TelegramIcon className={styles.youtubeIcon} /><Typography className={styles.email}>Email &nbsp; flickmatch@gmail.com</Typography>
+      <FlexBox className={isPortrait ? styles.mobileContactus : styles.appBar}>
+        <FlexBox className={isPortrait ? styles.mobileMailId : styles.mailId}>
+          <TelegramIcon className={styles.emailIcon} /><Typography className={styles.email}>&nbsp; flickmatch@gmail.com</Typography>
         </FlexBox>
-        <FlexBox className={styles.contactNo}>
-        <WifiCallingIcon className={styles.youtubeIcon} /><Typography className={styles.number}>Call &nbsp; +91 78273 44279</Typography>
-        </FlexBox>
-        <FlexBox className={styles.socialIcons}>{socialIcons()}</FlexBox>
+
+        <FlexBox className={isPortrait ? styles.mobileSocialMediaIcons : styles.socialMediaIcons}>{socialIcons()}</FlexBox>
       </FlexBox>
     </AppBar>
   );
