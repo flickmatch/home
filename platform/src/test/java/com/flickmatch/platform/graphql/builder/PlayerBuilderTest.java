@@ -1,7 +1,10 @@
 package com.flickmatch.platform.graphql.builder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,7 +36,6 @@ public class PlayerBuilderTest {
 
     @InjectMocks
     private EventBuilder eventBuilder;
-
     @InjectMocks
     private PlayerBuilder playerBuilder;
 
@@ -43,15 +45,11 @@ public class PlayerBuilderTest {
         sportsVenueRepository = mock(SportsVenueRepository.class);
         eventBuilder = mock(EventBuilder.class);
         playerBuilder = mock(PlayerBuilder.class);
-
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
-
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
     }
-
-    // Rest of the code...
 
     @Test
     public void testCreateSportsVenue_Successful(){
@@ -61,15 +59,12 @@ public class PlayerBuilderTest {
         assertThat(sportsVenues, hasSize(1));
     }
 
-
     @Test
     public void testCreateEvent_Successful(){
         List<Event> eventList= (List<Event>) eventRepository.findAll();
         assertThat(eventList, notNullValue());
         assertThat(eventList, hasSize(1));
     }
-
-
 
     @Test
     public void testUpdatePlayerList_Successful() {
@@ -94,11 +89,7 @@ public class PlayerBuilderTest {
             testUpdatePlayerList_Successful();
         });
 
-        // Verify the outcome
-        // In this case, we expect an assertion error to be thrown because the displayName check fails
     }
-
-    // Rest of the code...
 
     @Test
     public void testBuildPlayerList_Successful() {
@@ -161,8 +152,6 @@ public class PlayerBuilderTest {
                 .build();
         waitListPlayers.add(player2);
 
-        // Add more waitlist players as needed
-
         return waitListPlayers;
     }
 
@@ -221,7 +210,6 @@ public class PlayerBuilderTest {
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build();
-
         List<Event> eventList = new ArrayList<>();
         eventList.add(event);
 
