@@ -24,6 +24,14 @@ export const EventsCard: FC<EventDetails> = ({
 }) => {
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
+    //getting next day date
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    const dateToString = today.toString();
+    const index = dateToString.indexOf('2023');
+    const date1 = dateToString.substring(0, index);
+    const todayArray = date1.split(' ')
+    const apiDataArray = date.split(' ')
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
@@ -46,7 +54,7 @@ export const EventsCard: FC<EventDetails> = ({
       <Typography className={styles.title}>
         Date{''}
         <span>
-          {date} {time}
+          {parseInt(todayArray[todayArray.length-2]) - parseInt(apiDataArray[apiDataArray.length-2]) > 0 ? date1 : date} {time}
         </span>
       </Typography>
     </Grid>

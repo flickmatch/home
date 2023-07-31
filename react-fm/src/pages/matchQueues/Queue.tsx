@@ -24,12 +24,12 @@ import type {
   CityDetails,
   EventDetails,
   ReservedPlayerDetails,
-  UnReservedPlayerDetails,
+  waitListPlayerDetails,
 } from './types/Events.types';
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
-  const [dummyEvents, setDummyEvents] = useState(false);
+  //const [dummyEvents, setDummyEvents] = useState(false);
   const isPortrait = useOrientation();
 
   //getting next day date
@@ -38,7 +38,8 @@ function MatchQueue() {
   const dateToString = today.toString();
   const index = dateToString.indexOf('2023');
   const date = dateToString.substring(0, index);
-
+  console.log(today, date);
+  
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -55,25 +56,31 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-        for (let i = 0; i < data.data.cities.length; i++) {
-          const checkEvents = data.data.cities[i];
-          if (checkEvents.events.length > 0) {
-            //setCitiesData(data.data.cities);
-            setCitiesData((prevData) => [...prevData, data.data.cities]);
+        // for (let i = 0; i < data.data.cities.length; i++) {
+        //   const checkEvents = data.data.cities[i];
+        //   if (checkEvents.events.length > 0) {
+        //     setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
+        //   } else {            
+        //     //showing dummy events
+        //     //setDummyEvents(true);
+        //     setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+        //   }
+        // }
+
+        data.data.cities.forEach((city: { events: unknown[]; }, i: number) => {
+          if (city.events.length > 0) {
+            setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
           } else {
-            //showing dummy events
-            setDummyEvents(true);
             setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
           }
-        }
+        })
+        
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
-            setDummyEvents(true);
+            //setDummyEvents(true);
             setCitiesData(dummyData.data.cities);
           }
-          // eslint-disable-next-line no-console
-          console.log(error.name);
         }
       }
     };
@@ -89,7 +96,7 @@ function MatchQueue() {
       ? citiesData.map((city: CityDetails) => (
           <div className={isPortrait ? styles.mobileContainer : styles.container} key={city.cityId}>
             <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
-
+  
             {city.events.map((playingEvent: EventDetails) => (
               <Accordion
                 className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -118,7 +125,7 @@ function MatchQueue() {
                     {/*Event Details*/}
                     <EventsCard
                       charges={playingEvent.charges}
-                      date={dummyEvents ? date : playingEvent.date}
+                      date={playingEvent.date}
                       time={playingEvent.time}
                       venueLocationLink={playingEvent.venueLocationLink}
                       reservedPlayersCount={playingEvent.reservedPlayersCount}
@@ -145,10 +152,10 @@ function MatchQueue() {
                   </Box>
                   {playingEvent.waitListPlayers.length > 0 ? (
                     <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                      <Typography className={styles.unReservedPlayers}>Waitlist</Typography>
+                      <Typography className={styles.waitListPlayers}>Waitlist</Typography>
                       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {playingEvent.waitListPlayers.map(
-                          (player: UnReservedPlayerDetails, i: number) => (
+                          (player: waitListPlayerDetails, i: number) => (
                             <PlayerDetails displayName={player.displayName} index={i} key={i} />
                           ),
                         )}

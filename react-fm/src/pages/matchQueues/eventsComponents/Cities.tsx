@@ -7,8 +7,19 @@ import goldenGateBridge from '/golden-gate.png';
 import type { CityDetails } from '../types/Events.types'
 
 export const Cities: FC<CityDetails> = ({cityName, cityId}) => {
+  
   //calculate the image source based on the city name
-  const cityImage = cityName === 'Hyderabad' ? charminar : cityName === "Gurgaon" ? delhiIcon : goldenGateBridge;
+  let cityImage;
+  switch(cityName) {
+    case "Hyderabad": 
+      cityImage = charminar;
+      break;
+    case "Gurgaon":
+      cityImage = delhiIcon;
+      break;
+    default:
+      cityImage = goldenGateBridge;
+  }
 
   return (
     <Typography className={styles.citiesName} key={cityId}>
