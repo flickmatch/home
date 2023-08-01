@@ -81,7 +81,7 @@ public class PlayerBuilder {
                     // Build the new player details list using input and set it in the event
                     List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
                  //   Set the validPlayerDetailsList as the new playerDetailsList
-                    newPlayerDetailsList.add((Event.PlayerDetails)validPlayerDetailsList);
+                    validPlayerDetailsList.add((Event.PlayerDetails) newPlayerDetailsList);
 
                     eventDetails.setPlayerDetailsList(newPlayerDetailsList);
                 },

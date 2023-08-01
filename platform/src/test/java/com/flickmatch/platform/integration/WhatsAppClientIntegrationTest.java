@@ -12,14 +12,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
+
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -32,7 +34,8 @@ public class WhatsAppClientIntegrationTest {
 
     @Test
     void testEventIsCreated_whenMessageReceivedFirstTime() throws FileNotFoundException, JSONException {
-        var query = readFileFromResourceFolder("home\\platform\\src\\test\\resources\\query\\updatePlayerList.graphql");
+
+        var query = readFileFromResourceFolder("query/updatePlayerList.graphql");
         var testRestTemplate = new TestRestTemplate();
         var headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
@@ -51,29 +54,17 @@ public class WhatsAppClientIntegrationTest {
         JSONObject responseBody = convertStringToJSON(response.getBody());
         assertThat(
                 responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful"),
-                is(false));
+                is(true));
     }
 
-    private StringBuilder readFileFromResourceFolder(String fileName) throws FileNotFoundException {
-        int startIndex = fileName.indexOf("updatePlayerList");
-        int endIndex = fileName.length();
-        String desiredSubstring = fileName.substring(startIndex, endIndex);
-        StringBuilder result = new StringBuilder();
-        ClassLoader classLoader = PlayerBuilderIntegrationTest.class.getClassLoader();
-
-        InputStream inputStream = classLoader.getResourceAsStream("query/" + desiredSubstring);
-
-        if (inputStream != null) {
-             result = new StringBuilder();
-            try (Scanner scanner = new Scanner(inputStream)) {
-                while (scanner.hasNextLine()) {
-                    result.append(scanner.nextLine()).append("\n");
-                }
+    private String readFileFromResourceFolder(String fileName) throws FileNotFoundException {
+        String result = "";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(fileName).getFile());
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                result += scanner.nextLine();
             }
-
-            System.out.println("File content:\n" + result.toString());
-        } else {
-            System.out.println("Resource not found.");
         }
         return result;
     }

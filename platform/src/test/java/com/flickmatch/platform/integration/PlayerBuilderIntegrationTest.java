@@ -36,19 +36,8 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(locations="classpath:application-test.properties")
 public class PlayerBuilderIntegrationTest {
 
-    @Mock
-    private EventRepository eventRepository;
-
-    @Mock
-    private SportsVenueRepository sportsVenueRepository;
-
     @Value("${application.local.endpoint}")
     private String url;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
 
     @Test
@@ -71,40 +60,9 @@ public class PlayerBuilderIntegrationTest {
         HttpEntity<Map> httpEntity = new HttpEntity(body, headers);
         ResponseEntity<String> response = testRestTemplate.postForEntity(url, httpEntity, String.class);
         JSONObject responseBody = convertStringToJSON(response.getBody());
-        when(sportsVenueRepository.findAll()).thenReturn(createSportsVenueMockData());
-        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(Optional.empty());
         assertThat(
                 responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful"),
                 is(false));
-
-        eventRepository.findAll().forEach(event -> event.getEventDetailsList().forEach( eventDetails -> {
-            eventDetails.getPlayerDetailsList().forEach(playerDetails1 -> {
-                assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
-            });
-        }));
-
-    }
-
-    private static Iterable<SportsVenues> createSportsVenueMockData() {
-        List<SportsVenues> sportsVenues = new ArrayList<>();
-
-        SportsVenues.SportsVenue sportsVenue = SportsVenues.SportsVenue.builder()
-                .sportsVenueId("sportsVenueId")
-                .availableSportsIds(List.of("1", "2"))
-                .googleMapsLink("googleMapsLink")
-                .displayName("displayName")
-                .build();
-
-        List<SportsVenues.SportsVenue> sportsVenuesInCity = new ArrayList<>();
-        sportsVenuesInCity.add(sportsVenue);
-        SportsVenues sportsVenues1 = SportsVenues.builder()
-                .cityId("cityId")
-                .sportsVenuesInCity(sportsVenuesInCity)
-                .build();
-
-        sportsVenues.add(sportsVenues1);
-
-        return sportsVenues;
     }
 
     private StringBuilder readFileFromResourceFolder(String fileName) throws FileNotFoundException {
@@ -141,11 +99,6 @@ public class PlayerBuilderIntegrationTest {
     }
 
 
-    /**
-     * Create query input in format <date, <startTime, endTime>>
-     *
-     * @return the date time input
-     */
     private Pair<String, Pair<String, String>> getDateTimeInput() {
         var offsetHours = 1;
         var now = LocalDateTime.now().atZone(ZoneId.of("UTC+05:30"));
