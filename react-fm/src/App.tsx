@@ -22,7 +22,9 @@ function App() {
       <HotKeys />
       <SW />
       <BrowserRouter>
+      <Notifications />
         <Header />
+        <Notifications />
         <Sidebar />
         <Pages />
       </BrowserRouter>
