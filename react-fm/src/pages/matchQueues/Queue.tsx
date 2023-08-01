@@ -29,16 +29,7 @@ import type {
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
-  //const [dummyEvents, setDummyEvents] = useState(false);
   const isPortrait = useOrientation();
-
-  //getting next day date
-  const today = new Date();
-  today.setDate(today.getDate() + 1);
-  const dateToString = today.toString();
-  const index = dateToString.indexOf('2023');
-  const date = dateToString.substring(0, index);
-  console.log(today, date);
   
   useEffect(() => {
     const controller = new AbortController();
@@ -56,16 +47,6 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-        // for (let i = 0; i < data.data.cities.length; i++) {
-        //   const checkEvents = data.data.cities[i];
-        //   if (checkEvents.events.length > 0) {
-        //     setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
-        //   } else {            
-        //     //showing dummy events
-        //     //setDummyEvents(true);
-        //     setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
-        //   }
-        // }
 
         data.data.cities.forEach((city: { events: unknown[]; }, i: number) => {
           if (city.events.length > 0) {
@@ -78,7 +59,6 @@ function MatchQueue() {
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
-            //setDummyEvents(true);
             setCitiesData(dummyData.data.cities);
           }
         }

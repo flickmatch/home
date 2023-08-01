@@ -29,9 +29,12 @@ export const EventsCard: FC<EventDetails> = ({
     today.setDate(today.getDate() + 1);
     const dateToString = today.toString();
     const index = dateToString.indexOf('2023');
-    const date1 = dateToString.substring(0, index);
-    const todayArray = date1.split(' ')
-    const apiDataArray = date.split(' ')
+    const futureDate = dateToString.substring(0, index);
+  
+    const apiDate = date + " 2023"
+    const day = new Date(apiDate).valueOf();
+    const diffTime = Math.abs(day - new Date().valueOf())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))    
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
@@ -54,7 +57,7 @@ export const EventsCard: FC<EventDetails> = ({
       <Typography className={styles.title}>
         Date{''}
         <span>
-          {parseInt(todayArray[todayArray.length-2]) - parseInt(apiDataArray[apiDataArray.length-2]) > 0 ? date1 : date} {time}
+          {diffDays > 1 ? futureDate : date} {time}
         </span>
       </Typography>
     </Grid>
