@@ -253,40 +253,40 @@ const dummyData = {
             "charges": 10.0,
             "reservedPlayersList": [
               {
-                "displayName": "Shubham"
+                "displayName": "Chen"
               },
               {
-                "displayName": "Sahil"
+                "displayName": "Pablo"
               },
               {
-                "displayName": "Sumesh"
+                "displayName": "Feng"
               },
               {
-                "displayName": "Mahendra"
+                "displayName": "Leo"
               },
               {
-                "displayName": "Himesh"
+                "displayName": "Arturito"
               },
               {
-                "displayName": "Saksham"
+                "displayName": "Alison"
               },
               {
-                "displayName": "Sahil"
+                "displayName": "Chang"
               },
               {
-                "displayName": "Abhishek"
+                "displayName": "Diego"
               },
               {
-                "displayName": "Harsh"
+                "displayName": "Mateo"
               },
               {
-                "displayName": "Saarthak"
+                "displayName": "Rafael"
               },
               {
-                "displayName": "Harshvardhan"
+                "displayName": "Shahin"
               },
               {
-                "displayName": "Astitva"
+                "displayName": "Frank"
               },
             ],
             "waitListPlayers": []
@@ -302,48 +302,48 @@ const dummyData = {
             "charges": 15.0,
             "reservedPlayersList": [
               {
-                "displayName": "Harshdeep"
+                "displayName": "Alexei"
               },
               {
-                "displayName": "Sarvesh"
+                "displayName": "Dinara"
               },
               {
-                "displayName": "Shubhman Gill"
+                "displayName": "Eva"
               },
               {
-                "displayName": "Sanju"
+                "displayName": "Henry"
               },
               {
-                "displayName": "Abhishek"
+                "displayName": "Chao"
               },
               {
-                "displayName": "Harsh"
+                "displayName": "Sushant"
               },
               {
-                "displayName": "Jasprit"
+                "displayName": "William"
               },
               {
-                "displayName": "Virat Kohli"
+                "displayName": "Rohan"
               },
               {
-                "displayName": "MS Dhoni"
+                "displayName": "Leonardo"
               },
               {
-                "displayName": "Rituraj G."
+                "displayName": "Abhimanyu"
               }
             ],
             "waitListPlayers": [
               {
-                "displayName": "Shubham"
+                "displayName": "Jiang"
               },
               {
-                "displayName": "Sahil"
+                "displayName": "Santiago"
               },
               {
-                "displayName": "Sumesh"
+                "displayName": "Felipe"
               },
               {
-                "displayName": "Mahendra"
+                "displayName": "Alvaro"
               }
             ]
           }
