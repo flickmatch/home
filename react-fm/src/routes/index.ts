@@ -2,6 +2,7 @@ import ContactPageIcon from '@mui/icons-material/ContactPage';
 import InfoIcon from '@mui/icons-material/Info';
 import HomeIcon from '@mui/icons-material/Home';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -14,6 +15,12 @@ const routes: Routes = {
     path: '/',
     title: 'Home',
     icon: HomeIcon,
+  },
+  [Pages.WhatWeDo]: {
+    component: asyncComponentLoader(() => import('@/pages/whatWeDo')),
+    path: '/what-we-do',
+    title: 'What We Do',
+    icon: PlayArrowIcon,
   },
   [Pages.AboutUs]: {
     component: asyncComponentLoader(() => import('@/pages/aboutUs')),

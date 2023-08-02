@@ -1,0 +1,50 @@
+::-webkit-scrollbar {
+    display: none;
+  }
+
+.box {
+    flex-flow: column;
+}
+
+.ourStory {
+    display: block;
+    padding: 15px 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 30px;
+}
+
+.journey {
+    color: #4CE95A;
+    font-weight: 600;
+    margin-top: 20px;
+    letter-spacing: 0.5px;
+}
+
+.motto, .description, .aim {
+    width: 40%;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.motto, .mobileMotto {
+    margin-top: 20px;
+}
+
+.description, .mobileDescription {
+    margin-top: 15px;
+}
+
+.aim, .mobileAim {
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+
+.mobileMotto, .mobileDescription, .mobileAim {
+    width: 85%;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-left: 7.5%;
+}
