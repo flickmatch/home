@@ -47,7 +47,7 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-
+        console.log(data)
         data.data.cities.forEach((city: { events: unknown[]; }, i: number) => {
           if (city.events.length > 0) {
             setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
@@ -128,8 +128,10 @@ function MatchQueue() {
                           <PlayerDetails displayName={player.displayName} index={i} key={i} />
                         ),
                       )}
+                      {/* <PlayerDetails displayName="Empty" index={i} key="10" /> */}
                     </Grid>
                   </Box>
+
                   {playingEvent.waitListPlayers.length > 0 ? (
                     <Box className={styles.box} sx={{ flexGrow: 1 }}>
                       <Typography className={styles.waitListPlayers}>Waitlist</Typography>

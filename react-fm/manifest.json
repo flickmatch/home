@@ -1,7 +1,7 @@
 {
-  "name": "React PWA",
-  "short_name": "reactpwa",
-  "description": "Starter kit for modern web applications",
+  "name": "Flickmatch",
+  "short_name": "FM",
+  "description": "Find a football game near you!⚽",
   "theme_color": "#ffffff",
   "icons": [
     {
