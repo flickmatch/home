@@ -8,6 +8,8 @@ import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.mapper.UpdatePlayerListInputMapper;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import graphql.VisibleForTesting;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +21,19 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+
 public class PlayerBuilder {
 
     public PlayerBuilder(EventRepository eventRepository, SportsVenueRepository sportsVenueRepository) {
         this.eventRepository = eventRepository;
         this.sportsVenueRepository = sportsVenueRepository;
     }
+
+
 
     @Autowired
     EventBuilder eventBuilder;
@@ -68,10 +74,20 @@ public class PlayerBuilder {
                     false));
             selectedEvent = getSelectedEvent(input, eventsInCity);
         }
+        selectedEvent.ifPresentOrElse(eventDetails -> {
+                    List<Event.PlayerDetails> validPlayerDetailsList = eventDetails.getPlayerDetailsList().stream()
+                            .filter(this::validWaNumber)
+                            .collect(Collectors.toList());
+                    // Build the new player details list using input and set it in the event
+                    List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
+                 //   Set the validPlayerDetailsList as the new playerDetailsList
+                    validPlayerDetailsList.add((Event.PlayerDetails) newPlayerDetailsList);
 
-        selectedEvent.ifPresentOrElse(eventDetails -> eventDetails.setPlayerDetailsList(
-                        buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers())),
-                () -> {throw new IllegalArgumentException("Invalid Event selected");});
+                    eventDetails.setPlayerDetailsList(newPlayerDetailsList);
+                },
+                () -> {
+                    throw new IllegalArgumentException("Invalid Event selected");
+                });
         eventRepository.save(eventsInCity.get());
 
     }
@@ -84,12 +100,13 @@ public class PlayerBuilder {
                 .findFirst();
     }
 
-    List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
-                                              List<PlayerInput> waitListPlayers) {
+    public List<Event.PlayerDetails> buildPlayerList(List<PlayerInput> reservedPlayersList,
+                                                     List<PlayerInput> waitListPlayers) {
         reservedPlayersList = reservedPlayersList.stream()
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
         waitListPlayers = waitListPlayers.stream()
                 .filter(playerInput -> !StringUtils.isEmpty(playerInput.getName())).toList();
+
         if (CollectionUtils.isEmpty(reservedPlayersList) && CollectionUtils.isEmpty(waitListPlayers)) {
             throw new IllegalArgumentException("Invalid player list");
         }
@@ -101,7 +118,7 @@ public class PlayerBuilder {
             playerDetailsList.add(playerDetails);
         });
         waitListPlayers.forEach(waitListPlayer -> {
-            Event.PlayerDetails playerDetails =  Event.PlayerDetails.builder()
+            Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                     .name(waitListPlayer.getName())
                     .build();
             playerDetailsList.add(playerDetails);
@@ -120,11 +137,11 @@ public class PlayerBuilder {
     private void validateStartTime(String time) {
         try {
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-            timeFormat.parse(time);
+             timeFormat.parse(time);
+
         } catch (Exception e) {
             throw new IllegalArgumentException("Time is invalid, Please check format");
         }
-
     }
 
     private String getFormattedEventTime(Date startTime) {
@@ -137,5 +154,13 @@ public class PlayerBuilder {
     private boolean compareVenueName(String venueName, String inputName) {
         return venueName.replace(" ", "")
                 .equalsIgnoreCase(inputName.replace(" ", ""));
+    }
+      private boolean validWaNumber(Event.PlayerDetails playerDetails) {
+        if(playerDetails.getWaNumber() != null && playerDetails.getWaNumber().length() >= 10)
+         {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

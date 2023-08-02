@@ -3,9 +3,13 @@ package com.flickmatch.platform.graphql.builder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
@@ -15,8 +19,8 @@ import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,36 +32,33 @@ public class PlayerBuilderTest {
     private static final String playerName3 = "Bob Johnson";
     private static final String playerName4 = "Alice Brown";
 
-    @Mock
+    private static final String validWaNumber = "910123456789";
+
+    private static final String invalidWaNumber = "1234";
+
     private EventRepository eventRepository;
-
-    @Mock
     private SportsVenueRepository sportsVenueRepository;
-
-    @InjectMocks
-    private EventBuilder eventBuilder;
-    @InjectMocks
-    private PlayerBuilder playerBuilder;
 
     @BeforeEach
     public void init() {
-        eventRepository = mock(EventRepository.class);
-        sportsVenueRepository = mock(SportsVenueRepository.class);
-        eventBuilder = mock(EventBuilder.class);
-        playerBuilder = mock(PlayerBuilder.class);
+       eventRepository = mock(EventRepository.class);
+       sportsVenueRepository = mock(SportsVenueRepository.class);
+
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
+
         when(eventRepository.findAll()).thenReturn(event);
         when(sportsVenueRepository.findAll()).thenReturn(sportsVenues);
     }
 
+
     @Test
     public void testCreateSportsVenue_Successful(){
         List<SportsVenues> sportsVenues= (List<SportsVenues>) sportsVenueRepository.findAll();
-
         assertThat(sportsVenues, notNullValue());
         assertThat(sportsVenues, hasSize(1));
     }
+
 
     @Test
     public void testCreateEvent_Successful(){
@@ -66,12 +67,37 @@ public class PlayerBuilderTest {
         assertThat(eventList, hasSize(1));
     }
 
+
+
     @Test
-    public void testUpdatePlayerList_Successful() {
+    public void testUpdatePlayerList_Successful(){
+
         sportsVenueRepository.findAll().forEach(sportsVenues -> sportsVenues.getSportsVenuesInCity().forEach(sportsVenue -> {
             assertThat(sportsVenue.getDisplayName(), equalToIgnoringCase("displayName"));
         }));
+        eventRepository.findAll().forEach(event -> event.getEventDetailsList().forEach( eventDetails -> {
+            eventDetails.getPlayerDetailsList().forEach(playerDetails1 -> {
+                assertThat(playerDetails1, notNullValue());
+                 assertEquals(validWaNumber, playerDetails1.getWaNumber());
+                 try {
+                    Method method = PlayerBuilder.class.getDeclaredMethod("validWaNumber", Event.PlayerDetails.class);
+                    method.setAccessible(true);
+                    PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
+                    boolean result = (boolean) method.invoke(playerBuilder1, playerDetails1);
+                    assertFalse(result);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                assertThat(eventDetails.getPlayerDetailsList(), not(empty()));
+            });
+        }));
     }
+
+
 
     @Test
     public void testUpdatePlayerList_Unsuccessful() {
@@ -142,15 +168,17 @@ public class PlayerBuilderTest {
 
         PlayerInput player1 = PlayerInput.builder()
                 .name(playerName3)
-                .waNumber("27")
+                .waNumber(validWaNumber)
                 .build();
         waitListPlayers.add(player1);
 
         PlayerInput player2 = PlayerInput.builder()
                 .name(playerName4)
-                .waNumber("32")
+                .waNumber(validWaNumber)
                 .build();
         waitListPlayers.add(player2);
+
+        // Add more waitlist players as needed
 
         return waitListPlayers;
     }
@@ -160,17 +188,15 @@ public class PlayerBuilderTest {
 
         PlayerInput player1 = PlayerInput.builder()
                 .name(playerName1)
-                .waNumber("25")
+                .waNumber(validWaNumber)
                 .build();
         reservedPlayers.add(player1);
 
         PlayerInput player2 = PlayerInput.builder()
                 .name(playerName2)
-                .waNumber("30")
+                .waNumber(validWaNumber)
                 .build();
         reservedPlayers.add(player2);
-
-        // Add more reserved players as needed
 
         return reservedPlayers;
     }
@@ -186,7 +212,7 @@ public class PlayerBuilderTest {
 
         Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                 .name("name")
-                .waNumber("waNumber")
+                .waNumber(validWaNumber)
                 .build();
 
         List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
@@ -210,9 +236,9 @@ public class PlayerBuilderTest {
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build();
+
         List<Event> eventList = new ArrayList<>();
         eventList.add(event);
-
         return eventList;
     }
 }
