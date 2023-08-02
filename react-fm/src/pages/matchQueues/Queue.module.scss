@@ -2,6 +2,19 @@
   display: none;
 }
 
+body {
+  font-family: 'Montserrat Alt 1', sans-serif;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 34px;
+  color: #4CE95A;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 20px;
+}
+
 .container {
   width: 80%;
   margin: auto;
@@ -66,7 +79,7 @@
   margin-left: 25px;
 }
 
-.reservedPlayers, .unReservedPlayers {
+.reservedPlayers, .waitListPlayers {
   color: #4CE95A;
   margin-bottom: 15px;
   font-size: 20px;

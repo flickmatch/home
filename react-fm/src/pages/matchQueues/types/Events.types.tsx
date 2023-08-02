@@ -2,7 +2,7 @@ type ReservedPlayerDetails = {
   displayName: string;
 }
 
-type UnReservedPlayerDetails = {
+type waitListPlayerDetails = {
   displayName: string;
 }
 
@@ -15,7 +15,7 @@ type EventDetails = {
   time: string;
   venueLocationLink: string;
   venueName: string;
-  waitListPlayers: UnReservedPlayerDetails[];
+  waitListPlayers: waitListPlayerDetails[];
   waitListPlayersCount: number;
 }
 
@@ -25,4 +25,8 @@ type CityDetails = {
   events: EventDetails[];
 }
 
-export type { CityDetails, ReservedPlayerDetails, UnReservedPlayerDetails, EventDetails };
+type dummyDataArrays = {
+  data: CityDetails[]
+}
+
+export type { CityDetails, ReservedPlayerDetails, waitListPlayerDetails, EventDetails, dummyDataArrays };
