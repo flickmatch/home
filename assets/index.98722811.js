@@ -1,1 +1,0 @@
-import{M as t}from"./Meta.5b501e32.js";import{F as o,T as e}from"./App.0a482b53.js";import{D as a,F as s,j as r}from"./index.700f60cb.js";import"./index.module.4dc84090.js";import"./index.e39f88ad.js";function u(){return a(s,{children:[r(t,{title:"About Us"}),r(o,{children:r(e,{variant:"h3",children:"About Us"})})]})}export{u as default};
