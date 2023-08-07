@@ -32,7 +32,7 @@ function Header() {
         Home
       </Typography>
       <Divider className={styles.divider} orientation="vertical" flexItem />
-      <Typography className={styles.menuItem} component={Link} to="/about-us">
+      <Typography className={styles.menuItem} component={Link} to="/what-we-do">
         What we do
       </Typography>
       <Divider className={styles.divider} orientation="vertical" flexItem />
