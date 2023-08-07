@@ -8,10 +8,10 @@ import com.flickmatch.webhook.StripeRequestHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.client.RestTemplate;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -29,16 +29,12 @@ public class StripeRequestHandlerTest {
 
     @Test
     public void testHandleRequest() throws Exception {
-        // Read the JSON data from the file
 
         Context mockContext = createMockContext();
+        // Read the JSON data from the file
+        Resource resource = new ClassPathResource("event_checkout_complete_sample_payload.json");
 
-        String filePath = "C:\\Users\\astit\\OneDrive\\Desktop\\Flickmatch Project\\home\\StripeWebhook\\src\\test\\resources\\event_checkout_complete_sample_payload.json";
-
-        byte[] jsonData = Files.readAllBytes(Paths.get(filePath));
-
-        // Convert JSON data to InputStream
-        InputStream inputStream = new ByteArrayInputStream(jsonData);
+        InputStream inputStream = resource.getInputStream();
 
         // Create a mock OutputStream for capturing the Lambda response
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -48,8 +44,6 @@ public class StripeRequestHandlerTest {
 
         // Get the response from the OutputStream
         String responseJson = outputStream.toString("UTF-8");
-
-
         assertEquals("{}", responseJson);
 
     }
@@ -122,7 +116,6 @@ public class StripeRequestHandlerTest {
             }
         };
     }
-
 }
 
 
