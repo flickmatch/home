@@ -7,9 +7,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
@@ -80,11 +78,11 @@ public class PlayerBuilderTest {
                 assertThat(playerDetails1, notNullValue());
                  assertEquals(validWaNumber, playerDetails1.getWaNumber());
                  try {
-                    Method method = PlayerBuilder.class.getDeclaredMethod("validWaNumber", Event.PlayerDetails.class);
+                    Method method = PlayerBuilder.class.getDeclaredMethod("isWANumberValid", Event.PlayerDetails.class);
                     method.setAccessible(true);
                     PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
                     boolean result = (boolean) method.invoke(playerBuilder1, playerDetails1);
-                    assertFalse(result);
+                    assertTrue(result);
                 } catch (NoSuchMethodException e) {
                     throw new RuntimeException(e);
                 } catch (InvocationTargetException e) {

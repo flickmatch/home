@@ -7,9 +7,6 @@ import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.mapper.UpdatePlayerListInputMapper;
 import com.flickmatch.platform.graphql.util.DateUtil;
-import graphql.VisibleForTesting;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +39,12 @@ public class PlayerBuilder {
     private final SportsVenueRepository sportsVenueRepository;
 
 
+    /**
+     * Adds players from whatsApp message.
+     *
+     * @param input the input
+     * @throws ParseException the parse exception
+     */
     public void updatePlayerList(UpdatePlayerListInput input) throws ParseException {
         validateStartTime(input.getStartTime());
         String date = validateAndFormatDate(input.getDate());
@@ -75,15 +78,17 @@ public class PlayerBuilder {
             selectedEvent = getSelectedEvent(input, eventsInCity);
         }
         selectedEvent.ifPresentOrElse(eventDetails -> {
+                    // validPlayerDetailsList represent players that already paid using website
                     List<Event.PlayerDetails> validPlayerDetailsList = eventDetails.getPlayerDetailsList().stream()
-                            .filter(this::validWaNumber)
+                            .filter(this::isWANumberValid)
                             .collect(Collectors.toList());
-                    // Build the new player details list using input and set it in the event
-                    List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(), input.getWaitListPlayers());
-                 //   Set the validPlayerDetailsList as the new playerDetailsList
-                    validPlayerDetailsList.add((Event.PlayerDetails) newPlayerDetailsList);
+                    // Build the new player details list using input
+                    List<Event.PlayerDetails> newPlayerDetailsList = buildPlayerList(input.getReservedPlayersList(),
+                            input.getWaitListPlayers());
+                    //merge new list
+                    validPlayerDetailsList.addAll(newPlayerDetailsList);
 
-                    eventDetails.setPlayerDetailsList(newPlayerDetailsList);
+                    eventDetails.setPlayerDetailsList(validPlayerDetailsList);
                 },
                 () -> {
                     throw new IllegalArgumentException("Invalid Event selected");
@@ -155,12 +160,7 @@ public class PlayerBuilder {
         return venueName.replace(" ", "")
                 .equalsIgnoreCase(inputName.replace(" ", ""));
     }
-      private boolean validWaNumber(Event.PlayerDetails playerDetails) {
-        if(playerDetails.getWaNumber() != null && playerDetails.getWaNumber().length() >= 10)
-         {
-            return false;
-        } else {
-            return true;
-        }
+      private boolean isWANumberValid(Event.PlayerDetails playerDetails) {
+          return playerDetails.getWaNumber() != null && playerDetails.getWaNumber().length() >= 10;
     }
 }

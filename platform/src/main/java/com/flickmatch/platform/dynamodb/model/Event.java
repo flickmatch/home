@@ -62,6 +62,8 @@ public class Event {
 
     @DynamoDBDocument
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EventDetails {
         Integer index;
         Date startTime;
@@ -168,6 +170,8 @@ public class Event {
 
     @DynamoDBDocument
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PlayerDetails {
         String name;
         String waNumber;
