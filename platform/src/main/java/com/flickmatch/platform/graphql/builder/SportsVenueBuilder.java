@@ -37,7 +37,6 @@ public class SportsVenueBuilder {
     }
 
     public List<SportsVenue> getSportsVenues(final String cityId) {
-
         Optional<SportsVenues> sportsVenues = sportsVenueRepository.findById(cityId);
         return sportsVenues.map(venues -> venues.getSportsVenuesInCity().stream()
                 .map(sportsVenue -> SportsVenue.builder()
@@ -45,25 +44,16 @@ public class SportsVenueBuilder {
                         .displayName(sportsVenue.getDisplayName())
                         .googleMapsLink(sportsVenue.getGoogleMapsLink())
                         .availableSportsIds(sportsVenue.getAvailableSportsIds())
-                        .stripePaymentLinkInput(SportsVenues.StripePaymentLinkInput.builder()
-                                .amount(sportsVenue.getStripePaymentLinkInputs().getAmount())
-                                .link(sportsVenue.getStripePaymentLinkInputs().getLink())
-                                .build())
                         .build())
                 .toList()).orElse(null);
     }
 
     private SportsVenues.SportsVenue createSportsVenueInCity(final CreateSportsVenueInput input) {
-        SportsVenues.StripePaymentLinkInput stripePaymentLinkInput = SportsVenues.StripePaymentLinkInput.builder()
-                .amount(input.getStripePaymentLinkInput().getAmount())
-                .link(input.getStripePaymentLinkInput().getLink())
-                .build();
         SportsVenues.SportsVenue sportsVenue = SportsVenues.SportsVenue.builder()
                 .displayName(input.getDisplayName())
                 .googleMapsLink(input.getGoogleMapsLink())
                 .availableSportsIds(List.of("1"))
                 .sportsVenueId(String.valueOf(System.currentTimeMillis()))
-                .stripePaymentLinkInput(stripePaymentLinkInput)
                 .build();
         return sportsVenue;
     }

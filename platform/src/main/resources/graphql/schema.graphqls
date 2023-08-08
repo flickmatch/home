@@ -62,13 +62,6 @@ input CreateSportsVenueInput {
     Not required for P0, will be defaulted to FOOTBALL
     """
     availableSportsIds: [ID!]
-
-    stripePaymentLinks: [StripePaymentLinkInput]!
-}
-
-input StripePaymentLinkInput {
-    amount: Float!
-    link: String!
 }
 
 input UpdatePlayerListInput {
