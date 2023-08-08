@@ -1,0 +1,149 @@
+.appBar {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobileAppBar {
+  flex-flow: column;
+}
+
+.mobileContactus {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.logo {
+  height: 35px;
+}
+
+.box {
+  display: flex;
+  justify-content: space-around;
+}
+
+.companyName {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.companyDetails {
+  width: 55%;
+  align-items: center;
+  margin-left: 90px;
+}
+
+.mobileCompanyDetails {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.menuDetails {
+  align-items: center;
+  width: 45%;
+  justify-content: space-around;
+  margin-right: 25px;
+  flex-wrap: wrap;
+}
+
+.mobileMenuDetails {
+  width: 90%;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.menuItem {
+  color: #4CE95A;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.menuItem:hover {
+  transform: translateY(-5px);
+  font-weight: 600;
+}
+
+.mobileMenuItem {
+  width: 170px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #4CE95A;
+  font-size: 17px;
+}
+
+.divider {
+  width: 100%;
+}
+
+.mailId {
+  width: 34%;
+  justify-content: center;
+}
+
+.mobileMailId {
+  width: 275px;
+  margin-bottom: 15px;
+}
+
+.email {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.emailIcon {
+  color: #4CE95A;
+  font-size: 30px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  margin-right: 4px;
+}
+
+.socialMediaIcons {
+  width: 25%;
+  justify-content: space-around;
+  margin-right: 10px;
+}
+
+.mobileSocialMediaIcons {
+  width: 275px;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.youtubeIcon, .instaIcon, .whatsappIcon, .linkedInIcon {
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.emailIcon:hover {
+  transform: translateY(-3px);
+}
+
+.youtubeIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-3px);
+}
+
+.instaIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}
+
+.whatsappIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}
+
+.linkedInIcon:hover {
+  color: #4CE95A;
+  transform: translateY(-5px);
+}

@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  margin-top: 80px;
+  align-items: center;
+}
+
+.logo {
+  height: 48px;
+}
+
+.job {
+  font-weight: 500;
+  margin-top: 20px;
+  font-size: 19px;
+}
+
+.stats {
+  margin-top: 35px;
+  margin-bottom: 50px;
+}
+
+.mobileStats {
+  width: 390px;
+  margin-top: 35px;
+  margin-bottom: 80px;
+}

@@ -297,7 +297,7 @@ const dummyData = {
             "time": "8:00PM-9:00PM",
             "venueName": "Shoreline Athletic Fields",
             "reservedPlayersCount": 10,
-            "waitListPlayersCount": 4,
+            "waitListPlayersCount": 5,
             "venueLocationLink": "https://maps.app.goo.gl/ebEXAjXrsUvBanyY9",
             "charges": 15.0,
             "reservedPlayersList": [

@@ -1,7 +1,9 @@
 r"""Script to generate labelled data for Flickmatch YouTube Videos.
 
 """
-from utils import _VIDEO_URL_COLUMN_NAME, _START_DURATION_COLUMN_NAME, _END_DURATION_COLUMN_NAME, get_annotations, download_video, save_frames
+
+import pandas as pd
+from data_utils import _VIDEO_URL_COLUMN_NAME, _START_DURATION_COLUMN_NAME, _END_DURATION_COLUMN_NAME, get_annotations, download_video, save_frames, resize_image
 import argparse
 import cv2
 import os
@@ -76,32 +78,6 @@ def parse_arguments():
     )
     args = parser.parse_args()
     return args
-
-
-def resize_image(image, target_shape):
-    r"""Resize image to provided target_shape including padding effort for no distortion.
-    
-    Args:
-        image: image to resize
-        target_shape: target shape (height, width)
-    
-    Returns:
-        resized image
-    """
-    width = image.shape[0]
-    height = image.shape[1]
-
-    if height == width:
-        return cv2.resize(image, target_shape)
-    
-    if height > width:
-        padding = (height - width) // 2
-        image = np.pad(image, ((padding, padding), (0, 0), (0, 0)), mode='constant')
-    else:
-        padding = (width - height) // 2
-        image = np.pad(image, ((0, 0), (padding, padding), (0, 0)), mode='constant')
-
-    return cv2.resize(image, target_shape)
 
 
 def extract_frames(video_save_folder, video_name, goal_durations, frame_rate):
