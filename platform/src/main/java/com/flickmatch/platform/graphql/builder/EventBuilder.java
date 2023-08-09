@@ -6,6 +6,7 @@ import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
+import com.flickmatch.platform.graphql.type.StripePaymentLink;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,8 +160,21 @@ public class EventBuilder {
                 .venueName(sportsVenue.get().getDisplayName())
                 .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
                 .playerDetailsList(new ArrayList<>())
+                .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .build();
         return eventDetails;
+    }
+
+    private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
+        Optional<StripePaymentLink> stripePaymentLinkForAmount = sportsVenue.getStripePaymentLinks().stream()
+                .filter(stripePaymentLink -> stripePaymentLink.getAmount().equals(amount))
+                .findFirst();
+        if (stripePaymentLinkForAmount.isEmpty()) {
+            //Todo: For now keeping it soft dependency, we need to throw exception in future
+            log.error("Can't find stripe payment link in venue");
+            return null;
+        }
+        return stripePaymentLinkForAmount.get().getUrl();
     }
 
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
@@ -188,6 +202,7 @@ public class EventBuilder {
                 .reservedPlayersCount(eventDetails.getReservedPlayersCount())
                 .waitListPlayers(waitListPlayers)
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
+                .stripePaymentUrl(eventDetails.getStripePaymentUrl())
                 .build();
     }
 

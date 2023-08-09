@@ -12,4 +12,5 @@ public class SportsVenue {
     private String googleMapsLink;
     private String sportsVenueId;
     private List<String> availableSportsIds;
+    private List<StripePaymentLink> stripePaymentLinks;
 }

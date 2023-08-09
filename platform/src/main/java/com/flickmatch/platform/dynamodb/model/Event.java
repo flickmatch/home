@@ -75,7 +75,17 @@ public class Event {
         String venueName;
         String venueLocationLink;
         List<PlayerDetails> playerDetailsList;
+        String stripePaymentUrl;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName="stripePaymentUrl")
+        public String getStripePaymentUrl() {
+            return stripePaymentUrl;
+        }
+
+        public void setStripePaymentUrl(String stripePaymentUrl) {
+            this.stripePaymentUrl = stripePaymentUrl;
+        }
 
         @DynamoDBAttribute(attributeName="index")
         public Integer getIndex() {

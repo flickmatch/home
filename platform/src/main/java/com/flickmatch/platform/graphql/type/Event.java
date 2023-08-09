@@ -19,4 +19,5 @@ public class Event {
     private Double charges;
     private List<Player> reservedPlayersList;
     private List<Player> waitListPlayers;
+    private String stripePaymentUrl;
 }
