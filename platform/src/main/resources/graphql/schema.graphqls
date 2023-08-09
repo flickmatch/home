@@ -113,6 +113,10 @@ type EVENT {
     waitListPlayersCount: Int!
     reservedPlayersList: [Player]
     waitListPlayers: [Player]
+    """
+    We need to make this mandatory in future
+    """
+    stripePaymentUrl: String
 }
 
 type Player {
@@ -124,6 +128,15 @@ type SportsVenue {
     displayName: String!
     googleMapsLink: String!
     availableSportsIds: [ID!]
+    """
+    We need to make this mandatory in future
+    """
+    stripePaymentLinks: [StripePaymentLink!]
+}
+
+type StripePaymentLink {
+    amount: Float!
+    url: String!
 }
 
 type Sport {
