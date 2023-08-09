@@ -13,4 +13,6 @@ public class CreateSportsVenueInput {
     String displayName;
     String googleMapsLink;
     SportsVenues.StripePaymentLinkInput stripePaymentLinkInput;
+
+
 }

@@ -14,4 +14,6 @@ public class SportsVenue {
     private String sportsVenueId;
     private List<String> availableSportsIds;
     private SportsVenues.StripePaymentLinkInput stripePaymentLinkInput;
+
+
 }

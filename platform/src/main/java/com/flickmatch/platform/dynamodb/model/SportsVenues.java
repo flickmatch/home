@@ -31,6 +31,8 @@ public class SportsVenues {
         this.sportsVenuesInCity = sportsVenuesInCity;
     }
 
+
+
     @DynamoDBDocument
     @Builder
     @AllArgsConstructor
@@ -41,7 +43,7 @@ public class SportsVenues {
         private List<String> availableSportsIds;
         private StripePaymentLinkInput stripePaymentLinkInputs;
 
-        @Builder.Default // Ensure that stripePaymentLinkInput has a default value
+        @Builder.Default
         private StripePaymentLinkInput stripePaymentLinkInput = new StripePaymentLinkInput();
 
         public void setStripePaymentLinkInputs(StripePaymentLinkInput stripePaymentLinkInputs) {
