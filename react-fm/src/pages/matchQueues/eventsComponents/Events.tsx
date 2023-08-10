@@ -21,20 +21,21 @@ export const EventsCard: FC<EventDetails> = ({
   reservedPlayersCount,
   reservedPlayersList,
   venueName,
+  stripePaymentUrl,
 }) => {
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
-    //getting next day date
-    const today = new Date();
-    today.setDate(today.getDate() + 1);
-    const dateToString = today.toString();
-    const index = dateToString.indexOf('2023');
-    const futureDate = dateToString.substring(0, index);
-  
-    const apiDate = date + " 2023"
-    const day = new Date(apiDate).valueOf();
-    const diffTime = Math.abs(day - new Date().valueOf())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))    
+  //getting next day date
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  const dateToString = today.toString();
+  const index = dateToString.indexOf('2023');
+  const futureDate = dateToString.substring(0, index);
+
+  const apiDate = date + ' 2023';
+  const day = new Date(apiDate).valueOf();
+  const diffTime = Math.abs(day - new Date().valueOf());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
@@ -91,12 +92,23 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
+  const openInNewTab = (url: string): void => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  };
+
   const joinNow = () =>
     isPortrait ? (
       <Grid item xs={4} sm={4} md={4}>
         <FlexBox className={styles.joinNow}>
-          <Button variant="contained" onClick={() => alert('Joined')}>
-            Join Queue
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (stripePaymentUrl) openInNewTab(stripePaymentUrl);
+              else alert('Match Full');
+            }}
+          >
+            Join {stripePaymentUrl ? 'Game' : 'Waitlist'}
           </Button>
         </FlexBox>
       </Grid>
