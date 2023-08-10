@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "gh-pages:404": "cp ./404.html ./dist",
-    "add-domain": "echo stag.flickmatch.in > dist/CNAME",
+    "add-domain": "echo play.flickmatch.in > dist/CNAME",
     "predeploy": "npm run build && npm run gh-pages:404 && npm run add-domain",
     "deploy": "gh-pages -d dist"
   },

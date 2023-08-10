@@ -21,7 +21,7 @@ const query = JSON.stringify({
         cityId
         cityName
         events {
-          displayId
+          eventId
           date
           time
           venueName
@@ -35,6 +35,7 @@ const query = JSON.stringify({
           waitListPlayers {
             displayName
           }
+          stripePaymentUrl
         }
       }
     }`,
