@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Log4j2
 public class EventBuilder {
 
+    private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
+
     EventRepository eventRepository;
 
     @Autowired SportsVenueBuilder sportsVenueBuilder;
@@ -178,10 +180,8 @@ public class EventBuilder {
     }
 
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
-        //TODO: Use full date once whatsApp is not used for joining event
         String eventId = date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
-        //log.info(eventDetails.getReservedPlayersCount());
         String eventType = players + "v" + players;
         String title = eventType + " "
                 + formatDateTimeForTitle(eventDetails.getStartTime(), eventDetails.getEndTime())
@@ -202,7 +202,7 @@ public class EventBuilder {
                 .reservedPlayersCount(eventDetails.getReservedPlayersCount())
                 .waitListPlayers(waitListPlayers)
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
-                .stripePaymentUrl(eventDetails.getStripePaymentUrl())
+                .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
                 .build();
     }
 

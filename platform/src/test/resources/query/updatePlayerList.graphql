@@ -8,7 +8,7 @@ mutation updatePlayers($reservedPlayersList: [PlayerInput!]!,
         date : $date
         startTime: $startTime
         endTime: $endTime
-        charges: "300"
+        charges: "200"
         venueName: "HotFut GachiBowli"
         format: "5v5"
         reservedPlayersList : $reservedPlayersList
