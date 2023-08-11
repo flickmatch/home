@@ -1,8 +1,8 @@
 import ContactPageIcon from '@mui/icons-material/ContactPage';
-import InfoIcon from '@mui/icons-material/Info';
 import HomeIcon from '@mui/icons-material/Home';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import InfoIcon from '@mui/icons-material/Info';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -10,8 +10,17 @@ import type { Routes } from './types';
 import { Pages } from './types';
 
 const routes: Routes = {
+  // [Pages.Welcome]: {
+  //   component: asyncComponentLoader(() => import('@/pages/welcome')),
+  //   path: '/',
+  //   title: 'Home',
+  //   icon: HomeIcon,
+  // },
   [Pages.Welcome]: {
-    component: asyncComponentLoader(() => import('@/pages/welcome')),
+    component: () => {
+      window.location.href = 'https://flickmatch.in';
+      return null;
+    },
     path: '/',
     title: 'Home',
     icon: HomeIcon,

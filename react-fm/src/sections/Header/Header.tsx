@@ -1,23 +1,24 @@
+import { Link } from 'react-router-dom';
+
 import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import { Link } from 'react-router-dom';
 
 import { FlexBox } from '@/components/styled';
+import useOrientation from '@/hooks/useOrientation';
 //import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
-import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
 import mainlogo from '/logo.png';
-import { Typography } from '@mui/material';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
@@ -25,44 +26,44 @@ function Header() {
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
 
-  const menus = () => 
-  !isPortrait ? 
-    <FlexBox style={{alignItems: 'center'}}>
-      <Typography className={styles.menuItem} component={Link} to="/">
-        Home
-      </Typography>
-      <Divider className={styles.divider} orientation="vertical" flexItem />
-      <Typography className={styles.menuItem} component={Link} to="/what-we-do">
-        What we do
-      </Typography>
-      <Divider className={styles.divider} orientation="vertical" flexItem />
-      <Typography className={styles.menuItem} component={Link} to="/about-us">
-        About us
-      </Typography>
-      <Divider className={styles.divider} orientation="vertical" flexItem />
-      <Typography className={styles.menuItem} component={Link} to="/contact-us">
-        Contact us
-      </Typography>
-      <Divider className={styles.divider} orientation="vertical" flexItem />
-      <Typography className={styles.menuItem} component={Link} to="/match-queues">
-        Match Queue
-      </Typography>
-    </FlexBox>
-  : null
+  const menus = () =>
+    !isPortrait ? (
+      <FlexBox style={{ alignItems: 'center' }}>
+        <Typography className={styles.menuItem} component={Link} to="/">
+          Home
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/what-we-do">
+          What we do
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/about-us">
+          About us
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/contact-us">
+          Contact us
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/match-queues">
+          Match Queue
+        </Typography>
+      </FlexBox>
+    ) : null;
 
-  const navIcon = () => 
-  isPortrait ? 
-    <IconButton
-      onClick={sidebarActions.toggle}
-      size="large"
-      edge="start"
-      color="info"
-      aria-label="menu"
-      sx={{ mr: 1 }}
-    >
-      <MenuIcon />
-    </IconButton>
-  : null
+  const navIcon = () =>
+    isPortrait ? (
+      <IconButton
+        onClick={sidebarActions.toggle}
+        size="large"
+        edge="start"
+        color="info"
+        aria-label="menu"
+        sx={{ mr: 1 }}
+      >
+        <MenuIcon />
+      </IconButton>
+    ) : null;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
