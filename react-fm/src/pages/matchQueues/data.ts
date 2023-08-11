@@ -244,13 +244,13 @@ const dummyData = {
       },
       {
         cityId: '3',
-        cityName: 'Mountain View',
+        cityName: 'San Jose',
         events: [
           {
             displayId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '6:00PM-7:00PM',
-            venueName: 'Shoreline Athletic Fields',
+            venueName: `Patty O'Malley Sportsfield`,
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink:
@@ -301,7 +301,7 @@ const dummyData = {
             displayId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
-            venueName: 'Shoreline Athletic Fields',
+            venueName: `Patty O'Malley Sportsfield`,
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
             venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
