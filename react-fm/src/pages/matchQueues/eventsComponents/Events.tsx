@@ -3,7 +3,6 @@ import type { FC } from 'react';
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -12,6 +11,7 @@ import useOrientation from '@/hooks/useOrientation';
 
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+import { JoinNow } from './JoinNow';
 
 export const EventsCard: FC<EventDetails> = ({
   charges,
@@ -92,24 +92,23 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
-  const openInNewTab = (url: string): void => {
-    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-    if (newWindow) newWindow.opener = null;
-  };
-
   const joinNow = () =>
     isPortrait ? (
       <Grid item xs={4} sm={4} md={4}>
         <FlexBox className={styles.joinNow}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              if (stripePaymentUrl) openInNewTab(stripePaymentUrl);
-              else alert('Match Full');
-            }}
-          >
-            Join {stripePaymentUrl ? 'Game' : 'Waitlist'}
-          </Button>
+          <JoinNow
+            stripePaymentUrl={stripePaymentUrl}
+            charges={0}
+            date={''}
+            displayId={''}
+            reservedPlayersCount={0}
+            reservedPlayersList={[]}
+            time={''}
+            venueLocationLink={''}
+            venueName={''}
+            waitListPlayers={[]}
+            waitListPlayersCount={0}
+          />
         </FlexBox>
       </Grid>
     ) : null;

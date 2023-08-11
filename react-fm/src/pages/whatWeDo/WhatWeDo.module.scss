@@ -1,7 +1,18 @@
+.box {
+  height: 100vh;
+}
+
 .container {
   display: flex;
   flex-flow: column;
-  margin-top: 80px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.smallDeviceContainer {
+  display: flex;
+  flex-flow: column;
+  margin-top: 50px;
   align-items: center;
 }
 
