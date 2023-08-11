@@ -6,6 +6,7 @@ import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
+import com.flickmatch.platform.graphql.type.StripePaymentLink;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @Log4j2
 public class EventBuilder {
+
+    private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
 
     EventRepository eventRepository;
 
@@ -159,15 +162,26 @@ public class EventBuilder {
                 .venueName(sportsVenue.get().getDisplayName())
                 .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
                 .playerDetailsList(new ArrayList<>())
+                .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .build();
         return eventDetails;
     }
 
+    private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
+        Optional<StripePaymentLink> stripePaymentLinkForAmount = sportsVenue.getStripePaymentLinks().stream()
+                .filter(stripePaymentLink -> stripePaymentLink.getAmount().equals(amount))
+                .findFirst();
+        if (stripePaymentLinkForAmount.isEmpty()) {
+            //Todo: For now keeping it soft dependency, we need to throw exception in future
+            log.error("Can't find stripe payment link in venue");
+            return null;
+        }
+        return stripePaymentLinkForAmount.get().getUrl();
+    }
+
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
-        //TODO: Use full date once whatsApp is not used for joining event
         String eventId = date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
-        //log.info(eventDetails.getReservedPlayersCount());
         String eventType = players + "v" + players;
         String title = eventType + " "
                 + formatDateTimeForTitle(eventDetails.getStartTime(), eventDetails.getEndTime())
@@ -188,6 +202,7 @@ public class EventBuilder {
                 .reservedPlayersCount(eventDetails.getReservedPlayersCount())
                 .waitListPlayers(waitListPlayers)
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
+                .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
                 .build();
     }
 

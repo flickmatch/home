@@ -62,6 +62,8 @@ public class Event {
 
     @DynamoDBDocument
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EventDetails {
         Integer index;
         Date startTime;
@@ -73,7 +75,17 @@ public class Event {
         String venueName;
         String venueLocationLink;
         List<PlayerDetails> playerDetailsList;
+        String stripePaymentUrl;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName="stripePaymentUrl")
+        public String getStripePaymentUrl() {
+            return stripePaymentUrl;
+        }
+
+        public void setStripePaymentUrl(String stripePaymentUrl) {
+            this.stripePaymentUrl = stripePaymentUrl;
+        }
 
         @DynamoDBAttribute(attributeName="index")
         public Integer getIndex() {
@@ -168,6 +180,8 @@ public class Event {
 
     @DynamoDBDocument
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PlayerDetails {
         String name;
         String waNumber;

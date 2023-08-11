@@ -1,357 +1,363 @@
 const dummyData = {
-  "data": {
-    "cities": [
+  data: {
+    cities: [
       {
-        "cityId": "2",
-        "cityName": "Hyderabad",
-        "events": [
+        cityId: '2',
+        cityName: 'Hyderabad',
+        events: [
           {
-            "displayId": "07-28-1",
-            "date": "Fri, Jul 28",
-            "time": "9:00PM-10:00PM",
-            "venueName": "Bsporty",
-            "reservedPlayersCount": 12,
-            "waitListPlayersCount": 6,
-            "venueLocationLink": "https://maps.app.goo.gl/axDbAHPjP648u7FZA",
-            "charges": 200.0,
-            "reservedPlayersList": [
+            displayId: '07-28-1',
+            date: 'Fri, Jul 28',
+            time: '9:00PM-10:00PM',
+            venueName: 'Bsporty',
+            reservedPlayersCount: 12,
+            waitListPlayersCount: 6,
+            venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
+            charges: 200.0,
+            reservedPlayersList: [
               {
-                "displayName": "Abhimanyu"
+                displayName: 'Abhimanyu',
               },
               {
-                "displayName": "Sourabh"
+                displayName: 'Sourabh',
               },
               {
-                "displayName": "Kamal"
+                displayName: 'Kamal',
               },
               {
-                "displayName": "Sahil"
+                displayName: 'Sahil',
               },
               {
-                "displayName": "Abhishek"
+                displayName: 'Abhishek',
               },
               {
-                "displayName": "Harsh"
+                displayName: 'Harsh',
               },
               {
-                "displayName": "Jasprit"
+                displayName: 'Jasprit',
               },
               {
-                "displayName": "Naresh Kumar"
+                displayName: 'Naresh Kumar',
               },
               {
-                "displayName": "MS Dhoni"
+                displayName: 'MS Dhoni',
               },
               {
-                "displayName": "Nakul"
+                displayName: 'Nakul',
               },
               {
-                "displayName": "Ajinkya"
+                displayName: 'Ajinkya',
               },
               {
-                "displayName": "Ravindra"
-              }
+                displayName: 'Ravindra',
+              },
             ],
-            "waitListPlayers": []
+            waitListPlayers: [],
+            stripePaymentUrl: '',
           },
           {
-            "displayId": "07-28-2",
-            "date": "Fri, Jul 28",
-            "time": "8:00PM-9:00PM",
-            "venueName": "Bsporty",
-            "reservedPlayersCount": 10,
-            "waitListPlayersCount": 5,
-            "venueLocationLink": "https://maps.app.goo.gl/axDbAHPjP648u7FZA",
-            "charges": 250.0,
-            "reservedPlayersList": [
+            displayId: '07-28-2',
+            date: 'Fri, Jul 28',
+            time: '8:00PM-9:00PM',
+            venueName: 'Bsporty',
+            reservedPlayersCount: 10,
+            waitListPlayersCount: 5,
+            venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
+            charges: 250.0,
+            reservedPlayersList: [
               {
-                "displayName": "Aryan"
+                displayName: 'Aryan',
               },
               {
-                "displayName": "Sarvesh"
+                displayName: 'Sarvesh',
               },
               {
-                "displayName": "Saarthak"
+                displayName: 'Saarthak',
               },
               {
-                "displayName": "Sahil"
+                displayName: 'Sahil',
               },
               {
-                "displayName": "Abhishek"
+                displayName: 'Abhishek',
               },
               {
-                "displayName": "Harsh"
+                displayName: 'Harsh',
               },
               {
-                "displayName": "Jasprit"
+                displayName: 'Jasprit',
               },
               {
-                "displayName": "Virat Kohli"
+                displayName: 'Virat Kohli',
               },
               {
-                "displayName": "MS Dhoni"
+                displayName: 'MS Dhoni',
               },
               {
-                "displayName": "Rituraj G."
-              }
+                displayName: 'Rituraj G.',
+              },
             ],
-            "waitListPlayers": [
+            waitListPlayers: [
               {
-                "displayName": "Harsh"
+                displayName: 'Harsh',
               },
               {
-                "displayName": "Deepak"
+                displayName: 'Deepak',
               },
               {
-                "displayName": "Himanshu"
+                displayName: 'Himanshu',
               },
               {
-                "displayName": "Mohit"
-              }
-            ]
-          }
-        ]
+                displayName: 'Mohit',
+              },
+            ],
+            stripePaymentUrl: '',
+          },
+        ],
       },
       {
-        "cityId": "1",
-        "cityName": "Gurgaon",
-        "events": [
+        cityId: '1',
+        cityName: 'Gurgaon',
+        events: [
           {
-            "displayId": "07-28-1",
-            "date": "Fri, Jul 28",
-            "time": "10:00PM-11:00PM",
-            "venueName": "Gallant play arena south City 1",
-            "reservedPlayersCount": 14,
-            "waitListPlayersCount": 7,
-            "venueLocationLink": "https://maps.app.goo.gl/ebEXAjXrsUvBanyY9",
-            "charges": 400.0,
-            "reservedPlayersList": [
+            displayId: '07-28-1',
+            date: 'Fri, Jul 28',
+            time: '10:00PM-11:00PM',
+            venueName: 'Gallant play arena south City 1',
+            reservedPlayersCount: 14,
+            waitListPlayersCount: 7,
+            venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            charges: 400.0,
+            reservedPlayersList: [
               {
-                "displayName": "Shubham"
+                displayName: 'Shubham',
               },
               {
-                "displayName": "Sahil"
+                displayName: 'Sahil',
               },
               {
-                "displayName": "Sumesh"
+                displayName: 'Sumesh',
               },
               {
-                "displayName": "Mahendra"
+                displayName: 'Mahendra',
               },
               {
-                "displayName": "Himesh"
+                displayName: 'Himesh',
               },
               {
-                "displayName": "Saksham"
+                displayName: 'Saksham',
               },
               {
-                "displayName": "Sahil"
+                displayName: 'Sahil',
               },
               {
-                "displayName": "Abhishek"
+                displayName: 'Abhishek',
               },
               {
-                "displayName": "Harsh"
+                displayName: 'Harsh',
               },
               {
-                "displayName": "Saarthak"
+                displayName: 'Saarthak',
               },
               {
-                "displayName": "Harshvardhan"
+                displayName: 'Harshvardhan',
               },
               {
-                "displayName": "Astitva"
+                displayName: 'Astitva',
               },
             ],
-            "waitListPlayers": []
+            waitListPlayers: [],
+            stripePaymentUrl: '',
           },
           {
-            "displayId": "07-28-2",
-            "date": "Fri, Jul 28",
-            "time": "9:00PM-10:00PM",
-            "venueName": "Gallant play arena south City 1",
-            "reservedPlayersCount": 14,
-            "waitListPlayersCount": 7,
-            "venueLocationLink": "https://maps.app.goo.gl/ebEXAjXrsUvBanyY9",
-            "charges": 400.0,
-            "reservedPlayersList": [
+            displayId: '07-28-2',
+            date: 'Fri, Jul 28',
+            time: '9:00PM-10:00PM',
+            venueName: 'Gallant play arena south City 1',
+            reservedPlayersCount: 14,
+            waitListPlayersCount: 7,
+            venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            charges: 400.0,
+            reservedPlayersList: [
               {
-                "displayName": "Harshdeep"
+                displayName: 'Harshdeep',
               },
               {
-                "displayName": "Sarvesh"
+                displayName: 'Sarvesh',
               },
               {
-                "displayName": "Shubhman Gill"
+                displayName: 'Shubhman Gill',
               },
               {
-                "displayName": "Sanju"
+                displayName: 'Sanju',
               },
               {
-                "displayName": "Abhishek"
+                displayName: 'Abhishek',
               },
               {
-                "displayName": "Harsh"
+                displayName: 'Harsh',
               },
               {
-                "displayName": "Jasprit"
+                displayName: 'Jasprit',
               },
               {
-                "displayName": "Virat Kohli"
+                displayName: 'Virat Kohli',
               },
               {
-                "displayName": "MS Dhoni"
+                displayName: 'MS Dhoni',
               },
               {
-                "displayName": "Rituraj G."
+                displayName: 'Rituraj G.',
               },
               {
-                "displayName": "Ravinder"
+                displayName: 'Ravinder',
               },
               {
-                "displayName": "Abhishek"
+                displayName: 'Abhishek',
               },
               {
-                "displayName": "Himesh"
+                displayName: 'Himesh',
               },
               {
-                "displayName": "Sandeep"
-              }
+                displayName: 'Sandeep',
+              },
             ],
-            "waitListPlayers": [
+            waitListPlayers: [
               {
-                "displayName": "Shubham"
+                displayName: 'Shubham',
               },
               {
-                "displayName": "Sahil"
+                displayName: 'Sahil',
               },
               {
-                "displayName": "Sumesh"
+                displayName: 'Sumesh',
               },
               {
-                "displayName": "Mahendra"
+                displayName: 'Mahendra',
               },
               {
-                "displayName": "Himesh"
-              }
-            ]
-          }
-        ]
+                displayName: 'Himesh',
+              },
+            ],
+            stripePaymentUrl: '',
+          },
+        ],
       },
       {
-        "cityId": "3",
-        "cityName": "Mountain View",
-        "events": [
+        cityId: '3',
+        cityName: 'Mountain View',
+        events: [
           {
-            "displayId": "07-28-1",
-            "date": "Fri, Jul 28",
-            "time": "6:00PM-7:00PM",
-            "venueName": "Shoreline Athletic Fields",
-            "reservedPlayersCount": 14,
-            "waitListPlayersCount": 7,
-            "venueLocationLink": "https://www.google.com/maps/dir//shoreline+athletic+fields/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x808fba19e7376f1f:0xd13fee728b915574?sa=X&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhBEAA&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhNEAM",
-            "charges": 10.0,
-            "reservedPlayersList": [
+            displayId: '07-28-1',
+            date: 'Fri, Jul 28',
+            time: '6:00PM-7:00PM',
+            venueName: 'Shoreline Athletic Fields',
+            reservedPlayersCount: 14,
+            waitListPlayersCount: 7,
+            venueLocationLink:
+              'https://www.google.com/maps/dir//shoreline+athletic+fields/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x808fba19e7376f1f:0xd13fee728b915574?sa=X&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhBEAA&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhNEAM',
+            charges: 10.0,
+            reservedPlayersList: [
               {
-                "displayName": "Chen"
+                displayName: 'Chen',
               },
               {
-                "displayName": "Pablo"
+                displayName: 'Pablo',
               },
               {
-                "displayName": "Feng"
+                displayName: 'Feng',
               },
               {
-                "displayName": "Leo"
+                displayName: 'Leo',
               },
               {
-                "displayName": "Arturito"
+                displayName: 'Arturito',
               },
               {
-                "displayName": "Alison"
+                displayName: 'Alison',
               },
               {
-                "displayName": "Chang"
+                displayName: 'Chang',
               },
               {
-                "displayName": "Diego"
+                displayName: 'Diego',
               },
               {
-                "displayName": "Mateo"
+                displayName: 'Mateo',
               },
               {
-                "displayName": "Rafael"
+                displayName: 'Rafael',
               },
               {
-                "displayName": "Shahin"
+                displayName: 'Shahin',
               },
               {
-                "displayName": "Frank"
+                displayName: 'Frank',
               },
             ],
-            "waitListPlayers": []
+            waitListPlayers: [],
+            stripePaymentUrl: '',
           },
           {
-            "displayId": "07-28-2",
-            "date": "Fri, Jul 28",
-            "time": "8:00PM-9:00PM",
-            "venueName": "Shoreline Athletic Fields",
-            "reservedPlayersCount": 10,
-            "waitListPlayersCount": 5,
-            "venueLocationLink": "https://maps.app.goo.gl/ebEXAjXrsUvBanyY9",
-            "charges": 15.0,
-            "reservedPlayersList": [
+            displayId: '07-28-2',
+            date: 'Fri, Jul 28',
+            time: '8:00PM-9:00PM',
+            venueName: 'Shoreline Athletic Fields',
+            reservedPlayersCount: 10,
+            waitListPlayersCount: 5,
+            venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            charges: 15.0,
+            reservedPlayersList: [
               {
-                "displayName": "Alexei"
+                displayName: 'Alexei',
               },
               {
-                "displayName": "Dinara"
+                displayName: 'Dinara',
               },
               {
-                "displayName": "Eva"
+                displayName: 'Eva',
               },
               {
-                "displayName": "Henry"
+                displayName: 'Henry',
               },
               {
-                "displayName": "Chao"
+                displayName: 'Chao',
               },
               {
-                "displayName": "Sushant"
+                displayName: 'Sushant',
               },
               {
-                "displayName": "William"
+                displayName: 'William',
               },
               {
-                "displayName": "Rohan"
+                displayName: 'Rohan',
               },
               {
-                "displayName": "Leonardo"
+                displayName: 'Leonardo',
               },
               {
-                "displayName": "Abhimanyu"
-              }
+                displayName: 'Abhimanyu',
+              },
             ],
-            "waitListPlayers": [
+            waitListPlayers: [
               {
-                "displayName": "Jiang"
+                displayName: 'Jiang',
               },
               {
-                "displayName": "Santiago"
+                displayName: 'Santiago',
               },
               {
-                "displayName": "Felipe"
+                displayName: 'Felipe',
               },
               {
-                "displayName": "Alvaro"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-}
+                displayName: 'Alvaro',
+              },
+            ],
+            stripePaymentUrl: '',
+          },
+        ],
+      },
+    ],
+  },
+};
 
-export default dummyData
-
+export default dummyData;

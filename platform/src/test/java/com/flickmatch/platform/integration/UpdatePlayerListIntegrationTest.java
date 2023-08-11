@@ -6,28 +6,24 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.util.Pair;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
+import static com.flickmatch.platform.integration.IntegrationTestUtil.callGraphQl;
+import static com.flickmatch.platform.integration.IntegrationTestUtil.readFileFromResourceFolder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations="classpath:application-test.properties")
-public class WhatsAppClientIntegrationTest {
+public class UpdatePlayerListIntegrationTest {
 
     @Value("${application.local.endpoint}")
     private String url;
@@ -36,48 +32,39 @@ public class WhatsAppClientIntegrationTest {
     void testEventIsCreated_whenMessageReceivedFirstTime() throws FileNotFoundException, JSONException {
 
         var query = readFileFromResourceFolder("query/updatePlayerList.graphql");
-        var testRestTemplate = new TestRestTemplate();
-        var headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        var reservedPlayersList = List.of(buildPlayer("Player1"), buildPlayer("Player2"));
-        var waitListPlayers = List.of();
-        var dateTimeInput = getDateTimeInput();
-        var variables = Map.of("startTime", dateTimeInput.getSecond().getFirst(),
-                "endTime", dateTimeInput.getSecond().getSecond(),
-                "date", dateTimeInput.getFirst(),
-                "reservedPlayersList", reservedPlayersList,
-                "waitListPlayers", waitListPlayers);
-        var body = Map.of("query", query,
-                "variables", variables);
-        HttpEntity<Map> httpEntity = new HttpEntity(body, headers);
-        ResponseEntity<String> response = testRestTemplate.postForEntity(url, httpEntity, String.class);
-        JSONObject responseBody = convertStringToJSON(response.getBody());
+        var variables = buildInputForUpdatePlayerListMutation();
+        var responseBody = callGraphQl(query, variables, url);
         assertThat(
                 responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful"),
                 is(true));
     }
 
-    private String readFileFromResourceFolder(String fileName) throws FileNotFoundException {
-        String result = "";
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                result += scanner.nextLine();
-            }
-        }
-        return result;
+    @Test
+    void testPlayerIsPersisted_whenPlayerJoinsEventUsingWebsite() throws FileNotFoundException, JSONException {
+        //This tests validates if player joining from website are not overridden by UpdatePlayer mutation
+        var query = readFileFromResourceFolder("query/updatePlayerList.graphql");
+        var variables = buildInputForUpdatePlayerListMutation();
+        var responseBody = callGraphQl(query, variables, url);
+        assertThat(
+                responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful"),
+                is(true));
+        //Todo: Add logic
     }
 
-    public JSONObject convertStringToJSON(String jsonString) throws JSONException {
-        JSONObject json = new JSONObject(jsonString);
-        return json;
+    private Map<String, Object> buildInputForUpdatePlayerListMutation() {
+        var reservedPlayersList = List.of(buildPlayer("Player1"), buildPlayer("Player2"));
+        var waitListPlayers = List.of();
+        var dateTimeInput = getDateTimeInput();
+        return Map.of("startTime", dateTimeInput.getSecond().getFirst(),
+                "endTime", dateTimeInput.getSecond().getSecond(),
+                "date", dateTimeInput.getFirst(),
+                "reservedPlayersList", reservedPlayersList,
+                "waitListPlayers", waitListPlayers);
     }
 
     private PlayerInput buildPlayer(String name) {
         return PlayerInput.builder().name(name).build();
     }
-
 
     /**
      * Create query input in format <date, <startTime, endTime>>

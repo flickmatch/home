@@ -55,7 +55,6 @@ function MatchQueue() {
             setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
           }
         });
-        
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
@@ -113,6 +112,7 @@ function MatchQueue() {
                       reservedPlayersList={playingEvent.reservedPlayersList}
                       venueName={playingEvent.venueName}
                       waitListPlayers={playingEvent.waitListPlayers}
+                      stripePaymentUrl={playingEvent.stripePaymentUrl}
                     />
                   </FlexBox>
                 </AccordionSummary>
@@ -128,9 +128,11 @@ function MatchQueue() {
                         ),
                       )}
 
-                      {emptyNames.slice(0,
+                      {emptyNames
+                        .slice(
+                          0,
                           playingEvent.reservedPlayersCount -
-                          playingEvent.reservedPlayersList.length,
+                            playingEvent.reservedPlayersList.length,
                         )
                         .map((name: string, i: number) => (
                           <PlayerDetails displayName={name} index={i} key={i} />
@@ -147,13 +149,14 @@ function MatchQueue() {
                           ),
                         )}
 
-                        {emptyNames.slice(0,
-                          playingEvent.waitListPlayersCount -
-                          playingEvent.waitListPlayers.length,
-                        )
-                        .map((name: string, i: number) => (
-                          <PlayerDetails displayName={name} index={i} key={i} />
-                        ))}
+                        {emptyNames
+                          .slice(
+                            0,
+                            playingEvent.waitListPlayersCount - playingEvent.waitListPlayers.length,
+                          )
+                          .map((name: string, i: number) => (
+                            <PlayerDetails displayName={name} index={i} key={i} />
+                          ))}
                       </Grid>
                     </Box>
                   ) : null}

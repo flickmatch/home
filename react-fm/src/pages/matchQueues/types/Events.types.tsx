@@ -1,10 +1,10 @@
 type ReservedPlayerDetails = {
   displayName: string;
-}
+};
 
 type waitListPlayerDetails = {
   displayName: string;
-}
+};
 
 type EventDetails = {
   charges: number;
@@ -17,16 +17,23 @@ type EventDetails = {
   venueName: string;
   waitListPlayers: waitListPlayerDetails[];
   waitListPlayersCount: number;
-}
+  stripePaymentUrl: string;
+};
 
 type CityDetails = {
   cityId: string;
   cityName: string;
   events: EventDetails[];
-}
+};
 
 type dummyDataArrays = {
-  data: CityDetails[]
-}
+  data: CityDetails[];
+};
 
-export type { CityDetails, ReservedPlayerDetails, waitListPlayerDetails, EventDetails, dummyDataArrays };
+export type {
+  CityDetails,
+  ReservedPlayerDetails,
+  waitListPlayerDetails,
+  EventDetails,
+  dummyDataArrays,
+};

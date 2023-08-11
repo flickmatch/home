@@ -3,6 +3,7 @@ package com.flickmatch.platform.graphql.builder;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.CreateSportsVenueInput;
+import com.flickmatch.platform.graphql.mapper.StripePaymentLinkMapper;
 import com.flickmatch.platform.graphql.type.SportsVenue;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,8 @@ public class SportsVenueBuilder {
                         .displayName(sportsVenue.getDisplayName())
                         .googleMapsLink(sportsVenue.getGoogleMapsLink())
                         .availableSportsIds(sportsVenue.getAvailableSportsIds())
+                        .stripePaymentLinks(StripePaymentLinkMapper
+                                .toStripePaymentLinkType(sportsVenue.getStripePaymentLinks()))
                         .build())
                 .toList()).orElse(null);
     }
