@@ -52,7 +52,26 @@ const dummyData = {
                 displayName: 'Himanshu',
               },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Nitin',
+              },
+              {
+                displayName: 'Haridev',
+              },
+              {
+                displayName: 'Kiyaan',
+              },
+              {
+                displayName: 'Monya Amo',
+              },
+              {
+                displayName: 'Rolly',
+              },
+              {
+                displayName: 'Jhumkar',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
@@ -109,6 +128,9 @@ const dummyData = {
               {
                 displayName: 'Mohit',
               },
+              {
+                displayName: 'Piyush',
+              },
             ],
             stripePaymentUrl: '',
           },
@@ -164,8 +186,36 @@ const dummyData = {
               {
                 displayName: 'Astitva',
               },
+              {
+                displayName: 'Rishi',
+              },
+              {
+                displayName: 'Rijvaan',
+              },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Mukhtaar',
+              },
+              {
+                displayName: 'Shubham',
+              },
+              {
+                displayName: 'Burhan',
+              },
+              {
+                displayName: 'Arif',
+              },
+              {
+                displayName: 'Arihant',
+              },
+              {
+                displayName: 'John',
+              },
+              {
+                displayName: 'Nilesh',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
@@ -206,7 +256,7 @@ const dummyData = {
                 displayName: 'Bunty Singh',
               },
               {
-                displayName: 'Rijwan',
+                displayName: 'Rijwaan',
               },
               {
                 displayName: 'Ravinder',
@@ -236,6 +286,12 @@ const dummyData = {
               },
               {
                 displayName: 'Himesh',
+              },
+              {
+                displayName: 'Margo',
+              },
+              {
+                displayName: 'Saksham',
               },
             ],
             stripePaymentUrl: '',
@@ -293,8 +349,36 @@ const dummyData = {
               {
                 displayName: 'Frank',
               },
+              {
+                displayName: 'Tanxin',
+              },
+              {
+                displayName: 'Xiang',
+              },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Charles',
+              },
+              {
+                displayName: 'Benjamin',
+              },
+              {
+                displayName: 'Marquino',
+              },
+              {
+                displayName: 'Sergio',
+              },
+              {
+                displayName: 'Giovanni',
+              },
+              {
+                displayName: 'Antonio',
+              },
+              {
+                displayName: 'Daniel',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
@@ -350,6 +434,9 @@ const dummyData = {
               },
               {
                 displayName: 'Alvaro',
+              },
+              {
+                displayName: 'Huang',
               },
             ],
             stripePaymentUrl: '',

@@ -55,7 +55,6 @@ function MatchQueue() {
             if(data.data.cities[i].cityId == dummyData.data.cities[i].cityId) {
               setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
             }
-            
           }
         });
       } catch (error) {
