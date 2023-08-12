@@ -35,64 +35,64 @@ const expected = {
   endTime: "09:30 PM",
   date: "19-04-2023",
   format: "7v7",
-  cost: '200',
+  cost: "200",
   listOfPlayers: [
     {
-      "name": "Abhishek"
+      name: "Abhishek",
     },
     {
-      "name": "Sarthak"
+      name: "Sarthak",
     },
     {
-      "name": "Uday"
+      name: "Uday",
     },
     {
-      "name": "Maulik"
+      name: "Maulik",
     },
     {
-      "name": "Aditya R"
+      name: "Aditya R",
     },
     {
-      "name": "Govind"
+      name: "Govind",
     },
     {
-      "name": "Nishant"
+      name: "Nishant",
     },
     {
-      "name": "Mridul"
+      name: "Mridul",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": "Abhimanyu"
+      name: "Abhimanyu",
     },
     {
-      "name": ""
-    }
+      name: "",
+    },
   ],
   waitlist: [
     {
-      "name": "Abhimanyu"
+      name: "Abhimanyu",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": ""
+      name: "",
     },
     {
-      "name": ""
-    }
+      name: "",
+    },
   ],
 };
 
