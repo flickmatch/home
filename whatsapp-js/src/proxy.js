@@ -113,8 +113,8 @@ export const getPlayers = (eventId) => {
 export const updatePlayerList = (inputData) => {
   const body = JSON.stringify({
     variables: {
-      reservedPlayersList : inputData.listOfPlayers,
-      waitListPlayers: inputData.waitlist
+      reservedPlayersList: inputData.listOfPlayers,
+      waitListPlayers: inputData.waitlist,
     },
     query: `
     mutation updatePlayers($reservedPlayersList: [PlayerInput!]!, 
@@ -131,15 +131,15 @@ export const updatePlayerList = (inputData) => {
       }) {
           isSuccessful
       }
-    }`
-    });
+    }`,
+  });
   const replyMsg = callGraqhQLService(body)
     .then((res) => res.json())
     .then((res) => {
-      if(res?.data?.updatePlayerList.isSuccessful) {
-        return "Updated!"
+      if (res?.data?.updatePlayerList.isSuccessful) {
+        return "Updated!";
       }
       return "Update Failed!";
     });
   return replyMsg;
-}
+};

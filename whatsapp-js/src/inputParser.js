@@ -35,24 +35,21 @@ const validateEventId = (splittedContent, contentMap, operationValue) => {
 
 export const processGroup = (msg) => {
   const contact = msg.getContact();
-  const chat =  msg.getChat();
+  const chat = msg.getChat();
   let content = msg.body;
   try {
     const inputData = parseMessage(content);
-    if(inputData?.isSuccessful) {
-      Promise.resolve(updatePlayerList(inputData)).then(
-        (message) => {
-          {
-            msg.reply(message);
-          }
+    if (inputData?.isSuccessful) {
+      Promise.resolve(updatePlayerList(inputData)).then((message) => {
+        {
+          msg.reply(message);
         }
-      );
+      });
     }
   } catch (error) {
     console.error("Error while updating player List");
     console.error(error);
   }
-
 
   try {
     let contentMap = null;
@@ -96,7 +93,7 @@ export const processGroup = (msg) => {
     console.error("Error while operation");
     console.error(error);
   }
-}
+};
 
 export const parseContent = (content) => {
   const contentMap = new Map();
