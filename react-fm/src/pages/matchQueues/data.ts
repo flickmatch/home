@@ -6,7 +6,7 @@ const dummyData = {
         cityName: 'Hyderabad',
         events: [
           {
-            displayId: '07-28-1',
+            eventId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
             venueName: 'Bsporty',
@@ -75,7 +75,7 @@ const dummyData = {
             stripePaymentUrl: '',
           },
           {
-            displayId: '07-28-2',
+            eventId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '9:00PM-10:00PM',
             venueName: 'Bsporty',
@@ -141,7 +141,7 @@ const dummyData = {
         cityName: 'Gurgaon',
         events: [
           {
-            displayId: '07-28-1',
+            eventId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '7:00PM-8:00PM',
             venueName: 'Gallant play arena south City 1',
@@ -219,7 +219,7 @@ const dummyData = {
             stripePaymentUrl: '',
           },
           {
-            displayId: '07-28-2',
+            eventId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
             venueName: 'Gallant play arena south City 1',
@@ -303,7 +303,7 @@ const dummyData = {
         cityName: 'San Jose',
         events: [
           {
-            displayId: '07-28-1',
+            eventId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '6:00PM-7:00PM',
             venueName: "Vista Montana Park",
@@ -382,7 +382,7 @@ const dummyData = {
             stripePaymentUrl: '',
           },
           {
-            displayId: '07-28-2',
+            eventId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
             venueName: "Vista Montana Park",

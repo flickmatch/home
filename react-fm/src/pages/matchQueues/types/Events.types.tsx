@@ -9,7 +9,7 @@ type waitListPlayerDetails = {
 type EventDetails = {
   charges: number;
   date: string;
-  displayId: string;
+  eventId: string;
   reservedPlayersCount: number;
   reservedPlayersList: ReservedPlayerDetails[];
   time: string;

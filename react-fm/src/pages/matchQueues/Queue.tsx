@@ -8,6 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Zoom from '@mui/material/Zoom';
 
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
@@ -60,7 +61,8 @@ function MatchQueue() {
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
-            setCitiesData(dummyData.data.cities);
+            // eslint-disable-next-line no-console
+            console.log(error.name)
           }
         }
       }
@@ -73,14 +75,15 @@ function MatchQueue() {
   }, []);
 
   const events = () =>
-    citiesData.reverse().length > 0
+    citiesData.length > 0
       ? citiesData.reverse().map((city: CityDetails) => (
-          <div className={isPortrait ? styles.mobileContainer : styles.container} key={city.cityId}>
+        <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
+          <div className={isPortrait ? styles.mobileContainer : styles.container}>
             <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
             {city.events.map((playingEvent: EventDetails) => (
               <Accordion
                 className={isPortrait ? styles.mobileAccordion : styles.accordion}
-                key={playingEvent.displayId}
+                key={playingEvent.eventId}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
@@ -100,7 +103,7 @@ function MatchQueue() {
                           stripePaymentUrl={playingEvent.stripePaymentUrl}
                           charges={0}
                           date={''}
-                          displayId={''}
+                          eventId={''}
                           reservedPlayersCount={0}
                           reservedPlayersList={[]}
                           time={''}
@@ -120,7 +123,7 @@ function MatchQueue() {
                       venueLocationLink={playingEvent.venueLocationLink}
                       reservedPlayersCount={playingEvent.reservedPlayersCount}
                       waitListPlayersCount={playingEvent.waitListPlayersCount}
-                      displayId={city.cityId}
+                      eventId={city.cityId}
                       reservedPlayersList={playingEvent.reservedPlayersList}
                       venueName={playingEvent.venueName}
                       waitListPlayers={playingEvent.waitListPlayers}
@@ -176,6 +179,7 @@ function MatchQueue() {
               </Accordion>
             ))}
           </div>
+          </Zoom>
         ))
       : null;
 

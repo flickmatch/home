@@ -17,7 +17,7 @@ export const EventsCard: FC<EventDetails> = ({
   charges,
   date,
   time,
-  displayId,
+  eventId,
   venueLocationLink,
   reservedPlayersCount,
   reservedPlayersList,
@@ -42,7 +42,7 @@ export const EventsCard: FC<EventDetails> = ({
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          {displayId === "2" || displayId === "1" ? (
+          {eventId === "2" || eventId === "1" ? (
             <CurrencyRupeeSharp className={styles.currencyIcon} />
           ) : (
             <AttachMoneyIcon className={styles.currencyIcon} />
@@ -99,7 +99,7 @@ export const EventsCard: FC<EventDetails> = ({
             stripePaymentUrl={stripePaymentUrl}
             charges={0}
             date={''}
-            displayId={''}
+            eventId={''}
             reservedPlayersCount={0}
             reservedPlayersList={[]}
             time={''}
