@@ -1,132 +1,131 @@
 {
-  "body" : {
-    "id": "evt_1NWKM5SEI0cF0TsSv1YlTymt",
-    "object": "event",
-    "api_version": "2022-11-15",
-    "created": 1689949852,
-    "data": {
-      "object": {
-        "id": "cs_live_b1xQRwXMHmKBYQg6GCn4u1qov57bxWYyyDUgugbzhE4Bf85PEdFYAo3Gla",
-        "object": "checkout.session",
-        "after_expiration": null,
-        "allow_promotion_codes": true,
-        "amount_subtotal": 500,
-        "amount_total": 500,
-        "automatic_tax": {
-          "enabled": false,
-          "status": null
-        },
-        "billing_address_collection": "auto",
-        "cancel_url": "https://stripe.com",
-        "client_reference_id": null,
-        "consent": {
-          "promotions": null,
-          "terms_of_service": "accepted"
-        },
-        "consent_collection": {
-          "promotions": "none",
-          "terms_of_service": "required"
-        },
-        "created": 1689949688,
-        "currency": "inr",
-        "currency_conversion": null,
-        "custom_fields": [
-          {
-            "dropdown": null,
-            "key": "name",
-            "label": {
-              "custom": "Name",
-              "type": "custom"
-            },
-            "numeric": null,
-            "optional": false,
-            "text": {
-              "maximum_length": null,
-              "minimum_length": null,
-              "value": "Tony"
-            },
-            "type": "text"
-          }
-        ],
-        "custom_text": {
-          "shipping_address": null,
-          "submit": null
-        },
-        "customer": null,
-        "customer_creation": "if_required",
-        "customer_details": {
-          "address": {
-            "city": null,
-            "country": "IN",
-            "line1": null,
-            "line2": null,
-            "postal_code": null,
-            "state": null
+  "id": "evt_1NdfDzSEI0cF0TsSmpapmxWp",
+  "object": "event",
+  "api_version": "2022-11-15",
+  "created": 1691698369,
+  "data": {
+    "object": {
+      "id": "cs_live_b1BMG2apVgWoKBWLERsHxF7wGBu3MRUi5b9KX5rLZTer27c6SbsZYiwTs8",
+      "object": "checkout.session",
+      "after_expiration": null,
+      "allow_promotion_codes": true,
+      "amount_subtotal": 1000,
+      "amount_total": 1000,
+      "automatic_tax": {
+        "enabled": false,
+        "status": null
+      },
+      "billing_address_collection": "auto",
+      "cancel_url": "https://stripe.com",
+      "client_reference_id": "2023-08-11-3",
+      "consent": {
+        "promotions": null,
+        "terms_of_service": "accepted"
+      },
+      "consent_collection": {
+        "promotions": "none",
+        "terms_of_service": "required"
+      },
+      "created": 1691698257,
+      "currency": "inr",
+      "currency_conversion": null,
+      "custom_fields": [
+        {
+          "dropdown": null,
+          "key": "name",
+          "label": {
+            "custom": "Name",
+            "type": "custom"
           },
-          "email": "tony@flickmatch.in",
-          "name": "Tony stark",
-          "phone": "+919999999999",
-          "tax_exempt": "none",
-          "tax_ids": [
-          ]
+          "numeric": null,
+          "optional": false,
+          "text": {
+            "maximum_length": null,
+            "minimum_length": null,
+            "value": "Harsh"
+          },
+          "type": "text"
+        }
+      ],
+      "custom_text": {
+        "shipping_address": null,
+        "submit": null
+      },
+      "customer": null,
+      "customer_creation": "if_required",
+      "customer_details": {
+        "address": {
+          "city": null,
+          "country": "IN",
+          "line1": null,
+          "line2": null,
+          "postal_code": null,
+          "state": null
         },
-        "customer_email": null,
-        "expires_at": 1690036088,
-        "invoice": null,
-        "invoice_creation": {
-          "enabled": false,
-          "invoice_data": {
-            "account_tax_ids": null,
-            "custom_fields": null,
-            "description": null,
-            "footer": null,
-            "metadata": {
-            },
-            "rendering_options": null
-          }
-        },
-        "livemode": true,
-        "locale": "auto",
-        "metadata": {
-        },
-        "mode": "payment",
-        "payment_intent": "pi_3NWKKHSEI0cF0TsS0VFIkMfT",
-        "payment_link": "plink_1NW4DbSEI0cF0TsSEthJEgQp",
-        "payment_method_collection": "always",
-        "payment_method_options": {
-        },
-        "payment_method_types": [
-          "card"
-        ],
-        "payment_status": "paid",
-        "phone_number_collection": {
-          "enabled": true
-        },
-        "recovered_from": null,
-        "setup_intent": null,
-        "shipping_address_collection": null,
-        "shipping_cost": null,
-        "shipping_details": null,
-        "shipping_options": [
-        ],
-        "status": "complete",
-        "submit_type": "book",
-        "subscription": null,
-        "success_url": "https://stripe.com",
-        "total_details": {
-          "amount_discount": 0,
-          "amount_shipping": 0,
-          "amount_tax": 0
-        },
-        "url": null
-      }
-    },
-    "livemode": true,
-    "pending_webhooks": 2,
-    "request": {
-      "id": null,
-      "idempotency_key": null
-    },
-    "type": "checkout.session.completed"
-  }
+        "email": "hvs@flickmatch.in",
+        "name": "Harsh Vardhan Singh",
+        "phone": "+919999999999",
+        "tax_exempt": "none",
+        "tax_ids": [
+        ]
+      },
+      "customer_email": null,
+      "expires_at": 1691784657,
+      "invoice": null,
+      "invoice_creation": {
+        "enabled": false,
+        "invoice_data": {
+          "account_tax_ids": null,
+          "custom_fields": null,
+          "description": null,
+          "footer": null,
+          "metadata": {
+          },
+          "rendering_options": null
+        }
+      },
+      "livemode": true,
+      "locale": "auto",
+      "metadata": {
+        "cityId": "2"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_3NdfDbSEI0cF0TsS1CGpzwgJ",
+      "payment_link": "plink_1NW4DbSEI0cF0TsSEthJEgQp",
+      "payment_method_collection": "always",
+      "payment_method_options": {
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "phone_number_collection": {
+        "enabled": true
+      },
+      "recovered_from": null,
+      "setup_intent": null,
+      "shipping_address_collection": null,
+      "shipping_cost": null,
+      "shipping_details": null,
+      "shipping_options": [
+      ],
+      "status": "complete",
+      "submit_type": "book",
+      "subscription": null,
+      "success_url": "https://stripe.com",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 0,
+        "amount_tax": 0
+      },
+      "url": null
+    }
+  },
+  "livemode": true,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
 }
