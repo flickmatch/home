@@ -52,7 +52,10 @@ function MatchQueue() {
           if (city.events.length > 0) {
             setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
           } else {
-            setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+            if(data.data.cities[i].cityId == dummyData.data.cities[i].cityId) {
+              setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+            }
+            
           }
         });
       } catch (error) {

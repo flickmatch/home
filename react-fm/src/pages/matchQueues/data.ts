@@ -243,7 +243,7 @@ const dummyData = {
         ],
       },
       {
-        cityId: '3',
+        cityId: '4',
         cityName: 'San Jose',
         events: [
           {
