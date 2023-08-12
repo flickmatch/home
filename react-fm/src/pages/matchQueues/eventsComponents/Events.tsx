@@ -17,10 +17,10 @@ export const EventsCard: FC<EventDetails> = ({
   charges,
   date,
   time,
+  displayId,
   venueLocationLink,
   reservedPlayersCount,
   reservedPlayersList,
-  venueName,
   stripePaymentUrl,
 }) => {
   const isPortrait = useOrientation();
@@ -36,16 +36,16 @@ export const EventsCard: FC<EventDetails> = ({
   const day = new Date(apiDate).valueOf();
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+  
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          {venueName === 'Shoreline Athletic Fields' ? (
-            <AttachMoneyIcon className={styles.currencyIcon} />
-          ) : (
+          {displayId === "2" || displayId === "1" ? (
             <CurrencyRupeeSharp className={styles.currencyIcon} />
+          ) : (
+            <AttachMoneyIcon className={styles.currencyIcon} />
           )}
           {charges}
         </span>
@@ -83,14 +83,13 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const playersRequired = () =>
-    openSpots > 0 ? (
-      <Grid item xs={4} sm={4} md={4}>
-        <Typography className={styles.title}>
-          Open Spots <span>{openSpots}</span>
-        </Typography>
-      </Grid>
-    ) : null;
+  const playersRequired = () => (
+    <Grid item xs={4} sm={4} md={4}>
+      <Typography className={styles.title}>
+        Open Spots <span>{openSpots}</span>
+      </Typography>
+    </Grid>
+  );
 
   const joinNow = () =>
     isPortrait ? (

@@ -74,7 +74,7 @@ function MatchQueue() {
   }, []);
 
   const events = () =>
-    citiesData.length > 0
+    citiesData.reverse().length > 0
       ? citiesData.reverse().map((city: CityDetails) => (
           <div className={isPortrait ? styles.mobileContainer : styles.container} key={city.cityId}>
             <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
@@ -121,7 +121,7 @@ function MatchQueue() {
                       venueLocationLink={playingEvent.venueLocationLink}
                       reservedPlayersCount={playingEvent.reservedPlayersCount}
                       waitListPlayersCount={playingEvent.waitListPlayersCount}
-                      displayId={playingEvent.displayId}
+                      displayId={city.cityId}
                       reservedPlayersList={playingEvent.reservedPlayersList}
                       venueName={playingEvent.venueName}
                       waitListPlayers={playingEvent.waitListPlayers}
