@@ -6,7 +6,6 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -19,6 +18,7 @@ import { apiUrl, emptyNames, query } from './constants';
 import dummyData from './data';
 import { Cities } from './eventsComponents/Cities';
 import { EventsCard } from './eventsComponents/Events';
+import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
 import type {
   CityDetails,
@@ -72,10 +72,9 @@ function MatchQueue() {
 
   const events = () =>
     citiesData.length > 0
-      ? citiesData.map((city: CityDetails) => (
+      ? citiesData.reverse().map((city: CityDetails) => (
           <div className={isPortrait ? styles.mobileContainer : styles.container} key={city.cityId}>
             <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
-
             {city.events.map((playingEvent: EventDetails) => (
               <Accordion
                 className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -95,9 +94,19 @@ function MatchQueue() {
                         {playingEvent.venueName}
                       </Typography>
                       {isPortrait ? null : (
-                        <Button variant="contained" onClick={() => alert('Joined')}>
-                          Join Queue
-                        </Button>
+                        <JoinNow
+                          stripePaymentUrl={playingEvent.stripePaymentUrl}
+                          charges={0}
+                          date={''}
+                          displayId={''}
+                          reservedPlayersCount={0}
+                          reservedPlayersList={[]}
+                          time={''}
+                          venueLocationLink={''}
+                          venueName={''}
+                          waitListPlayers={[]}
+                          waitListPlayersCount={0}
+                        />
                       )}
                     </FlexBox>
 

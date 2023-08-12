@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { avatars } from '../constants';
+//import PersonPinIcon from '@mui/icons-material/PersonPin';
 import styles from './Players.module.scss';
 
 interface PlayerDetailProps {

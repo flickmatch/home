@@ -29,8 +29,10 @@ function Header() {
   const menus = () =>
     !isPortrait ? (
       <FlexBox style={{ alignItems: 'center' }}>
-        <Typography className={styles.menuItem} component={Link} to="/">
-          Home
+        <Typography className={styles.menuItem}>
+          <a href="https://www.flickmatch.in/" target="_blank" rel="noreferrer" className={styles.link}>
+            Home
+          </a>
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
         <Typography className={styles.menuItem} component={Link} to="/what-we-do">

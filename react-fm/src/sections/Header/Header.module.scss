@@ -11,6 +11,11 @@
   transition: 0.3s;
 }
 
+.link {
+  text-decoration: none;
+  color: #4CE95A;
+}
+
 .menuItem::after {
   content: '';
   width: 0;

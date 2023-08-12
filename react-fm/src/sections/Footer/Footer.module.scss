@@ -95,6 +95,7 @@
 .email {
   font-size: 19px;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .emailIcon {
@@ -122,6 +123,10 @@
   font-size: 28px;
   cursor: pointer;
   transition: transform 0.3s;
+}
+
+.mailId:hover > .emailIcon {
+  transform: translateY(-3px);
 }
 
 .emailIcon:hover {

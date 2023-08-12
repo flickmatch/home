@@ -15,7 +15,7 @@ function WhatWeDo() {
     <>
       <Meta title="What We Do" />
       <Box className={styles.box}>
-        <Box className={styles.container}>
+        <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
           <img src={mainlogo} alt="logo" className={styles.logo} />
           <Typography className={styles.job}>Find a football game near you! ⚽</Typography>
           <img src={stats} alt="stats" className={isPortrait ? styles.mobileStats : styles.stats} />
