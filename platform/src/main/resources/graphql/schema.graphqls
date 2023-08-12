@@ -63,7 +63,7 @@ input CreateSportsVenueInput {
     """
     availableSportsIds: [ID!]
 
-    stripePaymentLinks: [StripePaymentLinkInput]!
+    stripePaymentLinks: [StripePaymentLinkInput!]!
 }
 
 input StripePaymentLinkInput {

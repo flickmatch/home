@@ -8,6 +8,7 @@ import com.flickmatch.platform.graphql.type.SportsVenue;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +53,22 @@ public class SportsVenueBuilder {
     }
 
     private SportsVenues.SportsVenue createSportsVenueInCity(final CreateSportsVenueInput input) {
+
+        List<SportsVenues.StripePaymentLink> stripePaymentLinks = new ArrayList<>();
+
+        SportsVenues.StripePaymentLink stripePaymentLink = SportsVenues.StripePaymentLink.builder()
+                .url(input.getStripePaymentLinkInputList().get(0).getLink())
+                .amount((double) input.getStripePaymentLinkInputList().get(0).getAmount())
+                .build();
+
+        stripePaymentLinks.add(stripePaymentLink);
+
         SportsVenues.SportsVenue sportsVenue = SportsVenues.SportsVenue.builder()
                 .displayName(input.getDisplayName())
                 .googleMapsLink(input.getGoogleMapsLink())
                 .availableSportsIds(List.of("1"))
                 .sportsVenueId(String.valueOf(System.currentTimeMillis()))
+                .stripePaymentLinks(stripePaymentLinks)
                 .build();
         return sportsVenue;
     }
