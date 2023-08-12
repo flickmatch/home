@@ -40,19 +40,38 @@ const dummyData = {
                 displayName: 'Naresh Kumar',
               },
               {
-                displayName: 'MS Dhoni',
+                displayName: 'Kaushal',
               },
               {
                 displayName: 'Nakul',
               },
               {
-                displayName: 'Ajinkya',
+                displayName: 'Parth',
               },
               {
-                displayName: 'Ravindra',
+                displayName: 'Himanshu',
               },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Nitin',
+              },
+              {
+                displayName: 'Haridev',
+              },
+              {
+                displayName: 'Kiyaan',
+              },
+              {
+                displayName: 'Monya Amo',
+              },
+              {
+                displayName: 'Rolly',
+              },
+              {
+                displayName: 'Jhumkar',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
@@ -84,16 +103,16 @@ const dummyData = {
                 displayName: 'Harsh',
               },
               {
-                displayName: 'Jasprit',
+                displayName: 'Mayank',
               },
               {
-                displayName: 'Virat Kohli',
+                displayName: 'Yash',
               },
               {
-                displayName: 'MS Dhoni',
+                displayName: 'Ankur',
               },
               {
-                displayName: 'Rituraj G.',
+                displayName: 'Rithik',
               },
             ],
             waitListPlayers: [
@@ -101,13 +120,16 @@ const dummyData = {
                 displayName: 'Harsh',
               },
               {
-                displayName: 'Deepak',
+                displayName: 'Lovepreet',
               },
               {
                 displayName: 'Himanshu',
               },
               {
                 displayName: 'Mohit',
+              },
+              {
+                displayName: 'Piyush',
               },
             ],
             stripePaymentUrl: '',
@@ -153,7 +175,7 @@ const dummyData = {
                 displayName: 'Abhishek',
               },
               {
-                displayName: 'Harsh',
+                displayName: 'Anubhav',
               },
               {
                 displayName: 'Saarthak',
@@ -164,8 +186,36 @@ const dummyData = {
               {
                 displayName: 'Astitva',
               },
+              {
+                displayName: 'Rishi',
+              },
+              {
+                displayName: 'Rijvaan',
+              },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Mukhtaar',
+              },
+              {
+                displayName: 'Shubham',
+              },
+              {
+                displayName: 'Burhan',
+              },
+              {
+                displayName: 'Arif',
+              },
+              {
+                displayName: 'Arihant',
+              },
+              {
+                displayName: 'John',
+              },
+              {
+                displayName: 'Nilesh',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
@@ -185,34 +235,34 @@ const dummyData = {
                 displayName: 'Sarvesh',
               },
               {
-                displayName: 'Shubhman Gill',
+                displayName: 'Akhilesh',
               },
               {
                 displayName: 'Sanju',
               },
               {
-                displayName: 'Abhishek',
+                displayName: 'Prahlad',
               },
               {
-                displayName: 'Harsh',
+                displayName: 'Kishore',
               },
               {
                 displayName: 'Jasprit',
               },
               {
-                displayName: 'Virat Kohli',
+                displayName: 'Sooraj',
               },
               {
-                displayName: 'MS Dhoni',
+                displayName: 'Bunty Singh',
               },
               {
-                displayName: 'Rituraj G.',
+                displayName: 'Rijwaan',
               },
               {
                 displayName: 'Ravinder',
               },
               {
-                displayName: 'Abhishek',
+                displayName: 'Vinod',
               },
               {
                 displayName: 'Himesh',
@@ -229,13 +279,19 @@ const dummyData = {
                 displayName: 'Sahil',
               },
               {
-                displayName: 'Sumesh',
+                displayName: 'Sukhwinder',
               },
               {
                 displayName: 'Mahendra',
               },
               {
                 displayName: 'Himesh',
+              },
+              {
+                displayName: 'Margo',
+              },
+              {
+                displayName: 'Saksham',
               },
             ],
             stripePaymentUrl: '',
@@ -250,11 +306,11 @@ const dummyData = {
             displayId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '6:00PM-7:00PM',
-            venueName: `Patty O'Malley Sportsfield`,
+            venueName: "Vista Montana Park",
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink:
-              'https://www.google.com/maps/dir//shoreline+athletic+fields/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x808fba19e7376f1f:0xd13fee728b915574?sa=X&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhBEAA&ved=2ahUKEwiKsoKPwbaAAxV1TGwGHTzEARsQ9Rd6BAhNEAM',
+              'https://goo.gl/maps/mZcrTxLejQifLw9p9',
             charges: 10.0,
             reservedPlayersList: [
               {
@@ -293,18 +349,46 @@ const dummyData = {
               {
                 displayName: 'Frank',
               },
+              {
+                displayName: 'Tanxin',
+              },
+              {
+                displayName: 'Xiang',
+              },
             ],
-            waitListPlayers: [],
+            waitListPlayers: [
+              {
+                displayName: 'Charles',
+              },
+              {
+                displayName: 'Benjamin',
+              },
+              {
+                displayName: 'Marquino',
+              },
+              {
+                displayName: 'Sergio',
+              },
+              {
+                displayName: 'Giovanni',
+              },
+              {
+                displayName: 'Antonio',
+              },
+              {
+                displayName: 'Daniel',
+              },
+            ],
             stripePaymentUrl: '',
           },
           {
             displayId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
-            venueName: `Patty O'Malley Sportsfield`,
+            venueName: "Vista Montana Park",
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
-            venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            venueLocationLink: 'https://goo.gl/maps/mZcrTxLejQifLw9p9',
             charges: 15.0,
             reservedPlayersList: [
               {
@@ -350,6 +434,9 @@ const dummyData = {
               },
               {
                 displayName: 'Alvaro',
+              },
+              {
+                displayName: 'Huang',
               },
             ],
             stripePaymentUrl: '',
