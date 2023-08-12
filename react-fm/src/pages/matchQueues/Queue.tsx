@@ -83,7 +83,7 @@ function MatchQueue() {
             {city.events.map((playingEvent: EventDetails) => (
               <Accordion
                 className={isPortrait ? styles.mobileAccordion : styles.accordion}
-                key={playingEvent.displayId}
+                key={playingEvent.eventId}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
@@ -103,7 +103,7 @@ function MatchQueue() {
                           stripePaymentUrl={playingEvent.stripePaymentUrl}
                           charges={0}
                           date={''}
-                          displayId={''}
+                          eventId={''}
                           reservedPlayersCount={0}
                           reservedPlayersList={[]}
                           time={''}
@@ -123,7 +123,7 @@ function MatchQueue() {
                       venueLocationLink={playingEvent.venueLocationLink}
                       reservedPlayersCount={playingEvent.reservedPlayersCount}
                       waitListPlayersCount={playingEvent.waitListPlayersCount}
-                      displayId={city.cityId}
+                      eventId={city.cityId}
                       reservedPlayersList={playingEvent.reservedPlayersList}
                       venueName={playingEvent.venueName}
                       waitListPlayers={playingEvent.waitListPlayers}
