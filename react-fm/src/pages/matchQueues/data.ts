@@ -8,7 +8,7 @@ const dummyData = {
           {
             displayId: '07-28-1',
             date: 'Fri, Jul 28',
-            time: '9:00PM-10:00PM',
+            time: '8:00PM-9:00PM',
             venueName: 'Bsporty',
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
@@ -58,7 +58,7 @@ const dummyData = {
           {
             displayId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '8:00PM-9:00PM',
+            time: '9:00PM-10:00PM',
             venueName: 'Bsporty',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
@@ -121,7 +121,7 @@ const dummyData = {
           {
             displayId: '07-28-1',
             date: 'Fri, Jul 28',
-            time: '10:00PM-11:00PM',
+            time: '7:00PM-8:00PM',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -171,7 +171,7 @@ const dummyData = {
           {
             displayId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '9:00PM-10:00PM',
+            time: '8:00PM-9:00PM',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
