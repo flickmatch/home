@@ -18,6 +18,7 @@ export const EventsCard: FC<EventDetails> = ({
   date,
   time,
   eventId,
+  venueName,
   venueLocationLink,
   reservedPlayersCount,
   reservedPlayersList,
@@ -108,7 +109,7 @@ export const EventsCard: FC<EventDetails> = ({
             reservedPlayersList={reservedPlayersList}
             time={''}
             venueLocationLink={''}
-            venueName={''}
+            venueName={venueName}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
           />

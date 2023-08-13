@@ -13,7 +13,7 @@ const routes: Routes = {
   [Pages.Welcome]: {
     component: asyncComponentLoader(() => import('@/pages/matchQueues')),
     path: '/',
-    title: 'Match Queues',
+    title: 'Home',
     icon: HomeIcon,
   },
   // [Pages.Welcome]: {

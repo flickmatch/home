@@ -53,3 +53,12 @@
   background: #4CE95A !important;
   color: black;
 }
+
+.lock {
+  font-size: 20px;
+  transition: color 0.2s;
+}
+
+.lock:hover {
+  color: #4CE95A
+}

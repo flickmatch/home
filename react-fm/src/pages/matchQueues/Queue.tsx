@@ -108,7 +108,7 @@ function MatchQueue() {
                           reservedPlayersList={playingEvent.reservedPlayersList}
                           time={''}
                           venueLocationLink={''}
-                          venueName={''}
+                          venueName={playingEvent.venueName}
                           waitListPlayers={playingEvent.waitListPlayers}
                           waitListPlayersCount={playingEvent.waitListPlayersCount}
                         />
