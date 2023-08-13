@@ -2,7 +2,7 @@ import { parseMessage } from "../src/parseUsualQueue.js";
 const message = `FlickMatch pick-up game at Gallant Play Arena South City 1, Gurgaon (https://maps.app.goo.gl/ebEXAjXrsUvBanyY9)
 12:08 PM - 09:30 PM 19-04-2023 (Saturday).
 7v7
-₹200- Per Person.
+₹200.20- Per Person.
 
 Add your name to the list:
 1. Abhishek

@@ -28,8 +28,8 @@ export function parseMessage(message) {
   if (formatRegexSearchResult) {
     format = formatRegexSearchResult[0];
   }
-
-  const costRegex = /(?<=(₹|\$))(\d+)/g; // Regex to extract the cost
+  
+  const costRegex = /(?<=(₹|\$))(\d+(?:\.\d{1,2})?)/g; // Regex to extract the cost
   const costRegexSearchResult = costRegex.exec(message);
   var cost = null;
   if (costRegexSearchResult) {
