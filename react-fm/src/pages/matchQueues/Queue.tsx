@@ -104,13 +104,13 @@ function MatchQueue() {
                           charges={0}
                           date={''}
                           eventId={''}
-                          reservedPlayersCount={0}
-                          reservedPlayersList={[]}
+                          reservedPlayersCount={playingEvent.reservedPlayersCount}
+                          reservedPlayersList={playingEvent.reservedPlayersList}
                           time={''}
                           venueLocationLink={''}
-                          venueName={''}
-                          waitListPlayers={[]}
-                          waitListPlayersCount={0}
+                          venueName={playingEvent.venueName}
+                          waitListPlayers={playingEvent.waitListPlayers}
+                          waitListPlayersCount={playingEvent.waitListPlayersCount}
                         />
                       )}
                     </FlexBox>
@@ -152,6 +152,7 @@ function MatchQueue() {
                         .map((name: string, i: number) => (
                           <PlayerDetails displayName={name} index={i} key={i} />
                         ))}
+
                     </Grid>
                   </Box>
                   {playingEvent.waitListPlayers.length > 0 ? (

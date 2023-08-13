@@ -18,13 +18,18 @@ export const EventsCard: FC<EventDetails> = ({
   date,
   time,
   eventId,
+  venueName,
   venueLocationLink,
   reservedPlayersCount,
   reservedPlayersList,
+  waitListPlayers,
+  waitListPlayersCount,
   stripePaymentUrl,
 }) => {
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
+  const openWaitList = waitListPlayersCount - waitListPlayers.length;
+
   //getting next day date
   const today = new Date();
   today.setDate(today.getDate() + 1);
@@ -86,7 +91,7 @@ export const EventsCard: FC<EventDetails> = ({
   const playersRequired = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
-        Open Spots <span>{openSpots}</span>
+        Open {openSpots == 0 ? "Waitlist" : "Spots"} <span>{openSpots == 0 ? openWaitList : openSpots}</span>
       </Typography>
     </Grid>
   );
@@ -100,13 +105,13 @@ export const EventsCard: FC<EventDetails> = ({
             charges={0}
             date={''}
             eventId={''}
-            reservedPlayersCount={0}
-            reservedPlayersList={[]}
+            reservedPlayersCount={reservedPlayersCount}
+            reservedPlayersList={reservedPlayersList}
             time={''}
             venueLocationLink={''}
-            venueName={''}
-            waitListPlayers={[]}
-            waitListPlayersCount={0}
+            venueName={venueName}
+            waitListPlayers={waitListPlayers}
+            waitListPlayersCount={waitListPlayersCount}
           />
         </FlexBox>
       </Grid>
