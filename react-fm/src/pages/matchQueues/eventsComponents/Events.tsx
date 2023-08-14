@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-
+import { DateTime } from "luxon";
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -41,6 +41,50 @@ export const EventsCard: FC<EventDetails> = ({
   const day = new Date(apiDate).valueOf();
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const istFirstDate = '2023-08-15T06:30:00';
+  const istSecondDate = '2023-08-15T08:30:00'; 
+ 
+  //converting time zone for US
+  function convertISPtoPT(istFirstDate: string) {
+    const ist = DateTime.fromISO(istFirstDate, { zone: 'Asia/Kolkata' });
+    const pt = ist.setZone('America/Los_Angeles');
+    return pt.toISO();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function formatToHumanReadable(dateTime: any) {
+    return dateTime.toLocaleString(DateTime.DATETIME_FULL);
+  }
+
+  const ptDateTime = convertISPtoPT(istFirstDate);
+  const humanReadablePT = formatToHumanReadable(ptDateTime);
+
+  const ptDateTime1 = convertISPtoPT(istSecondDate);
+  const humanReadablePT2 = formatToHumanReadable(ptDateTime1);
+
+  function formatDate(date: string | number | Date) {
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  }
+   
+  function formatTime(time: string | number | Date) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+  }
+   
+  function formatDateTimeRange(start: string | number | Date, end: string | number | Date) {
+    const formattedStartDate = formatDate(start);
+    const formattedStartTime = formatTime(start);
+    
+    //const formattedEndDate = formatDate(end);
+    const formattedEndTime = formatTime(end);
+    
+    const formattedRange = `${formattedStartDate} ${formattedStartTime} - ${formattedEndTime}`;
+    return formattedRange;
+  }
+
+  //converting date to human readable format
+  const formattedDateRange = formatDateTimeRange(humanReadablePT, humanReadablePT2);
   
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
@@ -62,9 +106,11 @@ export const EventsCard: FC<EventDetails> = ({
     <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Date{''}
+        {eventId === '4' ? <span>{formattedDateRange}</span> :
         <span>
           {diffDays > 1 ? futureDate : date} {time}
         </span>
+        }
       </Typography>
     </Grid>
   );
