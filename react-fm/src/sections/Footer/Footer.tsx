@@ -33,23 +33,32 @@ function Footer() {
 
   const socialIcons = () => (
     <>
-    <Tooltip title="Connect on YouTube" arrow>
-      <YouTubeIcon className={styles.youtubeIcon} />
-      </Tooltip>
+      <a href="https://www.youtube.com/@FlickMatch" target='_blank' rel="noreferrer">
+        <Tooltip title="Connect via YouTube" arrow>
+          <YouTubeIcon className={styles.youtubeIcon} />
+        </Tooltip>
+      </a>
+      <a href="https://www.instagram.com/flickmatch/" target='_blank' rel="noreferrer">
       <Tooltip title="Connect via Instagram" arrow>
       <InstagramIcon className={styles.instaIcon} />
       </Tooltip>
+      </a>
+      <a href="https://api.whatsapp.com/message/R7XHK52ZJKPDA1?autoload=1&app_absent=0" target='_blank' rel="noreferrer">
+
       <Tooltip title="Message on Whatsapp" arrow>
       <WhatsAppIcon className={styles.whatsappIcon} />
       </Tooltip>
+      </a>
+      <a href="https://www.linkedin.com/company/flickmatch/about/" target='_blank' rel="noreferrer">
       <Tooltip title="Follow on LinkedIn" arrow>
       <LinkedInIcon className={styles.linkedInIcon} />
       </Tooltip>
+      </a>
     </>
   );
 
   return (
-    <AppBar color="transparent" elevation={1} position="static">
+    <AppBar color="transparent" elevation={1} position="static" className={styles.container}>
       <FlexBox className={ isPortrait ? styles.mobileAppBar : styles.appBar}>
         <FlexBox className={ isPortrait ? styles.mobileCompanyDetails : styles.companyDetails}>
           <img src={mainlogo} alt="logo" className={styles.logo} />

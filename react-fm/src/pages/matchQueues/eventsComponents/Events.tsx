@@ -89,11 +89,13 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const playersRequired = () => (
+    openWaitList > 0 ?
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Open {openSpots == 0 ? "Waitlist" : "Spots"} <span>{openSpots == 0 ? openWaitList : openSpots}</span>
       </Typography>
     </Grid>
+    : null
   );
 
   const joinNow = () =>
