@@ -41,13 +41,13 @@ export const EventsCard: FC<EventDetails> = ({
   const day = new Date(apiDate).valueOf();
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          {eventId === "2" || eventId === "1" ? (
+          {eventId === '2' || eventId === '1' ? (
             <CurrencyRupeeSharp className={styles.currencyIcon} />
           ) : (
             <AttachMoneyIcon className={styles.currencyIcon} />
@@ -63,7 +63,9 @@ export const EventsCard: FC<EventDetails> = ({
       <Typography className={styles.title}>
         Date{''}
         <span>
-          {diffDays > 1 ? futureDate : date} {time}
+          {eventId != '1' && eventId != '2'
+            ? 'Mon Aug 14 7:00 PM - 8:00 PM'
+            : (diffDays > 1 ? futureDate : date) + ' ' + time}
         </span>
       </Typography>
     </Grid>
@@ -91,7 +93,8 @@ export const EventsCard: FC<EventDetails> = ({
   const playersRequired = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
-        Open {openSpots == 0 ? "Waitlist" : "Spots"} <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+        <span>{openSpots == 0 ? openWaitList : openSpots}</span>
       </Typography>
     </Grid>
   );
