@@ -21,12 +21,20 @@ function Footer() {
   const menus = () => (
     <>
       <Box className={styles.box} sx={{ flexGrow: 1 }}>
+      <a href="https://www.flickmatch.in/contact-8" rel="noreferrer">
         <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>Contact us</Typography>
+      </a>
+      <a href="https://www.flickmatch.in/general-clean" rel="noreferrer">
         <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>Refund Policy</Typography>
+        </a>
       </Box>
       <Box className={styles.box} sx={{ flexGrow: 1 }}>
+      <a href="https://www.flickmatch.in/general-clean-1" rel="noreferrer">
         <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>Terms & Conditions</Typography>
+        </a>
+        <a href="https://www.flickmatch.in/services-7" rel="noreferrer">
         <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>Privacy Policy</Typography>
+        </a>
       </Box>
     </>
   );

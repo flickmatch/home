@@ -42,9 +42,20 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const istFirstDate = '2023-08-15T06:30:00';
-  const istSecondDate = '2023-08-15T08:30:00'; 
- 
+  const check = diffDays > 0 ? futureDate + " 2023" : apiDate
+  const eventDate = new Date(check).toISOString().split('T')[0]
+  const startTime = time.split('-')[0]
+  const endTime = time.split('-')[1]
+  
+  const firstInterval = startTime.substring(0, startTime.length - 2)
+  const secondInterval = endTime.substring(0, endTime.length - 2)
+
+  //converting date-time to "yyyy-MM-dd'T'HH:mm:ss" format
+  const istFirstDate = `${eventDate}${firstInterval.charAt(0) == "1" ? "T" : "T0"}${firstInterval}:00`;
+  const istSecondDate = `${eventDate}${secondInterval.charAt(0) == "1" ? "T" : "T0"}${secondInterval}:00`; 
+
+  //console.log(istFirstDate, istSecondDate, futureDate, eventDate)
+  
   //converting time zone for US
   function convertISPtoPT(istFirstDate: string) {
     const ist = DateTime.fromISO(istFirstDate, { zone: 'Asia/Kolkata' });
@@ -64,8 +75,7 @@ export const EventsCard: FC<EventDetails> = ({
   const humanReadablePT2 = formatToHumanReadable(ptDateTime1);
 
   function formatDate(date: string | number | Date) {
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return new Date(date).toLocaleDateString('en-US', options);
+    return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   }
    
   function formatTime(time: string | number | Date) {
