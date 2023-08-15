@@ -101,7 +101,7 @@ export const EventsCard: FC<EventDetails> = ({
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          {eventId === "2" || eventId === "1" ? (
+          {eventId === '2' || eventId === '1' ? (
             <CurrencyRupeeSharp className={styles.currencyIcon} />
           ) : (
             <AttachMoneyIcon className={styles.currencyIcon} />
@@ -118,7 +118,9 @@ export const EventsCard: FC<EventDetails> = ({
         Date{''}
         {eventId === '4' ? <span>{formattedDateRange}</span> :
         <span>
-          {diffDays > 1 ? futureDate : date} {time}
+          {eventId != '1' && eventId != '2'
+            ? 'Mon Aug 14 7:00 PM - 8:00 PM'
+            : (diffDays > 1 ? futureDate : date) + ' ' + time}
         </span>
         }
       </Typography>
@@ -148,7 +150,8 @@ export const EventsCard: FC<EventDetails> = ({
     openWaitList > 0 ?
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
-        Open {openSpots == 0 ? "Waitlist" : "Spots"} <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+        <span>{openSpots == 0 ? openWaitList : openSpots}</span>
       </Typography>
     </Grid>
     : null
