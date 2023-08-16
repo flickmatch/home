@@ -6,9 +6,11 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import moment from 'moment-timezone';
+
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import moment from 'moment-timezone';
+
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -42,36 +44,35 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const check = diffDays > 1 ? futureDate + " 2023" : apiDate
-  const eventDate = new Date(check).toISOString().split('T')[0] //2023-08-16
-  const startTime = time.split('-')[0] //8:00PM 
-  const endTime = time.split('-')[1] //9:30PM
-  
-  console.log(dateToString, check, diffDays)
+  const check = diffDays > 1 ? futureDate + ' 2023' : apiDate;
+  const eventDate = new Date(check).toISOString().split('T')[0]; //2023-08-16
+  const startTime = time.split('-')[0]; //8:00PM
+  const endTime = time.split('-')[1]; //9:30PM
+
   function convertTo24HourFormat(time12Hour: string) {
     const [time, period] = time12Hour.split(' ');
     const [hours, minutes] = time.split(':');
-    
+
     let militaryHours = parseInt(hours);
 
     if (period === 'PM' && militaryHours !== 12) {
-        militaryHours += 12;
+      militaryHours += 12;
     } else if (period === 'AM' && militaryHours === 12) {
-        militaryHours = 0;
+      militaryHours = 0;
     }
 
     return `${militaryHours.toString().padStart(2, '0')}:${minutes}`;
   }
 
-  const firstInterval = startTime.substring(0, startTime.length - 2)
-  const secondInterval = endTime.substring(0, endTime.length - 2)
+  const firstInterval = startTime.substring(0, startTime.length - 2);
+  const secondInterval = endTime.substring(0, endTime.length - 2);
 
-  const time12Hour1 = firstInterval + " " + startTime.slice(-2);
-  const time12Hour2 = secondInterval + " " + endTime.slice(-2);
+  const time12Hour1 = firstInterval + ' ' + startTime.slice(-2);
+  const time12Hour2 = secondInterval + ' ' + endTime.slice(-2);
 
   const time24Hour1 = convertTo24HourFormat(time12Hour1);
   const time24Hour2 = convertTo24HourFormat(time12Hour2);
-  
+
   // Create a moment object with a specific date and timezone
   const startDateTime = moment.tz(`${eventDate} ${time24Hour1}`, 'Asia/Kolkata');
   const endDateTime = moment.tz(`${eventDate} ${time24Hour2}`, 'Asia/Kolkata');
@@ -88,20 +89,24 @@ export const EventsCard: FC<EventDetails> = ({
   const istSecondDate = convertedEndTime.format();
 
   function formatDate(date: string | number | Date) {
-    return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    return new Date(date).toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
   }
-   
+
   function formatTime(time: string | number | Date) {
     return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
   }
-   
+
   function formatDateTimeRange(start: string | number | Date, end: string | number | Date) {
     const formattedStartDate = formatDate(start);
     const formattedStartTime = formatTime(start);
-    
+
     //const formattedEndDate = formatDate(end);
     const formattedEndTime = formatTime(end);
-    
+
     const formattedRange = `${formattedStartDate} ${formattedStartTime} - ${formattedEndTime}`;
     return formattedRange;
   }
@@ -128,11 +133,13 @@ export const EventsCard: FC<EventDetails> = ({
     <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Date{''}
-        {eventId === '4' ? <span>{formattedDateRange}</span> :
-        <span>
-          {diffDays > 1 ? futureDate : date} {time}
-        </span>
-        }
+        {eventId === '2' || eventId === '1' ? (
+          <span>
+            {diffDays > 1 ? futureDate : date} {time}
+          </span>
+        ) : (
+          <span>{formattedDateRange}</span>
+        )}
       </Typography>
     </Grid>
   );
@@ -156,16 +163,15 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const playersRequired = () => (
-    openWaitList > 0 ?
-    <Grid item xs={4} sm={4} md={4}>
-      <Typography className={styles.title}>
-        Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
-        <span>{openSpots == 0 ? openWaitList : openSpots}</span>
-      </Typography>
-    </Grid>
-    : null
-  );
+  const playersRequired = () =>
+    openWaitList > 0 ? (
+      <Grid item xs={4} sm={4} md={4}>
+        <Typography className={styles.title}>
+          Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+          <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        </Typography>
+      </Grid>
+    ) : null;
 
   const joinNow = () =>
     isPortrait ? (
