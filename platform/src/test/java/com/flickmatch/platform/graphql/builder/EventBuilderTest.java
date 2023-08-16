@@ -5,26 +5,24 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import java.sql.Time;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class EventBuilderTest {
 
     @Mock
     private EventRepository eventRepository;
-    @InjectMocks
+
     private EventBuilder eventBuilder;
 
     @BeforeEach
@@ -121,5 +119,23 @@ public class EventBuilderTest {
                 .eventDetailsList(eventDetailsList)
                 .build());
         return event;
+    }
+
+    @Test
+    public void testMapEventToGQLType() throws ParseException {
+        Event.EventDetails mockEventDetails = mock(Event.EventDetails.class);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+
+        Date startTime = dateFormat.parse("2023-08-13 10:00:00");
+        Date endTime = dateFormat.parse("2023-08-13 12:00:00");
+
+        when(mockEventDetails.getStartTime()).thenReturn(startTime);
+        when(mockEventDetails.getEndTime()).thenReturn(endTime);
+
+        assertThat(mockEventDetails.getStartTime(), equalTo(startTime));
+        assertThat(mockEventDetails.getEndTime(),equalTo(endTime));
+
     }
 }

@@ -102,6 +102,8 @@ type City {
 }
 
 type EVENT {
+    startTime: String!
+    endTime: String!
     eventId: String!
     displayTitle: String!
     venueLocationLink: String!
