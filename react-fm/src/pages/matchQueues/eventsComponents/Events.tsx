@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import { DateTime } from "luxon";
+import moment from 'moment-timezone';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -43,36 +43,48 @@ export const EventsCard: FC<EventDetails> = ({
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const check = diffDays > 0 ? futureDate + " 2023" : apiDate
-  const eventDate = new Date(check).toISOString().split('T')[0]
-  const startTime = time.split('-')[0]
-  const endTime = time.split('-')[1]
+  const eventDate = new Date(check).toISOString().split('T')[0] //2023-08-16
+  const startTime = time.split('-')[0] //8:00PM 
+  const endTime = time.split('-')[1] //9:30PM
   
+  function convertTo24HourFormat(time12Hour: string) {
+    const [time, period] = time12Hour.split(' ');
+    const [hours, minutes] = time.split(':');
+    
+    let militaryHours = parseInt(hours);
+
+    if (period === 'PM' && militaryHours !== 12) {
+        militaryHours += 12;
+    } else if (period === 'AM' && militaryHours === 12) {
+        militaryHours = 0;
+    }
+
+    return `${militaryHours.toString().padStart(2, '0')}:${minutes}`;
+  }
+
   const firstInterval = startTime.substring(0, startTime.length - 2)
   const secondInterval = endTime.substring(0, endTime.length - 2)
 
-  //converting date-time to "yyyy-MM-dd'T'HH:mm:ss" format
-  const istFirstDate = `${eventDate}${firstInterval.charAt(0) == "1" ? "T" : "T0"}${firstInterval}:00`;
-  const istSecondDate = `${eventDate}${secondInterval.charAt(0) == "1" ? "T" : "T0"}${secondInterval}:00`; 
+  const time12Hour1 = firstInterval + " " + startTime.slice(-2);
+  const time12Hour2 = secondInterval + " " + endTime.slice(-2);
 
-  //console.log(istFirstDate, istSecondDate, futureDate, eventDate)
+  const time24Hour1 = convertTo24HourFormat(time12Hour1);
+  const time24Hour2 = convertTo24HourFormat(time12Hour2);
   
-  //converting time zone for US
-  function convertISPtoPT(istFirstDate: string) {
-    const ist = DateTime.fromISO(istFirstDate, { zone: 'Asia/Kolkata' });
-    const pt = ist.setZone('America/Los_Angeles');
-    return pt.toISO();
-  }
+  // Create a moment object with a specific date and timezone
+  const startDateTime = moment.tz(`${eventDate} ${time24Hour1}`, 'Asia/Kolkata');
+  const endDateTime = moment.tz(`${eventDate} ${time24Hour2}`, 'Asia/Kolkata');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function formatToHumanReadable(dateTime: any) {
-    return dateTime.toLocaleString(DateTime.DATETIME_FULL);
-  }
+  // Convert to a different timezone
+  const convertedStartTime = startDateTime.clone().tz('America/Los_Angeles');
+  const convertedEndTime = endDateTime.clone().tz('America/Los_Angeles');
 
-  const ptDateTime = convertISPtoPT(istFirstDate);
-  const humanReadablePT = formatToHumanReadable(ptDateTime);
+  // Display the original and converted dates / kept for future reference
+  // console.log('Original:', startDateTime.format(), endDateTime.format());
+  // console.log('Converted:', convertedStartTime.format(), convertedEndTime.format());
 
-  const ptDateTime1 = convertISPtoPT(istSecondDate);
-  const humanReadablePT2 = formatToHumanReadable(ptDateTime1);
+  const istFirstDate = convertedStartTime.format();
+  const istSecondDate = convertedEndTime.format();
 
   function formatDate(date: string | number | Date) {
     return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -93,9 +105,8 @@ export const EventsCard: FC<EventDetails> = ({
     return formattedRange;
   }
 
-  //converting date to human readable format
-  const formattedDateRange = formatDateTimeRange(humanReadablePT, humanReadablePT2);
-  
+  const formattedDateRange = formatDateTimeRange(istFirstDate, istSecondDate);
+
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
