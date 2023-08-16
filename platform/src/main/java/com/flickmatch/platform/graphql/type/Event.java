@@ -1,11 +1,13 @@
 package com.flickmatch.platform.graphql.type;
 
 import lombok.Builder;
-
 import java.util.List;
+import java.util.Date;
 
 @Builder
 public class Event {
+    private Date startTime;
+    private Date endTime;
     private String eventId;
     //TODO: Remove displayTitle and logic from mapEventToGQLType,
     // after WA client start using individual fields

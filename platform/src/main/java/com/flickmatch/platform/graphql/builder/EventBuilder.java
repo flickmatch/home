@@ -191,6 +191,8 @@ public class EventBuilder {
         List<Player> waitListPlayers = new ArrayList<>();
         createPlayerQueue(eventDetails, reservedPlayers, waitListPlayers);
         return com.flickmatch.platform.graphql.type.Event.builder()
+                .startTime(eventDetails.getStartTime())
+                .endTime(eventDetails.getEndTime())
                 .eventId(eventId)
                 .displayTitle(title)
                 .date(getFormattedEventDate(eventDetails.getStartTime()))
