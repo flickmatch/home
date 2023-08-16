@@ -42,11 +42,12 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const check = diffDays > 0 ? futureDate + " 2023" : apiDate
+  const check = diffDays > 1 ? futureDate + " 2023" : apiDate
   const eventDate = new Date(check).toISOString().split('T')[0] //2023-08-16
   const startTime = time.split('-')[0] //8:00PM 
   const endTime = time.split('-')[1] //9:30PM
   
+  console.log(dateToString, check, diffDays)
   function convertTo24HourFormat(time12Hour: string) {
     const [time, period] = time12Hour.split(' ');
     const [hours, minutes] = time.split(':');
@@ -129,9 +130,7 @@ export const EventsCard: FC<EventDetails> = ({
         Date{''}
         {eventId === '4' ? <span>{formattedDateRange}</span> :
         <span>
-          {eventId != '1' && eventId != '2'
-            ? 'Mon Aug 14 7:00 PM - 8:00 PM'
-            : (diffDays > 1 ? futureDate : date) + ' ' + time}
+          {diffDays > 1 ? futureDate : date} {time}
         </span>
         }
       </Typography>
