@@ -4,8 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.flickmatch.webhook.graphql.client.PlatformGraphQLClient;
-import com.flickmatch.webhook.graphql.input.JoinEventInput;
-import com.flickmatch.webhook.graphql.input.PlayerInput;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -19,7 +17,6 @@ import org.springframework.http.*;
 
 import java.io.*;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -28,7 +25,7 @@ public class StripeRequestHandler implements RequestStreamHandler {
 
     private final JSONParser parser = new JSONParser();
     private final Gson gson = new GsonBuilder().create();
-    private final PlatformGraphQLClient graphQLClient = new PlatformGraphQLClient();
+    private PlatformGraphQLClient graphQLClient;
 
 
     @Override
@@ -61,6 +58,7 @@ public class StripeRequestHandler implements RequestStreamHandler {
                     // instructions on how to handle this case, or return an error here.
                     throw new InvalidObjectException(" Deserialization failed : " + event.toString());
                 }
+                JSONObject handlerResponseBody = new JSONObject();
                 // Handle the event
                 switch (event.getType()) {
                     case "payment_intent.succeeded":
@@ -94,39 +92,32 @@ public class StripeRequestHandler implements RequestStreamHandler {
                         } catch (FileNotFoundException e) {
                             logger.log(e.getMessage());
                         }
+                        if (context.getAwsRequestId() != null) {
+                            graphQLClient = new PlatformGraphQLClient();
+                        }
                         // Make the GraphQL API call to the platform application
                         var response = graphQLClient.callGraphQl(variables, query);
-                        //logger.log(response.toString());
                         if (response.getStatusCode() == HttpStatus.OK) {
                             logger.log("HTTP call successful");
                             var responseBody = response.getBody();
                             logger.log(new Gson().toJson(responseBody));
-//                            if (responseBody.getJSONObject("data").getJSONObject("updatePlayerList").getBoolean("isSuccessful")) {
-//                                logger.log("Join event successful");
-//                                System.out.println("Join event successful");
-//                            } else {
-//                                logger.log("Join event failed with error: " + joinEventResponse.getErrorMessage());
-//                                System.out.println("Join event failed with error: " + joinEventResponse.getErrorMessage());
-//                            }
-
+                            handlerResponseBody.put("message", "Event Processed successfully");
                         } else {
+                            handlerResponseBody.put("message", "Event processing failed");
                             logger.log("Failed to make the GraphQL API call. Status code: " + response.getStatusCodeValue());
-                            System.out.println("Failed to make the GraphQL API call. Status code: " + response.getStatusCodeValue());
                         }
                         break;
                     default:
                         logger.log("Unhandled event type: " + event.getType());
                         break;
                 }
-                JSONObject responseBody = new JSONObject();
-                responseBody.put("message", "Event Processed successfully");
 
                 JSONObject headerJson = new JSONObject();
                 headerJson.put("x-custom-header", "my custom header value");
 
                 responseJson.put("statusCode", 200);
                 responseJson.put("headers", headerJson);
-                responseJson.put("body", responseBody.toString());
+                responseJson.put("body", handlerResponseBody.toString());
             }
         } catch (Exception e) {
             logger.log(e.getMessage());
