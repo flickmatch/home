@@ -66,7 +66,7 @@ a {
 }
 
 .menuItem {
-  color: #4CE95A;
+  color: #4ce95a;
   font-weight: 500;
   cursor: pointer;
   transition: transform 0.3s;
@@ -82,7 +82,7 @@ a {
   text-align: center;
   margin-bottom: 15px;
   font-weight: 500;
-  color: #4CE95A;
+  color: #4ce95a;
   font-size: 17px;
 }
 
@@ -107,7 +107,7 @@ a {
 }
 
 .emailIcon {
-  color: #4CE95A;
+  color: #4ce95a;
   font-size: 30px;
   cursor: pointer;
   transition: transform 0.3s;
@@ -126,7 +126,10 @@ a {
   margin-bottom: 15px;
 }
 
-.youtubeIcon, .instaIcon, .whatsappIcon, .linkedInIcon {
+.youtubeIcon,
+.instaIcon,
+.whatsappIcon,
+.linkedInIcon {
   color: white;
   font-size: 28px;
   cursor: pointer;
@@ -142,21 +145,21 @@ a {
 }
 
 .youtubeIcon:hover {
-  color: #4CE95A;
+  color: #4ce95a;
   transform: translateY(-3px);
 }
 
 .instaIcon:hover {
-  color: #4CE95A;
+  color: #4ce95a;
   transform: translateY(-5px);
 }
 
 .whatsappIcon:hover {
-  color: #4CE95A;
+  color: #4ce95a;
   transform: translateY(-5px);
 }
 
 .linkedInIcon:hover {
-  color: #4CE95A;
+  color: #4ce95a;
   transform: translateY(-5px);
 }

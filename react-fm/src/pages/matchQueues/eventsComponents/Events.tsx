@@ -6,7 +6,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import moment from 'moment-timezone';
+import * as moment from 'moment';
+import 'moment-timezone';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -81,37 +82,9 @@ export const EventsCard: FC<EventDetails> = ({
   const convertedStartTime = startDateTime.clone().tz('America/Los_Angeles');
   const convertedEndTime = endDateTime.clone().tz('America/Los_Angeles');
 
-  // Display the original and converted dates / kept for future reference
-  // console.log('Original:', startDateTime.format(), endDateTime.format());
-  // console.log('Converted:', convertedStartTime.format(), convertedEndTime.format());
-
-  const istFirstDate = convertedStartTime.format();
-  const istSecondDate = convertedEndTime.format();
-
-  function formatDate(date: string | number | Date) {
-    return new Date(date).toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    });
-  }
-
-  function formatTime(time: string | number | Date) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
-  }
-
-  function formatDateTimeRange(start: string | number | Date, end: string | number | Date) {
-    const formattedStartDate = formatDate(start);
-    const formattedStartTime = formatTime(start);
-
-    //const formattedEndDate = formatDate(end);
-    const formattedEndTime = formatTime(end);
-
-    const formattedRange = `${formattedStartDate} ${formattedStartTime} - ${formattedEndTime}`;
-    return formattedRange;
-  }
-
-  const formattedDateRange = formatDateTimeRange(istFirstDate, istSecondDate);
+  const eventStartTime = convertedStartTime.format('ddd MMM D h:mm A');
+  const eventEndTime = convertedEndTime.format('h:mm A');
+  const usTime = `${eventStartTime} - ${eventEndTime}`;
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
@@ -138,7 +111,7 @@ export const EventsCard: FC<EventDetails> = ({
             {diffDays > 1 ? futureDate : date} {time}
           </span>
         ) : (
-          <span>{formattedDateRange}</span>
+          <span>{usTime}</span>
         )}
       </Typography>
     </Grid>

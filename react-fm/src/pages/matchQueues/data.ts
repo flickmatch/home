@@ -306,11 +306,10 @@ const dummyData = {
             eventId: '07-28-1',
             date: 'Fri, Jul 28',
             time: '6:00PM-7:00PM',
-            venueName: "Vista Montana Park",
+            venueName: 'Vista Montana Park',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
-            venueLocationLink:
-              'https://goo.gl/maps/mZcrTxLejQifLw9p9',
+            venueLocationLink: 'https://goo.gl/maps/mZcrTxLejQifLw9p9',
             charges: 10.0,
             reservedPlayersList: [
               {
@@ -385,7 +384,7 @@ const dummyData = {
             eventId: '07-28-2',
             date: 'Fri, Jul 28',
             time: '8:00PM-9:00PM',
-            venueName: "Vista Montana Park",
+            venueName: 'Vista Montana Park',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
             venueLocationLink: 'https://goo.gl/maps/mZcrTxLejQifLw9p9',

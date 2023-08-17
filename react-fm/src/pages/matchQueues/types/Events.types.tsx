@@ -10,7 +10,7 @@ type optionsTypes = {
   weekday: string;
   month: string;
   day: string;
-}
+};
 
 type EventDetails = {
   charges: number;
@@ -42,5 +42,5 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
-  optionsTypes
+  optionsTypes,
 };
