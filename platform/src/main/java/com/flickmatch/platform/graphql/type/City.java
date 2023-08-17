@@ -11,6 +11,7 @@ public class City {
 
     String cityId;
     String cityName;
+    String localTimeZone;
     List<Event> events;
     List<SportsVenue> sportsVenues;
 
