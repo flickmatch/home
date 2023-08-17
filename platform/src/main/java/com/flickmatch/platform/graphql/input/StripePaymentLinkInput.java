@@ -5,22 +5,22 @@ import lombok.Builder;
 
 @Builder
 public class StripePaymentLinkInput {
-        private float amount;
+        private double amount;
         private String link;
 
         public StripePaymentLinkInput() {
         }
 
-        public StripePaymentLinkInput(float amount, String link) {
+        public StripePaymentLinkInput(double amount, String link) {
             this.amount = amount;
             this.link = link;
         }
         @DynamoDBAttribute(attributeName="amount")
-        public float getAmount() {
+        public double getAmount() {
             return amount;
         }
 
-        public void setAmount(float amount) {
+        public void setAmount(double amount) {
             this.amount = amount;
         }
         @DynamoDBAttribute(attributeName="link")
