@@ -11,7 +11,7 @@ import { Pages } from './types';
 
 const routes: Routes = {
   [Pages.Welcome]: {
-    component: asyncComponentLoader(() => import('@/pages/matchQueues')),
+    component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/',
     title: 'Home',
     icon: HomeIcon,
