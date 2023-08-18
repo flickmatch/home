@@ -8,11 +8,13 @@
   width: 105% !important;
 }
 
-.eventDetails, .eventPlayersDetail {
+.eventDetails,
+.eventPlayersDetail {
   margin-left: 20px;
 }
 
-.mobileEventDetails, .mobileEventPlayersDetail {
+.mobileEventDetails,
+.mobileEventPlayersDetail {
   margin-left: 0px;
 }
 
@@ -27,7 +29,7 @@
 }
 
 .title {
-  color: #4CE95A;
+  color: #4ce95a;
   font-size: 18px;
   font-weight: bold;
 }
@@ -50,7 +52,7 @@
 .joinNow Button {
   width: 80%;
   margin: auto;
-  background: #4CE95A !important;
+  background: #4ce95a !important;
   color: black;
 }
 
@@ -60,5 +62,5 @@
 }
 
 .lock:hover {
-  color: #4CE95A
+  color: #4ce95a;
 }

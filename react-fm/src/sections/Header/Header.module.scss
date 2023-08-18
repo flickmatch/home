@@ -1,9 +1,17 @@
+.box {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  background: #111;
+  width: 100%;
+}
+
 .logo {
   height: 42px;
 }
 
 .menuItem {
-  color: #4CE95A;
+  color: #4ce95a;
   cursor: pointer;
   font-weight: 600;
   position: relative;
@@ -13,14 +21,14 @@
 
 .link {
   text-decoration: none;
-  color: #4CE95A;
+  color: #4ce95a;
 }
 
 .menuItem::after {
   content: '';
   width: 0;
   height: 1px;
-  background: #4CE95A;
+  background: #4ce95a;
   position: absolute;
   left: 0;
   bottom: -6px;

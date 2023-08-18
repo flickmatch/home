@@ -68,7 +68,7 @@ function Header() {
     ) : null;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} className={styles.box}>
       <AppBar color="transparent" elevation={1} position="static">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <FlexBox sx={{ alignItems: 'center' }}>

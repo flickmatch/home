@@ -6,6 +6,9 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import * as moment from 'moment';
+import 'moment-timezone';
+
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
@@ -42,6 +45,25 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+  const check = diffDays > 1 ? futureDate : date;
+  const startTime = time.split('-')[0]; //8:00PM
+  const endTime = time.split('-')[1]; //9:30PM
+  
+  const startDateString1 = check + startTime
+  const endDateString2 = check + endTime
+
+  const localStartMoment = moment(startDateString1, 'ddd MMM D h:mm A')
+  const localEndMoment = moment(endDateString2, 'ddd MMM D h:mm A')
+
+  // Convert to a US time zone
+  const usEasternStartMoment = localStartMoment.tz('America/Los_Angeles')
+  const usEasternEndMoment = localEndMoment.tz('America/Los_Angeles')
+
+  //formatting date object to display in desired format
+  const eventStartTime = usEasternStartMoment.format('ddd MMM D h:mm A');
+  const eventEndTime = usEasternEndMoment.format('h:mm A');
+  const usTime = `${eventStartTime} - ${eventEndTime}`;
+
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
@@ -62,11 +84,13 @@ export const EventsCard: FC<EventDetails> = ({
     <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Date{''}
-        <span>
-          {eventId != '1' && eventId != '2'
-            ? 'Mon Aug 14 7:00 PM - 8:00 PM'
-            : (diffDays > 1 ? futureDate : date) + ' ' + time}
-        </span>
+        {eventId === '2' || eventId === '1' ? (
+          <span>
+            {diffDays > 1 ? futureDate : date} {time}
+          </span>
+        ) : (
+          <span>{usTime}</span>
+        )}
       </Typography>
     </Grid>
   );
@@ -90,14 +114,15 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const playersRequired = () => (
-    <Grid item xs={4} sm={4} md={4}>
-      <Typography className={styles.title}>
-        Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
-        <span>{openSpots == 0 ? openWaitList : openSpots}</span>
-      </Typography>
-    </Grid>
-  );
+  const playersRequired = () =>
+    openWaitList > 0 ? (
+      <Grid item xs={4} sm={4} md={4}>
+        <Typography className={styles.title}>
+          Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+          <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        </Typography>
+      </Grid>
+    ) : null;
 
   const joinNow = () =>
     isPortrait ? (
