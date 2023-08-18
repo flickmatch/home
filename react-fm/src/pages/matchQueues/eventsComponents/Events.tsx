@@ -45,45 +45,23 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const check = diffDays > 1 ? futureDate + ' 2023' : apiDate;
-  const eventDate = new Date(check).toISOString().split('T')[0]; //2023-08-16
+  const check = diffDays > 1 ? futureDate : date;
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1]; //9:30PM
+  
+  const startDateString1 = check + startTime
+  const endDateString2 = check + endTime
 
-  function convertTo24HourFormat(time12Hour: string) {
-    const [time, period] = time12Hour.split(' ');
-    const [hours, minutes] = time.split(':');
+  const localStartMoment = moment(startDateString1, 'ddd MMM D h:mm A')
+  const localEndMoment = moment(endDateString2, 'ddd MMM D h:mm A')
 
-    let militaryHours = parseInt(hours);
+  // Convert to a US time zone
+  const usEasternStartMoment = localStartMoment.tz('America/Los_Angeles')
+  const usEasternEndMoment = localEndMoment.tz('America/Los_Angeles')
 
-    if (period === 'PM' && militaryHours !== 12) {
-      militaryHours += 12;
-    } else if (period === 'AM' && militaryHours === 12) {
-      militaryHours = 0;
-    }
-
-    return `${militaryHours.toString().padStart(2, '0')}:${minutes}`;
-  }
-
-  const firstInterval = startTime.substring(0, startTime.length - 2);
-  const secondInterval = endTime.substring(0, endTime.length - 2);
-
-  const time12Hour1 = firstInterval + ' ' + startTime.slice(-2);
-  const time12Hour2 = secondInterval + ' ' + endTime.slice(-2);
-
-  const time24Hour1 = convertTo24HourFormat(time12Hour1);
-  const time24Hour2 = convertTo24HourFormat(time12Hour2);
-
-  // Create a moment object with a specific date and timezone
-  const startDateTime = moment.tz(`${eventDate} ${time24Hour1}`, 'Asia/Kolkata');
-  const endDateTime = moment.tz(`${eventDate} ${time24Hour2}`, 'Asia/Kolkata');
-
-  // Convert to a different timezone
-  const convertedStartTime = startDateTime.clone().tz('America/Los_Angeles');
-  const convertedEndTime = endDateTime.clone().tz('America/Los_Angeles');
-
-  const eventStartTime = convertedStartTime.format('ddd MMM D h:mm A');
-  const eventEndTime = convertedEndTime.format('h:mm A');
+  //formatting date object to display in desired format
+  const eventStartTime = usEasternStartMoment.format('ddd MMM D h:mm A');
+  const eventEndTime = usEasternEndMoment.format('h:mm A');
   const usTime = `${eventStartTime} - ${eventEndTime}`;
 
   const price = () => (
