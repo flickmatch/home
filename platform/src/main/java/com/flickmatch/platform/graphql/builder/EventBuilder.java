@@ -99,26 +99,21 @@ public class EventBuilder {
 
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId) {
         Date currentTime = new Date(System.currentTimeMillis());
-        Date tomorrow = Date.from(currentTime.toInstant().plus(1, ChronoUnit.DAYS));
-        String currentDate = DateUtil.extractDateFromISOFormatDate(currentTime);
-        String tomorrowDate = DateUtil.extractDateFromISOFormatDate(tomorrow);
-        Optional<Event> eventData = eventRepository.findById(new Event.EventId(cityId,currentDate));
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
-        if (eventData.isPresent()) {
-            //filter events before current time
-            List<com.flickmatch.platform.graphql.type.Event> todayEventList =
-                    eventData.get().getEventDetailsList().stream()
-                    .filter(eventDetails -> eventDetails.getStartTime().after(currentTime)).map(eventDetails -> mapEventToGQLType(eventDetails, currentDate)).toList();
-            eventList.addAll(todayEventList);
-        }
-        eventData = eventRepository.findById(new Event.EventId(cityId,tomorrowDate));
-        if (eventData.isPresent()) {
-            List<com.flickmatch.platform.graphql.type.Event> upcomingEventList =
-                    eventData.get().getEventDetailsList().stream()
-                    .map(eventDetails -> mapEventToGQLType(eventDetails, tomorrowDate)).toList();
-            eventList.addAll(upcomingEventList);
-        }
 
+        for (int i = 0; i < 7; i++) {
+            Date currentDate = Date.from(currentTime.toInstant().plus(i, ChronoUnit.DAYS));
+            String formattedDate = DateUtil.extractDateFromISOFormatDate(currentDate);
+            Optional<Event> eventData = eventRepository.findById(new Event.EventId(cityId, formattedDate));
+            if (eventData.isPresent()) {
+                List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
+                        eventData.get().getEventDetailsList().stream()
+                                .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
+                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate))
+                                .toList();
+                eventList.addAll(dailyEventList);
+            }
+        }
         return eventList;
     }
 
