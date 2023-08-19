@@ -65,7 +65,8 @@ function MatchQueue() {
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
-             error;
+            //eslint-disable-next-line no-console
+             console.log(error);
           }
         }
       }
