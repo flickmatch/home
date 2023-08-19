@@ -100,7 +100,7 @@ public class EventBuilder {
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId) {
         Date currentTime = new Date(System.currentTimeMillis());
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
-        static final int GET_EVENT_DAYS = 7;
+        final int GET_EVENT_DAYS = 7;
         for (int i = 0; i < GET_EVENT_DAYS; i++) {
             Date currentDate = Date.from(currentTime.toInstant().plus(i, ChronoUnit.DAYS));
             String formattedDate = DateUtil.extractDateFromISOFormatDate(currentDate);
