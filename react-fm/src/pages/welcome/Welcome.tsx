@@ -5,10 +5,10 @@ import SnowshoeingIcon from '@mui/icons-material/Snowshoeing';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import useOrientation from '@/hooks/useOrientation';
 
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
+import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Welcome.module.scss';
 import mainlogo from '/logo.png';
@@ -44,15 +44,19 @@ function Welcome() {
           <Typography className={styles.whatIsFlickmatch}>
             Flickmatch is the perfect place for you and your mates to play for leisure or event
             competitive. Our match-making facilities ensure that every game is better than the one
-            before with plenty of thrills and goals! Plus, you get spectacular views of Mountain&apos;s
-            View glistening skyline and the majestic feel of Gurgaon and Hyderabad.
+            before with plenty of thrills and goals! Plus, you get spectacular views of
+            Mountain&apos;s View glistening skyline and the majestic feel of Gurgaon and Hyderabad.
           </Typography>
         </Box>
       </Box>
       <div className={isPortrait ? styles.dividerOnPortrait : styles.divider} />
       <Box className={isPortrait ? styles.portraitSlideFromRight : styles.slideFromRight}>
         <Box>
-          <img className={isPortrait ? styles.portraitFootball : styles.football} src="/football.jpeg" alt="football" />
+          <img
+            className={isPortrait ? styles.portraitFootball : styles.football}
+            src="/football.jpeg"
+            alt="football"
+          />
         </Box>
       </Box>
     </FlexBox>
@@ -70,8 +74,8 @@ function Welcome() {
         <Box className={styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
             Finding football matches ⚽ should be as easy as getting a cab 🚕! FLICKMATCH finds or
-            organises football games near you.Whether you&apos;re a casual solo, Or in a group Or a team
-            looking to play LTP (Losers to Pay), FLICKMATCH takes care of all your football
+            organises football games near you.Whether you&apos;re a casual solo, Or in a group Or a
+            team looking to play LTP (Losers to Pay), FLICKMATCH takes care of all your football
             MATCHMAKING needs from finding players to reserving grounds.
           </Typography>
         </Box>
@@ -82,7 +86,6 @@ function Welcome() {
   const howToPlay = () => (
     <FlexBox className={isPortrait ? styles.portraitHowToPlay : styles.howToPlay}>
       <Box className={isPortrait ? styles.portraitInstruction : styles.instruction}>
-
         <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
           <FlexBox className={styles.iconContainerFirst} onClick={() => switchImage(1)}>
             <SearchIcon className={styles.gameIcon} />

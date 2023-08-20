@@ -23,6 +23,7 @@ public class CityBuilder {
         return cityRepository.findAll().stream().map(city -> City.builder()
                 .cityId(city.getCityId())
                 .cityName(city.getCityName())
+                .localTimeZone(city.getLocalTimeZone())
                 .build()).toList();
     }
 
@@ -32,6 +33,7 @@ public class CityBuilder {
             return City.builder()
                     .cityId(city.get().getCityId())
                     .cityName(city.get().getCityName())
+                    .localTimeZone(city.get().getLocalTimeZone())
                     .build();
         }
         return null;

@@ -97,7 +97,7 @@ body {
   justify-content: space-between;
   width: 100%;
   margin-top: 40px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .portraitSlideFromLeft {
@@ -112,12 +112,14 @@ body {
   margin-left: 2.5%;
 }
 
-.slideFromLeft, .slideFromRight {
+.slideFromLeft,
+.slideFromRight {
   position: relative;
   width: 45%;
 }
 
-.slideFromLeft, .portraitSlideFromLeft {
+.slideFromLeft,
+.portraitSlideFromLeft {
   left: -100%;
   margin-left: 40px;
   text-align: left;
@@ -144,7 +146,7 @@ body {
 
 .whatIsFlickmatch {
   line-height: 1.9;
-  font-size: 19px
+  font-size: 19px;
 }
 
 .portraitFootball {
@@ -155,7 +157,7 @@ body {
 .football {
   height: 275px;
   margin-left: 60px;
-  margin-top: 125px
+  margin-top: 125px;
 }
 
 .Iphone1 {
@@ -172,7 +174,8 @@ body {
   flex-flow: column;
 }
 
-.secondSection, .portraitSecondSection {
+.secondSection,
+.portraitSecondSection {
   margin-top: 50px;
   width: 100%;
   align-items: center;
@@ -183,7 +186,8 @@ body {
   width: 100% !important;
 }
 
-.phoneSection, .portraitPhoneSection {
+.phoneSection,
+.portraitPhoneSection {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -197,7 +201,7 @@ body {
 
 .infoSection {
   width: 50%;
-  margin-right: 5%
+  margin-right: 5%;
 }
 
 .question {
@@ -209,14 +213,15 @@ body {
 
 .mottoSection {
   border-left: 5px solid #4ce95a;
-  padding-left: 20px
+  padding-left: 20px;
 }
 
 .portraitHowToPlay {
   flex-flow: column-reverse;
 }
 
-.howToPlay, .portraitHowToPlay {
+.howToPlay,
+.portraitHowToPlay {
   margin-top: 50px;
   width: 100%;
   margin-bottom: 150px;
@@ -227,11 +232,13 @@ body {
   margin-bottom: 20px;
 }
 
-.container, .portraitContainer {
+.container,
+.portraitContainer {
   align-items: center;
 }
 
-.iconContainerFirst, .iconContainerSecond {
+.iconContainerFirst,
+.iconContainerSecond {
   height: 55px;
   width: 55px;
   border-radius: 8px;
@@ -268,7 +275,8 @@ body {
   align-items: center;
 }
 
-.stepsContainer, .portraitStepsContainer {
+.stepsContainer,
+.portraitStepsContainer {
   flex-flow: column;
   padding: 35px;
 }
@@ -284,7 +292,8 @@ body {
   text-align: center;
 }
 
-.step, .portraitStep {
+.step,
+.portraitStep {
   padding-top: 5px;
   font-size: 17px;
 }
