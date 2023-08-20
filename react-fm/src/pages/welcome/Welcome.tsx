@@ -20,7 +20,7 @@ function Welcome() {
   const videoContainer = () => (
     <Box className={styles.videoContainer}>
       <video className={styles.fullscreenVideo} autoPlay muted loop>
-        <source src="/football.mp4" type="video/mp4" />
+        <source src="https://firebasestorage.googleapis.com/v0/b/first-d160b.appspot.com/o/football.mp4?alt=media&token=954eceb5-f109-492c-86b5-8587bf2ce7fd" type="video/mp4" />
       </video>
       <div className={styles.overlay} />
       <Box className={styles.content}>
