@@ -32,6 +32,7 @@ body {
 
 .tagLine {
   font-size: 18px;
+  margin-top: 5px;
 }
 
 .fullscreenVideo {
@@ -42,7 +43,7 @@ body {
   height: 100%;
   z-index: -1;
   object-fit: cover;
-  opacity: 0.6;
+  opacity: 0.3;
 }
 
 .overlay {
@@ -57,6 +58,7 @@ body {
 
 .content {
   position: absolute;
+  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -87,6 +89,10 @@ body {
   transform-origin: left;
 }
 
+.dividerOnPortrait {
+  display: none;
+}
+
 .firstSection {
   justify-content: space-between;
   width: 100%;
@@ -94,19 +100,56 @@ body {
   flex-wrap: wrap
 }
 
+.portraitSlideFromLeft {
+  position: relative;
+  width: 100%;
+  margin-left: 20px !important;
+}
+
+.portraitSlideFromRight {
+  position: relative;
+  width: 95%;
+  margin-left: 2.5%;
+}
+
 .slideFromLeft, .slideFromRight {
+  position: relative;
   width: 45%;
 }
 
-.slideFromLeft {
+.slideFromLeft, .portraitSlideFromLeft {
+  left: -100%;
   margin-left: 40px;
   text-align: left;
-  padding: 20px
+  padding: 20px;
+  animation: slideLeft 2s forwards;
+}
+
+.slideFromRight {
+  left: 100%;
+  animation: slideRight 2s forwards;
+}
+
+@keyframes slideLeft {
+  to {
+    left: 0;
+  }
+}
+
+@keyframes slideRight {
+  to {
+    left: 0;
+  }
 }
 
 .whatIsFlickmatch {
   line-height: 1.9;
   font-size: 19px
+}
+
+.portraitFootball {
+  width: 100%;
+  margin-top: 25px;
 }
 
 .football {
@@ -119,17 +162,37 @@ body {
   height: 523px;
 }
 
-.secondSection {
+.games {
+  position: absolute;
+  height: 470px;
+  width: 240px;
+}
+
+.portraitSecondSection {
+  flex-flow: column;
+}
+
+.secondSection, .portraitSecondSection {
   margin-top: 50px;
   width: 100%;
   align-items: center;
   justify-content: space-around;
 }
 
-.phoneSection {
+.portraitPhoneSection {
+  width: 100% !important;
+}
+
+.phoneSection, .portraitPhoneSection {
   width: 50%;
   display: flex;
   justify-content: center;
+}
+
+.portraitInfoSection {
+  width: 94%;
+  margin-left: 3%;
+  margin-top: 15px;
 }
 
 .infoSection {
@@ -147,4 +210,105 @@ body {
 .mottoSection {
   border-left: 5px solid #4ce95a;
   padding-left: 20px
+}
+
+.portraitHowToPlay {
+  flex-flow: column-reverse;
+}
+
+.howToPlay, .portraitHowToPlay {
+  margin-top: 50px;
+  width: 100%;
+  margin-bottom: 150px;
+}
+
+.portraitContainer {
+  flex-flow: column;
+  margin-bottom: 20px;
+}
+
+.container, .portraitContainer {
+  align-items: center;
+}
+
+.iconContainerFirst, .iconContainerSecond {
+  height: 55px;
+  width: 55px;
+  border-radius: 8px;
+  border: 1px solid #606264;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(35deg);
+  cursor: pointer;
+}
+
+.iconContainerFirst {
+  background-color: rgb(76, 233, 90);
+  box-shadow: rgb(76, 233, 90) 0px 0px 8px;
+}
+
+.gameIcon {
+  font-size: 30px;
+  font-weight: 600;
+  transform: rotate(-35deg);
+}
+
+.portraitInstruction {
+  width: 90% !important;
+  margin: auto;
+}
+
+.instruction {
+  width: 45%;
+  margin-left: 10%;
+}
+
+.portraitStepsContainer {
+  padding: 30px !important;
+  align-items: center;
+}
+
+.stepsContainer, .portraitStepsContainer {
+  flex-flow: column;
+  padding: 35px;
+}
+
+.title {
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 28px;
+  color: #606264;
+}
+
+.portraitStep {
+  text-align: center;
+}
+
+.step, .portraitStep {
+  padding-top: 5px;
+  font-size: 17px;
+}
+
+.bar {
+  width: 30%;
+  height: 2px;
+  background-color: #4ce95a;
+  margin: auto;
+  margin-top: 25px;
+}
+
+.portraitInstructionImg {
+  width: 100%;
+  height: 530px;
+}
+
+.instructionImg {
+  width: 45%;
+}
+
+.imageContainer {
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  height: 100%;
 }
