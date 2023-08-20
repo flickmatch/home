@@ -80,7 +80,7 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const dateTime = () => (
-    <Grid item xs={4} sm={6} md={4}>
+    <Grid item xs={4} sm={6} md={6}>
       <Typography className={styles.title}>
         Date{''}
         {eventId === '2' || eventId === '1' ? (
