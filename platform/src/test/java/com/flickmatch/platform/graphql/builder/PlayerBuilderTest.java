@@ -12,7 +12,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.SportsVenues;
-import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
@@ -37,13 +36,11 @@ public class PlayerBuilderTest {
 
     private EventRepository eventRepository;
     private SportsVenueRepository sportsVenueRepository;
-    private CityRepository cityRepository;
 
     @BeforeEach
     public void init() {
        eventRepository = mock(EventRepository.class);
        sportsVenueRepository = mock(SportsVenueRepository.class);
-       cityRepository = mock(CityRepository.class);
 
         List<SportsVenues> sportsVenues = createSportsVenueMockData();
         List<Event> event = createEventMockData();
@@ -83,7 +80,7 @@ public class PlayerBuilderTest {
                  try {
                     Method method = PlayerBuilder.class.getDeclaredMethod("isWANumberValid", Event.PlayerDetails.class);
                     method.setAccessible(true);
-                    PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository, cityRepository);
+                    PlayerBuilder playerBuilder1 = new PlayerBuilder(eventRepository, sportsVenueRepository);
                     boolean result = (boolean) method.invoke(playerBuilder1, playerDetails1);
                     assertTrue(result);
                 } catch (NoSuchMethodException e) {
@@ -125,7 +122,7 @@ public class PlayerBuilderTest {
         List<PlayerInput> waitListPlayers = createWaitListPlayers();
 
         // Perform the test
-        PlayerBuilder playerBuilder = new PlayerBuilder(null, null, cityRepository);
+        PlayerBuilder playerBuilder = new PlayerBuilder(null, null);
 
         List<Event.PlayerDetails> playerDetailsList = playerBuilder.buildPlayerList(reservedPlayers, waitListPlayers);
 

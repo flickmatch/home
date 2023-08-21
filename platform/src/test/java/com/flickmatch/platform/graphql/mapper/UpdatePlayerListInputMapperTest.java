@@ -16,12 +16,11 @@ class UpdatePlayerListInputMapperTest {
     public static final String CITY_ID = "1";
     public static final String SPORTS_VENUE_ID = "1234";
     public static final String DATE = "2023-04-27";
-    public static final String LOCAL_TIMEZONE = "GMT+5:30";
 
     @Test
     void test_toCreateEventInput_WhenInputIsValid_ReturnsResponse() throws ParseException {
         CreateEventInput createEventInput = UpdatePlayerListInputMapper
-                .toCreateEventInput(buildPlayerListInput(), CITY_ID, SPORTS_VENUE_ID, DATE, LOCAL_TIMEZONE);
+                .toCreateEventInput(buildPlayerListInput(), CITY_ID, SPORTS_VENUE_ID, DATE);
         System.out.println("startTime" + createEventInput.getStartTime());
         System.out.println("endTime" + createEventInput.getEndTime());
         assertThat(createEventInput.getCharges(), is(200D));
@@ -34,7 +33,7 @@ class UpdatePlayerListInputMapperTest {
     @Test
     void test_toCreateEventInput_WhenInputIsValid_ThrowsException() {
         Assertions.assertThrows(ParseException.class, () -> UpdatePlayerListInputMapper
-                .toCreateEventInput(buildInvalidPlayerListInput(), CITY_ID, SPORTS_VENUE_ID, DATE, LOCAL_TIMEZONE));
+                .toCreateEventInput(buildInvalidPlayerListInput(), CITY_ID, SPORTS_VENUE_ID, DATE));
     }
 
     private UpdatePlayerListInput buildPlayerListInput() {

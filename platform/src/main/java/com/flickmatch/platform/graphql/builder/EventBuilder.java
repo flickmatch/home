@@ -97,7 +97,7 @@ public class EventBuilder {
 
     }
 
-    public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
+    public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId) {
         Date currentTime = new Date(System.currentTimeMillis());
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
         final int GET_EVENT_DAYS = 7;
@@ -109,7 +109,7 @@ public class EventBuilder {
                 List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
                         eventData.get().getEventDetailsList().stream()
                                 .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone))
+                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate))
                                 .toList();
                 eventList.addAll(dailyEventList);
             }
@@ -117,7 +117,7 @@ public class EventBuilder {
         return eventList;
     }
 
-    public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {
+    public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays) {
         List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
         Date currentTime = new Date(System.currentTimeMillis());
         Date dateBeforeThirtyDays = Date.from(currentTime.toInstant().minus(30, ChronoUnit.DAYS));
@@ -130,7 +130,7 @@ public class EventBuilder {
                         eventDetails.getStartTime().before(currentTime) &&
                                 eventDetails.getStartTime().after(dateBeforeThirtyDays)
                 ).map(eventDetails ->
-                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
+                        mapEventToGQLType(eventDetails, event.getDate())
                 ).toList();
                 pastEventList.addAll(pastEventsInCity);
             }
@@ -174,12 +174,14 @@ public class EventBuilder {
         return stripePaymentLinkForAmount.get().getUrl();
     }
 
-    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone) {
+    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date) {
         String eventId = date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         String eventType = players + "v" + players;
-        //Todo: clean up this field from schema
-        String title = "";
+        String title = eventType + " "
+                + formatDateTimeForTitle(eventDetails.getStartTime(), eventDetails.getEndTime())
+                + " "
+                + eventDetails.getVenueName();
         List<Player> reservedPlayers = new ArrayList<>();
         List<Player> waitListPlayers = new ArrayList<>();
         createPlayerQueue(eventDetails, reservedPlayers, waitListPlayers);
@@ -188,8 +190,8 @@ public class EventBuilder {
                 .endTime(eventDetails.getEndTime())
                 .eventId(eventId)
                 .displayTitle(title)
-                .date(getFormattedEventDate(eventDetails.getStartTime(), localTimeZone))
-                .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime(), localTimeZone))
+                .date(getFormattedEventDate(eventDetails.getStartTime()))
+                .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime()))
                 .venueName(eventDetails.getVenueName())
                 .charges(eventDetails.getCharges())
                 .venueLocationLink(eventDetails.getVenueLocationLink())
@@ -201,6 +203,10 @@ public class EventBuilder {
                 .build();
     }
 
+    private String formatDateTimeForTitle(Date startTime, Date endTime) {
+        return getFormattedEventDate(startTime) + " "
+                + getFormattedEventTime(startTime, endTime);
+    }
     private void createPlayerQueue(Event.EventDetails eventDetails,
                                    List<Player> reservedPlayers,
                                    List<Player> waitListPlayers) {
@@ -217,18 +223,17 @@ public class EventBuilder {
             counter.getAndIncrement();
         });
     }
-    private String getFormattedEventDate(Date startTime, String localTimeZone) {
+    private String getFormattedEventDate(Date startTime) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
-        dateFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         return dateFormatter.format(startTime);
     }
 
-    private String getFormattedEventTime(Date startTime, Date endTime, String localTimeZone) {
+    private String getFormattedEventTime(Date startTime, Date endTime) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");
-        TimeZone timeZone = TimeZone.getTimeZone(localTimeZone);
-        timeFormatter.setTimeZone(timeZone);
+        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         return timeFormatter.format(startTime) + "-"
-                + timeFormatter.format(endTime) + " " + timeZone.getID();
+                + timeFormatter.format(endTime);
     }
         private void isStartTimeInPast(Date startTime) {
         Date currentTime = new Date(System.currentTimeMillis());

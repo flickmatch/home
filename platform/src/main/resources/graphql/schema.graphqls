@@ -103,7 +103,6 @@ type MutationResult {
 type City {
     cityId: ID!
     cityName: String
-    localTimeZone: String
     sportsVenues: [SportsVenue!]
     events: [EVENT]
     pastEvents (inDays: Int!): [EVENT]!
