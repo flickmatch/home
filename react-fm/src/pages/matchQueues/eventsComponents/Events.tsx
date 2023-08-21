@@ -47,6 +47,8 @@ export const EventsCard: FC<EventDetails> = ({
   const endTime = time.split('-')[1].split(' ')[0];
   const usTime = date + ' ' + startTime + ' - ' + endTime;
 
+  time = time.split('GMT')[0].trim();
+
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
