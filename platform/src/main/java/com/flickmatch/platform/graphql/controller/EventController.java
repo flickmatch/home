@@ -57,12 +57,12 @@ public class EventController {
 
     @SchemaMapping(typeName = "City", field = "events")
     public List<Event> getEvents(City city) {
-        return eventBuilder.getEvents(city.getCityId());
+        return eventBuilder.getEvents(city.getCityId(), city.getLocalTimeZone());
     }
 
     @SchemaMapping(typeName = "City", field = "pastEvents")
     public List<Event> getPastEvents(City city, @Argument Integer inDays) {
-        return eventBuilder.getPastEvents(city.getCityId(), inDays);
+        return eventBuilder.getPastEvents(city.getCityId(), inDays, city.getLocalTimeZone());
     }
 
 }
