@@ -82,11 +82,12 @@ body {
 }
 
 .divider {
-  height: 325px;
+  height: 350px;
   width: 2px;
   background: #fff;
   transform: rotate(35deg);
   transform-origin: left;
+  margin-left: 4%;
 }
 
 .dividerOnPortrait {
@@ -145,7 +146,6 @@ body {
 }
 
 .whatIsFlickmatch {
-  line-height: 1.9;
   font-size: 19px;
 }
 

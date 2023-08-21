@@ -45,10 +45,13 @@ function Welcome() {
       <Box className={isPortrait ? styles.portraitSlideFromLeft : styles.slideFromLeft}>
         <Box>
           <Typography className={styles.whatIsFlickmatch}>
-            Flickmatch is the perfect place for you and your mates to play for leisure or event
-            competitive. Our match-making facilities ensure that every game is better than the one
-            before with plenty of thrills and goals! Plus, you get spectacular views of
-            Mountain&apos;s View glistening skyline and the majestic feel of Gurgaon and Hyderabad.
+            Introducing Flickmatch, We&apos;re dedicated to creating a dynamic space for football
+            enthusiasts to come together, connect, and experience the thrill of the sport like never
+            before. Flickmatch serves as the ultimate hub for both casual players and competitive
+            teams looking to engage in exhilarating matches. With our user-friendly interface, you
+            can effortlessly browse through upcoming games, join matches, or even create your own
+            team and schedule matches with opponents that match your skill level. Welcome to a new
+            era of football match-making.
           </Typography>
         </Box>
       </Box>
