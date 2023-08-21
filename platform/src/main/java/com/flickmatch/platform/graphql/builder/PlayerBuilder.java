@@ -66,18 +66,18 @@ public class PlayerBuilder {
         }
         Optional<Event> eventsInCity = eventRepository.findById(new Event.EventId(cityId.get(), date));
 
+        Optional<City> city = cityRepository.findById(cityId.get());
         Optional<Event.EventDetails> selectedEvent = Optional.empty();
         if (eventsInCity.isPresent()) {
-            selectedEvent = getSelectedEvent(input, eventsInCity);
+            selectedEvent = getSelectedEvent(input, eventsInCity, city.get().getLocalTimeZone());
         }
 
         if (selectedEvent.isEmpty()) {
-            Optional<City> city = cityRepository.findById(cityId.get());
             eventsInCity = Optional.of(eventBuilder.createEvent(
                     UpdatePlayerListInputMapper.toCreateEventInput(input, cityId.get(), sportsVenueId.get(), date,
                             city.get().getLocalTimeZone()),
                     false));
-            selectedEvent = getSelectedEvent(input, eventsInCity);
+            selectedEvent = getSelectedEvent(input, eventsInCity, city.get().getLocalTimeZone());
         }
         selectedEvent.ifPresentOrElse(eventDetails -> {
                     // validPlayerDetailsList represent players that already paid using website
@@ -99,11 +99,11 @@ public class PlayerBuilder {
 
     }
 
-    private Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity) {
+    private Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity, String localTimeZone) {
         return eventsInCity.get().getEventDetailsList().stream()
                 .filter(eventDetails -> compareVenueName(eventDetails.getVenueName(), input.getVenueName()))
                 .filter(eventDetails ->
-                        input.getStartTime().equalsIgnoreCase(getFormattedEventTime(eventDetails.getStartTime())))
+                        input.getStartTime().equalsIgnoreCase(getFormattedEventTime(eventDetails.getStartTime(), localTimeZone)))
                 .findFirst();
     }
 
@@ -151,9 +151,9 @@ public class PlayerBuilder {
         }
     }
 
-    private String getFormattedEventTime(Date startTime) {
+    private String getFormattedEventTime(Date startTime, String localTimeZone) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+        timeFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
         //System.out.println(timeFormatter.format(startTime));
         return timeFormatter.format(startTime);
     }
