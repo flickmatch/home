@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 
+import * as _ from 'lodash';
+
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -52,21 +54,40 @@ function MatchQueue() {
 
         const data = await response.json();
 
-        data.data.cities.forEach((city: { events: unknown[] }, i: number) => {
-          if (city.events.length > 0) {
-            setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
-          } else {
-            if (data.data.cities[i].cityId == dummyData.data.cities[i].cityId) {
-              setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+        data.data.cities.forEach(
+          (
+            city: {
+              cityName: string;
+              cityId: string;
+              events: unknown[];
+            },
+            i: number,
+          ) => {
+            const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+
+            if (cityExists) {
+              if (city.events.length > 0) {
+                setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
+              } else {
+                setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+              }
             }
-          }
-          setShowSkeleton(false);
-        });
+            // if (city.events.length > 0) {
+            //   setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
+            // } else {
+
+            //   if (data.data.cities[i].cityId == dummyData.data.cities[i].cityId) {
+            //     setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
+            //   }
+            // }
+            setShowSkeleton(false);
+          },
+        );
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
             // eslint-disable-next-line no-console
-            console.log(error.name);
+            console.log(error);
           }
         }
       }

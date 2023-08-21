@@ -8,7 +8,7 @@ const dummyData = {
           {
             eventId: '07-28-1',
             date: 'Fri, Jul 28',
-            time: '8:00 PM - 9:00 PM',
+            time: '8:00PM-9:00PM',
             venueName: 'Bsporty',
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
@@ -77,7 +77,7 @@ const dummyData = {
           {
             eventId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '9:00 PM - 10:00 PM',
+            time: '9:00PM-10:00PM',
             venueName: 'Bsporty',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
@@ -143,7 +143,7 @@ const dummyData = {
           {
             eventId: '07-28-1',
             date: 'Fri, Jul 28',
-            time: '7:00 PM - 8:00 PM',
+            time: '7:00PM-8:00PM',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -221,7 +221,7 @@ const dummyData = {
           {
             eventId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '8:00 PM - 9:00 PM',
+            time: '8:00PM-9:00PM',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -305,7 +305,7 @@ const dummyData = {
           {
             eventId: '07-28-1',
             date: 'Fri, Jul 28',
-            time: '6:00 PM - 7:00 PM',
+            time: '6:00PM-7:00PM',
             venueName: 'Vista Montana Park',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -383,7 +383,7 @@ const dummyData = {
           {
             eventId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '8:00 PM - 9:00 PM',
+            time: '8:00PM-9:00 PM',
             venueName: 'Vista Montana Park',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,

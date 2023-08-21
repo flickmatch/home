@@ -59,9 +59,9 @@ export const EventsCard: FC<EventDetails> = ({
   const usEasternEndMoment = localEndMoment.tz('America/Los_Angeles');
 
   //formatting date object to display in desired format
-  const eventStartTime = usEasternStartMoment.format('ddd MMM D h:mm A');
-  const eventEndTime = usEasternEndMoment.format('h:mm A');
-  const usTime = `${eventStartTime} - ${eventEndTime}`;
+  const eventStartTime = usEasternStartMoment.format('ddd MMM D h:mmA');
+  const eventEndTime = usEasternEndMoment.format('h:mmA');
+  const usTime = `${eventStartTime}-${eventEndTime}`;
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
