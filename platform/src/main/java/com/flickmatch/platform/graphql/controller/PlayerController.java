@@ -21,6 +21,7 @@ public class PlayerController {
         try {
             playerBuilder.updatePlayerList(input);
         } catch (Exception exception) {
+            exception.printStackTrace();
             log.error(exception.getMessage());
             return MutationResult.builder()
                     .isSuccessful(false)
