@@ -1,6 +1,8 @@
 package com.flickmatch.platform.graphql.builder;
 
+import com.flickmatch.platform.dynamodb.model.City;
 import com.flickmatch.platform.dynamodb.model.Event;
+import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
@@ -25,19 +27,20 @@ import java.util.stream.Collectors;
 
 public class PlayerBuilder {
 
-    public PlayerBuilder(EventRepository eventRepository, SportsVenueRepository sportsVenueRepository) {
-        this.eventRepository = eventRepository;
-        this.sportsVenueRepository = sportsVenueRepository;
-    }
-
-
-
     @Autowired
     EventBuilder eventBuilder;
 
     private final EventRepository eventRepository;
     private final SportsVenueRepository sportsVenueRepository;
+    private final CityRepository cityRepository;
 
+    public PlayerBuilder(EventRepository eventRepository,
+                         SportsVenueRepository sportsVenueRepository,
+                         CityRepository cityRepository) {
+        this.eventRepository = eventRepository;
+        this.sportsVenueRepository = sportsVenueRepository;
+        this.cityRepository = cityRepository;
+    }
 
     /**
      * Adds players from whatsApp message.
@@ -63,17 +66,16 @@ public class PlayerBuilder {
         }
         Optional<Event> eventsInCity = eventRepository.findById(new Event.EventId(cityId.get(), date));
 
-        if (eventsInCity.isEmpty()) {
-            eventsInCity = Optional.of(eventBuilder.createEvent(
-                    UpdatePlayerListInputMapper.toCreateEventInput(input, cityId.get(), sportsVenueId.get(), date),
-                    false));
+        Optional<Event.EventDetails> selectedEvent = Optional.empty();
+        if (eventsInCity.isPresent()) {
+            selectedEvent = getSelectedEvent(input, eventsInCity);
         }
-        Optional<Event.EventDetails> selectedEvent = getSelectedEvent(input, eventsInCity);
 
-        //Will be always false if new event is created above
         if (selectedEvent.isEmpty()) {
+            Optional<City> city = cityRepository.findById(cityId.get());
             eventsInCity = Optional.of(eventBuilder.createEvent(
-                    UpdatePlayerListInputMapper.toCreateEventInput(input, cityId.get(), sportsVenueId.get(), date),
+                    UpdatePlayerListInputMapper.toCreateEventInput(input, cityId.get(), sportsVenueId.get(), date,
+                            city.get().getLocalTimeZone()),
                     false));
             selectedEvent = getSelectedEvent(input, eventsInCity);
         }
