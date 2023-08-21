@@ -6,8 +6,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import moment from 'moment-timezone';
-
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
@@ -44,24 +42,12 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const check = diffDays > 1 ? futureDate : date;
+  // const check = diffDays > 1 ? futureDate : date;
   const startTime = time.split('-')[0]; //8:00PM
-  const endTime = time.split('-')[1]; //9:30PM
+  const endTime = time.split('-')[1].split(' ')[0];
+  const usTime = date + ' ' + startTime + ' - ' + endTime;
 
-  const startDateString1 = check + startTime;
-  const endDateString2 = check + endTime;
-
-  const localStartMoment = moment(startDateString1, 'ddd MMM D h:mm A');
-  const localEndMoment = moment(endDateString2, 'ddd MMM D h:mm A');
-
-  // Convert to a US time zone
-  const usEasternStartMoment = localStartMoment.tz('America/Los_Angeles');
-  const usEasternEndMoment = localEndMoment.tz('America/Los_Angeles');
-
-  //formatting date object to display in desired format
-  const eventStartTime = usEasternStartMoment.format('ddd MMM D h:mmA');
-  const eventEndTime = usEasternEndMoment.format('h:mmA');
-  const usTime = `${eventStartTime}-${eventEndTime}`;
+  time = time.split('GMT')[0].trim();
 
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
