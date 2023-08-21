@@ -15,25 +15,24 @@ public class UpdatePlayerListInputMapper {
     public CreateEventInput toCreateEventInput(UpdatePlayerListInput updatePlayerListInput,
                                                String cityId,
                                                String sportsVenueId,
-                                               String date,
-                                               String localTimeZone) throws ParseException {
+                                               String date) throws ParseException {
         return CreateEventInput.builder()
                 .sportsVenueId(sportsVenueId)
                 .cityId(cityId)
-                .startTime(getTimeInISOFormat(date, updatePlayerListInput.getStartTime(), localTimeZone))
-                .endTime(getTimeInISOFormat(date, updatePlayerListInput.getEndTime(), localTimeZone))
+                .startTime(getTimeInISOFormat(date, updatePlayerListInput.getStartTime()))
+                .endTime(getTimeInISOFormat(date, updatePlayerListInput.getEndTime()))
                 .charges(Double.valueOf(updatePlayerListInput.getCharges()))
                 .waitListPlayersCount(5)
                 .reservedPlayersCount(getReservePlayerCount(updatePlayerListInput.getFormat()))
                 .build();
     }
 
-    private String getTimeInISOFormat(String date, String time, String localTimeZone) throws ParseException {
+    private String getTimeInISOFormat(String date, String time) throws ParseException {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-        timeFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
+        timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         Date isoDate = timeFormatter.parse(date + " " + time);
         SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        isoFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
+        isoFormatter.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
         return isoFormatter.format(isoDate);
     }
 

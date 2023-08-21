@@ -1,6 +1,0 @@
-mutation JoinEventMutation($eventId: ID!, $cityId: ID!, $player: PlayerInput!) {
-    joinEvent(input: {eventId : $eventId, cityId: $cityId, player: $player}) {
-        isSuccessful
-        errorMessage
-    }
-}

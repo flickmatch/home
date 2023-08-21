@@ -1,24 +1,24 @@
 {
   "body" : {
-    "id": "evt_1NdfDzSEI0cF0TsSmpapmxWp",
+    "id": "evt_1NWKM5SEI0cF0TsSv1YlTymt",
     "object": "event",
     "api_version": "2022-11-15",
-    "created": 1691698369,
+    "created": 1689949852,
     "data": {
       "object": {
-        "id": "cs_live_b1BMG2apVgWoKBWLERsHxF7wGBu3MRUi5b9KX5rLZTer27c6SbsZYiwTs8",
+        "id": "cs_live_b1xQRwXMHmKBYQg6GCn4u1qov57bxWYyyDUgugbzhE4Bf85PEdFYAo3Gla",
         "object": "checkout.session",
         "after_expiration": null,
         "allow_promotion_codes": true,
-        "amount_subtotal": 1000,
-        "amount_total": 1000,
+        "amount_subtotal": 500,
+        "amount_total": 500,
         "automatic_tax": {
           "enabled": false,
           "status": null
         },
         "billing_address_collection": "auto",
         "cancel_url": "https://stripe.com",
-        "client_reference_id": "2023-08-11-3",
+        "client_reference_id": null,
         "consent": {
           "promotions": null,
           "terms_of_service": "accepted"
@@ -27,7 +27,7 @@
           "promotions": "none",
           "terms_of_service": "required"
         },
-        "created": 1691698257,
+        "created": 1689949688,
         "currency": "inr",
         "currency_conversion": null,
         "custom_fields": [
@@ -43,7 +43,7 @@
             "text": {
               "maximum_length": null,
               "minimum_length": null,
-              "value": "Harsh"
+              "value": "Tony"
             },
             "type": "text"
           }
@@ -63,15 +63,15 @@
             "postal_code": null,
             "state": null
           },
-          "email": "hvs@flickmatch.in",
-          "name": "Harsh Vardhan Singh",
+          "email": "tony@flickmatch.in",
+          "name": "Tony stark",
           "phone": "+919999999999",
           "tax_exempt": "none",
           "tax_ids": [
           ]
         },
         "customer_email": null,
-        "expires_at": 1691784657,
+        "expires_at": 1690036088,
         "invoice": null,
         "invoice_creation": {
           "enabled": false,
@@ -88,10 +88,9 @@
         "livemode": true,
         "locale": "auto",
         "metadata": {
-          "cityId": "2"
         },
         "mode": "payment",
-        "payment_intent": "pi_3NdfDbSEI0cF0TsS1CGpzwgJ",
+        "payment_intent": "pi_3NWKKHSEI0cF0TsS0VFIkMfT",
         "payment_link": "plink_1NW4DbSEI0cF0TsSEthJEgQp",
         "payment_method_collection": "always",
         "payment_method_options": {
