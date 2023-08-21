@@ -109,7 +109,7 @@ public class EventBuilder {
                 List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
                         eventData.get().getEventDetailsList().stream()
                                 .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate))
+                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone))
                                 .toList();
                 eventList.addAll(dailyEventList);
             }
