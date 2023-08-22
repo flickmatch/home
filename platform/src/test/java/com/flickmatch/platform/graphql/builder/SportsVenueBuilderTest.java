@@ -53,15 +53,15 @@ public class SportsVenueBuilderTest {
                 .cityId(cityId)
                 .displayName("Sports Venue 1")
                 .googleMapsLink("https://maps.google.com/sports_venue1")
-                .stripePaymentLinkInputList(stripePaymentLinkInputs)
+                .stripePaymentLinks(stripePaymentLinkInputs)
                 .build();
         assertThat(existingCity.getCityId(), equalTo(cityId));
         assertThat(existingCity.getSportsVenuesInCity(), hasSize(0));
         assertEquals("Sports Venue 1",input.getDisplayName());
         assertEquals("https://maps.google.com/sports_venue1", input.getGoogleMapsLink());
-        assertEquals(1,input.getStripePaymentLinkInputList().size());
-        assertEquals(50.0f, input.getStripePaymentLinkInputList().get(0).getAmount(), 0.001);
-        assertEquals("https://stripe.com/link1", input.getStripePaymentLinkInputList().get(0).getLink());
+        assertEquals(1,input.getStripePaymentLinks().size());
+        assertEquals(50.0f, input.getStripePaymentLinks().get(0).getAmount(), 0.001);
+        assertEquals("https://stripe.com/link1", input.getStripePaymentLinks().get(0).getLink());
         assertEquals(0, existingCity.getSportsVenuesInCity().size());
     }
 }
