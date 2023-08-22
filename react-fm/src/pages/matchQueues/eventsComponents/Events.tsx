@@ -42,10 +42,10 @@ export const EventsCard: FC<EventDetails> = ({
   const diffTime = Math.abs(day - new Date().valueOf());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  // const check = diffDays > 1 ? futureDate : date;
+  const check = diffDays > 1 ? futureDate : date;
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
-  const usTime = date + ' ' + startTime + ' - ' + endTime;
+  const usTime = check + ' ' + startTime + ' - ' + endTime;
 
   time = time.split('GMT')[0].trim();
 
