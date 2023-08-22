@@ -54,10 +54,10 @@ public class SportsVenueBuilder {
     private SportsVenues.SportsVenue createSportsVenueInCity(final CreateSportsVenueInput input) {
         List<SportsVenues.StripePaymentLink> stripePaymentLinks = new ArrayList<>();
 
-        for (StripePaymentLinkInput inputItem : input.getStripePaymentLinkInputList()) {
+        for (StripePaymentLinkInput inputItem : input.getStripePaymentLinks()) {
             SportsVenues.StripePaymentLink stripePaymentLink = SportsVenues.StripePaymentLink.builder()
                     .url(inputItem.getLink())
-                    .amount((double) inputItem.getAmount())
+                    .amount(inputItem.getAmount())
                     .build();
 
             stripePaymentLinks.add(stripePaymentLink);
