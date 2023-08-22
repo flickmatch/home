@@ -14,5 +14,5 @@ public class CreateSportsVenueInput {
     String cityId;
     String displayName;
     String googleMapsLink;
-    List<StripePaymentLinkInput> stripePaymentLinkInputList;
+    List<StripePaymentLinkInput> stripePaymentLinks;
 }

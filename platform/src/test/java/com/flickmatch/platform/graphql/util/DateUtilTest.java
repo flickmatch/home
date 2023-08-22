@@ -15,19 +15,21 @@ class DateUtilTest {
     @Test
     void test_parseDate_WhenValidInput() throws ParseException {
         Date dateTime = DateUtil.parseDateFromString("2023-03-27T20:00+0530");
-        System.out.println(dateTime);
+        assertThat(dateTime.getTime(), Matchers.is(1679927400000L));
     }
 
     @Test
     void test_extractDateFromStartTime_WhenValidInput() throws ParseException {
         String date = DateUtil.extractDateFromISOFormatString("2023-03-27T20:00+0530");
-        System.out.println(date);
+        assertThat(date, Matchers.is("2023-03-27"));
     }
 
     @Test
-    void test_extractDateFromCurrentTime_WhenValidInput() {
-        String date = DateUtil.extractDateFromISOFormatDate(new Date(System.currentTimeMillis()));
-        System.out.println(date);
+    void test_extractDateFromCurrentTime_WhenValidInput() throws ParseException {
+        Date dateTime = DateUtil.parseDateFromString("2023-08-22T22:00-0700");
+        String date = DateUtil.extractDateFromISOFormatDate(dateTime, "GMT-7:00");
+
+        assertThat(date, Matchers.is("2023-08-22"));
     }
 
     @Test

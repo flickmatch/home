@@ -26,9 +26,10 @@ public class SportsVenueController {
         try {
             sportsVenueBuilder.createSportsVenue(input);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return MutationResult.builder()
                     .isSuccessful(false)
-                    .errorMessage("Sample error")
+                    .errorMessage(exception.getMessage())
                     .build();
         }
         return MutationResult.builder()
