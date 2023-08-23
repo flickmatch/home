@@ -90,8 +90,11 @@ function Welcome() {
   );
 
   const howToPlay = () => (
+    <Box className={isPortrait ? styles.playContainer : ""}>
+      <Typography variant="h3" className={styles.heading}>How To Play</Typography>
     <FlexBox className={isPortrait ? styles.portraitHowToPlay : styles.howToPlay}>
       <Box className={isPortrait ? styles.portraitInstruction : styles.instruction}>
+      
         <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
           <FlexBox className={styles.iconContainerFirst} onClick={() => switchImage(1)}>
             <SearchIcon className={styles.gameIcon} />
@@ -137,6 +140,7 @@ function Welcome() {
         </FlexBox>
       </Box>
     </FlexBox>
+    </Box>
   );
 
   const gamesQueue = () => <img className={styles.games} src="/game.jpg" alt="games" />;
