@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import ReactGA from 'react-ga';
 import { BrowserRouter } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +15,10 @@ import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
 
+ReactGA.initialize('G-RFX1X0492P');
 function App() {
+  ReactGA.pageview(window.location.pathname + window.location.search);
+  
   return (
     <StyledEngineProvider injectFirst>
       <Fragment>
