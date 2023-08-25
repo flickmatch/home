@@ -164,16 +164,13 @@ public class EventBuilder {
         return eventDetails;
     }
     public String getCurrencyForCity(String cityId) {
-        if ("IN".equals(cityId)) {
-            return "INR";
-
-        } else if ("US".equals(cityId)) {
-            return "US";
-        }
-        else
-        {
-            return "DEFAULT_CURRENCY_CODE";
-        }
+        final Map<String, String> cityToCurrencyMap = new HashMap<>();
+            cityToCurrencyMap.put("1", "INR");
+            cityToCurrencyMap.put("2", "INR");
+            cityToCurrencyMap.put("3", "USD");
+            cityToCurrencyMap.put("4", "USD");
+            cityToCurrencyMap.put("5", "USD");
+        return cityToCurrencyMap.getOrDefault(cityId, "DEFAULT_CURRENCY_CODE");
     }
 
     private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
