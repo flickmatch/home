@@ -142,15 +142,20 @@ public class EventBuilderTest {
 
     @Test
     public void testGetCurrencyForCity() {
-        // Create an instance of the class containing the getCurrencyForCity method
-        // Test with cityIds representing different countries
-        String currencyForIndia = eventBuilder.getCurrencyForCity("IN");
+        String currencyForIndia = eventBuilder.getCurrencyForCity("1");
         assertEquals("INR", currencyForIndia);
 
-        String currencyForUSA = eventBuilder.getCurrencyForCity("US");
-        assertEquals("US", currencyForUSA);
+        String currencyForUSA = eventBuilder.getCurrencyForCity("2");
+        assertEquals("INR", currencyForUSA);
 
-        String currency = eventBuilder.getCurrencyForCity("unknownCountry");
-        assertEquals("DEFAULT_CURRENCY_CODE", currency);
+        String currencyForMountainView = eventBuilder.getCurrencyForCity("3");
+        assertEquals("USD", currencyForMountainView);
+
+        String currencySanJose = eventBuilder.getCurrencyForCity("4");
+        assertEquals("USD", currencySanJose);
+
+        String currencyForSanFrancisco = eventBuilder.getCurrencyForCity("5");
+        assertEquals("USD", currencyForSanFrancisco);
+
     }
 }
