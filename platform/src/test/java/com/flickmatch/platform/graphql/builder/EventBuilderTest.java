@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
@@ -136,6 +137,25 @@ public class EventBuilderTest {
 
         assertThat(mockEventDetails.getStartTime(), equalTo(startTime));
         assertThat(mockEventDetails.getEndTime(),equalTo(endTime));
+
+    }
+
+    @Test
+    public void testGetCurrencyForCity() {
+        String currencyForIndia = eventBuilder.getCurrencyForCity("1");
+        assertEquals("INR", currencyForIndia);
+
+        String currencyForUSA = eventBuilder.getCurrencyForCity("2");
+        assertEquals("INR", currencyForUSA);
+
+        String currencyForMountainView = eventBuilder.getCurrencyForCity("3");
+        assertEquals("USD", currencyForMountainView);
+
+        String currencySanJose = eventBuilder.getCurrencyForCity("4");
+        assertEquals("USD", currencySanJose);
+
+        String currencyForSanFrancisco = eventBuilder.getCurrencyForCity("5");
+        assertEquals("USD", currencyForSanFrancisco);
 
     }
 }
