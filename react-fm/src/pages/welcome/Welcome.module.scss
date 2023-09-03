@@ -20,20 +20,15 @@ body {
   margin-top: 3px;
 }
 
-.info {
-  align-items: center;
-  justify-content: center;
-}
-
 .companyName {
   font-weight: 600;
-  font-size: 36px;
+  font-size: 58px;
   color: #4ce95a;
   letter-spacing: 2px;
 }
 
 .tagLine {
-  font-size: 20px;
+  font-size: 22px;
   margin-top: 10px;
   letter-spacing: 1px;
 }
@@ -61,12 +56,13 @@ body {
 
 .explore {
   position: absolute;
+  height: 42px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #4ce95a;
   color: #000;
-  margin-top: 30px;
+  margin-top: 55px;
   font-weight: 600;
   z-index: 1;
   opacity: 0;
@@ -126,84 +122,84 @@ body {
   }
 }
 
-.divider {
-  height: 380px;
-  width: 2px;
-  background: #fff;
-  transform: rotate(35deg);
-  transform-origin: left;
-  margin-left: 4%;
-}
-
-.dividerOnPortrait {
-  display: none;
-}
-
-.firstSection {
-  justify-content: space-between;
+//-----------------section first-------------------//
+.sectionFirst {
   width: 100%;
-  margin-top: 40px;
-  flex-wrap: wrap;
+  margin-top: 80px;
 }
 
-.portraitSlideFromLeft {
+.cardContainer, .portraitCardsContainer {
+  justify-content: space-around;
+}
+
+.portraitCardsContainer {
+  flex-flow: column;
+}
+
+.card, .portraitCard {
+  height: 330px;
+  width: 22%;
+  border-radius: 10px;
+  flex-flow: column;
+  align-items: center;
+  padding: 15px 15px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: transform 0.5s;
+  margin-bottom: 50px !important;
+}
+
+.portraitCard {
+  width: 85%;
+  margin: auto;
+}
+
+.card:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: translateY(-10px);
+}
+
+.card:hover .innerCard {
+  background: #1db629;
+  border: none;
+}
+
+.card:hover .innerCard .cardIcon {
+  color: #fff;
+}
+
+.innerCard {
+  height: 82px;
+  border-radius: 50%;
+  border: 2px  solid #606264;
+  width: 83px;
+  margin-top: 45px;
+  margin-bottom: 40px;
   position: relative;
-  width: 100%;
-  margin-left: 20px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.4s, border 0.1s;
 }
 
-.portraitSlideFromRight {
-  position: relative;
-  width: 95%;
-  margin-left: 2.5%;
+.cardIcon {
+  position: absolute;
+  font-size: 38px;
+  color: #4ce95a;
 }
 
-.slideFromLeft,
-.slideFromRight {
-  position: relative;
-  width: 45%;
+.flickText, .portraitFlickText {
+  line-height: 26px;
 }
 
-.slideFromLeft,
-.portraitSlideFromLeft {
-  left: -100%;
-  margin-left: 40px;
-  text-align: left;
-  padding: 20px;
-  animation: slideLeft 2s forwards;
-}
-
-.slideFromRight {
-  left: 100%;
-  animation: slideRight 2s forwards;
-}
-
-@keyframes slideLeft {
-  to {
-    left: 0;
-  }
-}
-
-@keyframes slideRight {
-  to {
-    left: 0;
-  }
+.portraitFlickText {
+  font-size: 17px;
 }
 
 .whatIsFlickmatch {
   font-size: 19px;
   text-align: justify;
-}
-
-.portraitFootball {
-  width: 100%;
-  margin-top: 25px;
-}
-
-.football {
-  height: 275px;
-  margin-left: 60px;
-  margin-top: 35%;
 }
 
 .Iphone1 {
@@ -260,6 +256,12 @@ body {
 .mottoSection {
   border-left: 5px solid #4ce95a;
   padding-left: 18px;
+}
+
+.mottoMobileSection {
+  border-left: 4px solid #010201;
+  padding-left: 10px;
+  padding-right: 7px;
 }
 
 .heading {
@@ -396,3 +398,4 @@ body {
       transition: none;
   }
 }
+
