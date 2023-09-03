@@ -110,6 +110,7 @@ type City {
 }
 
 type EVENT {
+    currency: String!
     startTime: String!
     endTime: String!
     eventId: String!

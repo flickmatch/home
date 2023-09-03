@@ -141,6 +141,7 @@ public class EventBuilder {
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
         List<SportsVenue> sportsVenueList = sportsVenueBuilder.getSportsVenues(input.getCityId());
+        String currency = getCurrencyForCity(input.getCityId());
         Optional<SportsVenue> sportsVenue = sportsVenueList.stream()
                 .filter(entity -> entity.getSportsVenueId().equals(input.getSportsVenueId())).findFirst();
         if (sportsVenue.isEmpty()) {
@@ -148,6 +149,7 @@ public class EventBuilder {
         }
         Event.EventDetails eventDetails =  Event.EventDetails.builder()
                 .index(index)
+                .currency(currency)
                 .startTime(DateUtil.parseDateFromString(input.getStartTime()))
                 .endTime(DateUtil.parseDateFromString(input.getEndTime()))
                 .charges(input.getCharges())
@@ -160,6 +162,15 @@ public class EventBuilder {
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .build();
         return eventDetails;
+    }
+    public String getCurrencyForCity(String cityId) {
+        final Map<String, String> cityToCurrencyMap = new HashMap<>();
+            cityToCurrencyMap.put("1", "INR");
+            cityToCurrencyMap.put("2", "INR");
+            cityToCurrencyMap.put("3", "USD");
+            cityToCurrencyMap.put("4", "USD");
+            cityToCurrencyMap.put("5", "USD");
+        return cityToCurrencyMap.getOrDefault(cityId, "DEFAULT_CURRENCY_CODE");
     }
 
     private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
@@ -185,6 +196,7 @@ public class EventBuilder {
         createPlayerQueue(eventDetails, reservedPlayers, waitListPlayers);
         return com.flickmatch.platform.graphql.type.Event.builder()
                 .startTime(eventDetails.getStartTime())
+                .currency(eventDetails.getCurrency())
                 .endTime(eventDetails.getEndTime())
                 .eventId(eventId)
                 .displayTitle(title)

@@ -13,11 +13,6 @@ on:
     paths: 
       - 'platform/**'
 
-  pull_request:
-    branches: [ "main" ]
-    paths: 
-      - 'platform/**'
-
   workflow_dispatch:
 
 permissions:
@@ -40,3 +35,5 @@ jobs:
     - name: Execute Gradle build
       run: gradle clean build
       working-directory: platform
+    - name: Deploy to tomcat
+      run: curl -v -u ${{ secrets.TOMCAT_USERNAME }}:${{ secrets.TOMCAT_PASSWORD }} -T ${{ secrets.WAR_FILE_PATH }} ${{ secrets.AMAZON_EC2_ADDRESS }}
