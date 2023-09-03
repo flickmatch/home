@@ -69,7 +69,7 @@ function Welcome() {
             <SportsSoccerIcon className={styles.cardIcon} />
           </Box>
           <Typography className={styles.flickText}>
-            Flickmatch, We&apos;re dedicated to creating a dynamic space for football enthusiasts to
+            Flickmatch is dedicated to creating a dynamic space for football enthusiasts to
             come together, experience the thrill of the sport like never before.
           </Typography>
         </FlexBox>
