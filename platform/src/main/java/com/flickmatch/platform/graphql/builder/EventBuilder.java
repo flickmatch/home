@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -120,22 +122,36 @@ public class EventBuilder {
     public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {
         List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
         Date currentTime = new Date(System.currentTimeMillis());
-        Date dateBeforeThirtyDays = Date.from(currentTime.toInstant().minus(30, ChronoUnit.DAYS));
+
+        // Create a TimeZone object from the provided localTimeZone string
+        TimeZone timeZone = TimeZone.getTimeZone(localTimeZone);
+
+        // Create a Calendar instance with the specified time zone
+        Calendar calendar = Calendar.getInstance(timeZone);
+
+        // Calculate the date before inDays
+        LocalDate localCurrentTime = currentTime.toInstant().atZone(ZoneId.of(localTimeZone)).toLocalDate();
+        LocalDate dateBeforeInDays = localCurrentTime.minusDays(inDays);
+
+        // Set the calendar date to the calculated dateBeforeInDays
+        calendar.set(dateBeforeInDays.getYear(), dateBeforeInDays.getMonthValue() - 1, dateBeforeInDays.getDayOfMonth());
+
+        // Convert the calendar to a Date object
+        Date dateBeforeInDaysDate = calendar.getTime();
 
         eventRepository.findAll().forEach(event -> {
             if (event.getCityId().equals(cityId)) {
                 List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity =
                         event.getEventDetailsList().stream()
-                        .filter(eventDetails ->
-                        eventDetails.getStartTime().before(currentTime) &&
-                                eventDetails.getStartTime().after(dateBeforeThirtyDays)
-                ).map(eventDetails ->
-                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
-                ).toList();
+                                .filter(eventDetails ->
+                                        eventDetails.getStartTime().before(currentTime) &&
+                                                eventDetails.getStartTime().after(dateBeforeInDaysDate)
+                                ).map(eventDetails ->
+                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
+                                ).toList();
                 pastEventList.addAll(pastEventsInCity);
             }
         });
-
         return pastEventList;
     }
 
