@@ -39,10 +39,7 @@ public class PlayerController {
         List<PlayerInput> reservedPlayersInputList;
         List<Player> reservedPlayersList = new ArrayList<>(); // Initialize the list of Player objects
         try {
-            playerBuilder.updatePlayerList(input);
-            //reservedPlayersList = fetchReservedPlayersList(input);
             reservedPlayersList = convertPlayerInputListToPlayerList(input.getReservedPlayersList());
-            System.out.println("## reservedPlayersList : " + reservedPlayersList);
             return MutationResultForUpdatePlayerList.builder()
                     .isSuccessful(true)
                     .reservedPlayersList(reservedPlayersList)
