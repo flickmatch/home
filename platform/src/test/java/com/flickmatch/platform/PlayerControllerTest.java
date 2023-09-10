@@ -5,6 +5,7 @@ import com.flickmatch.platform.graphql.controller.PlayerController;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
 import com.flickmatch.platform.graphql.type.MutationResult;
+import com.flickmatch.platform.graphql.type.MutationResultForUpdatePlayerList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -101,7 +102,7 @@ class PlayerControllerTest {
         doNothing().when(playerBuilder).updatePlayerList(input);
 
         // Perform the test
-        MutationResult result = playerController.updatePlayerList(input);
+        MutationResultForUpdatePlayerList result = playerController.updatePlayerList(input);
 
         // Verify the behavior
         assertThat(result.isSuccessful(), is(true));
@@ -121,7 +122,7 @@ class PlayerControllerTest {
         doThrow(new RuntimeException("Some error message")).when(playerBuilder).updatePlayerList(input);
 
         // Perform the test
-        MutationResult result = playerController.updatePlayerList(input);
+        MutationResultForUpdatePlayerList result = playerController.updatePlayerList(input);
 
         // Verify the behavior
         assertThat(result.isSuccessful(), is(false));
