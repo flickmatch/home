@@ -107,7 +107,7 @@ class PlayerControllerTest {
 
         // Verify the behavior
         assertThat(result.isSuccessful(), is(true));
-        assertEquals(2, result.getReservedPlayersList().stream().count());
+        assertEquals(4, result.getUpdatedPlayerList().stream().count());
     }
 
     @Test

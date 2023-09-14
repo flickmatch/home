@@ -103,7 +103,7 @@ type MutationResult {
 type MutationResultForUpdatePlayerList {
     isSuccessful: Boolean!
     errorMessage: String
-    reservedPlayersList: [Player]
+    updatedPlayerList: [Player]
 }
 
 type City {

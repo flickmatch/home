@@ -10,5 +10,6 @@ import java.util.List;
 public class MutationResultForUpdatePlayerList {
     private boolean isSuccessful;
     private String errorMessage;
-    private List<Player> reservedPlayersList;
+    private List<Player> updatedPlayerList;
+
 }
