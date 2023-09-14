@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -120,22 +122,21 @@ public class EventBuilder {
     public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {
         List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
         Date currentTime = new Date(System.currentTimeMillis());
-        Date dateBeforeThirtyDays = Date.from(currentTime.toInstant().minus(30, ChronoUnit.DAYS));
-
+        // Calculate the date before inDays
+        Date dateBeforeInDays = Date.from(currentTime.toInstant().minus(inDays, ChronoUnit.DAYS));
         eventRepository.findAll().forEach(event -> {
             if (event.getCityId().equals(cityId)) {
                 List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity =
                         event.getEventDetailsList().stream()
-                        .filter(eventDetails ->
-                        eventDetails.getStartTime().before(currentTime) &&
-                                eventDetails.getStartTime().after(dateBeforeThirtyDays)
-                ).map(eventDetails ->
-                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
-                ).toList();
+                                .filter(eventDetails ->
+                                        eventDetails.getStartTime().before(currentTime) &&
+                                                eventDetails.getStartTime().after(dateBeforeInDays)
+                                ).map(eventDetails ->
+                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
+                                ).toList();
                 pastEventList.addAll(pastEventsInCity);
             }
         });
-
         return pastEventList;
     }
 
