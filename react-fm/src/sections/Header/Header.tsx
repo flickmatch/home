@@ -71,7 +71,10 @@ function Header() {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
-            <img src={mainlogo} alt="logo" className={styles.logo} />
+            <a href="https://www.flickmatch.in/" rel="noreferrer" className={styles.link}>
+              <img src={mainlogo} alt="logo" className={styles.logo} />
+            </a>
+            
           </FlexBox>
           <FlexBox>
             {menus()}

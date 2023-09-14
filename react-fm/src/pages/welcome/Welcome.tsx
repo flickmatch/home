@@ -18,7 +18,7 @@ import useOrientation from '@/hooks/useOrientation';
 import styles from './Welcome.module.scss';
 
 function Welcome() {
-  const [activeImage, setActiveImage] = useState<number | null>(null);
+  const [activeImage, setActiveImage] = useState<number | null>(1);
   const isPortrait = useOrientation();
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -69,8 +69,8 @@ function Welcome() {
             <SportsSoccerIcon className={styles.cardIcon} />
           </Box>
           <Typography className={styles.flickText}>
-            Flickmatch is dedicated to creating a dynamic space for football enthusiasts to
-            come together, experience the thrill of the sport like never before.
+            Flickmatch is dedicated to creating a dynamic space for football enthusiasts to come
+            together, experience the thrill of the sport like never before.
           </Typography>
         </FlexBox>
         <FlexBox className={isPortrait ? styles.portraitCard : styles.card}>
@@ -106,10 +106,11 @@ function Welcome() {
         <Typography className={styles.question}>What is FLICKMATCH ?</Typography>
         <Box className={isPortrait ? styles.mottoMobileSection : styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
-            Finding football matches ⚽ should be as easy as getting a cab 🚕! FLICKMATCH finds or
-            organises football games near you.Whether you&apos;re a casual solo, Or in a group Or a
+            Finding football matches should be as easy as getting a cab 🚕! FLICKMATCH finds or
+            organizes football games near you. 
+            Whether you&apos;re a casual solo, in a group or a
             team looking to play LTP (Losers to Pay), FLICKMATCH takes care of all your football
-            MATCHMAKING needs from finding players to reserving grounds.
+            matchmaking needs from finding players to reserving grounds.
           </Typography>
         </Box>
       </Box>
@@ -124,7 +125,10 @@ function Welcome() {
       <FlexBox className={isPortrait ? styles.portraitHowToPlay : styles.howToPlay}>
         <Box className={isPortrait ? styles.portraitInstruction : styles.instruction}>
           <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
-            <FlexBox className={styles.iconContainerFirst} onClick={() => switchImage(1)}>
+            <FlexBox
+              className={activeImage === 1 ? styles.iconContainer : styles.iconContainerFirst}
+              onClick={() => switchImage(1)}
+            >
               <SearchIcon className={styles.gameIcon} />
             </FlexBox>
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
@@ -136,7 +140,10 @@ function Welcome() {
           </FlexBox>
 
           <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
-            <FlexBox className={styles.iconContainerSecond} onClick={() => switchImage(2)}>
+            <FlexBox
+              className={activeImage === 2 ? styles.iconContainer : styles.iconContainerSecond}
+              onClick={() => switchImage(2)}
+            >
               <SnowshoeingIcon className={styles.gameIcon} />
             </FlexBox>
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
@@ -148,7 +155,10 @@ function Welcome() {
           </FlexBox>
 
           <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
-            <FlexBox className={styles.iconContainerSecond} onClick={() => switchImage(3)}>
+            <FlexBox
+              className={activeImage === 3 ? styles.iconContainer : styles.iconContainerSecond}
+              onClick={() => switchImage(3)}
+            >
               <TouchAppIcon className={styles.gameIcon} />
             </FlexBox>
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
@@ -171,11 +181,11 @@ function Welcome() {
     </Box>
   );
 
-  const gamesQueue = () => <img className={styles.games} src="/game.jpg" alt="games" />;
+  const gamesQueue = () => <img className={styles.games} src="/game.png" alt="games" />;
 
-  const playerList = () => <img className={styles.games} src="/players.jpg" alt="players" />;
+  const playerList = () => <img className={styles.games} src="/players.png" alt="players" />;
 
-  const joinNow = () => <img className={styles.games} src="/join.jpg" alt="join-now" />;
+  const joinNow = () => <img className={styles.games} src="/join.png" alt="join-now" />;
 
   const switchImage = (index: number) => {
     setActiveImage(index);

@@ -145,7 +145,8 @@ body {
   padding: 15px 15px;
   text-align: center;
   cursor: pointer;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(45, 45, 46, 0.2) 0px 7px 15px 0px;
+  //box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 15px 0px;
   transition: transform 0.5s;
   margin-bottom: 50px !important;
 }
@@ -160,12 +161,26 @@ body {
   transform: translateY(-10px);
 }
 
+.portraitCard:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: translateY(-10px);
+}
+
 .card:hover .innerCard {
   background: #1db629;
   border: none;
 }
 
+.portraitCard:hover .innerCard{
+  background: #1db629;
+  border: none;
+}
+
 .card:hover .innerCard .cardIcon {
+  color: #fff;
+}
+
+.portraitCard:hover .innerCard .cardIcon {
   color: #fff;
 }
 
@@ -199,7 +214,8 @@ body {
 
 .whatIsFlickmatch {
   font-size: 19px;
-  text-align: justify;
+  text-align: left;
+  letter-spacing: 1.2px;
 }
 
 .Iphone1 {
@@ -208,8 +224,9 @@ body {
 
 .games {
   position: absolute;
-  height: 470px;
-  width: 240px;
+  height: 500px;
+  width: 265px;
+  filter: drop-shadow(0 0 0.75rem rgb(12, 0, 0));
 }
 
 .portraitSecondSection {
@@ -248,7 +265,7 @@ body {
 
 .question {
   color: #4ce95a;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -296,6 +313,7 @@ body {
   align-items: center;
 }
 
+.iconContainer,
 .iconContainerFirst,
 .iconContainerSecond {
   height: 55px;
@@ -308,9 +326,10 @@ body {
   cursor: pointer;
 }
 
-.iconContainerFirst {
+.iconContainer {
   background-color: rgb(76, 233, 90);
   box-shadow: rgb(76, 233, 90) 0px 0px 8px;
+  transition: all 0.5s ease;;
 }
 
 .gameIcon {

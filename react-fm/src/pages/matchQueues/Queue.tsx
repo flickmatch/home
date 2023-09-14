@@ -238,7 +238,7 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
-      <Typography className={styles.title}>Come Play With Us</Typography>
+      <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
       {skeleton()}
     </>

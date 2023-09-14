@@ -16,15 +16,6 @@ const routes: Routes = {
     title: 'Home',
     icon: HomeIcon,
   },
-  // [Pages.Welcome]: {
-  //   component: () => {
-  //     window.location.href = 'https://flickmatch.in';
-  //     return null;
-  //   },
-  //   path: '/',
-  //   title: 'Home',
-  //   icon: HomeIcon,
-  // },
   [Pages.WhatWeDo]: {
     component: asyncComponentLoader(() => import('@/pages/whatWeDo')),
     path: '/what-we-do',
