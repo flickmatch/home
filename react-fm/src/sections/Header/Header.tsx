@@ -29,8 +29,10 @@ function Header() {
   const menus = () =>
     !isPortrait ? (
       <FlexBox style={{ alignItems: 'center' }}>
-        <Typography className={styles.menuItem} component={Link} to="/">
-          Home
+        <Typography className={styles.menuItem}>
+          <a href="https://www.flickmatch.in/" rel="noreferrer" className={styles.link}>
+            Home
+          </a>
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
         <Typography className={styles.menuItem} component={Link} to="/what-we-do">
@@ -71,9 +73,9 @@ function Header() {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
-            <a href="https://www.flickmatch.in/" rel="noreferrer" className={styles.link}>
+            <Typography component={Link} to="/home">
               <img src={mainlogo} alt="logo" className={styles.logo} />
-            </a>
+            </Typography>
             
           </FlexBox>
           <FlexBox>

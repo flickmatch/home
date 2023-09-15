@@ -8,7 +8,8 @@ enum Pages {
   AboutUs,
   MatchQueue,
   ContactUs,
-  WhatWeDo
+  WhatWeDo,
+  Home
 }
 
 type PathRouteCustomProps = {
