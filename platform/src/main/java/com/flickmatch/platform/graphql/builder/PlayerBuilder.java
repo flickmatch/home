@@ -8,6 +8,7 @@ import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.mapper.UpdatePlayerListInputMapper;
+import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
-
 public class PlayerBuilder {
 
     @Autowired
@@ -49,6 +49,11 @@ public class PlayerBuilder {
      * @throws ParseException the parse exception
      */
     public void updatePlayerList(UpdatePlayerListInput input) throws ParseException {
+        List<Player> allPlayers = new ArrayList<>();
+        List<Player> reservedPlayersList = convertPlayerInputListToPlayerList(input.getReservedPlayersList());
+        List<Player> waitListPlayers = convertPlayerInputListToPlayerList(input.getWaitListPlayers());
+        allPlayers.addAll(reservedPlayersList);
+        allPlayers.addAll(waitListPlayers);
         validateStartTime(input.getStartTime());
         String date = validateAndFormatDate(input.getDate());
         AtomicReference<String> cityId = new AtomicReference<>();
@@ -96,7 +101,18 @@ public class PlayerBuilder {
                     throw new IllegalArgumentException("Invalid Event selected");
                 });
         eventRepository.save(eventsInCity.get());
+    }
 
+    private List<Player> convertPlayerInputListToPlayerList(List<PlayerInput> playerInputList) {
+        List<Player> playerList = new ArrayList<>();
+        // Implement your logic to convert PlayerInput to Player objects
+        for (PlayerInput playerInput : playerInputList) {
+            Player player = Player.builder()
+                    .displayName(playerInput.getName())
+                    .build();
+            playerList.add(player);
+        }
+        return playerList;
     }
 
     private Optional<Event.EventDetails> getSelectedEvent(UpdatePlayerListInput input, Optional<Event> eventsInCity, String localTimeZone) {

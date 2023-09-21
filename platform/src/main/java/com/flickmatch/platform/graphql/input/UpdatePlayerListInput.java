@@ -2,11 +2,13 @@ package com.flickmatch.platform.graphql.input;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Builder
 @Getter
+@ToString
 public class UpdatePlayerListInput {
     private String date;
     private String startTime;

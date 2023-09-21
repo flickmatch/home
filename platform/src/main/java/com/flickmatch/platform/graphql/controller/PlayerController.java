@@ -1,6 +1,5 @@
 package com.flickmatch.platform.graphql.controller;
 
-import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.builder.PlayerBuilder;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
@@ -20,47 +19,35 @@ import java.util.List;
 @Log4j2
 public class PlayerController {
 
-    EventRepository eventRepository;
-
-    public PlayerController(EventRepository eventRepository) {
-        super();
-        this.eventRepository = eventRepository;
-    }
-
     @Autowired
     PlayerBuilder playerBuilder;
 
-        @MutationMapping
-        public MutationResultForUpdatePlayerList updatePlayerList(@Argument UpdatePlayerListInput input) {
-            List<PlayerInput> reservedPlayersInputList;
-            List<Player> reservedPlayersList = new ArrayList<>();
-            List<Player> waitListPlayer = new ArrayList<>();
-            List<Player> allPlayers = new ArrayList<>();
-            try {
-                reservedPlayersList = convertPlayerInputListToPlayerList(input.getReservedPlayersList());
-                waitListPlayer = convertPlayerInputListToPlayerList(input.getWaitListPlayers());
-                allPlayers.addAll(reservedPlayersList);
-                allPlayers.addAll(waitListPlayer);
-                return MutationResultForUpdatePlayerList.builder()
-                        .isSuccessful(true)
-                        .updatedPlayerList(allPlayers)
-                        .build();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                log.error(exception.getMessage());
-                allPlayers.clear();
-                return MutationResultForUpdatePlayerList.builder()
-                        .isSuccessful(false)
-                        .errorMessage(exception.getMessage())
-                        .updatedPlayerList(allPlayers)
-                        .build();
-            }
+    @MutationMapping
+    public MutationResultForUpdatePlayerList updatePlayerList(@Argument UpdatePlayerListInput input) {
+        List<Player> allPlayers = new ArrayList<>();
+        try {
+            playerBuilder.updatePlayerList(input);
+            List<Player> reservedPlayersList = convertPlayerInputListToPlayerList(input.getReservedPlayersList());
+            List<Player> waitListPlayers = convertPlayerInputListToPlayerList(input.getWaitListPlayers());
+            allPlayers.addAll(reservedPlayersList);
+            allPlayers.addAll(waitListPlayers);
+            return MutationResultForUpdatePlayerList.builder()
+                    .isSuccessful(true)
+                    .updatedPlayerList(allPlayers)
+                    .build();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            log.error(exception.getMessage());
+            allPlayers.clear();
+            return MutationResultForUpdatePlayerList.builder()
+                    .isSuccessful(false)
+                    .errorMessage(exception.getMessage())
+                    .updatedPlayerList(allPlayers)
+                    .build();
         }
-
-    // Define a method to convert PlayerInput list to Player list
+    }
     private List<Player> convertPlayerInputListToPlayerList(List<PlayerInput> playerInputList) {
         List<Player> playerList = new ArrayList<>();
-
         // Implement your logic to convert PlayerInput to Player objects
         for (PlayerInput playerInput : playerInputList) {
             Player player = Player.builder()
@@ -68,9 +55,6 @@ public class PlayerController {
                     .build();
             playerList.add(player);
         }
-
         return playerList;
     }
-
 }
-    
