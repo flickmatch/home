@@ -1,4 +1,5 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import ReactGA from 'react-ga';
 import { BrowserRouter } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +16,11 @@ import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
 
 function App() {
+  useEffect(() => {
+    ReactGA.initialize('G-12MG3SRC9K'); //tracking ID
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   return (
     <StyledEngineProvider injectFirst>
       <Fragment>

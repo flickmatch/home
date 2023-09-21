@@ -107,8 +107,7 @@ function Welcome() {
         <Box className={isPortrait ? styles.mottoMobileSection : styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
             Finding football matches should be as easy as getting a cab 🚕! FLICKMATCH finds or
-            organizes football games near you. 
-            Whether you&apos;re a casual solo, in a group or a
+            organizes football games near you. Whether you&apos;re a casual solo, in a group or a
             team looking to play LTP (Losers to Pay), FLICKMATCH takes care of all your football
             matchmaking needs from finding players to reserving grounds.
           </Typography>
@@ -134,7 +133,7 @@ function Welcome() {
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
               <Typography className={styles.title}>Explore Games</Typography>
               <Typography className={isPortrait ? styles.portraitStep : styles.step}>
-                Easily find and join a game Solo or with friend(s) on FlickMatch!
+                Find and join a game Solo or with friend(s)
               </Typography>
             </FlexBox>
           </FlexBox>
@@ -147,9 +146,9 @@ function Welcome() {
               <SnowshoeingIcon className={styles.gameIcon} />
             </FlexBox>
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
-              <Typography className={styles.title}>Find Players</Typography>
+              <Typography className={styles.title}>Make the payment</Typography>
               <Typography className={isPortrait ? styles.portraitStep : styles.step}>
-                Explore all the players with whom you are going to play.
+                You&apos;ll be assigned a team. Make sure you follow the team colors.
               </Typography>
             </FlexBox>
           </FlexBox>
@@ -162,7 +161,7 @@ function Welcome() {
               <TouchAppIcon className={styles.gameIcon} />
             </FlexBox>
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
-              <Typography className={styles.title}>How to Join</Typography>
+              <Typography className={styles.title}>Play</Typography>
               <Typography className={isPortrait ? styles.portraitStep : styles.step}>
                 Choose your own position early by just clicking Join Game.
               </Typography>
