@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Builder
 public class Event {
+    private String currency;
     private Date startTime;
     private Date endTime;
     private String eventId;

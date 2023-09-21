@@ -19,18 +19,13 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Queue.module.scss';
-import { apiUrl, emptyNames, query } from './constants';
+import { apiUrl, query } from './constants';
 import dummyData from './data';
 import { Cities } from './eventsComponents/Cities';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
-import type {
-  CityDetails,
-  EventDetails,
-  ReservedPlayerDetails,
-  waitListPlayerDetails,
-} from './types/Events.types';
+import type { CityDetails, EventDetails, ReservedPlayerDetails } from './types/Events.types';
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
@@ -68,7 +63,6 @@ function MatchQueue() {
               if (city.events.length > 0) {
                 setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
               } else {
-                
                 dummyData.data.cities.forEach(
                   (
                     dummyCityData: {
@@ -115,6 +109,11 @@ function MatchQueue() {
       controller.abort();
     };
   }, []);
+
+  const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
+    //  <li key={player ? player.displayName : 'empty'}>{player ? player.displayName : 'Empty'}</li>
+    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
+  );
 
   const events = () =>
     citiesData.length > 0
@@ -179,21 +178,13 @@ function MatchQueue() {
                     <Box className={styles.box} sx={{ flexGrow: 1 }}>
                       <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
                       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {playingEvent.reservedPlayersList.map(
-                          (player: ReservedPlayerDetails, i: number) => (
-                            <PlayerDetails displayName={player.displayName} index={i} key={i} />
-                          ),
-                        )}
-
-                        {emptyNames
-                          .slice(
-                            0,
-                            playingEvent.reservedPlayersCount -
-                              playingEvent.reservedPlayersList.length,
-                          )
-                          .map((name: string, i: number) => (
-                            <PlayerDetails displayName={name} index={i} key={i} />
-                          ))}
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, index) => {
+                          const player =
+                            index < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[index]
+                              : null;
+                          return renderPlayer(player, index);
+                        })}
                       </Grid>
                     </Box>
                     {playingEvent.waitListPlayers.length > 0 ? (
@@ -204,21 +195,13 @@ function MatchQueue() {
                           spacing={{ xs: 2, md: 3 }}
                           columns={{ xs: 4, sm: 8, md: 12 }}
                         >
-                          {playingEvent.waitListPlayers.map(
-                            (player: waitListPlayerDetails, i: number) => (
-                              <PlayerDetails displayName={player.displayName} index={i} key={i} />
-                            ),
-                          )}
-
-                          {emptyNames
-                            .slice(
-                              0,
-                              playingEvent.waitListPlayersCount -
-                                playingEvent.waitListPlayers.length,
-                            )
-                            .map((name: string, i: number) => (
-                              <PlayerDetails displayName={name} index={i} key={i} />
-                            ))}
+                          {Array.from({ length: playingEvent.waitListPlayersCount }, (_, index) => {
+                            const player =
+                              index < playingEvent.waitListPlayers.length
+                                ? playingEvent.waitListPlayers[index]
+                                : null;
+                            return renderPlayer(player, index);
+                          })}
                         </Grid>
                       </Box>
                     ) : null}
@@ -255,7 +238,7 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
-      <Typography className={styles.title}>Come Play With Us</Typography>
+      <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
       {skeleton()}
     </>

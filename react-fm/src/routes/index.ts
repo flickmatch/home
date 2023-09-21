@@ -10,21 +10,16 @@ import type { Routes } from './types';
 import { Pages } from './types';
 
 const routes: Routes = {
+  [Pages.Home]: {
+    component: asyncComponentLoader(() => import('@/pages/welcome')),
+    path: '/home',
+  },
   [Pages.Welcome]: {
     component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/',
     title: 'Home',
     icon: HomeIcon,
   },
-  // [Pages.Welcome]: {
-  //   component: () => {
-  //     window.location.href = 'https://flickmatch.in';
-  //     return null;
-  //   },
-  //   path: '/',
-  //   title: 'Home',
-  //   icon: HomeIcon,
-  // },
   [Pages.WhatWeDo]: {
     component: asyncComponentLoader(() => import('@/pages/whatWeDo')),
     path: '/what-we-do',
