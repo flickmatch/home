@@ -43,27 +43,4 @@ const query = JSON.stringify({
 
 const apiUrl = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graphql';
 
-const emptyNames = [
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-  '(Empty)',
-];
-
-export { avatars, query, apiUrl, emptyNames };
+export { avatars, query, apiUrl };

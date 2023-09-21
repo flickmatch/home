@@ -383,7 +383,7 @@ const dummyData = {
           {
             eventId: '07-28-2',
             date: 'Fri, Jul 28',
-            time: '8:00PM-9:00PM',
+            time: '8:00PM-9:00 PM',
             venueName: 'Vista Montana Park',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,

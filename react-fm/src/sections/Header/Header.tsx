@@ -73,7 +73,10 @@ function Header() {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
-            <img src={mainlogo} alt="logo" className={styles.logo} />
+            <Typography component={Link} to="/home">
+              <img src={mainlogo} alt="logo" className={styles.logo} />
+            </Typography>
+            
           </FlexBox>
           <FlexBox>
             {menus()}

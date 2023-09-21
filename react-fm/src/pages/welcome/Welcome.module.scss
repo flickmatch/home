@@ -2,6 +2,419 @@
   display: none;
 }
 
-.container {
-  height: 95vh;
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
+
+.videoContainer {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.logo {
+  height: 55px;
+  margin-top: 3px;
+}
+
+.companyName {
+  font-weight: 600;
+  font-size: 58px;
+  color: #4ce95a;
+  letter-spacing: 2px;
+}
+
+.tagLine {
+  font-size: 22px;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.fullscreenVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.explore {
+  position: absolute;
+  height: 42px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4ce95a;
+  color: #000;
+  margin-top: 55px;
+  font-weight: 600;
+  z-index: 1;
+  opacity: 0;
+  animation: zoomInButton 2s forwards;
+}
+
+.explore:hover {
+  background-color: #4ce95a;
+  background-color: transparent;
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
+  font-weight: 600;
+  transition: all 0.4s ease;
+}
+
+@keyframes zoomInButton {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  65% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.content {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  z-index: 1;
+  opacity: 0;
+  animation: zoomIn 1.5s forwards;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(-80px) scale(1);
+    opacity: 1;
+  }
+}
+
+//-----------------section first-------------------//
+.sectionFirst {
+  width: 100%;
+  margin-top: 80px;
+}
+
+.cardContainer, .portraitCardsContainer {
+  justify-content: space-around;
+}
+
+.portraitCardsContainer {
+  flex-flow: column;
+}
+
+.card, .portraitCard {
+  height: 330px;
+  width: 22%;
+  border-radius: 10px;
+  flex-flow: column;
+  align-items: center;
+  padding: 15px 15px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: rgba(45, 45, 46, 0.2) 0px 7px 15px 0px;
+  //box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 15px 0px;
+  transition: transform 0.5s;
+  margin-bottom: 50px !important;
+}
+
+.portraitCard {
+  width: 80%;
+  margin: auto;
+}
+
+.card:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: translateY(-10px);
+}
+
+.portraitCard:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: translateY(-10px);
+}
+
+.card:hover .innerCard {
+  background: #1db629;
+  border: none;
+}
+
+.portraitCard:hover .innerCard{
+  background: #1db629;
+  border: none;
+}
+
+.card:hover .innerCard .cardIcon {
+  color: #fff;
+}
+
+.portraitCard:hover .innerCard .cardIcon {
+  color: #fff;
+}
+
+.innerCard {
+  height: 82px;
+  border-radius: 50%;
+  border: 2px  solid #606264;
+  width: 83px;
+  margin-top: 45px;
+  margin-bottom: 40px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.4s, border 0.1s;
+}
+
+.cardIcon {
+  position: absolute;
+  font-size: 38px;
+  color: #4ce95a;
+}
+
+.flickText, .portraitFlickText {
+  line-height: 26px;
+}
+
+.portraitFlickText {
+  font-size: 17px;
+}
+
+.whatIsFlickmatch {
+  font-size: 19px;
+  text-align: left;
+  letter-spacing: 1.2px;
+}
+
+.Iphone1 {
+  height: 523px;
+}
+
+.games {
+  position: absolute;
+  height: 500px;
+  width: 265px;
+  filter: drop-shadow(0 0 0.75rem rgb(12, 0, 0));
+}
+
+.portraitSecondSection {
+  flex-flow: column;
+}
+
+.secondSection,
+.portraitSecondSection {
+  margin-top: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.portraitPhoneSection {
+  width: 100% !important;
+}
+
+.phoneSection,
+.portraitPhoneSection {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.portraitInfoSection {
+  width: 94%;
+  margin-left: 2%;
+  margin-top: 15px;
+}
+
+.infoSection {
+  width: 50%;
+  margin-right: 5%;
+}
+
+.question {
+  color: #4ce95a;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.mottoSection {
+  border-left: 5px solid #4ce95a;
+  padding-left: 18px;
+}
+
+.mottoMobileSection {
+  border-left: 4px solid #4ce95a;
+  padding-left: 10px;
+  padding-right: 7px;
+}
+
+.heading {
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1.2px;
+}
+
+.playContainer {
+  margin-top: 50px;
+}
+
+.portraitHowToPlay {
+  flex-flow: column-reverse;
+}
+
+.howToPlay,
+.portraitHowToPlay {
+  margin-top: 50px;
+  width: 100%;
+  margin-bottom: 150px;
+}
+
+.portraitContainer {
+  flex-flow: column;
+  margin-bottom: 20px;
+}
+
+.container,
+.portraitContainer {
+  align-items: center;
+}
+
+.iconContainer,
+.iconContainerFirst,
+.iconContainerSecond {
+  height: 55px;
+  width: 55px;
+  border-radius: 8px;
+  border: 1px solid #606264;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(35deg);
+  cursor: pointer;
+}
+
+.iconContainer {
+  background-color: rgb(76, 233, 90);
+  box-shadow: rgb(76, 233, 90) 0px 0px 8px;
+  transition: all 0.5s ease;;
+}
+
+.gameIcon {
+  font-size: 30px;
+  font-weight: 600;
+  transform: rotate(-35deg);
+}
+
+.portraitInstruction {
+  width: 90% !important;
+  margin: auto;
+}
+
+.instruction {
+  width: 45%;
+  margin-left: 10%;
+}
+
+.portraitStepsContainer {
+  padding: 30px !important;
+  align-items: center;
+}
+
+.stepsContainer,
+.portraitStepsContainer {
+  flex-flow: column;
+  padding: 35px;
+}
+
+.title {
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 28px;
+  color: #606264;
+}
+
+.portraitStep {
+  text-align: center;
+}
+
+.step,
+.portraitStep {
+  padding-top: 5px;
+  font-size: 17px;
+}
+
+.bar {
+  width: 30%;
+  height: 2px;
+  background-color: #4ce95a;
+  margin: auto;
+  margin-top: 25px;
+}
+
+.portraitInstructionImg {
+  width: 100%;
+  height: 530px;
+}
+
+.instructionImg {
+  width: 45%;
+}
+
+.imageContainer {
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  height: 100%;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  padding: 20px;
+}
+
+.show {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media(prefers-reduced-motion) {
+  .hidden {
+      transition: none;
+  }
+}
+
