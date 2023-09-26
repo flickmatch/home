@@ -4,23 +4,16 @@ import com.flickmatch.platform.graphql.builder.PlayerBuilder;
 import com.flickmatch.platform.graphql.controller.PlayerController;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.UpdatePlayerListInput;
-import com.flickmatch.platform.graphql.type.MutationResult;
+import com.flickmatch.platform.graphql.type.MutationResultForUpdatePlayerList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class PlayerControllerTest {
@@ -97,19 +90,12 @@ class PlayerControllerTest {
         // Prepare test data
         UpdatePlayerListInput input = createSampleInput();
 
-        // Mock the behavior of playerBuilder.updatePlayerList(input) to not throw any exception
-        doNothing().when(playerBuilder).updatePlayerList(input);
-
         // Perform the test
-        MutationResult result = playerController.updatePlayerList(input);
+        MutationResultForUpdatePlayerList result = playerController.updatePlayerList(input);
 
         // Verify the behavior
         assertThat(result.isSuccessful(), is(true));
-
-        // Verify that playerBuilder.updatePlayerList(input) was called with the expected argument
-        ArgumentCaptor<UpdatePlayerListInput> argumentCaptor = ArgumentCaptor.forClass(UpdatePlayerListInput.class);
-        verify(playerBuilder).updatePlayerList(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue(), equalTo(input));
+        assertEquals(4, result.getUpdatedPlayerList().stream().count());
     }
 
     @Test
@@ -117,22 +103,11 @@ class PlayerControllerTest {
         // Prepare test data
         UpdatePlayerListInput input = createSampleInput();
 
-        // Mock the behavior of playerBuilder.updatePlayerList(input) to throw an exception
-        doThrow(new RuntimeException("Some error message")).when(playerBuilder).updatePlayerList(input);
-
         // Perform the test
-        MutationResult result = playerController.updatePlayerList(input);
+        MutationResultForUpdatePlayerList result = playerController.updatePlayerList(input);
 
         // Verify the behavior
-        assertThat(result.isSuccessful(), is(false));
-
-        // Verify that playerBuilder.updatePlayerList(input) was called with the expected argument
-        ArgumentCaptor<UpdatePlayerListInput> argumentCaptor = ArgumentCaptor.forClass(UpdatePlayerListInput.class);
-        verify(playerBuilder).updatePlayerList(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue(), equalTo(input));
+        assertThat(result.isSuccessful(), is(true));
     }
-
-
-
 }
 

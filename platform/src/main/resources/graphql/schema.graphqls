@@ -7,7 +7,7 @@ type Mutation {
     createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
     createEvent(input: CreateEventInput!): MutationResult!
     joinEvent(input: JoinEventInput!): MutationResult!
-    updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
+    updatePlayerList(input: UpdatePlayerListInput!): MutationResultForUpdatePlayerList!
     """
     This is not implemented yet, will be required for P1
     """
@@ -98,6 +98,12 @@ input PlayerInput {
 type MutationResult {
     isSuccessful: Boolean!
     errorMessage: String
+}
+
+type MutationResultForUpdatePlayerList {
+    isSuccessful: Boolean!
+    errorMessage: String
+    updatedPlayerList: [Player]
 }
 
 type City {
