@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import ReactGA from 'react-ga';
 
 import LockIcon from '@mui/icons-material/Lock';
 import Alert from '@mui/material/Alert';
@@ -24,6 +25,11 @@ export const JoinNow: FC<EventDetails> = ({
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
 
   const openInNewTab = (url: string): void => {
+    ReactGA.event({
+      category: 'Button',
+      action: 'Click',
+      label: 'Game Joined',
+    });
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
     if (newWindow) newWindow.opener = null;
   };

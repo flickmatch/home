@@ -11,8 +11,14 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import routes from '@/routes';
 import useSidebar from '@/store/sidebar';
 
+import styles from './Sidebar.module.scss';
+
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
+
+  const toHome = (navTitle: string | undefined) => {
+    navTitle === 'Home' ? (location.href = 'https://www.flickmatch.in/') : null;
+  };
 
   return (
     <SwipeableDrawer
@@ -30,7 +36,9 @@ function Sidebar() {
             <ListItem sx={{ p: 0 }} key={path}>
               <ListItemButton component={Link} to={path as string} onClick={sidebarActions.close}>
                 <ListItemIcon>{Icon ? <Icon /> : <DefaultIcon />}</ListItemIcon>
-                <ListItemText>{title}</ListItemText>
+                <ListItemText onClick={() => toHome(title)}>
+                  <span className={styles.link}>{title}</span>
+                </ListItemText>
               </ListItemButton>
             </ListItem>
           ))}
