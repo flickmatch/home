@@ -30,6 +30,7 @@ import type { CityDetails, EventDetails, ReservedPlayerDetails } from './types/E
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
+
   const isPortrait = useOrientation();
 
   useEffect(() => {

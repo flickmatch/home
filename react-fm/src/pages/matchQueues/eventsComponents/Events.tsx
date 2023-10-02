@@ -31,21 +31,35 @@ export const EventsCard: FC<EventDetails> = ({
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
 
   //getting next day date
-  const today = new Date();
-  today.setDate(today.getDate() + 1);
-  const dateToString = today.toString();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dateToString = tomorrow.toString();
   const index = dateToString.indexOf('2023');
   const futureDate = dateToString.substring(0, index);
 
-  const apiDate = date + ' 2023';
-  const day = new Date(apiDate).valueOf();
-  const diffTime = Math.abs(day - new Date().valueOf());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const dateFormat = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
 
-  const check = diffDays > 1 ? futureDate : date;
+  // Parse the date strings into Date objects
+  const date1 = new Date(date);
+  const date2 = new Date(dateFormat);
+
+  // Calculate the difference in milliseconds
+  const timeDifferenceMs = date2.getTime() - date1.getTime();
+
+  // Convert milliseconds to days
+  const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+
+  const checkValue = Math.sign(daysDifference);
+
+  const eventDate = checkValue <= 0 ? date : futureDate;
+
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
-  const usTime = check + ' ' + startTime + ' - ' + endTime;
+  const usTime = eventDate + ' ' + startTime + ' - ' + endTime;
 
   time = time.split('GMT')[0].trim();
 
@@ -71,7 +85,7 @@ export const EventsCard: FC<EventDetails> = ({
         Date{''}
         {eventId === '2' || eventId === '1' ? (
           <span>
-            {diffDays > 1 ? futureDate : date} {time}
+            {eventDate} {time}
           </span>
         ) : (
           <span>{usTime}</span>

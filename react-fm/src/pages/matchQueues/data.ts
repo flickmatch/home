@@ -7,8 +7,9 @@ const dummyData = {
         events: [
           {
             eventId: '07-28-1',
-            date: 'Fri, Jul 28',
+            date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',
+            dummyData: 'true',
             venueName: 'Bsporty',
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
@@ -76,8 +77,9 @@ const dummyData = {
           },
           {
             eventId: '07-28-2',
-            date: 'Fri, Jul 28',
+            date: 'Sun, Jan 01',
             time: '9:00PM-10:00PM',
+            dummyData: 'true',
             venueName: 'Bsporty',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
@@ -142,8 +144,9 @@ const dummyData = {
         events: [
           {
             eventId: '07-28-1',
-            date: 'Fri, Jul 28',
+            date: 'Sun, Jan 01',
             time: '7:00PM-8:00PM',
+            dummyData: 'true',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -220,8 +223,9 @@ const dummyData = {
           },
           {
             eventId: '07-28-2',
-            date: 'Fri, Jul 28',
+            date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',
+            dummyData: 'true',
             venueName: 'Gallant play arena south City 1',
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
@@ -292,150 +296,6 @@ const dummyData = {
               },
               {
                 displayName: 'Saksham',
-              },
-            ],
-            stripePaymentUrl: '',
-          },
-        ],
-      },
-      {
-        cityId: '4',
-        cityName: 'San Jose',
-        events: [
-          {
-            eventId: '07-28-1',
-            date: 'Fri, Jul 28',
-            time: '6:00PM-7:00PM',
-            venueName: 'Vista Montana Park',
-            reservedPlayersCount: 14,
-            waitListPlayersCount: 7,
-            venueLocationLink: 'https://goo.gl/maps/mZcrTxLejQifLw9p9',
-            charges: 10.0,
-            reservedPlayersList: [
-              {
-                displayName: 'Chen',
-              },
-              {
-                displayName: 'Pablo',
-              },
-              {
-                displayName: 'Feng',
-              },
-              {
-                displayName: 'Leo',
-              },
-              {
-                displayName: 'Arturito',
-              },
-              {
-                displayName: 'Alison',
-              },
-              {
-                displayName: 'Chang',
-              },
-              {
-                displayName: 'Diego',
-              },
-              {
-                displayName: 'Mateo',
-              },
-              {
-                displayName: 'Rafael',
-              },
-              {
-                displayName: 'Shahin',
-              },
-              {
-                displayName: 'Frank',
-              },
-              {
-                displayName: 'Tanxin',
-              },
-              {
-                displayName: 'Xiang',
-              },
-            ],
-            waitListPlayers: [
-              {
-                displayName: 'Charles',
-              },
-              {
-                displayName: 'Benjamin',
-              },
-              {
-                displayName: 'Marquino',
-              },
-              {
-                displayName: 'Sergio',
-              },
-              {
-                displayName: 'Giovanni',
-              },
-              {
-                displayName: 'Antonio',
-              },
-              {
-                displayName: 'Daniel',
-              },
-            ],
-            stripePaymentUrl: '',
-          },
-          {
-            eventId: '07-28-2',
-            date: 'Fri, Jul 28',
-            time: '8:00PM-9:00 PM',
-            venueName: 'Vista Montana Park',
-            reservedPlayersCount: 10,
-            waitListPlayersCount: 5,
-            venueLocationLink: 'https://goo.gl/maps/mZcrTxLejQifLw9p9',
-            charges: 15.0,
-            reservedPlayersList: [
-              {
-                displayName: 'Alexei',
-              },
-              {
-                displayName: 'Dinara',
-              },
-              {
-                displayName: 'Eva',
-              },
-              {
-                displayName: 'Henry',
-              },
-              {
-                displayName: 'Chao',
-              },
-              {
-                displayName: 'Sushant',
-              },
-              {
-                displayName: 'William',
-              },
-              {
-                displayName: 'Rohan',
-              },
-              {
-                displayName: 'Leonardo',
-              },
-              {
-                displayName: 'Abhimanyu',
-              },
-            ],
-            waitListPlayers: [
-              {
-                displayName: 'Jiang',
-              },
-              {
-                displayName: 'Santiago',
-              },
-              {
-                displayName: 'Felipe',
-              },
-              {
-                displayName: 'Alvaro',
-              },
-              {
-                displayName: 'Huang',
               },
             ],
             stripePaymentUrl: '',
