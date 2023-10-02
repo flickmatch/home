@@ -4,12 +4,12 @@ const dummyData = {
       {
         cityId: '2',
         cityName: 'Hyderabad',
+        dummyData: false,
         events: [
           {
             eventId: '07-28-1',
             date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',
-            dummyData: 'true',
             venueName: 'Bsporty',
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
@@ -79,7 +79,6 @@ const dummyData = {
             eventId: '07-28-2',
             date: 'Sun, Jan 01',
             time: '9:00PM-10:00PM',
-            dummyData: 'true',
             venueName: 'Bsporty',
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
@@ -141,6 +140,7 @@ const dummyData = {
       {
         cityId: '1',
         cityName: 'Gurgaon',
+        dummyData: false,
         events: [
           {
             eventId: '07-28-1',

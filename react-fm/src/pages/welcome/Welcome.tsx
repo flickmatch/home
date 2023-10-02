@@ -36,7 +36,7 @@ function Welcome() {
       <video
         ref={videoRef}
         className={styles.fullscreenVideo}
-        preload="metadata"
+        preload="auto"
         autoPlay
         loop
         muted

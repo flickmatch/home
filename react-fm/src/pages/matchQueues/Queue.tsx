@@ -62,7 +62,10 @@ function MatchQueue() {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
             if (cityExists) {
               if (city.events.length > 0) {
-                setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
+                const eventArray = data.data.cities[i];
+                eventArray.dummyData = true;
+
+                setCitiesData((prevData) => [...prevData, eventArray]);
               } else {
                 dummyData.data.cities.forEach(
                   (
@@ -81,7 +84,9 @@ function MatchQueue() {
               }
             } else {
               if (city.events.length > 0) {
-                setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
+                const eventArray = data.data.cities[i];
+                eventArray.dummyData = true;
+                setCitiesData((prevData) => [...prevData, eventArray]);
               }
             }
             // if (city.events.length > 0) {
@@ -121,7 +126,12 @@ function MatchQueue() {
       ? citiesData.reverse().map((city: CityDetails) => (
           <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
             <div className={isPortrait ? styles.mobileContainer : styles.container}>
-              <Cities cityName={city.cityName} cityId={city.cityId} events={city.events} />
+              <Cities
+                cityName={city.cityName}
+                cityId={city.cityId}
+                events={city.events}
+                dummyData={city.dummyData}
+              />
               {city.events.map((playingEvent: EventDetails) => (
                 <Accordion
                   className={isPortrait ? styles.mobileAccordion : styles.accordion}
