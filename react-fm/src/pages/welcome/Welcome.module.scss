@@ -41,7 +41,7 @@ body {
   height: 100%;
   z-index: -1;
   object-fit: cover;
-  opacity: 0.3;
+  opacity: 0.7;
 }
 
 .overlay {
@@ -128,7 +128,8 @@ body {
   margin-top: 80px;
 }
 
-.cardContainer, .portraitCardsContainer {
+.cardContainer,
+.portraitCardsContainer {
   justify-content: space-around;
 }
 
@@ -136,7 +137,8 @@ body {
   flex-flow: column;
 }
 
-.card, .portraitCard {
+.card,
+.portraitCard {
   height: 330px;
   width: 22%;
   border-radius: 10px;
@@ -157,12 +159,16 @@ body {
 }
 
 .card:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
   transform: translateY(-10px);
 }
 
 .portraitCard:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
   transform: translateY(-10px);
 }
 
@@ -171,7 +177,7 @@ body {
   border: none;
 }
 
-.portraitCard:hover .innerCard{
+.portraitCard:hover .innerCard {
   background: #1db629;
   border: none;
 }
@@ -187,7 +193,7 @@ body {
 .innerCard {
   height: 82px;
   border-radius: 50%;
-  border: 2px  solid #606264;
+  border: 2px solid #606264;
   width: 83px;
   margin-top: 45px;
   margin-bottom: 40px;
@@ -204,7 +210,8 @@ body {
   color: #4ce95a;
 }
 
-.flickText, .portraitFlickText {
+.flickText,
+.portraitFlickText {
   line-height: 26px;
 }
 
@@ -329,7 +336,7 @@ body {
 .iconContainer {
   background-color: rgb(76, 233, 90);
   box-shadow: rgb(76, 233, 90) 0px 0px 8px;
-  transition: all 0.5s ease;;
+  transition: all 0.5s ease;
 }
 
 .gameIcon {
@@ -412,9 +419,8 @@ body {
   filter: blur(0);
 }
 
-@media(prefers-reduced-motion) {
+@media (prefers-reduced-motion) {
   .hidden {
-      transition: none;
+    transition: none;
   }
 }
-

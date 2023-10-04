@@ -29,6 +29,7 @@ type EventDetails = {
 type CityDetails = {
   cityId: string;
   cityName: string;
+  dummyData: boolean;
   events: EventDetails[];
 };
 

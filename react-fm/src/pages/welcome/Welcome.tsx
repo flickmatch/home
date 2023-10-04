@@ -33,7 +33,15 @@ function Welcome() {
 
   const videoContainer = () => (
     <Box className={`${styles.videoContainer}`}>
-      <video ref={videoRef} className={styles.fullscreenVideo} autoPlay loop muted playsInline>
+      <video
+        ref={videoRef}
+        className={styles.fullscreenVideo}
+        preload="auto"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
         <source
           src="https://firebasestorage.googleapis.com/v0/b/first-d160b.appspot.com/o/football.mp4?alt=media&token=954eceb5-f109-492c-86b5-8587bf2ce7fd"
           type="video/mp4"
