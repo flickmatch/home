@@ -6,12 +6,6 @@ type waitListPlayerDetails = {
   displayName: string;
 };
 
-type optionsTypes = {
-  weekday: string;
-  month: string;
-  day: string;
-};
-
 type EventDetails = {
   charges: number;
   date: string;
@@ -43,5 +37,4 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
-  optionsTypes,
 };

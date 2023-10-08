@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -63,16 +64,25 @@ export const EventsCard: FC<EventDetails> = ({
 
   time = time.split('GMT')[0].trim();
 
+  const currency = () => {
+    let currenctIcon;
+    mapCityData.forEach((cityData) => {
+      if (cityData.city === eventId && cityData.currency === 'INR') {
+        currenctIcon = <CurrencyRupeeSharp className={styles.currencyIcon} />;
+      } else if (cityData.city === eventId && cityData.currency === 'USD') {
+        currenctIcon = <AttachMoneyIcon className={styles.currencyIcon} />;
+      }
+    });
+    return currenctIcon;
+  };
+
   const price = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
-          {eventId === '2' || eventId === '1' ? (
-            <CurrencyRupeeSharp className={styles.currencyIcon} />
-          ) : (
-            <AttachMoneyIcon className={styles.currencyIcon} />
-          )}
+          {currency()}
+
           {charges}
         </span>
       </Typography>
