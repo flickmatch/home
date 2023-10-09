@@ -188,11 +188,17 @@ function Welcome() {
     </Box>
   );
 
-  const gamesQueue = () => <img className={styles.games} src="/game.png" alt="games" />;
+  const gamesQueue = () => (
+    <img className={styles.games} src="https://www.linkpicture.com/q/game.png" alt="games" />
+  );
 
-  const playerList = () => <img className={styles.games} src="/players.png" alt="players" />;
+  const playerList = () => (
+    <img className={styles.games} src="https://www.linkpicture.com/q/players.png" alt="players" />
+  );
 
-  const joinNow = () => <img className={styles.games} src="/join.png" alt="join-now" />;
+  const joinNow = () => (
+    <img className={styles.games} src="https://www.linkpicture.com/q/join.png" alt="join-now" />
+  );
 
   const switchImage = (index: number) => {
     setActiveImage(index);
