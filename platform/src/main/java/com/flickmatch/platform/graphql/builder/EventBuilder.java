@@ -171,7 +171,7 @@ public class EventBuilder {
             cityToCurrencyMap.put("3", "USD");
             cityToCurrencyMap.put("4", "USD");
             cityToCurrencyMap.put("5", "USD");
-        return cityToCurrencyMap.getOrDefault(cityId, "DEFAULT_CURRENCY_CODE");
+        return cityToCurrencyMap.getOrDefault(cityId, "IN");
     }
 
     private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
