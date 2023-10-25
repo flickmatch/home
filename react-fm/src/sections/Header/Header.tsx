@@ -30,7 +30,7 @@ function Header() {
     !isPortrait ? (
       <FlexBox style={{ alignItems: 'center' }}>
         <Typography className={styles.menuItem}>
-          <a href="https://www.flickmatch.in/" rel="noreferrer" className={styles.link}>
+          <a href="https://play.flickmatch.in/home" rel="noreferrer" className={styles.link}>
             Home
           </a>
         </Typography>
@@ -76,7 +76,6 @@ function Header() {
             <Typography component={Link} to="/home">
               <img src={mainlogo} alt="logo" className={styles.logo} />
             </Typography>
-            
           </FlexBox>
           <FlexBox>
             {menus()}
