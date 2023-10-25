@@ -164,14 +164,17 @@ public class EventBuilder {
                 .build();
         return eventDetails;
     }
+
+    private static final Map<String, String> cityToCurrencyMap = new HashMap<>();
+    static {
+        cityToCurrencyMap.put("1", "INR");
+        cityToCurrencyMap.put("2", "INR");
+        cityToCurrencyMap.put("3", "USD");
+        cityToCurrencyMap.put("4", "USD");
+        cityToCurrencyMap.put("5", "USD");
+    }
     public String getCurrencyForCity(String cityId) {
-        final Map<String, String> cityToCurrencyMap = new HashMap<>();
-            cityToCurrencyMap.put("1", "INR");
-            cityToCurrencyMap.put("2", "INR");
-            cityToCurrencyMap.put("3", "USD");
-            cityToCurrencyMap.put("4", "USD");
-            cityToCurrencyMap.put("5", "USD");
-        return cityToCurrencyMap.getOrDefault(cityId, "DEFAULT_CURRENCY_CODE");
+        return cityToCurrencyMap.getOrDefault(cityId, "IN");
     }
 
     private String getPaymentUrlForEvent(SportsVenue sportsVenue, Double amount) {
