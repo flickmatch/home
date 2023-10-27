@@ -2,29 +2,26 @@ import type { FC } from 'react';
 
 import Typography from '@mui/material/Typography';
 
+import mapCityData from '../map';
 import type { CityDetails } from '../types/Events.types';
 import styles from './Cities.module.scss';
-import delhiIcon from '/gate-of-india.png';
-import goldenGateBridge from '/golden-gate.png';
-import charminar from '/hyderabad-charminar.png';
 
 export const Cities: FC<CityDetails> = ({ cityName, cityId }) => {
   //calculate the image source based on the city name
   let cityImage;
-  switch (cityName) {
-    case 'Hyderabad':
-      cityImage = charminar;
-      break;
-    case 'Gurgaon':
-      cityImage = delhiIcon;
-      break;
-    default:
-      cityImage = goldenGateBridge;
-  }
+
+  mapCityData.forEach((cityData) => {
+    if (cityData.city === cityName) {
+      cityImage = cityData.iconUrl;
+    }
+  });
 
   return (
-    <Typography className={styles.citiesName} key={cityId}>
-      {cityName} <img src={cityImage} alt={cityName} />
-    </Typography>
+    <div>
+      <Typography className={styles.citiesName} key={cityId}>
+        {cityName}
+      </Typography>
+      <img className={styles.citiesImg} src={cityImage} alt={cityName} />
+    </div>
   );
 };

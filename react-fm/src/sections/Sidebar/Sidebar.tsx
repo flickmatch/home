@@ -17,7 +17,7 @@ function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
 
   const toHome = (navTitle: string | undefined) => {
-    navTitle === 'Home' ? (location.href = 'https://www.flickmatch.in/') : null;
+    navTitle === 'Home' ? (location.href = 'https://play.flickmatch.in/home') : null;
   };
 
   return (

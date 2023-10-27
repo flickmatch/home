@@ -63,8 +63,6 @@ function MatchQueue() {
             if (cityExists) {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                eventArray.dummyData = true;
-
                 setCitiesData((prevData) => [...prevData, eventArray]);
               } else {
                 dummyData.data.cities.forEach(
@@ -85,7 +83,6 @@ function MatchQueue() {
             } else {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                eventArray.dummyData = true;
                 setCitiesData((prevData) => [...prevData, eventArray]);
               }
             }
@@ -175,7 +172,7 @@ function MatchQueue() {
                         venueLocationLink={playingEvent.venueLocationLink}
                         reservedPlayersCount={playingEvent.reservedPlayersCount}
                         waitListPlayersCount={playingEvent.waitListPlayersCount}
-                        eventId={city.cityId}
+                        eventId={city.cityName}
                         reservedPlayersList={playingEvent.reservedPlayersList}
                         venueName={playingEvent.venueName}
                         waitListPlayers={playingEvent.waitListPlayers}
