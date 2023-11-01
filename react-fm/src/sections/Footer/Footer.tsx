@@ -59,11 +59,7 @@ function Footer() {
           <InstagramIcon className={styles.instaIcon} />
         </Tooltip>
       </a>
-      <a
-        href="https://api.whatsapp.com/message/R7XHK52ZJKPDA1?autoload=1&app_absent=0"
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href="https://wa.me/message/V77TZJHDVM7WP1" target="_blank" rel="noreferrer">
         <Tooltip title="Message on Whatsapp" arrow>
           <WhatsAppIcon className={styles.whatsappIcon} />
         </Tooltip>
