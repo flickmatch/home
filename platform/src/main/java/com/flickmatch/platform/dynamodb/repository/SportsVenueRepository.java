@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @EnableScan
 public interface SportsVenueRepository extends CrudRepository<SportsVenues, String> {
+    List<SportsVenues> findByAmount(Double amount);
 
 }
