@@ -96,6 +96,7 @@ public class SportsVenues {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+
     public static class StripePaymentLink {
 
         Double amount;

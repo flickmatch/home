@@ -1,10 +1,8 @@
 package com.flickmatch.platform.graphql.builder;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
+import com.flickmatch.platform.dynamodb.model.City;
 import com.flickmatch.platform.dynamodb.model.Event;
+import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
@@ -36,6 +34,8 @@ public class EventBuilder {
     EventRepository eventRepository;
 
     SportsVenueRepository sportsVenueRepository;
+
+    CityRepository cityRepository;
 
     @Autowired SportsVenueBuilder sportsVenueBuilder;
 
@@ -193,13 +193,11 @@ public class EventBuilder {
         if (stripePaymentLinkForAmount.isEmpty()) {
             //Todo: For now keeping it soft dependency, we need to throw exception in future
             log.error("Can't find stripe payment link in venue");
-            String generatedPaymentLink = createPaymentLinkProgrammatically(amount);
-
-            return generatedPaymentLink;
+            return createPaymentLink(amount);
         }
         return stripePaymentLinkForAmount.get().getUrl();
     }
-    private String createPaymentLinkProgrammatically(Double amount) {
+    private String createPaymentLink(Double amount) {
         Stripe.apiKey = "sk_test_tR3PYbcVNZZ796tH88S4VQ2u";;
         try {
             PaymentLinkCreateParams params =
@@ -214,39 +212,30 @@ public class EventBuilder {
             PaymentLink paymentLink = PaymentLink.create(params);
             String paymentLinkUrl = paymentLink.getUrl();
 
-            SportsVenue sportsVenue = (SportsVenue) sportsVenueRepository.findByAmount(amount);
+            SportsVenues sportsVenues = new SportsVenues();
+            String cityId = String.valueOf(Long.valueOf(sportsVenues.getCityId()));
+
+            SportsVenues.SportsVenue sportsVenue1 = new SportsVenues.SportsVenue();
+            String sportsVenueId = String.valueOf(Long.valueOf(sportsVenue1.getSportsVenueId()));
+
+            SportsVenues sportsVenue = sportsVenueRepository.findByCityIdAndSportsVenueId(cityId, sportsVenueId);
             if (sportsVenue != null) {
-                sportsVenue.getStripePaymentLinks().add(new StripePaymentLink(amount, paymentLinkUrl));
-                SportsVenues sportsVenuesEntity = convertToSportsVenuesEntity(sportsVenue);
-                List<SportsVenues> sportsVenuesList = Collections.singletonList(sportsVenuesEntity);
+                StripePaymentLink stripePaymentLink = StripePaymentLink.builder()
+                        .amount(amount)
+                        .url(paymentLinkUrl)
+                        .build();
+
+                sportsVenue1.setStripePaymentLinks((List<SportsVenues.StripePaymentLink>) stripePaymentLink);
+                List<SportsVenues> sportsVenuesList = new ArrayList<>();
+                sportsVenuesList.add((SportsVenues) sportsVenue1.getStripePaymentLinks());
                 sportsVenueRepository.saveAll(sportsVenuesList);
             }
-            return paymentLink.getUrl();
+
+            return paymentLinkUrl;
         } catch (StripeException e) {
             log.error("Error creating Stripe payment link: " + e.getMessage());
             return null;
         }
-    }
-    private SportsVenues convertToSportsVenuesEntity(SportsVenue sportsVenue) {
-        SportsVenues.SportsVenue sportsVenuesEntity = new SportsVenues.SportsVenue();
-        sportsVenuesEntity.setSportsVenueId(sportsVenue.getSportsVenueId());
-        sportsVenuesEntity.setDisplayName(sportsVenue.getDisplayName());
-        sportsVenuesEntity.setGoogleMapsLink(sportsVenue.getGoogleMapsLink());
-        sportsVenuesEntity.setAvailableSportsIds(sportsVenue.getAvailableSportsIds());
-        List<com.flickmatch.platform.dynamodb.model.SportsVenues.StripePaymentLink> stripePaymentLinks = new ArrayList<>();
-        for (StripePaymentLink graphqlStripePaymentLink : sportsVenue.getStripePaymentLinks()) {
-            com.flickmatch.platform.dynamodb.model.SportsVenues.StripePaymentLink dynamoDBStripePaymentLink =
-                    com.flickmatch.platform.dynamodb.model.SportsVenues.StripePaymentLink.builder()
-                            .amount(graphqlStripePaymentLink.getAmount())
-                            .url(graphqlStripePaymentLink.getUrl())
-                            .build();
-            stripePaymentLinks.add(dynamoDBStripePaymentLink);
-        }
-        sportsVenuesEntity.setStripePaymentLinks(stripePaymentLinks);
-        SportsVenues sportsVenues = new SportsVenues();
-        sportsVenues.setSportsVenuesInCity(Collections.singletonList(sportsVenuesEntity));
-        return sportsVenues;
-
     }
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone) {
         String eventId = date + "-" + eventDetails.getIndex();

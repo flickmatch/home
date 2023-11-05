@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface SportRepository extends CrudRepository<Sport, String> {
 
     Optional<Sport> findById(String sportId);
-
 }
