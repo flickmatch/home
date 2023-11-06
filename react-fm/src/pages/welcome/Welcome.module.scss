@@ -366,6 +366,26 @@ body {
   padding: 35px;
 }
 
+.whatsapp {
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.sendHiButton {
+  background: #4ce95a;
+  color: black;
+  font-weight: 600;
+  border: 1px solid #4ce95a;
+}
+
+.sendHiButton:hover {
+  background: transparent;
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
+  font-weight: 600;
+  transition: all 0.4s ease;
+}
+
 .title {
   letter-spacing: 1px;
   font-weight: 600;
@@ -384,11 +404,11 @@ body {
 }
 
 .bar {
-  width: 30%;
+  width: 35%;
   height: 2px;
   background-color: #4ce95a;
   margin: auto;
-  margin-top: 25px;
+  margin-top: 35px;
 }
 
 .portraitInstructionImg {

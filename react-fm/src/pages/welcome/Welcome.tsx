@@ -7,6 +7,7 @@ import SnowshoeingIcon from '@mui/icons-material/Snowshoeing';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -107,7 +108,11 @@ function Welcome() {
     <FlexBox className={`${isPortrait ? styles.portraitSecondSection : styles.secondSection}`}>
       <Box className={isPortrait ? styles.portraitPhoneSection : styles.phoneSection}>
         <Box>
-          <img className={styles.Iphone1} src="/Iphone1.png" alt="iphone" />
+          <img
+            className={styles.Iphone1}
+            src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/Iphone1.png?alt=media&token=37a2531f-c739-4361-86f0-f7d35dd701d0&_gl=1*q3tbgt*_ga*MTA1NTE1NDY0MC4xNjg4ODgzODE5*_ga_CW55HF8NVT*MTY5ODgwNTE2MC40LjEuMTY5ODgwNjQ1OS4zNC4wLjA."
+            alt="iphone"
+          />
         </Box>
       </Box>
       <Box className={isPortrait ? styles.portraitInfoSection : styles.infoSection}>
@@ -175,12 +180,23 @@ function Welcome() {
               </Typography>
             </FlexBox>
           </FlexBox>
+          <FlexBox className={styles.whatsapp}>
+            <a href="https://wa.me/message/V77TZJHDVM7WP1" target="_blank" rel="noreferrer">
+              <Button
+                className={styles.sendHiButton}
+                variant="contained"
+                startIcon={<WhatsAppIcon />}
+              >
+                Start by sending Hi
+              </Button>
+            </a>
+          </FlexBox>
+
           <Box className={styles.bar} />
         </Box>
 
         <Box className={isPortrait ? styles.portraitInstructionImg : styles.instructionImg}>
           <FlexBox className={styles.imageContainer}>
-            {/* <img className={styles.Iphone1} src="/Iphone1.png" alt="iphone"/> */}
             {activeImage == 1 ? gamesQueue() : activeImage == 2 ? playerList() : joinNow()}
           </FlexBox>
         </Box>
@@ -189,15 +205,27 @@ function Welcome() {
   );
 
   const gamesQueue = () => (
-    <img className={styles.games} src="https://www.linkpicture.com/q/game.png" alt="games" />
+    <img
+      className={styles.games}
+      src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/game.png?alt=media&token=7dc803f8-32ad-480e-bf68-e57501da2b72&_gl=1*1sxrh3v*_ga*MTA1NTE1NDY0MC4xNjg4ODgzODE5*_ga_CW55HF8NVT*MTY5ODgwNTE2MC40LjEuMTY5ODgwNTIzNS42MC4wLjA."
+      alt="games"
+    />
   );
 
   const playerList = () => (
-    <img className={styles.games} src="https://www.linkpicture.com/q/players.png" alt="players" />
+    <img
+      className={styles.games}
+      src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/players.png?alt=media&token=40c06c96-8346-4bf5-ae54-d2c36f23904c&_gl=1*1kxb2v3*_ga*MTA1NTE1NDY0MC4xNjg4ODgzODE5*_ga_CW55HF8NVT*MTY5ODgwNTE2MC40LjEuMTY5ODgwNjI3Mi42MC4wLjA."
+      alt="players"
+    />
   );
 
   const joinNow = () => (
-    <img className={styles.games} src="https://www.linkpicture.com/q/join.png" alt="join-now" />
+    <img
+      className={styles.games}
+      src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/join.png?alt=media&token=e2798ac8-c1f5-46a6-bece-792ac2fe353a&_gl=1*1vjhyts*_ga*MTA1NTE1NDY0MC4xNjg4ODgzODE5*_ga_CW55HF8NVT*MTY5ODgwNTE2MC40LjEuMTY5ODgwNjI5My4zOS4wLjA."
+      alt="join-now"
+    />
   );
 
   const switchImage = (index: number) => {
