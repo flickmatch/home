@@ -1,21 +1,26 @@
 package com.flickmatch.platform.graphql.builder;
 
+import com.flickmatch.platform.dynamodb.model.City;
 import com.flickmatch.platform.dynamodb.model.Event;
+import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
+import com.flickmatch.platform.dynamodb.repository.SportsVenueRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
 import com.flickmatch.platform.graphql.type.StripePaymentLink;
 import com.flickmatch.platform.graphql.util.DateUtil;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentLink;
+import com.stripe.param.PaymentLinkCreateParams;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.flickmatch.platform.dynamodb.model.SportsVenues;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,6 +32,10 @@ public class EventBuilder {
     private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
 
     EventRepository eventRepository;
+
+    SportsVenueRepository sportsVenueRepository;
+
+    CityRepository cityRepository;
 
     @Autowired SportsVenueBuilder sportsVenueBuilder;
 
@@ -184,11 +193,50 @@ public class EventBuilder {
         if (stripePaymentLinkForAmount.isEmpty()) {
             //Todo: For now keeping it soft dependency, we need to throw exception in future
             log.error("Can't find stripe payment link in venue");
-            return null;
+            return createPaymentLink(amount);
         }
         return stripePaymentLinkForAmount.get().getUrl();
     }
+    private String createPaymentLink(Double amount) {
+        Stripe.apiKey = "sk_test_tR3PYbcVNZZ796tH88S4VQ2u";;
+        try {
+            PaymentLinkCreateParams params =
+                    PaymentLinkCreateParams.builder()
+                            .addLineItem(
+                                    PaymentLinkCreateParams.LineItem.builder()
+                                            .setPrice(String.valueOf(amount))
+                                            .setQuantity(1L)
+                                            .build()
+                            )
+                            .build();
+            PaymentLink paymentLink = PaymentLink.create(params);
+            String paymentLinkUrl = paymentLink.getUrl();
 
+            SportsVenues sportsVenues = new SportsVenues();
+            String cityId = String.valueOf(Long.valueOf(sportsVenues.getCityId()));
+
+            SportsVenues.SportsVenue sportsVenue1 = new SportsVenues.SportsVenue();
+            String sportsVenueId = String.valueOf(Long.valueOf(sportsVenue1.getSportsVenueId()));
+
+            SportsVenues sportsVenue = sportsVenueRepository.findByCityIdAndSportsVenueId(cityId, sportsVenueId);
+            if (sportsVenue != null) {
+                StripePaymentLink stripePaymentLink = StripePaymentLink.builder()
+                        .amount(amount)
+                        .url(paymentLinkUrl)
+                        .build();
+
+                sportsVenue1.setStripePaymentLinks((List<SportsVenues.StripePaymentLink>) stripePaymentLink);
+                List<SportsVenues> sportsVenuesList = new ArrayList<>();
+                sportsVenuesList.add((SportsVenues) sportsVenue1.getStripePaymentLinks());
+                sportsVenueRepository.saveAll(sportsVenuesList);
+            }
+
+            return paymentLinkUrl;
+        } catch (StripeException e) {
+            log.error("Error creating Stripe payment link: " + e.getMessage());
+            return null;
+        }
+    }
     private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone) {
         String eventId = date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
