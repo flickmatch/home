@@ -4,6 +4,20 @@ import pkg from "whatsapp-web.js";
 const { Client, LocalAuth } = pkg;
 import { processGroup } from "./src/inputParser.js";
 
+import express from 'express';
+const app = express();
+const port = 3000;
+
+app.get("/", (req, res) => {
+  const testGroupChatId = "120363088832118953@g.us";
+  client.sendMessage(testGroupChatId, 'Call api for list');
+  res.send("Hello World!");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
 // Maybe change this to flag.
 export var isProd =
   process.platform != "win32" && process.platform != "darwin";
@@ -38,6 +52,7 @@ client.on("message", async (msg) => {
     return;
   }
   if (chat.name == groupName) {
+    // console.log(msg.from);
     processGroup(msg);
   }
 });
