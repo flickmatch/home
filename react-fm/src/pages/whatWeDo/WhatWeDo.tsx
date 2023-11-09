@@ -1,25 +1,121 @@
-//import { FullSizeCenteredFlexBox } from '@/components/styled';
+import { useState } from 'react';
+import Carousel from 'react-material-ui-carousel';
+import type { YouTubeProps } from 'react-youtube';
+import YouTube from 'react-youtube';
+
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
+import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './WhatWeDo.module.scss';
-import mainlogo from '/logo.png';
-import stats from '/stats.png';
+import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
 
 function WhatWeDo() {
+  const [hideIndicators, setHideIndicator] = useState(true);
   const isPortrait = useOrientation();
+
+  const opts: YouTubeProps['opts'] = {
+    height: '450',
+    width: isPortrait ? '100%' : '60%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
+    },
+  };
+
+  const onReady = (event: { target: { pauseVideo: () => void } }) => {
+    event.target.pauseVideo();
+  };
+
+  //hiding left/right buttons on play
+  const onPlay = () => {
+    setHideIndicator(false);
+  };
+
+  const onPause = () => {
+    setHideIndicator(true);
+  };
+
+  const videosList = [
+    {
+      id: 'hWcpLjUQ7As',
+    },
+    {
+      id: 'q-Z36q5RAzQ',
+    },
+    {
+      id: 'aeJssUS7U7w',
+    },
+    {
+      id: '00qyzOfbWgM',
+    },
+    {
+      id: 'VeYnBAyyiO4',
+    },
+  ];
 
   return (
     <>
       <Meta title="What We Do" />
       <Box className={styles.box}>
         <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
-          <img src={mainlogo} alt="logo" className={styles.logo} />
-          <Typography className={styles.job}>Find a football game near you! ⚽</Typography>
-          <img src={stats} alt="stats" className={isPortrait ? styles.mobileStats : styles.stats} />
+          <Typography variant="h3" className={styles.heading}>
+            Match Highlights
+          </Typography>
+          <Carousel
+            autoPlay={false}
+            className={styles.videoCarousel}
+            swipe={true}
+            duration={500}
+            interval={5000}
+            NextIcon={<NavigateNextIcon />}
+            PrevIcon={<NavigateBeforeIcon />}
+            navButtonsAlwaysVisible={hideIndicators}
+          >
+            {videosList.map((item, i) => (
+              <YouTube
+                key={i}
+                videoId={item.id}
+                opts={opts}
+                onReady={onReady}
+                onPlay={onPlay}
+                onPause={onPause}
+                onError={onPause}
+                className={styles.youtube}
+              />
+            ))}
+          </Carousel>
+
+          <FlexBox className={styles.assessment}>
+            <Typography variant="h3" className={styles.heading}>
+              Skill Assessments
+            </Typography>
+            <Typography className={styles.job}>
+              We analyze data to provide you with insightful statistics.
+            </Typography>
+            <img
+              src={assessmentUrl}
+              alt="match assessments"
+              className={isPortrait ? styles.mobileStats : styles.stats}
+            />
+            <img
+              src={statsUrl}
+              alt="stats"
+              className={isPortrait ? styles.mobileStats : styles.stats}
+            />
+          </FlexBox>
+          <Box className={styles.playerHistory}>
+            <Typography variant="h3" className={styles.heading}>
+              Players History
+            </Typography>
+            <img src={comingSoonUrl} alt="coming soon" className={styles.comingSoonImg} />
+            <Typography className={styles.comingSoonText}>Coming soon....</Typography>
+          </Box>
         </Box>
       </Box>
     </>
@@ -27,3 +123,16 @@ function WhatWeDo() {
 }
 
 export default WhatWeDo;
+
+{
+  /* <Typography className={styles.highlights}>
+            Catch all the highlights on{' '}
+            <a href="https://www.youtube.com/@FlickMatch" className={styles.yout}>
+              YouTube
+            </a>{' '}
+            and{' '}
+            <a href="https://www.instagram.com/flickmatch/" className={styles.insta}>
+              Instagram.
+            </a>
+          </Typography> */
+}
