@@ -19,6 +19,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://phonepe.mycloudrepo.io/public/repositories/phonepe-pg-sdk-java"
+	}
 }
 
 dependencies {
@@ -28,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+	implementation 'com.phonepe:pg-sdk-java:1.1.0'
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation 'junit:junit:4.13.2'
 	compileOnly 'org.projectlombok:lombok'
