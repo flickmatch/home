@@ -54,11 +54,12 @@ input JoinEventInput {
 
 input InitiatePaymentInput {
     uniqueEventId: ID!
-    player: PlayerInput!
+    playerInputList: [PlayerInput!]!
 }
 
 type InitiatePaymentOutput {
-    paymentLink: String!
+    paymentLink: String
+    isInitiated: Boolean!
 }
 
 input CreateSportsVenueInput {
@@ -103,7 +104,6 @@ input RegisterModeratorInput {
 input PlayerInput {
     waNumber: String
     name: String!
-    paymentStatus: PaymentStatus
 }
 
 type MutationResult {

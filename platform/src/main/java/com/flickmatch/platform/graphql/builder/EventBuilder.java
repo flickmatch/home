@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
@@ -150,6 +151,48 @@ public class EventBuilder {
             }
         });
         return pastEventList;
+    }
+
+    /**
+     * Gets amount for event.
+     *
+     * @param uniqueEventId the unique event id
+     * @return the amount for event in paise
+     */
+    public long getAmountForEvent(final String uniqueEventId) {
+        int index = 0;
+        String date = null;
+        String cityId = null;
+        if (StringUtils.hasText(uniqueEventId)) {
+            String[] parts = uniqueEventId.split("-");
+            try{
+                cityId = parts[0];
+                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                index = Integer.parseInt(parts[4]);
+            } catch (NumberFormatException e) {
+                log.error(uniqueEventId);
+                throw new IllegalArgumentException("Input is invalid");
+            }
+        } else {
+            log.error(uniqueEventId);
+            throw new IllegalArgumentException("Input is invalid");
+        }
+        Optional<Event> eventsInCity =
+                eventRepository.findById(new Event.EventId(cityId, date));
+        if (eventsInCity.isPresent()) {
+            final int finalIndex = index;
+            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
+            if (selectedEvent.isPresent()) {
+                BigDecimal amount = BigDecimal.valueOf(selectedEvent.get().getCharges());
+                amount = amount.multiply(BigDecimal.valueOf(100));
+                return amount.longValue();
+            } else {
+                throw new IllegalArgumentException("Invalid Event selected");
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid Event selected");
+        }
     }
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {

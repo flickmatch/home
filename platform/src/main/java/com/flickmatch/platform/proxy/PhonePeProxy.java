@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class PhonePeProxy {
 
@@ -27,9 +25,7 @@ public class PhonePeProxy {
      *
      * @return payment link
      */
-    public String initiatePayment() {
-        String merchantTransactionId = UUID.randomUUID().toString().substring(0,34);
-        long amount = 200;
+    public String initiatePayment(final String merchantTransactionId, final long amount) {
         String callbackUrl = "https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/payment";
         String merchantUserId = "merchantUserId";
 
