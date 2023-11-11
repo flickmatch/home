@@ -52,8 +52,7 @@ input JoinEventInput {
 }
 
 input InitiatePaymentInput {
-    eventId: ID!
-    cityId: ID!
+    uniqueEventId: ID!
     player: PlayerInput!
 }
 
@@ -124,7 +123,8 @@ type EVENT {
     currency: String!
     startTime: String!
     endTime: String!
-    eventId: String!
+    eventId: String! @deprecated(reason: "Use `uniqueEventId`.")
+    uniqueEventId: String!
     displayTitle: String!
     venueLocationLink: String!
     charges: Float!

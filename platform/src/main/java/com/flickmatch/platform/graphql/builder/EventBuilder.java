@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -111,7 +109,7 @@ public class EventBuilder {
                 List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
                         eventData.get().getEventDetailsList().stream()
                                 .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone))
+                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone, cityId))
                                 .toList();
                 eventList.addAll(dailyEventList);
             }
@@ -132,7 +130,7 @@ public class EventBuilder {
                                         eventDetails.getStartTime().before(currentTime) &&
                                                 eventDetails.getStartTime().after(dateBeforeInDays)
                                 ).map(eventDetails ->
-                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
+                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, cityId)
                                 ).toList();
                 pastEventList.addAll(pastEventsInCity);
             }
@@ -189,8 +187,9 @@ public class EventBuilder {
         return stripePaymentLinkForAmount.get().getUrl();
     }
 
-    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone) {
+    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone, String cityId) {
         String eventId = date + "-" + eventDetails.getIndex();
+        String uniqueEventId = cityId + "-" + date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         String eventType = players + "v" + players;
         //Todo: clean up this field from schema
@@ -203,6 +202,7 @@ public class EventBuilder {
                 .currency(eventDetails.getCurrency())
                 .endTime(eventDetails.getEndTime())
                 .eventId(eventId)
+                .uniqueEventId(uniqueEventId)
                 .displayTitle(title)
                 .date(getFormattedEventDate(eventDetails.getStartTime(), localTimeZone))
                 .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime(), localTimeZone))

@@ -6,7 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class InitiatePaymentInput {
-    String eventId;
-    String cityId;
+    String uniqueEventId;
     PlayerInput player;
 }

@@ -10,6 +10,7 @@ public class Event {
     private Date startTime;
     private Date endTime;
     private String eventId;
+    private String uniqueEventId;
     //TODO: Remove displayTitle and logic from mapEventToGQLType,
     // after WA client start using individual fields
     private String displayTitle;
