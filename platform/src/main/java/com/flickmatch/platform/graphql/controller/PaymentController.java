@@ -38,7 +38,7 @@ public class PaymentController {
                     .isInitiated(true)
                     .build();
         } catch (Exception exception) {
-            log.error("Couldn't initiate payment", exception);
+            log.error(exception);
             return InitiatePaymentOutput.builder()
                     .isInitiated(false)
                     .build();

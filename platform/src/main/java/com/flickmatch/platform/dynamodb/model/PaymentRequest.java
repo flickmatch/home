@@ -5,12 +5,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @DynamoDBTable(tableName="PaymentRequest")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class PaymentRequest {
 
     private String merchantTransactionId;
