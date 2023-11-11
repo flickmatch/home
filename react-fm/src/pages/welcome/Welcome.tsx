@@ -32,6 +32,14 @@ function Welcome() {
     }
   }, []);
 
+  const whatsApp = () => (
+    <a href="https://wa.me/message/V77TZJHDVM7WP1" target="_blank" rel="noreferrer">
+      <Button className={styles.sendHiButton} variant="contained" startIcon={<WhatsAppIcon />}>
+        Start by sending Hi
+      </Button>
+    </a>
+  );
+
   const videoContainer = () => (
     <Box className={`${styles.videoContainer}`}>
       <video
@@ -58,15 +66,18 @@ function Welcome() {
           Find players, join teams, and play matches!
         </Typography>
       </Box>
-      <Button
-        variant="contained"
-        startIcon={<SportsSoccerIcon />}
-        className={styles.explore}
-        component={Link}
-        to="/match-queues"
-      >
-        Explore Games
-      </Button>
+      <FlexBox className={styles.buttonsContainer} style={{ width: isPortrait ? '60%' : '48%' }}>
+        <Button
+          variant="contained"
+          startIcon={<SportsSoccerIcon />}
+          className={isPortrait ? styles.explorePortrait : styles.explore}
+          component={Link}
+          to="/match-queues"
+        >
+          Explore Games
+        </Button>
+        {whatsApp()}
+      </FlexBox>
     </Box>
   );
 
@@ -180,17 +191,7 @@ function Welcome() {
               </Typography>
             </FlexBox>
           </FlexBox>
-          <FlexBox className={styles.whatsapp}>
-            <a href="https://wa.me/message/V77TZJHDVM7WP1" target="_blank" rel="noreferrer">
-              <Button
-                className={styles.sendHiButton}
-                variant="contained"
-                startIcon={<WhatsAppIcon />}
-              >
-                Start by sending Hi
-              </Button>
-            </a>
-          </FlexBox>
+          <FlexBox className={styles.whatsapp}>{whatsApp()}</FlexBox>
 
           <Box className={styles.bar} />
         </Box>

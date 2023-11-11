@@ -1,18 +1,32 @@
-.box {
-  height: 100vh;
+::-webkit-scrollbar {
+  display: none;
 }
 
 .container {
   display: flex;
   flex-flow: column;
-  margin-top: 90px;
+  margin-top: 110px;
   align-items: center;
+  justify-content: center;
 }
 
 .smallDeviceContainer {
   display: flex;
   flex-flow: column;
-  margin-top: 80px;
+  margin-top: 120px;
+  align-items: center;
+}
+
+.videoCarousel {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.youtube {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -20,19 +34,66 @@
   height: 48px;
 }
 
-.job {
+.job,
+.highlights {
+  font-weight: 600;
+  margin-top: 45px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: #4ce95a;
+  text-align: center;
+  width: 100%;
+}
+
+.highlights {
   font-weight: 500;
-  margin-top: 20px;
-  font-size: 19px;
 }
 
 .stats {
-  margin-top: 35px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .mobileStats {
   width: 390px;
   margin-top: 35px;
   margin-bottom: 80px;
+}
+
+.yout,
+.insta {
+  font-weight: 400;
+  text-decoration: none;
+  color: #4ce95a;
+}
+
+.heading {
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1.2px;
+}
+
+.assessment {
+  flex-flow: column;
+  margin-top: 80px;
+}
+
+.playerHistory {
+  margin-top: 50px;
+}
+
+.comingSoonImg {
+  display: flex;
+  margin: auto;
+  margin-top: 30px !important;
+}
+
+.comingSoonText {
+  font-weight: 600;
+  margin-top: 25px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: #4ce95a;
+  text-align: center;
 }
