@@ -11,6 +11,7 @@ import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,21 +55,34 @@ public class EventBuilder {
 
     public void joinEvent(JoinEventInput input) {
         int index = 0;
-        //TODO: Remove hardcoded value once whatsApp is not used for joining event
-        String date = input.getEventId();
-        String[] parts = date.split("-");
-        try{
-             date =  parts[0] + "-" + parts[1] + "-" + parts[2];
-             index = Integer.parseInt(parts[3]);
-        }
-        catch (NumberFormatException e)
-        {
-            System.out.println("Error: The given string cannot be converted to an integer.");
+        String date = null;
+        String cityId = null;
+        if (StringUtils.hasText(input.getUniqueEventId())) {
+            String[] parts = input.getUniqueEventId().split("-");
+            try{
+                cityId = parts[0];
+                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                index = Integer.parseInt(parts[4]);
+            } catch (NumberFormatException e) {
+                log.error(input.getUniqueEventId());
+                throw new IllegalArgumentException("Input is invalid");
+            }
+        } else {
+            String[] parts = input.getEventId().split("-");
+            try{
+                date =  parts[0] + "-" + parts[1] + "-" + parts[2];
+                index = Integer.parseInt(parts[3]);
+                cityId = input.getCityId();
+            } catch (NumberFormatException e) {
+                log.error(input.getEventId());
+                throw new IllegalArgumentException("Input is invalid");
+            }
         }
         log.info(date);
         log.info(index);
+        log.info(cityId);
         Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(input.getCityId(),date));
+                eventRepository.findById(new Event.EventId(cityId, date));
         if (eventsInCity.isPresent()) {
             final int finalIndex = index;
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()

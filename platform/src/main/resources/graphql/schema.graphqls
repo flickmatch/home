@@ -46,8 +46,9 @@ input CreateEventInput {
 }
 
 input JoinEventInput {
-    eventId: ID!
-    cityId: ID!
+    eventId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    cityId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    uniqueEventId: ID
     player: PlayerInput!
 }
 
