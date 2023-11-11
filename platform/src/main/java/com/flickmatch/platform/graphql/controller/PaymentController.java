@@ -32,6 +32,11 @@ public class PaymentController {
         return output;
     }
 
+    /*
+    Calls PhonePe Pay API using sdk
+    https://developer.phonepe.com/v1/reference/pay-api-1
+    https://developer.phonepe.com/v1/reference/java-standard-pay-page
+     */
     private String initiate() {
         String merchantId = "M1FPXNBFIGDG";
         String saltKey = "e7a5693b-0ccf-47ac-a258-c5d77e701e2c";
@@ -42,14 +47,14 @@ public class PaymentController {
 
         String merchantTransactionId = UUID.randomUUID().toString().substring(0,34);
         long amount = 200;
-        String callbackurl = "https://www.merchant.com/callback";
+        String callbackUrl = "https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/payment";
         String merchantUserId = "merchantUserId";
 
         PgPayRequest pgPayRequest = PgPayRequest.PayPagePayRequestBuilder()
                 .amount(amount)
                 .merchantId(merchantId)
                 .merchantTransactionId(merchantTransactionId)
-                .callbackUrl(callbackurl)
+                .callbackUrl(callbackUrl)
                 .callbackMode("REDIRECT")
                 .redirectUrl("https://play.flickmatch.in/")
                 .redirectMode("REDIRECT")
