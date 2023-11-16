@@ -7,7 +7,10 @@ import lombok.Getter;
 @Getter
 public class JoinEventInput {
 
+    @Deprecated
     String eventId;
+    @Deprecated
     String cityId;
+    String uniqueEventId;
     PlayerInput player;
 }

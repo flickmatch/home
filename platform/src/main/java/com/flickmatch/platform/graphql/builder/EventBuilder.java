@@ -11,11 +11,11 @@ import com.flickmatch.platform.graphql.util.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,21 +56,34 @@ public class EventBuilder {
 
     public void joinEvent(JoinEventInput input) {
         int index = 0;
-        //TODO: Remove hardcoded value once whatsApp is not used for joining event
-        String date = input.getEventId();
-        String[] parts = date.split("-");
-        try{
-             date =  parts[0] + "-" + parts[1] + "-" + parts[2];
-             index = Integer.parseInt(parts[3]);
-        }
-        catch (NumberFormatException e)
-        {
-            System.out.println("Error: The given string cannot be converted to an integer.");
+        String date = null;
+        String cityId = null;
+        if (StringUtils.hasText(input.getUniqueEventId())) {
+            String[] parts = input.getUniqueEventId().split("-");
+            try{
+                cityId = parts[0];
+                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                index = Integer.parseInt(parts[4]);
+            } catch (NumberFormatException e) {
+                log.error(input.getUniqueEventId());
+                throw new IllegalArgumentException("Input is invalid");
+            }
+        } else {
+            String[] parts = input.getEventId().split("-");
+            try{
+                date =  parts[0] + "-" + parts[1] + "-" + parts[2];
+                index = Integer.parseInt(parts[3]);
+                cityId = input.getCityId();
+            } catch (NumberFormatException e) {
+                log.error(input.getEventId());
+                throw new IllegalArgumentException("Input is invalid");
+            }
         }
         log.info(date);
         log.info(index);
+        log.info(cityId);
         Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(input.getCityId(),date));
+                eventRepository.findById(new Event.EventId(cityId, date));
         if (eventsInCity.isPresent()) {
             final int finalIndex = index;
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
@@ -111,7 +124,7 @@ public class EventBuilder {
                 List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
                         eventData.get().getEventDetailsList().stream()
                                 .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone))
+                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone, cityId))
                                 .toList();
                 eventList.addAll(dailyEventList);
             }
@@ -132,12 +145,54 @@ public class EventBuilder {
                                         eventDetails.getStartTime().before(currentTime) &&
                                                 eventDetails.getStartTime().after(dateBeforeInDays)
                                 ).map(eventDetails ->
-                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone)
+                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, cityId)
                                 ).toList();
                 pastEventList.addAll(pastEventsInCity);
             }
         });
         return pastEventList;
+    }
+
+    /**
+     * Gets amount for event.
+     *
+     * @param uniqueEventId the unique event id
+     * @return the amount for event in paise
+     */
+    public long getAmountForEvent(final String uniqueEventId) {
+        int index = 0;
+        String date = null;
+        String cityId = null;
+        if (StringUtils.hasText(uniqueEventId)) {
+            String[] parts = uniqueEventId.split("-");
+            try{
+                cityId = parts[0];
+                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                index = Integer.parseInt(parts[4]);
+            } catch (NumberFormatException e) {
+                log.error(uniqueEventId);
+                throw new IllegalArgumentException("Input is invalid");
+            }
+        } else {
+            log.error(uniqueEventId);
+            throw new IllegalArgumentException("Input is invalid");
+        }
+        Optional<Event> eventsInCity =
+                eventRepository.findById(new Event.EventId(cityId, date));
+        if (eventsInCity.isPresent()) {
+            final int finalIndex = index;
+            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
+            if (selectedEvent.isPresent()) {
+                BigDecimal amount = BigDecimal.valueOf(selectedEvent.get().getCharges());
+                amount = amount.multiply(BigDecimal.valueOf(100));
+                return amount.longValue();
+            } else {
+                throw new IllegalArgumentException("Invalid Event selected");
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid Event selected");
+        }
     }
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
@@ -189,8 +244,9 @@ public class EventBuilder {
         return stripePaymentLinkForAmount.get().getUrl();
     }
 
-    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone) {
+    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone, String cityId) {
         String eventId = date + "-" + eventDetails.getIndex();
+        String uniqueEventId = cityId + "-" + date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         String eventType = players + "v" + players;
         //Todo: clean up this field from schema
@@ -203,6 +259,7 @@ public class EventBuilder {
                 .currency(eventDetails.getCurrency())
                 .endTime(eventDetails.getEndTime())
                 .eventId(eventId)
+                .uniqueEventId(uniqueEventId)
                 .displayTitle(title)
                 .date(getFormattedEventDate(eventDetails.getStartTime(), localTimeZone))
                 .time(getFormattedEventTime(eventDetails.getStartTime(), eventDetails.getEndTime(), localTimeZone))
