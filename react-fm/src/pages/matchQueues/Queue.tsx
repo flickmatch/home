@@ -152,7 +152,8 @@ function MatchQueue() {
                             stripePaymentUrl={playingEvent.stripePaymentUrl}
                             charges={0}
                             date={''}
-                            eventId={''}
+                            uniqueEventId={playingEvent.uniqueEventId}
+                            eventId={playingEvent.eventId}
                             reservedPlayersCount={playingEvent.reservedPlayersCount}
                             reservedPlayersList={playingEvent.reservedPlayersList}
                             time={''}
@@ -166,6 +167,7 @@ function MatchQueue() {
 
                       {/*Event Details*/}
                       <EventsCard
+                        uniqueEventId={playingEvent.uniqueEventId}
                         charges={playingEvent.charges}
                         date={playingEvent.date}
                         time={playingEvent.time}

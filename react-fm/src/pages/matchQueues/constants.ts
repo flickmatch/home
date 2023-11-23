@@ -21,6 +21,7 @@ const query = JSON.stringify({
         cityId
         cityName
         events {
+          uniqueEventId
           eventId
           date
           time
