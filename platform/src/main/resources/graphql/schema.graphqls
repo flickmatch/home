@@ -46,19 +46,20 @@ input CreateEventInput {
 }
 
 input JoinEventInput {
-    eventId: ID!
-    cityId: ID!
+    eventId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    cityId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    uniqueEventId: ID
     player: PlayerInput!
 }
 
 input InitiatePaymentInput {
-    eventId: ID!
-    cityId: ID!
-    player: PlayerInput!
+    uniqueEventId: ID!
+    playerInputList: [PlayerInput!]!
 }
 
 type InitiatePaymentOutput {
-    paymentLink: String!
+    paymentLink: String
+    isInitiated: Boolean!
 }
 
 input CreateSportsVenueInput {
@@ -103,7 +104,6 @@ input RegisterModeratorInput {
 input PlayerInput {
     waNumber: String
     name: String!
-    paymentStatus: PaymentStatus
 }
 
 type MutationResult {
@@ -124,7 +124,8 @@ type EVENT {
     currency: String!
     startTime: String!
     endTime: String!
-    eventId: String!
+    eventId: String! @deprecated(reason: "Use `uniqueEventId`.")
+    uniqueEventId: String!
     displayTitle: String!
     venueLocationLink: String!
     charges: Float!

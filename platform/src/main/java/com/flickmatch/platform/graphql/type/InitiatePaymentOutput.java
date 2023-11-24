@@ -9,7 +9,5 @@ import lombok.Setter;
 @Getter
 public class InitiatePaymentOutput {
     private String paymentLink;
-    public InitiatePaymentOutput(String paymentLink) {
-        this.paymentLink = paymentLink;
-    }
+    private boolean isInitiated;
 }
