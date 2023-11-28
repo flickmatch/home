@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,5 +33,20 @@ public class PaymentRequestBuilder {
                 .status("INITIATED")
                 .build();
         return paymentRequestRepository.save(paymentRequest);
+    }
+
+    public PaymentRequest updatePaymentRequestStatus(final PaymentRequest paymentRequest,
+                                                     final boolean isSuccessful) {
+        if (isSuccessful) {
+            paymentRequest.setStatus("PAID");
+        } else {
+            paymentRequest.setStatus("FAILED");
+        }
+        return paymentRequestRepository.save(paymentRequest);
+    }
+
+    public PaymentRequest getPaymentRequest(final String merchantTransactionId) {
+        Optional<PaymentRequest> paymentRequest = paymentRequestRepository.findById(merchantTransactionId);
+        return paymentRequest.orElseThrow(() -> new IllegalArgumentException("Invalid input"));
     }
 }

@@ -1,7 +1,13 @@
 package com.flickmatch.platform.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flickmatch.platform.dynamodb.model.PaymentRequest;
+import com.flickmatch.platform.graphql.builder.EventBuilder;
+import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,18 +26,37 @@ import java.util.Map;
 @Log4j2
 public class PhonePeCallBackController {
 
-    private static final JsonParser jsonParser = new JacksonJsonParser();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    PaymentRequestBuilder paymentRequestBuilder;
+    @Autowired
+    EventBuilder eventBuilder;
 
     @PostMapping("/payment")
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
                          @RequestHeader("x_verify") String xVerify) {
         log.info(xVerify); //We need to use this to verify callback https://developer.phonepe.com/v1/reference/java-callback-verification
-        String decodedResponse = new String(Base64.getDecoder().decode(callBackResponse.getResponse()));
-        Map<String, Object> phonePeResponse = jsonParser.parseMap(decodedResponse);
-        if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
-            log.info("store data in DB");
-        } else {
-            log.error(decodedResponse);
+        try {
+            String decodedResponse = new String(Base64.getDecoder().decode(callBackResponse.getResponse()));
+            Map<String, Object> phonePeResponse = objectMapper.readValue(decodedResponse,
+                    new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> data = objectMapper.readValue(objectMapper.writeValueAsString(phonePeResponse.get("data")),
+                    new TypeReference<Map<String, Object>>() {});
+            String merchantTransactionId = String.valueOf(data.get("merchantTransactionId"));
+            PaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(merchantTransactionId);
+            if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
+                eventBuilder.joinEvent(paymentRequest);
+                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+            } else {
+                log.info(merchantTransactionId);
+                log.error(decodedResponse);
+                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, false);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (Exception exception) {
+            log.error("", exception);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.Event;
+import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
@@ -8,6 +9,7 @@ import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
 import com.flickmatch.platform.graphql.type.StripePaymentLink;
 import com.flickmatch.platform.graphql.util.DateUtil;
+import com.flickmatch.platform.records.ParsedUniqueEventId;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,61 +57,22 @@ public class EventBuilder {
     }
 
     public void joinEvent(JoinEventInput input) {
-        int index = 0;
-        String date = null;
-        String cityId = null;
+        ParsedUniqueEventId parsedUniqueEventId = null;
         if (StringUtils.hasText(input.getUniqueEventId())) {
-            String[] parts = input.getUniqueEventId().split("-");
-            try{
-                cityId = parts[0];
-                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
-                index = Integer.parseInt(parts[4]);
-            } catch (NumberFormatException e) {
-                log.error(input.getUniqueEventId());
-                throw new IllegalArgumentException("Input is invalid");
-            }
+            parsedUniqueEventId = parseUniqueEventId(input.getUniqueEventId());
         } else {
-            String[] parts = input.getEventId().split("-");
-            try{
-                date =  parts[0] + "-" + parts[1] + "-" + parts[2];
-                index = Integer.parseInt(parts[3]);
-                cityId = input.getCityId();
-            } catch (NumberFormatException e) {
-                log.error(input.getEventId());
-                throw new IllegalArgumentException("Input is invalid");
-            }
+            parsedUniqueEventId = parseUniqueEventId(input.getCityId() + "-" + input.getEventId());
         }
-        log.info(date);
-        log.info(index);
-        log.info(cityId);
-        Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(cityId, date));
-        if (eventsInCity.isPresent()) {
-            final int finalIndex = index;
-            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
-                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
-            if (selectedEvent.isPresent()) {
-                //check to disallow eventId from past
-                isStartTimeInPast(selectedEvent.get().getStartTime());
+        Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
+                .name(input.getPlayer().getName())
+                .waNumber(input.getPlayer().getWaNumber())
+                .build();
+        addPlayersInEvent(parsedUniqueEventId, List.of(playerDetails));
+    }
 
-                Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
-                        .name(input.getPlayer().getName())
-                        .waNumber(input.getPlayer().getWaNumber())
-                        .build();
-
-                if (selectedEvent.get().getPlayerDetailsList().size() ==
-                selectedEvent.get().getReservedPlayersCount() + selectedEvent.get().getWaitListPlayersCount()) {
-                    throw new IllegalStateException("We are full");
-                }
-                selectedEvent.get().getPlayerDetailsList().add(playerDetails);
-                eventRepository.save(eventsInCity.get());
-            } else {
-                throw new IllegalArgumentException("Invalid Event selected");
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid Event selected");
-        }
-
+    public Event joinEvent(final PaymentRequest paymentRequest) {
+        return addPlayersInEvent(parseUniqueEventId(paymentRequest.getUniqueEventId()),
+                paymentRequest.getPlayerDetailsList());
     }
 
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
@@ -160,6 +123,44 @@ public class EventBuilder {
      * @return the amount for event in paise
      */
     public long getAmountForEvent(final String uniqueEventId) {
+        Event.EventDetails selectedEvent = getSelectedEvent(uniqueEventId);
+        BigDecimal amount = BigDecimal.valueOf(selectedEvent.getCharges());
+        amount = amount.multiply(BigDecimal.valueOf(100));
+        return amount.longValue();
+    }
+
+    private Event.EventDetails getSelectedEvent(final String uniqueEventId) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
+        Optional<Event> eventsInCity =
+                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+        if (eventsInCity.isPresent()) {
+            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index())).findFirst();
+            return selectedEvent.orElseThrow(() -> new IllegalArgumentException("Invalid Event selected"));
+        } else {
+            throw new IllegalArgumentException("Invalid Event selected");
+        }
+    }
+
+    private Event addPlayersInEvent(final ParsedUniqueEventId parsedUniqueEventId,
+                                    final List<Event.PlayerDetails> playerDetailsList) {
+        Optional<Event> eventsInCity =
+                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+        if (eventsInCity.isPresent()) {
+            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index())).findFirst();
+            if (selectedEvent.isPresent()) {
+                selectedEvent.get().getPlayerDetailsList().addAll(playerDetailsList);
+                return eventRepository.save(eventsInCity.get());
+            } else {
+                throw new IllegalArgumentException("Invalid Event selected");
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid Event selected");
+        }
+    }
+
+    private ParsedUniqueEventId parseUniqueEventId(final String uniqueEventId) {
         int index = 0;
         String date = null;
         String cityId = null;
@@ -174,25 +175,10 @@ public class EventBuilder {
                 throw new IllegalArgumentException("Input is invalid");
             }
         } else {
-            log.error(uniqueEventId);
+            log.error("Invalid uniqueEventId : " + uniqueEventId);
             throw new IllegalArgumentException("Input is invalid");
         }
-        Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(cityId, date));
-        if (eventsInCity.isPresent()) {
-            final int finalIndex = index;
-            Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
-                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(finalIndex)).findFirst();
-            if (selectedEvent.isPresent()) {
-                BigDecimal amount = BigDecimal.valueOf(selectedEvent.get().getCharges());
-                amount = amount.multiply(BigDecimal.valueOf(100));
-                return amount.longValue();
-            } else {
-                throw new IllegalArgumentException("Invalid Event selected");
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid Event selected");
-        }
+        return new ParsedUniqueEventId(cityId, date, index);
     }
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
