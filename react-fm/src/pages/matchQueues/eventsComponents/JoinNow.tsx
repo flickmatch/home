@@ -185,7 +185,7 @@ export const JoinNow: FC<EventDetails> = ({
           ) : null}
 
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Player Details</DialogTitle>
+            <DialogTitle>Become our standout Flickplayer</DialogTitle>
             <DialogContent>
               <TextField
                 required
