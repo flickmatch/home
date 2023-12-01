@@ -1,0 +1,138 @@
+.refundVideo {
+  height: 80vh;
+}
+
+.portraitRefundVideo {
+  height: 50vh;
+  margin-top: 25px;
+}
+
+.home {
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 70px;
+}
+
+.portraitHome {
+  flex-flow: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.heading {
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1.2px;
+}
+
+.content {
+  width: 75%;
+  justify-content: center;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.portraitContent {
+  width: 95%;
+  margin: auto;
+  margin-top: 80px;
+}
+
+.subHeading {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.portraitSubheading {
+  font-size: 26px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.conditions {
+  flex-flow: column;
+  width: 75%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.portraitConditions {
+  flex-flow: column;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.conditionFirstContainer,
+.conditionSecondContainer,
+.conditionThirdContainer,
+.conditionFourthContainer {
+  margin-bottom: 45px;
+  width: 100%;
+}
+
+.portraitConditionFirstContainer,
+.portraitConditionSecondContainer,
+.portraitConditionThirdContainer,
+.portraitConditionFourthContainer {
+  margin-bottom: 65px;
+  width: 100%;
+  flex-flow: column;
+  align-items: center;
+}
+
+.conditionFirst,
+.conditionSecond,
+.conditionThird,
+.conditionFourth {
+  font-size: 18px;
+  font-weight: 500;
+  width: 80%;
+  text-align: left;
+}
+
+.portraitConditionFirst,
+.portraitConditionSecond,
+.portraitConditionThird,
+.portraitConditionFourth {
+  font-size: 19px;
+  font-weight: 500;
+  width: 95%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.conditionFirstContainer,
+.conditionSecondContainer,
+.conditionThirdContainer,
+.conditionFourthContainer {
+  align-items: center;
+}
+
+.conditionsIcon {
+  background: transparent;
+  border: 1px solid #606264;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.5s;
+  cursor: pointer;
+  margin-right: 5%;
+}
+
+.icon {
+  color: #4ce95a;
+  font-size: 34px;
+  transition: background 0.4s, border 0.1s;
+}
+
+.conditionsIcon:hover {
+  background: #4ce95a;
+  border: none;
+}
+
+.conditionsIcon:hover .icon {
+  color: black;
+}

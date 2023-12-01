@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TelegramIcon from '@mui/icons-material/Telegram';
@@ -26,11 +28,13 @@ function Footer() {
             Contact us
           </Typography>
         </a>
-        <a href="https://www.flickmatch.in/general-clean" rel="noreferrer">
-          <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>
-            Refund Policy
-          </Typography>
-        </a>
+        <Typography
+          className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
+          component={Link}
+          to="/refund-cancellation"
+        >
+          Refund Policy
+        </Typography>
       </Box>
       <Box className={styles.box} sx={{ flexGrow: 1 }}>
         <a href="https://www.flickmatch.in/general-clean-1" rel="noreferrer">

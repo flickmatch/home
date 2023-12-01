@@ -38,6 +38,10 @@ const routes: Routes = {
     title: 'Match Queues',
     icon: SportsSoccerIcon,
   },
+  [Pages.RefundCancellation]: {
+    component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
+    path: '/refund-cancellation',
+  },
   // [Pages.ContactUs]: {
   //   component: asyncComponentLoader(() => import('@/pages/contactUs')),
   //   path: '/contact-us',
