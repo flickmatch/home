@@ -19,7 +19,7 @@ function RefundCancellation() {
           Cancellation & Refund Policy
         </Typography>
         <video
-          className={isPortrait ? styles.portraitRefundVideo : styles.refundVideo}
+          className={isPortrait ? styles.portraitOrderCancellation : styles.orderCancellation}
           preload="auto"
           autoPlay
           muted
