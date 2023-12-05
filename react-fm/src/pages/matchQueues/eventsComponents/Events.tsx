@@ -18,6 +18,7 @@ export const EventsCard: FC<EventDetails> = ({
   charges,
   date,
   time,
+  uniqueEventId,
   eventId,
   venueName,
   venueLocationLink,
@@ -157,7 +158,8 @@ export const EventsCard: FC<EventDetails> = ({
             stripePaymentUrl={stripePaymentUrl}
             charges={0}
             date={''}
-            eventId={''}
+            uniqueEventId={uniqueEventId}
+            eventId={eventId}
             reservedPlayersCount={reservedPlayersCount}
             reservedPlayersList={reservedPlayersList}
             time={''}

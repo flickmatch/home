@@ -10,6 +10,7 @@ type EventDetails = {
   charges: number;
   date: string;
   eventId: string;
+  uniqueEventId: string;
   reservedPlayersCount: number;
   reservedPlayersList: ReservedPlayerDetails[];
   time: string;
