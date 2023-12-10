@@ -18,16 +18,6 @@ function RefundCancellation() {
         <Typography variant="h3" className={styles.heading}>
           Cancellation & Refund Policy
         </Typography>
-        <video
-          className={isPortrait ? styles.portraitOrderCancellation : styles.orderCancellation}
-          preload="auto"
-          autoPlay
-          muted
-          playsInline
-        >
-          <source src="/cancel-gif.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
       </FlexBox>
       <FlexBox className={isPortrait ? styles.portraitContent : styles.content}>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
