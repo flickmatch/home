@@ -7,6 +7,7 @@ const dummyData = {
         dummyData: false,
         events: [
           {
+            uniqueEventId: '07-28-1-1-6',
             eventId: '07-28-1',
             date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',
@@ -76,6 +77,7 @@ const dummyData = {
             stripePaymentUrl: '',
           },
           {
+            uniqueEventId: '07-28-1-1-6',
             eventId: '07-28-2',
             date: 'Sun, Jan 01',
             time: '9:00PM-10:00PM',
@@ -143,6 +145,7 @@ const dummyData = {
         dummyData: false,
         events: [
           {
+            uniqueEventId: '07-28-1-1-6',
             eventId: '07-28-1',
             date: 'Sun, Jan 01',
             time: '7:00PM-8:00PM',
@@ -222,6 +225,7 @@ const dummyData = {
             stripePaymentUrl: '',
           },
           {
+            uniqueEventId: '07-28-1-1-6',
             eventId: '07-28-2',
             date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',

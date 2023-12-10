@@ -16,9 +16,9 @@ import styles from './Sidebar.module.scss';
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
 
-  const toHome = (navTitle: string | undefined) => {
-    navTitle === 'Home' ? (location.href = 'https://play.flickmatch.in/home') : null;
-  };
+  // const toHome = (navTitle: string | undefined) => {
+  //   navTitle === 'Home' ? (location.href = 'https://play.flickmatch.in/home') : null;
+  // };
 
   return (
     <SwipeableDrawer
@@ -36,7 +36,7 @@ function Sidebar() {
             <ListItem sx={{ p: 0 }} key={path}>
               <ListItemButton component={Link} to={path as string} onClick={sidebarActions.close}>
                 <ListItemIcon>{Icon ? <Icon /> : <DefaultIcon />}</ListItemIcon>
-                <ListItemText onClick={() => toHome(title)}>
+                <ListItemText>
                   <span className={styles.link}>{title}</span>
                 </ListItemText>
               </ListItemButton>
