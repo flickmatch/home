@@ -25,7 +25,7 @@ function RefundCancellation() {
           muted
           playsInline
         >
-          <source src="/refund.mp4" type="video/mp4" />
+          <source src="/cancel-gif.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </FlexBox>
