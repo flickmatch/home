@@ -1,0 +1,73 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.head {
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.portraitHead {
+  margin-top: 120px;
+}
+
+.heading {
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1.2px;
+}
+
+.content {
+  width: 75%;
+  justify-content: center;
+  margin: auto;
+  margin-top: 50px;
+  flex-flow: column;
+}
+
+.portraitContent {
+  width: 100%;
+  margin-top: 50px;
+  flex-flow: column;
+}
+
+.subHeading {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 15px;
+  letter-spacing: 1px;
+}
+
+.portraitSubheading {
+  font-size: 19px;
+  font-weight: 500;
+  text-align: center;
+  padding: 15px;
+}
+
+.termsHeading {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+}
+
+li {
+  padding: 15px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.terms {
+  width: 75%;
+  justify-content: center;
+  margin: auto;
+  margin-top: 30px;
+  flex-flow: column;
+}
+
+.portraitTerms {
+  width: 95%;
+  margin: auto;
+  margin-top: 50px;
+}

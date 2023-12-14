@@ -11,6 +11,8 @@ enum Pages {
   WhatWeDo,
   Home,
   RefundCancellation,
+  TermsConditions,
+  PrivacyPolicy,
 }
 
 type PathRouteCustomProps = {

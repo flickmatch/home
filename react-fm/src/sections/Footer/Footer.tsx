@@ -23,11 +23,14 @@ function Footer() {
   const menus = () => (
     <>
       <Box className={styles.box} sx={{ flexGrow: 1 }}>
-        <a href="https://www.flickmatch.in/contact-8" rel="noreferrer">
-          <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>
-            Contact us
-          </Typography>
-        </a>
+        <Typography
+          className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
+          component={Link}
+          to="/contact-us"
+        >
+          Contact us
+        </Typography>
+
         <Typography
           className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
           component={Link}
@@ -37,16 +40,20 @@ function Footer() {
         </Typography>
       </Box>
       <Box className={styles.box} sx={{ flexGrow: 1 }}>
-        <a href="https://www.flickmatch.in/general-clean-1" rel="noreferrer">
-          <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>
-            Terms & Conditions
-          </Typography>
-        </a>
-        <a href="https://www.flickmatch.in/services-7" rel="noreferrer">
-          <Typography className={isPortrait ? styles.mobileMenuItem : styles.menuItem}>
-            Privacy Policy
-          </Typography>
-        </a>
+        <Typography
+          className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
+          component={Link}
+          to="/terms-conditions"
+        >
+          Terms & Conditions
+        </Typography>
+        <Typography
+          className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
+          component={Link}
+          to="/privacy-policy"
+        >
+          Privacy Policy
+        </Typography>
       </Box>
     </>
   );
