@@ -1,0 +1,106 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  font-family: 'Montserrat Alt 1', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  margin-top: 64px;
+  margin-bottom: -30px;
+}
+
+.leftSide {
+  flex: 6;
+  overflow: hidden;
+  position: relative;
+}
+
+.portraitLeftSide {
+  display: none;
+}
+
+.leftSide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+
+.rightSide,
+.portraitRightSide {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #111;
+  color: #fff;
+}
+
+.portraitRightSide {
+  margin-top: -70px;
+}
+
+.loginContainer,
+.portraitLoginContainer {
+  width: 80%;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  animation: slideIn 0.8s ease-out;
+}
+
+.portraitLoginContainer {
+  width: 90%;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.googleLoginButton,
+.portraitGoogleLoginButton {
+  background-color: transparent;
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+  height: 45px;
+  max-width: 65%;
+}
+
+.portraitGoogleLoginButton {
+  max-width: 85%;
+}
+
+.googleLoginButton:hover,
+.portraitGoogleLoginButton:hover {
+  background: #4ce95a;
+  color: black;
+  transition: all 0.4s ease;
+}
