@@ -226,6 +226,7 @@ body {
 .flickText,
 .portraitFlickText {
   line-height: 26px;
+  font-weight: 500;
 }
 
 .portraitFlickText {
@@ -279,7 +280,7 @@ body {
 }
 
 .infoSection {
-  width: 50%;
+  max-width: 55%;
   margin-right: 5%;
 }
 

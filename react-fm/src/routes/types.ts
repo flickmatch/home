@@ -9,7 +9,10 @@ enum Pages {
   MatchQueue,
   ContactUs,
   WhatWeDo,
-  Home
+  Home,
+  RefundCancellation,
+  TermsConditions,
+  PrivacyPolicy,
 }
 
 type PathRouteCustomProps = {
