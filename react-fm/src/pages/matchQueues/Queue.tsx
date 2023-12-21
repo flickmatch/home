@@ -114,7 +114,6 @@ function MatchQueue() {
   }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    //  <li key={player ? player.displayName : 'empty'}>{player ? player.displayName : 'Empty'}</li>
     <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
   );
 
@@ -187,14 +186,44 @@ function MatchQueue() {
                   <AccordionDetails>
                     <Box className={styles.box} sx={{ flexGrow: 1 }}>
                       <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
+                      <Box className={styles.teamDivision}>
+                        <span className={styles.colorFirst} />
+                        Black / Blue
+                        <span className={styles.colorSecond} />
+                        (Team A)
+                      </Box>
                       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, index) => {
-                          const player =
-                            index < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[index]
-                              : null;
-                          return renderPlayer(player, index);
-                        })}
+                        {Array.from(
+                          { length: playingEvent.reservedPlayersCount / 2 },
+                          (_, index) => {
+                            const player =
+                              index < playingEvent.reservedPlayersList.length
+                                ? playingEvent.reservedPlayersList[index]
+                                : null;
+                            return renderPlayer(player, index);
+                          },
+                        )}
+                      </Grid>
+                      <Typography className={styles.versus}>v/s</Typography>
+                      <Box className={styles.teamDivisionSecond}>
+                        <span className={styles.colorThird} />
+                        Green / Grey
+                        <span className={styles.colorFourth} />
+                        (Team B)
+                      </Box>
+                      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {Array.from(
+                          { length: playingEvent.reservedPlayersCount / 2 },
+                          (_, index) => {
+                            const player =
+                              index < playingEvent.reservedPlayersList.length
+                                ? playingEvent.reservedPlayersList[
+                                    index + playingEvent.reservedPlayersCount / 2
+                                  ]
+                                : null;
+                            return renderPlayer(player, index);
+                          },
+                        )}
                       </Grid>
                     </Box>
                     {playingEvent.waitListPlayers.length > 0 ? (

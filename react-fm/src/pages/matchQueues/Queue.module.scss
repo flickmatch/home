@@ -104,3 +104,49 @@ body {
   height: 295px;
   margin-bottom: 20px !important;
 }
+
+.teamDivision,
+.teamDivisionSecond {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+.colorFirst,
+.colorSecond,
+.colorThird,
+.colorFourth {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.colorFirst {
+  background: rgb(190, 52, 75);
+}
+
+.colorSecond {
+  background: blue;
+}
+
+.colorThird {
+  background: green;
+}
+
+.colorFourth {
+  background: gray;
+}
+
+.versus {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
