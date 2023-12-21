@@ -73,11 +73,36 @@
   }
 }
 
-.logo img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin-bottom: 20px;
+.sportsIconSection {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.sportsIcon {
+  color: #4ce95a;
+  font-size: 35px;
+}
+
+.loginSignupText {
+  font-size: 30px;
+  font-weight: 500;
+  color: #4ce95a;
+}
+
+.getStarted {
+  font-size: 28px;
+  font-weight: 600;
+  padding-top: 20px;
+}
+
+.signUpImmediately {
+  padding-top: 20px;
+  font-weight: 500;
+}
+
+.loginSignupButton {
+  margin-top: 30px;
+  margin-bottom: 5px;
 }
 
 .googleLoginButton,
