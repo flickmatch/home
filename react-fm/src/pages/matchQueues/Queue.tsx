@@ -128,10 +128,11 @@ function MatchQueue() {
                 events={city.events}
                 dummyData={city.dummyData}
               />
-              {city.events.map((playingEvent: EventDetails) => (
+              {city.events.map((playingEvent: EventDetails, index: number) => (
                 <Accordion
                   className={isPortrait ? styles.mobileAccordion : styles.accordion}
                   key={playingEvent.eventId}
+                  defaultExpanded={index === 0 && city.cityName === 'Gurgaon' ? true : false}
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -188,7 +189,7 @@ function MatchQueue() {
                       <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
                       <Box className={styles.teamDivision}>
                         <span className={styles.colorFirst} />
-                        Black / Blue
+                        Pink / Navy
                         <span className={styles.colorSecond} />
                         (Team A)
                       </Box>

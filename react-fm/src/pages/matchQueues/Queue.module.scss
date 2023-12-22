@@ -110,7 +110,8 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 25px;
-  justify-content: center;
+  margin-top: 15px;
+  justify-content: left;
 }
 
 .colorFirst,
@@ -120,33 +121,33 @@ body {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-
   display: inline-block;
   margin-right: 10px;
   margin-left: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 .colorFirst {
-  background: rgb(190, 52, 75);
+  background: rgb(197, 43, 68);
 }
 
 .colorSecond {
-  background: blue;
+  background: rgb(16, 16, 134);
 }
 
 .colorThird {
-  background: green;
+  background: rgb(16, 134, 32);
 }
 
 .colorFourth {
-  background: gray;
+  background: rgb(190, 181, 181);
 }
 
 .versus {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 20px;
   text-align: center;
-  padding: 20px;
-  margin-top: 10px;
+  padding: 10px;
   margin-bottom: 10px;
 }
