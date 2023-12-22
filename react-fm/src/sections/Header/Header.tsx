@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 
-import ThemeIcon from '@mui/icons-material/InvertColors';
+//import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
+//import useHotKeysDialog from '@/store/hotkeys';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,17 +14,16 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-//import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
-import useTheme from '@/store/theme';
 
+//import useTheme from '@/store/theme';
 import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
 import mainlogo from '/logo.png';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
-  const [, themeActions] = useTheme();
+  //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
 
@@ -78,9 +79,10 @@ function Header() {
           <FlexBox>
             {menus()}
             <Divider className={styles.divider} orientation="horizontal" flexItem />
-            <Tooltip title="Switch theme" arrow>
-              <IconButton color="info" edge="end" size="large" onClick={themeActions.toggle}>
-                <ThemeIcon />
+            <Tooltip title="Sign up" arrow>
+              <IconButton edge="end" size="large" component={Link} to="/login">
+                {/* <ThemeIcon /> */}
+                <PersonPinIcon className={styles.signUp} />
               </IconButton>
             </Tooltip>
           </FlexBox>

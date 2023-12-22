@@ -38,6 +38,17 @@ const routes: Routes = {
     title: 'Match Queues',
     icon: SportsSoccerIcon,
   },
+  [Pages.GoogleLogin]: {
+    component: asyncComponentLoader(() => import('@/pages/googleLoginAuth')),
+    path: '/login',
+    title: 'Login | Signup',
+  },
+  // [Pages.ContactUs]: {
+  //   component: asyncComponentLoader(() => import('@/pages/contactUs')),
+  //   path: '/contact-us',
+  //   title: 'Contact Us',
+  //   icon: ContactPageIcon,
+  // },
   [Pages.ContactUs]: {
     component: asyncComponentLoader(() => import('@/pages/contactUs')),
     path: '/contact-us',

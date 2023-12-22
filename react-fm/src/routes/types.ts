@@ -10,6 +10,7 @@ enum Pages {
   ContactUs,
   WhatWeDo,
   Home,
+  GoogleLogin,
   RefundCancellation,
   TermsConditions,
   PrivacyPolicy,
