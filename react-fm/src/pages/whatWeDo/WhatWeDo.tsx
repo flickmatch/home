@@ -96,7 +96,8 @@ function WhatWeDo() {
               Skill Assessments
             </Typography>
             <Typography className={styles.job}>
-              We analyze data to provide you with insightful statistics.
+              We record games and collect data to build a deep learning based video statistics
+              generator.
             </Typography>
             <img
               src={assessmentUrl}
