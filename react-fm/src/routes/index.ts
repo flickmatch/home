@@ -38,6 +38,11 @@ const routes: Routes = {
     title: 'Match Queues',
     icon: SportsSoccerIcon,
   },
+  [Pages.GoogleLogin]: {
+    component: asyncComponentLoader(() => import('@/pages/googleLoginAuth')),
+    path: '/login',
+    title: 'Login | Signup',
+  },
   // [Pages.ContactUs]: {
   //   component: asyncComponentLoader(() => import('@/pages/contactUs')),
   //   path: '/contact-us',
@@ -45,14 +50,33 @@ const routes: Routes = {
   //   icon: ContactPageIcon,
   // },
   [Pages.ContactUs]: {
-    component: () => {
-      window.location.href = 'https://www.flickmatch.in/contact-8';
-      return null;
-    },
+    component: asyncComponentLoader(() => import('@/pages/contactUs')),
     path: '/contact-us',
     title: 'Contact Us',
     icon: ContactPageIcon,
   },
+  [Pages.RefundCancellation]: {
+    component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
+    path: '/refund-cancellation',
+  },
+  [Pages.TermsConditions]: {
+    component: asyncComponentLoader(() => import('@/pages/termsConditions')),
+    path: '/terms-conditions',
+  },
+  [Pages.PrivacyPolicy]: {
+    component: asyncComponentLoader(() => import('@/pages/privacyPolicy')),
+    path: '/privacy-policy',
+  },
+
+  // [Pages.ContactUs]: {
+  //   component: () => {
+  //     window.location.href = 'https://www.flickmatch.in/contact-8';
+  //     return null;
+  //   },
+  //   path: '/contact-us',
+  //   title: 'Contact Us',
+  //   icon: ContactPageIcon,
+  // },
 };
 
 export default routes;
