@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
+import com.flickmatch.platform.proxy.WhatsAppProxy;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -32,6 +33,8 @@ public class PhonePeCallBackController {
     PaymentRequestBuilder paymentRequestBuilder;
     @Autowired
     EventBuilder eventBuilder;
+    @Autowired
+    WhatsAppProxy whatsAppProxy;
 
     @PostMapping("/payment")
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
@@ -48,6 +51,7 @@ public class PhonePeCallBackController {
             if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
                 eventBuilder.joinEvent(paymentRequest);
                 paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                whatsAppProxy.sendNotification();
             } else {
                 log.info(merchantTransactionId);
                 log.error(decodedResponse);
