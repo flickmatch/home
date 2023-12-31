@@ -26,7 +26,7 @@ public class PhonePeProxy {
      * @return payment link
      */
     public String initiatePayment(final String merchantTransactionId, final long amount) {
-        String callbackUrl = "https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/payment";
+        String callbackUrl = "https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/payment";
         String merchantUserId = "merchantUserId";
 
         PgPayRequest pgPayRequest = PgPayRequest.PayPagePayRequestBuilder()
