@@ -117,9 +117,27 @@ function MatchQueue() {
     <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
   );
 
+  const teamA = () => (
+    <Box className={styles.teamDivision}>
+      <span className={styles.colorFirst} />
+      Red / White
+      <span className={styles.colorSecond} />
+      (Team A)
+    </Box>
+  );
+
+  const teamB = () => (
+    <Box className={styles.teamDivisionSecond}>
+      <span className={styles.colorThird} />
+      Black / Blue
+      <span className={styles.colorFourth} />
+      (Team B)
+    </Box>
+  );
+
   const events = () =>
     citiesData.length > 0
-      ? citiesData.reverse().map((city: CityDetails) => (
+      ? citiesData.map((city: CityDetails) => (
           <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
             <div className={isPortrait ? styles.mobileContainer : styles.container}>
               <Cities
@@ -128,11 +146,11 @@ function MatchQueue() {
                 events={city.events}
                 dummyData={city.dummyData}
               />
-              {city.events.map((playingEvent: EventDetails, index: number) => (
+              {city.events.map((playingEvent: EventDetails) => (
                 <Accordion
                   className={isPortrait ? styles.mobileAccordion : styles.accordion}
                   key={playingEvent.eventId}
-                  defaultExpanded={index === 0 && city.cityName === 'Gurgaon' ? true : false}
+                  //defaultExpanded={index === 0 && city.cityName === 'Gurgaon' ? true : false}
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -161,6 +179,9 @@ function MatchQueue() {
                             venueName={playingEvent.venueName}
                             waitListPlayers={playingEvent.waitListPlayers}
                             waitListPlayersCount={playingEvent.waitListPlayersCount}
+                            team_division={false}
+                            team1_color={''}
+                            team2_color={''}
                           />
                         )}
                       </FlexBox>
@@ -179,6 +200,9 @@ function MatchQueue() {
                         venueName={playingEvent.venueName}
                         waitListPlayers={playingEvent.waitListPlayers}
                         stripePaymentUrl={playingEvent.stripePaymentUrl}
+                        team_division={false}
+                        team1_color={''}
+                        team2_color={''}
                       />
                     </FlexBox>
                   </AccordionSummary>
@@ -187,45 +211,67 @@ function MatchQueue() {
                   <AccordionDetails>
                     <Box className={styles.box} sx={{ flexGrow: 1 }}>
                       <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-                      <Box className={styles.teamDivision}>
-                        <span className={styles.colorFirst} />
-                        Pink / Navy
-                        <span className={styles.colorSecond} />
-                        (Team A)
-                      </Box>
-                      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {Array.from(
-                          { length: playingEvent.reservedPlayersCount / 2 },
-                          (_, index) => {
-                            const player =
-                              index < playingEvent.reservedPlayersList.length
-                                ? playingEvent.reservedPlayersList[index]
-                                : null;
-                            return renderPlayer(player, index);
-                          },
-                        )}
-                      </Grid>
-                      <Typography className={styles.versus}>v/s</Typography>
-                      <Box className={styles.teamDivisionSecond}>
-                        <span className={styles.colorThird} />
-                        Green / Grey
-                        <span className={styles.colorFourth} />
-                        (Team B)
-                      </Box>
-                      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {Array.from(
-                          { length: playingEvent.reservedPlayersCount / 2 },
-                          (_, index) => {
-                            const player =
-                              index < playingEvent.reservedPlayersList.length
-                                ? playingEvent.reservedPlayersList[
-                                    index + playingEvent.reservedPlayersCount / 2
-                                  ]
-                                : null;
-                            return renderPlayer(player, index);
-                          },
-                        )}
-                      </Grid>
+
+                      {playingEvent.team_division ? (
+                        <Box>
+                          {teamA()}
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                          >
+                            {Array.from(
+                              { length: playingEvent.reservedPlayersCount / 2 },
+                              (_, i) => {
+                                const player =
+                                  i < playingEvent.reservedPlayersList.length
+                                    ? playingEvent.reservedPlayersList[i]
+                                    : null;
+                                return renderPlayer(player, i);
+                              },
+                            )}
+                          </Grid>
+                          <Typography className={styles.versus}>v/s</Typography>
+                          {teamB()}
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                          >
+                            {Array.from(
+                              { length: playingEvent.reservedPlayersCount / 2 },
+                              (_, i) => {
+                                const player =
+                                  i < playingEvent.reservedPlayersList.length
+                                    ? playingEvent.reservedPlayersList[
+                                        i + playingEvent.reservedPlayersCount / 2
+                                      ]
+                                    : null;
+                                return renderPlayer(
+                                  player,
+                                  i + playingEvent.reservedPlayersCount / 2,
+                                );
+                              },
+                            )}
+                          </Grid>
+                        </Box>
+                      ) : (
+                        <Box>
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                          >
+                            {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                              const player =
+                                i < playingEvent.reservedPlayersList.length
+                                  ? playingEvent.reservedPlayersList[i]
+                                  : null;
+                              return renderPlayer(player, i);
+                            })}
+                          </Grid>
+                        </Box>
+                      )}
                     </Box>
                     {playingEvent.waitListPlayers.length > 0 ? (
                       <Box className={styles.box} sx={{ flexGrow: 1 }}>

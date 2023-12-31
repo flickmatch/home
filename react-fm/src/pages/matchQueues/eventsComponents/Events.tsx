@@ -167,6 +167,9 @@ export const EventsCard: FC<EventDetails> = ({
             venueName={venueName}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
+            team_division={false}
+            team1_color={''}
+            team2_color={''}
           />
         </FlexBox>
       </Grid>
