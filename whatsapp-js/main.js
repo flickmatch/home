@@ -7,10 +7,18 @@ import { processGroup } from "./src/inputParser.js";
 import express from 'express';
 const app = express();
 const port = 3000;
+const ggnSouthCityChatId = '120363030960923086@g.us'
+const hydChatId = '120363104642020865@g.us'
+
+app.post("/", (req, res) => {
+  const testGroupChatId = "120363088832118953@g.us";
+  client.sendMessage(testGroupChatId, 'Print List');
+  res.send("Hello World!");
+});
 
 app.get("/", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
-  client.sendMessage(testGroupChatId, 'Call api for list');
+  client.sendMessage(testGroupChatId, 'Print List');
   res.send("Hello World!");
 });
 
@@ -46,6 +54,8 @@ client.initialize();
 client.on("message", async (msg) => {
   const contact = await msg.getContact();
   const chat = await msg.getChat();
+  // Way to get the chat id used.
+  // console.log(chat.id._serialized);
   console.log(contact.number);
   let content = msg.body;
   if (!content || content === "") {
