@@ -15,6 +15,9 @@ const dummyData = {
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
             venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
+            team_division: true,
+            team1_color: '',
+            team2_color: '',
             charges: 200.0,
             reservedPlayersList: [
               {
@@ -85,6 +88,9 @@ const dummyData = {
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
             venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
+            team_division: false,
+            team1_color: '',
+            team2_color: '',
             charges: 250.0,
             reservedPlayersList: [
               {
@@ -154,6 +160,9 @@ const dummyData = {
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            team_division: false,
+            team1_color: '',
+            team2_color: '',
             charges: 400.0,
             reservedPlayersList: [
               {
@@ -234,6 +243,9 @@ const dummyData = {
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
+            team_division: false,
+            team1_color: '',
+            team2_color: '',
             charges: 400.0,
             reservedPlayersList: [
               {
