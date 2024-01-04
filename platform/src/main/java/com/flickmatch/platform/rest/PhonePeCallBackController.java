@@ -38,7 +38,7 @@ public class PhonePeCallBackController {
 
     @PostMapping("/payment")
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
-                         @RequestHeader("x_verify") String xVerify) {
+                         @RequestHeader(value = "x_verify", required = false) String xVerify) {
         log.info(xVerify); //We need to use this to verify callback https://developer.phonepe.com/v1/reference/java-callback-verification
         try {
             String decodedResponse = new String(Base64.getDecoder().decode(callBackResponse.getResponse()));

@@ -21,12 +21,12 @@ public class WhatsAppProxy {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create the request payload
+        // This is sample payload, we need get the data from DB
         String requestData = "{\"name\":\"John\",\"age\":30}";
         HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
 
         // Make a POST request to the Node.js server
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(nodeServerUrl, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(nodeServerUrl, requestEntity, String.class);
         // Print the response
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String responseBody = responseEntity.getBody();

@@ -22,15 +22,15 @@ class WhatsAppProxyTest {
 
     @Test
     public void test_WhenCallIsSuccessful() {
-        Mockito.when(restTemplate.getForEntity(anyString(), any())).thenReturn(ResponseEntity.accepted().build());
+        Mockito.when(restTemplate.postForEntity(anyString(), any(), any())).thenReturn(ResponseEntity.accepted().build());
         whatsAppProxy.sendNotification();
-        Mockito.verify(restTemplate).getForEntity(anyString(), any());
+        Mockito.verify(restTemplate).postForEntity(anyString(), any(), any());
     }
 
     @Test
     public void test_WhenCallFails() {
-        Mockito.when(restTemplate.getForEntity(anyString(), any())).thenReturn(ResponseEntity.internalServerError().build());
+        Mockito.when(restTemplate.postForEntity(anyString(), any(), any())).thenReturn(ResponseEntity.internalServerError().build());
         whatsAppProxy.sendNotification();
-        Mockito.verify(restTemplate).getForEntity(anyString(), any());
+        Mockito.verify(restTemplate).postForEntity(anyString(), any(), any());
     }
 }
