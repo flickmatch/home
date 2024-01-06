@@ -29,7 +29,7 @@ public class EventBuilderTest {
     @BeforeEach
     public void setup() {
         eventRepository = mock(EventRepository.class);
-        eventBuilder = new EventBuilder(eventRepository);
+        eventBuilder = new EventBuilder(eventRepository, null);
     }
 
     @Test

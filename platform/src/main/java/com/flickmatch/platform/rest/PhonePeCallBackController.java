@@ -51,7 +51,7 @@ public class PhonePeCallBackController {
             if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
                 eventBuilder.joinEvent(paymentRequest);
                 paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
-                whatsAppProxy.sendNotification();
+                whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
             } else {
                 log.info(merchantTransactionId);
                 log.error(decodedResponse);
@@ -60,7 +60,7 @@ public class PhonePeCallBackController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (Exception exception) {
-            log.error("", exception);
+            log.error("Failed to process callback", exception);
         }
     }
 }

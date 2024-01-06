@@ -1,5 +1,6 @@
 package com.flickmatch.platform.proxy;
 
+import com.flickmatch.platform.records.WhatsAppNotification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,14 +24,19 @@ class WhatsAppProxyTest {
     @Test
     public void test_WhenCallIsSuccessful() {
         Mockito.when(restTemplate.postForEntity(anyString(), any(), any())).thenReturn(ResponseEntity.accepted().build());
-        whatsAppProxy.sendNotification();
+        whatsAppProxy.sendNotification(createNotificationData());
         Mockito.verify(restTemplate).postForEntity(anyString(), any(), any());
     }
 
     @Test
     public void test_WhenCallFails() {
         Mockito.when(restTemplate.postForEntity(anyString(), any(), any())).thenReturn(ResponseEntity.internalServerError().build());
-        whatsAppProxy.sendNotification();
+        whatsAppProxy.sendNotification(createNotificationData());
         Mockito.verify(restTemplate).postForEntity(anyString(), any(), any());
+    }
+
+    private WhatsAppNotification createNotificationData() {
+        return new WhatsAppNotification(null, null, null, null, null, null, null, null);
+
     }
 }
