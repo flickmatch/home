@@ -16,8 +16,8 @@ const dummyData = {
             waitListPlayersCount: 6,
             venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
             team_division: true,
-            team1_color: '',
-            team2_color: '',
+            team1_color: 'White',
+            team2_color: 'Blue',
             charges: 200.0,
             reservedPlayersList: [
               {

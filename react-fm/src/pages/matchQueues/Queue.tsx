@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -15,17 +8,14 @@ import Zoom from '@mui/material/Zoom';
 import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
-import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
 import { apiUrl, query } from './constants';
 import dummyData from './data';
 import { Cities } from './eventsComponents/Cities';
-import { EventsCard } from './eventsComponents/Events';
-import { JoinNow } from './eventsComponents/JoinNow';
-import { PlayerDetails } from './eventsComponents/Players';
-import type { CityDetails, EventDetails, ReservedPlayerDetails } from './types/Events.types';
+import type { CityDetails } from './types/Events.types';
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
@@ -86,14 +76,6 @@ function MatchQueue() {
                 setCitiesData((prevData) => [...prevData, eventArray]);
               }
             }
-            // if (city.events.length > 0) {
-            //   setCitiesData((prevData) => [...prevData, data.data.cities[i]]);
-            // } else {
-
-            //   if (data.data.cities[i].cityId == dummyData.data.cities[i].cityId) {
-            //     setCitiesData((prevData) => [...prevData, dummyData.data.cities[i]]);
-            //   }
-            // }
             setShowSkeleton(false);
           },
         );
@@ -113,28 +95,6 @@ function MatchQueue() {
     };
   }, []);
 
-  const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
-  );
-
-  const teamA = () => (
-    <Box className={styles.teamDivision}>
-      <span className={styles.colorFirst} />
-      Red / White
-      <span className={styles.colorSecond} />
-      (Team A)
-    </Box>
-  );
-
-  const teamB = () => (
-    <Box className={styles.teamDivisionSecond}>
-      <span className={styles.colorThird} />
-      Black / Blue
-      <span className={styles.colorFourth} />
-      (Team B)
-    </Box>
-  );
-
   const events = () =>
     citiesData.length > 0
       ? citiesData.map((city: CityDetails) => (
@@ -146,154 +106,7 @@ function MatchQueue() {
                 events={city.events}
                 dummyData={city.dummyData}
               />
-              {city.events.map((playingEvent: EventDetails) => (
-                <Accordion
-                  className={isPortrait ? styles.mobileAccordion : styles.accordion}
-                  key={playingEvent.eventId}
-                  //defaultExpanded={index === 0 && city.cityName === 'Gurgaon' ? true : false}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <FlexBox className={styles.flexbox}>
-                      <FlexBox className={styles.venue}>
-                        <Typography
-                          className={isPortrait ? styles.mobileVenueName : styles.venueName}
-                        >
-                          <SportsSoccerIcon className={styles.sportsIcon} />
-                          {playingEvent.venueName}
-                        </Typography>
-                        {isPortrait ? null : (
-                          <JoinNow
-                            stripePaymentUrl={playingEvent.stripePaymentUrl}
-                            charges={0}
-                            date={''}
-                            uniqueEventId={playingEvent.uniqueEventId}
-                            eventId={playingEvent.eventId}
-                            reservedPlayersCount={playingEvent.reservedPlayersCount}
-                            reservedPlayersList={playingEvent.reservedPlayersList}
-                            time={''}
-                            venueLocationLink={''}
-                            venueName={playingEvent.venueName}
-                            waitListPlayers={playingEvent.waitListPlayers}
-                            waitListPlayersCount={playingEvent.waitListPlayersCount}
-                            team_division={false}
-                            team1_color={''}
-                            team2_color={''}
-                          />
-                        )}
-                      </FlexBox>
-
-                      {/*Event Details*/}
-                      <EventsCard
-                        uniqueEventId={playingEvent.uniqueEventId}
-                        charges={playingEvent.charges}
-                        date={playingEvent.date}
-                        time={playingEvent.time}
-                        venueLocationLink={playingEvent.venueLocationLink}
-                        reservedPlayersCount={playingEvent.reservedPlayersCount}
-                        waitListPlayersCount={playingEvent.waitListPlayersCount}
-                        eventId={city.cityName}
-                        reservedPlayersList={playingEvent.reservedPlayersList}
-                        venueName={playingEvent.venueName}
-                        waitListPlayers={playingEvent.waitListPlayers}
-                        stripePaymentUrl={playingEvent.stripePaymentUrl}
-                        team_division={false}
-                        team1_color={''}
-                        team2_color={''}
-                      />
-                    </FlexBox>
-                  </AccordionSummary>
-
-                  {/*Players Details*/}
-                  <AccordionDetails>
-                    <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                      <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-
-                      {playingEvent.team_division ? (
-                        <Box>
-                          {teamA()}
-                          <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                          >
-                            {Array.from(
-                              { length: playingEvent.reservedPlayersCount / 2 },
-                              (_, i) => {
-                                const player =
-                                  i < playingEvent.reservedPlayersList.length
-                                    ? playingEvent.reservedPlayersList[i]
-                                    : null;
-                                return renderPlayer(player, i);
-                              },
-                            )}
-                          </Grid>
-                          <Typography className={styles.versus}>v/s</Typography>
-                          {teamB()}
-                          <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                          >
-                            {Array.from(
-                              { length: playingEvent.reservedPlayersCount / 2 },
-                              (_, i) => {
-                                const player =
-                                  i < playingEvent.reservedPlayersList.length
-                                    ? playingEvent.reservedPlayersList[
-                                        i + playingEvent.reservedPlayersCount / 2
-                                      ]
-                                    : null;
-                                return renderPlayer(
-                                  player,
-                                  i + playingEvent.reservedPlayersCount / 2,
-                                );
-                              },
-                            )}
-                          </Grid>
-                        </Box>
-                      ) : (
-                        <Box>
-                          <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                          >
-                            {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                              const player =
-                                i < playingEvent.reservedPlayersList.length
-                                  ? playingEvent.reservedPlayersList[i]
-                                  : null;
-                              return renderPlayer(player, i);
-                            })}
-                          </Grid>
-                        </Box>
-                      )}
-                    </Box>
-                    {playingEvent.waitListPlayers.length > 0 ? (
-                      <Box className={styles.box} sx={{ flexGrow: 1 }}>
-                        <Typography className={styles.waitListPlayers}>Waitlist</Typography>
-                        <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                        >
-                          {Array.from({ length: playingEvent.waitListPlayersCount }, (_, index) => {
-                            const player =
-                              index < playingEvent.waitListPlayers.length
-                                ? playingEvent.waitListPlayers[index]
-                                : null;
-                            return renderPlayer(player, index);
-                          })}
-                        </Grid>
-                      </Box>
-                    ) : null}
-                  </AccordionDetails>
-                </Accordion>
-              ))}
+              <GamesList gameEvent={city.events} cityName={city.cityName} />
             </div>
           </Zoom>
         ))
