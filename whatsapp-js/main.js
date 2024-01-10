@@ -4,6 +4,12 @@ import pkg from "whatsapp-web.js";
 const { Client, LocalAuth } = pkg;
 import { processGroup } from "./src/inputParser.js";
 
+// Maybe change this to flag.
+export var isProd =
+  process.platform != "win32" && process.platform != "darwin";
+
+  var groupName = isProd? "Online Queue Update" : "Test group ";
+
 import express from 'express';
 const app = express();
 const port = 3000;
@@ -12,24 +18,19 @@ const hydChatId = '120363104642020865@g.us'
 
 app.post("/", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
-  client.sendMessage(testGroupChatId, 'Print List');
+  client.sendMessage(testGroupChatId, 'Post Endpoint hit');
   res.send("Hello World!");
 });
 
 app.get("/", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
-  client.sendMessage(testGroupChatId, 'Print List');
+  client.sendMessage(testGroupChatId, 'Get Endpoint hit');
   res.send("Hello World!");
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-// Maybe change this to flag.
-export var isProd =
-  process.platform != "win32" && process.platform != "darwin";
-  var groupName = isProd? "Online Queue Update" : "Test group ";
 
 
 const client =new Client({
@@ -47,6 +48,7 @@ client.on("qr", (qr) => {
 
 client.on("ready", () => {
   console.log("Client is ready!");
+  console.log("Is this production Env:" + isProd);
 });
 
 client.initialize();
