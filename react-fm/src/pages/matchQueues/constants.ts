@@ -48,7 +48,10 @@ const query = JSON.stringify({
 
 const apiUrl = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graphql';
 
-export { avatars, query, apiUrl };
+const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
+const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';
+
+export { avatars, query, apiUrl, gurugramGroupLink, hyderabadGroupLink };
 
 //fields to be add in the query inside events object
 // team_division,
