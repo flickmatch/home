@@ -95,7 +95,7 @@ export const EventsCard: FC<EventDetails> = ({
   const whatsappGroup = () => (
     <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
-        Games Squad{' '}
+        Game Group{' '}
         <a href={whatsappGroupLink} target="_blank" rel="noreferrer">
           <WhatsAppIcon className={styles.whatsappGroupIcon} />
         </a>
