@@ -1,12 +1,11 @@
 import fetch from "isomorphic-fetch";
 import { parseGetEvents, parseGetPlayers } from "./responseParser.js";
 
-var ENDPOINT = process.env.isProd
+var ENDPOINT = process.env.isProd == true
   ? "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
   : "http://localhost:8080/graphql";
 
 const callGraqhQLService = (body) => {
-  console.log("Endpoint: " + ENDPOINT);
   return fetch(ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
