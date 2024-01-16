@@ -1,9 +1,11 @@
 import fetch from "isomorphic-fetch";
 import { parseGetEvents, parseGetPlayers } from "./responseParser.js";
 
-var ENDPOINT = process.env.isProd == true
-  ? "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
-  : "http://localhost:8080/graphql";
+var ENDPOINT = "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
+
+// var ENDPOINT = process.env.isProd == true
+//   ? "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
+//   : "http://localhost:8080/graphql";
 
 const callGraqhQLService = (body) => {
   return fetch(ENDPOINT, {
@@ -31,6 +33,7 @@ export const getEvents = () => {
       }
     }`,
   });
+  console.log("Endpoint: " + ENDPOINT);
   const replyMsg = callGraqhQLService(body)
     .then((res) => res.json())
     .then((res) => {
