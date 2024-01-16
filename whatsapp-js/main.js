@@ -8,7 +8,7 @@ import { processGroup } from "./src/inputParser.js";
 process.env.isProd =
   process.platform != "win32" && process.platform != "darwin";
 
-var groupName = process.env.isProd ? "Online Queue Update" : "Test group ";
+var groupName = process.env.isProd == true? "Online Queue Update" : "Test group ";
 
 import express from "express";
 const app = express();
@@ -48,6 +48,7 @@ client.on("qr", (qr) => {
 client.on("ready", () => {
   console.log("Client is ready!");
   console.log("Is this production Env:" + process.env.isProd);
+  console.log("Group name is:" + groupName);
 });
 
 client.initialize();
