@@ -1,5 +1,9 @@
 package com.flickmatch.platform.proxy;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flickmatch.platform.records.WhatsAppNotification;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,20 +13,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Log4j2
 public class WhatsAppProxy {
     // Create a RestTemplate
     @Autowired
     private RestTemplate restTemplate;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void sendNotification() {
+    public void sendNotification(WhatsAppNotification eventDataForNotification) {
         String nodeServerUrl = "http://ec2-18-223-205-234.us-east-2.compute.amazonaws.com:3000/";
 
         // Create headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // This is sample payload, we need get the data from DB
-        String requestData = "{\"name\":\"John\",\"age\":30}";
+        String requestData = null;
+
+        try {
+            requestData = objectMapper.writeValueAsString(eventDataForNotification);
+            log.info("notification data : " + requestData);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
 
         // Make a POST request to the Node.js server

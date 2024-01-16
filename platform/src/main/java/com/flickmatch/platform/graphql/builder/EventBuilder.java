@@ -2,6 +2,7 @@ package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
+import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
@@ -10,6 +11,7 @@ import com.flickmatch.platform.graphql.type.SportsVenue;
 import com.flickmatch.platform.graphql.type.StripePaymentLink;
 import com.flickmatch.platform.graphql.util.DateUtil;
 import com.flickmatch.platform.records.ParsedUniqueEventId;
+import com.flickmatch.platform.records.WhatsAppNotification;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,13 @@ public class EventBuilder {
     private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
 
     EventRepository eventRepository;
+    CityRepository cityRepository;
 
     @Autowired SportsVenueBuilder sportsVenueBuilder;
 
-    public EventBuilder(EventRepository eventRepository) {
+    public EventBuilder(EventRepository eventRepository, CityRepository cityRepository) {
         this.eventRepository = eventRepository;
+        this.cityRepository = cityRepository;
     }
 
     public Event createEvent(CreateEventInput input, boolean shouldValidateStartTime) throws ParseException {
@@ -127,6 +131,27 @@ public class EventBuilder {
         BigDecimal amount = BigDecimal.valueOf(selectedEvent.getCharges());
         amount = amount.multiply(BigDecimal.valueOf(100));
         return amount.longValue();
+    }
+
+    public WhatsAppNotification getEventDataForNotification(final String uniqueEventId) {
+        Event.EventDetails selectedEvent = getSelectedEvent(uniqueEventId);
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
+        Optional<com.flickmatch.platform.dynamodb.model.City> city = cityRepository.findById(parsedUniqueEventId.cityId());
+        String localTimeZone = null;
+        if (city.isPresent()) {
+            localTimeZone = city.get().getLocalTimeZone();
+        }
+        List<String> playerNameList =  selectedEvent.getPlayerDetailsList().stream()
+                .map(playerDetails -> playerDetails.getName())
+                .toList();
+        return new WhatsAppNotification(selectedEvent.getStartTime(),
+                selectedEvent.getEndTime(),
+                selectedEvent.getVenueName(),
+                selectedEvent.getReservedPlayersCount(),
+                selectedEvent.getCharges(),
+                selectedEvent.getVenueLocationLink(),
+                localTimeZone,
+                playerNameList);
     }
 
     private Event.EventDetails getSelectedEvent(final String uniqueEventId) {
