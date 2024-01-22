@@ -3,12 +3,14 @@ import type { FC } from 'react';
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
@@ -31,12 +33,13 @@ export const EventsCard: FC<EventDetails> = ({
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+  const whatsappGroupLink = eventId === 'Hyderabad' ? hyderabadGroupLink : gurugramGroupLink;
 
   //getting next day date
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dateToString = tomorrow.toString();
-  const index = dateToString.indexOf('2023');
+  const index = dateToString.indexOf('2024');
   const futureDate = dateToString.substring(0, index);
 
   const dateFormat = new Date().toLocaleDateString('en-US', {
@@ -78,13 +81,24 @@ export const EventsCard: FC<EventDetails> = ({
   };
 
   const price = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
           {currency()}
           {charges}
         </span>
+      </Typography>
+    </Grid>
+  );
+
+  const whatsappGroup = () => (
+    <Grid item xs={4} sm={4} md={4}>
+      <Typography className={styles.title}>
+        Game Group{' '}
+        <a href={whatsappGroupLink} target="_blank" rel="noreferrer">
+          <WhatsAppIcon className={styles.whatsappGroupIcon} />
+        </a>
       </Typography>
     </Grid>
   );
@@ -106,7 +120,7 @@ export const EventsCard: FC<EventDetails> = ({
   };
 
   const dateTime = () => (
-    <Grid item xs={4} sm={6} md={6}>
+    <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Date{''}
         {/* {eventId === '2' || eventId === '1' ? (
@@ -122,7 +136,7 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const googleLocation = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Google Map{' '}
         <a href={venueLocationLink} target="_blank" rel="noreferrer">
@@ -133,7 +147,7 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const numberOfPlayers = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Number of Players <span>{reservedPlayersCount}</span>
       </Typography>
@@ -189,6 +203,7 @@ export const EventsCard: FC<EventDetails> = ({
         >
           {price()}
           {dateTime()}
+          {whatsappGroup()}
         </Grid>
       </FlexBox>
       <FlexBox

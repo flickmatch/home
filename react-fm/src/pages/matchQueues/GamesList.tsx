@@ -49,6 +49,11 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
       <Accordion
         className={isPortrait ? styles.mobileAccordion : styles.accordion}
         key={playingEvent.eventId}
+        sx={{
+          '&:before': {
+            display: 'none',
+          },
+        }}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
