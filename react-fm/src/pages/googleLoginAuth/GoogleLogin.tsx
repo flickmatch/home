@@ -1,20 +1,60 @@
+import { useGoogleLogin } from '@react-oauth/google';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import GoogleIcon from '@mui/icons-material/Google';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import axios from 'axios';
+
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header';
 
 import styles from './GoogleLogin.module.scss';
 
 function GoogleLogin() {
   const isPortrait = useOrientation();
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const getGoogleUserInfo = async (accessToken: string) => {
+    axios
+      .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+      })
+      .then((res) => {
+        // eslint-disable-next-line no-console
+        console.log(res.data);
+        localStorage.setItem('userData', JSON.stringify(res.data));
+        setIsLoggedIn(true);
+        navigate('/match-queues');
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  };
+
+  const loginFunc = useGoogleLogin({
+    onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
+    // eslint-disable-next-line no-console
+    onError: (error) => console.log('Login Failed ', error),
+  });
 
   return (
     <>
       <Meta title="Login/Signup" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>
           <img
@@ -39,7 +79,7 @@ function GoogleLogin() {
               <Button
                 variant="outlined"
                 className={isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton}
-                onClick={() => alert('Logged In')}
+                onClick={() => loginFunc()}
                 startIcon={<GoogleIcon />}
               >
                 Sign up with Google
@@ -48,6 +88,7 @@ function GoogleLogin() {
           </Box>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 }

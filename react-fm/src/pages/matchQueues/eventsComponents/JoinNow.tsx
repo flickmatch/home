@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import ReactGA from 'react-ga';
 
@@ -41,6 +41,14 @@ export const JoinNow: FC<EventDetails> = ({
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+
+  useEffect(() => {
+    const googleUserInfo = localStorage.getItem('userData');
+    if (googleUserInfo) {
+      const data = JSON.parse(googleUserInfo);
+      setUserData({ name: data.name, email: data.email, phoneNumber: '' });
+    }
+  }, []);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
@@ -194,6 +202,7 @@ export const JoinNow: FC<EventDetails> = ({
                 name="name"
                 id="name"
                 label="Full Name"
+                value={userData.name}
                 type="text"
                 autoComplete="none"
                 fullWidth
@@ -208,6 +217,7 @@ export const JoinNow: FC<EventDetails> = ({
                 id="email"
                 label="Email Address"
                 type="email"
+                value={userData.email}
                 autoComplete="none"
                 fullWidth
                 variant="standard"

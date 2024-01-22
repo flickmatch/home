@@ -1,19 +1,37 @@
+import { useEffect, useState } from 'react';
+
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import Typography from '@mui/material/Typography';
 
+import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header';
 
 import styles from './RefundCancellation.module.scss';
 
 function RefundCancellation() {
   const isPortrait = useOrientation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <>
+      <Meta title="Refund & Cancellation" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <FlexBox className={isPortrait ? styles.portraitHome : styles.home}>
         <Typography variant="h3" className={styles.heading}>
           Cancellation & Refund Policy
@@ -92,6 +110,7 @@ function RefundCancellation() {
           </Typography>
         </FlexBox>
       </FlexBox>
+      <Footer />
     </>
   );
 }

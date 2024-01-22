@@ -67,6 +67,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/privacyPolicy')),
     path: '/privacy-policy',
   },
+  [Pages.Profile]: {
+    component: asyncComponentLoader(() => import('@/pages/profile')),
+    path: '/profile-page',
+  },
 
   // [Pages.ContactUs]: {
   //   component: () => {
