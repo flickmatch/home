@@ -12,7 +12,7 @@ const root = createRoot(container);
 
 function render(App: ComponentType) {
   root.render(
-    <GoogleOAuthProvider clientId="54070824622-497b2hfh41klt5vrebg67pbu5oqfqek3.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="45282428055-2sis8mbpn03afp8f56i07lscvf5qgvc7.apps.googleusercontent.com">
       <StrictMode>
         <RecoilRoot>
           <HelmetProvider>

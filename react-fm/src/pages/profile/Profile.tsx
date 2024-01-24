@@ -121,7 +121,7 @@ function Profile() {
                   <Typography className={styles.totalGoals}>15</Typography>
                   <Diversity1SharpIcon className={styles.skillsDataIcon} />
                 </FlexBox>
-                Pass
+                Passes
               </Box>
             </Grid>
 
