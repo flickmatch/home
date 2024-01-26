@@ -26,6 +26,6 @@ jobs:
         key: ${{ secrets.WA_SERVER_PRIVATE_KEY }}
         port: 22
         script: |
-          cd ~/home/ubuntu/flickmatch/home
+          cd ~/flickmatch/home
           git pull origin master
           git status
