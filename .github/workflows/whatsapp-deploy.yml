@@ -26,6 +26,7 @@ jobs:
         key: ${{ secrets.WA_SERVER_PRIVATE_KEY }}
         port: 22
         script: |
-          cd ~/flickmatch/home
-          git pull origin master
+          cd ~/flickmatch/home/whatsapp-js
+          git pull origin main
           git status
+          pm2 restart main
