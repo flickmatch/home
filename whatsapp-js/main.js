@@ -5,10 +5,10 @@ import pkg from "whatsapp-web.js";
 const { Client, LocalAuth } = pkg;
 import { processGroup } from "./src/inputParser.js";
 
-process.env.isProd =
-  process.platform != "win32" && process.platform != "darwin";
+export const isProd =
+  process.platform !== "win32" && process.platform !== "darwin";
 
-var groupName = process.env.isProd == true? "Online Queue Update" : "Test group ";
+export const groupName = isProd ? "Online Queue Update" : "Test group ";
 
 import express from "express";
 const app = express();
@@ -47,7 +47,7 @@ client.on("qr", (qr) => {
 
 client.on("ready", () => {
   console.log("Client is ready!");
-  console.log("Is this production Env:" + process.env.isProd);
+  console.log("Is this production Env:" + isProd);
   console.log("Group name is:" + groupName);
 });
 
@@ -58,13 +58,13 @@ client.on("message", async (msg) => {
   const chat = await msg.getChat();
   // Way to get the chat id used.
   // console.log(chat.id._serialized);
-  console.log(contact.number);
+  // console.log(contact.number);
   let content = msg.body;
   if (!content || content === "") {
     return;
   }
   if (chat.name == groupName) {
-    // console.log(msg.from);
+    console.log(msg.from);
     processGroup(msg);
   }
 });

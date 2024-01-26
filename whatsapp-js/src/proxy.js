@@ -1,9 +1,9 @@
 import fetch from "isomorphic-fetch";
 import { parseGetEvents, parseGetPlayers } from "./responseParser.js";
 
-var ENDPOINT = "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
+var ENDPOINT = "https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql"
 
-// var ENDPOINT = process.env.isProd == true
+// var ENDPOINT = isProd== true
 //   ? "http://ec2-3-110-121-129.ap-south-1.compute.amazonaws.com:8080/platform-0.0.1-SNAPSHOT/graphql"
 //   : "http://localhost:8080/graphql";
 
