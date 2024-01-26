@@ -39,7 +39,7 @@ export function parseMessage(message) {
   const removeIndex = (line) => {
     var nameStartIdx = line.search("[.]");
     if (nameStartIdx == -1 || nameStartIdx >= line.length) {
-      console.log("ERROR processing: " + line);
+      console.log("Not processing: " + line);
       return "";
     }
     return line.substring(nameStartIdx + 1).trim();
@@ -51,12 +51,16 @@ export function parseMessage(message) {
   var playersStr = null;
   var playersWithIndex = null;
   var players = null;
+  var maxPlayers = format? parseInt(format.split('v')[0]) * 2 : 999;
   if (playersRegexSearchResult) {
     playersStr = playersRegexSearchResult[0];
     playersWithIndex = playersStr.split("\n");
     players = playersWithIndex.map((line) => {
       return { name: removeIndex(line) };
     });
+    if(players.length > maxPlayers){
+      players = players.filter(player => player.name.trim() !== '');
+    }
   }
 
   const waitlistRegex = /(?<=Waitlist\n)([\d\D]*)(?=\nPlease)/; // Regex to extract the waitlist
