@@ -78,7 +78,9 @@ function Profile() {
         <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
           <FlexBox className={styles.profileSection}>
             <Box className={styles.profilePic}>
-              {userData ? <img src={userData.picture} alt={userData.name} /> : null}
+              {userData ? (
+                <img src={userData.picture} alt={userData.name} referrerPolicy="no-referrer" />
+              ) : null}
             </Box>
             {userData ? (
               <Box className={styles.nameSection}>

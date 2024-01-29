@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import ReactGA from 'react-ga';
+import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
@@ -35,6 +36,7 @@ export const JoinNow: FC<EventDetails> = ({
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
+  const navigate = useNavigate();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
@@ -86,8 +88,12 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const paymentOptions = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    setShowPaymentOptions(true);
+    if (userData.name) {
+      event.stopPropagation();
+      setShowPaymentOptions(true);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
@@ -136,7 +142,7 @@ export const JoinNow: FC<EventDetails> = ({
           .then((response) => response.json())
           .then((result) => {
             const paymentUrl = result.data.initiatePayment.paymentLink;
-            window.open(paymentUrl, '_blank');
+            window.open(paymentUrl, '_self');
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
