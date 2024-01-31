@@ -9,6 +9,8 @@ import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header/Header';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -20,8 +22,17 @@ import type { CityDetails } from './types/Events.types';
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const isPortrait = useOrientation();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -137,9 +148,13 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
       {skeleton()}
+      <Footer />
     </>
   );
 }

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
@@ -10,15 +12,29 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header';
 
 import styles from './ContactUs.module.scss';
 
 function ContactUs() {
   const isPortrait = useOrientation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <>
       <Meta title="Contact Us" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <div className={styles.contactPage}>
         <Typography variant="h3" className={styles.pageTitle}>
           Reach out to us
@@ -88,6 +104,7 @@ function ContactUs() {
           </FlexBox>
         </FlexBox>
       </div>
+      <Footer />
     </>
   );
 }

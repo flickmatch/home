@@ -1,15 +1,33 @@
+import { useEffect, useState } from 'react';
+
 import Typography from '@mui/material/Typography';
 
+import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header';
 
 import styles from './TermsConditions.module.scss';
 
 function TermsConditions() {
   const isPortrait = useOrientation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <>
+      <Meta title="Terms & Conditions" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <FlexBox className={isPortrait ? styles.portraitHead : styles.head}>
         <Typography variant="h3" className={styles.heading}>
           Terms & Conditions
@@ -99,6 +117,7 @@ function TermsConditions() {
           </li>
         </ul>
       </FlexBox>
+      <Footer />
     </>
   );
 }

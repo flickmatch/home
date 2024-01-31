@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox, FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header/Header';
 
 import styles from './Welcome.module.scss';
 
@@ -22,6 +24,7 @@ function Welcome() {
   const [activeImage, setActiveImage] = useState<number | null>(1);
   const isPortrait = useOrientation();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     // Check if the video element is available
@@ -29,6 +32,14 @@ function Welcome() {
       // Load the video and start playing
       videoRef.current.load();
       videoRef.current.play();
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -237,10 +248,14 @@ function Welcome() {
   return (
     <>
       <Meta title="Home" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       {videoContainer()}
       {secVision()}
       {whatIsFlickmatch()}
       {howToPlay()}
+      <Footer />
     </>
   );
 }

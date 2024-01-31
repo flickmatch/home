@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 //import ThemeIcon from '@mui/icons-material/InvertColors';
@@ -21,11 +23,42 @@ import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
 import mainlogo from '/logo.png';
 
-function Header() {
+interface UserDetails {
+  email: string;
+  family_name: string;
+  given_name: string;
+  id: string;
+  name: string;
+  picture: string;
+}
+
+type login = {
+  loggedIn: boolean;
+};
+
+const Header: FC<login> = ({ loggedIn }) => {
   const [, sidebarActions] = useSidebar();
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
+
+  const [userData, setUserData] = useState<UserDetails>({
+    email: '',
+    family_name: '',
+    given_name: '',
+    id: '',
+    name: '',
+    picture: '',
+  });
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      const parseData = JSON.parse(storedData);
+      setUserData(parseData);
+    }
+  }, []);
 
   const menus = () =>
     !isPortrait ? (
@@ -79,17 +112,31 @@ function Header() {
           <FlexBox>
             {menus()}
             <Divider className={styles.divider} orientation="horizontal" flexItem />
-            <Tooltip title="Sign up" arrow>
-              <IconButton edge="end" size="large" component={Link} to="/login">
-                {/* <ThemeIcon /> */}
-                <PersonPinIcon className={styles.signUp} />
-              </IconButton>
-            </Tooltip>
+
+            {loggedIn ? (
+              <Tooltip title="Profile Page" arrow>
+                <Box component={Link} to="/profile-page">
+                  <img
+                    src={userData.picture}
+                    alt="Profile Pic"
+                    className={styles.profilePic}
+                    referrerPolicy="no-referrer"
+                  />
+                </Box>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Sign up" arrow>
+                <IconButton edge="end" size="large" component={Link} to="/login">
+                  {/* <ThemeIcon /> */}
+                  <PersonPinIcon className={styles.signUp} />
+                </IconButton>
+              </Tooltip>
+            )}
           </FlexBox>
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+};
 
 export default Header;

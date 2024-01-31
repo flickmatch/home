@@ -1,0 +1,162 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.portraitProfileContaienr {
+  flex-flow: column;
+}
+
+.profileInfoArea,
+.portraitProfileInfoArea {
+  width: 30%;
+  margin-left: 75px;
+  margin-top: 125px;
+  animation: slideIn 0.8s ease-out;
+}
+
+.portraitProfileInfoArea {
+  width: 95%;
+  margin: auto;
+  margin-top: 175px;
+  margin-bottom: 75px;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profileSection {
+  flex-flow: column;
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.profilePic {
+  margin: auto;
+  margin-top: 25px;
+  border: 3px solid #4ce95a;
+  border-radius: 50%;
+  height: 110px;
+  width: 110px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profilePic img {
+  border-radius: 50%;
+  height: 92%;
+}
+
+.nameSection,
+.emailSection {
+  margin: auto;
+  padding: 20px;
+}
+
+.nameSection {
+  margin-top: 5px;
+}
+
+.accountIcon,
+.mailIcon {
+  text-align: center;
+  width: 100%;
+  font-size: 32px;
+}
+
+.name,
+.emailId {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.signOutSection {
+  padding: 20px;
+  width: 65%;
+  margin: auto;
+}
+
+.signOut {
+  width: 100%;
+  border-radius: 5px;
+  color: #4ce95a;
+  border: 2px solid #4ce95a;
+  height: 50px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signOut:hover {
+  background: #4ce95a;
+  color: black;
+  transition: all 0.4s ease;
+  font-weight: 600;
+}
+
+.signOut:hover .signOutIcon {
+  color: black;
+  transition: all 0.4s ease;
+}
+
+.signOutIcon {
+  color: #4ce95a;
+}
+
+.skillsSection {
+  width: 60%;
+  margin-top: 125px;
+  margin-left: 50px;
+  animation: slideIn 1.5s ease-out;
+}
+
+.portraitSkillSection {
+  width: 90%;
+  margin: auto;
+  animation: slideIn 1.5s ease-out;
+}
+
+.skills,
+.portraitSkills {
+  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+  flex: 0 0 26%;
+  padding: 20px;
+}
+
+.portraitSkills {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.skillsDataCard {
+  height: 80px;
+  width: 82px;
+  border: 2px solid #4ce95a;
+  border-radius: 20px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.totalGoals {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.skillsDataIcon {
+  font-size: 28px;
+}

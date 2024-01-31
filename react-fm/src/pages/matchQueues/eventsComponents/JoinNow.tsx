@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import ReactGA from 'react-ga';
+import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
@@ -35,12 +36,21 @@ export const JoinNow: FC<EventDetails> = ({
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
+  const navigate = useNavigate();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+
+  useEffect(() => {
+    const googleUserInfo = localStorage.getItem('userData');
+    if (googleUserInfo) {
+      const data = JSON.parse(googleUserInfo);
+      setUserData({ name: data.name, email: data.email, phoneNumber: '' });
+    }
+  }, []);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
@@ -78,8 +88,12 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const paymentOptions = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    setShowPaymentOptions(true);
+    if (userData.name) {
+      event.stopPropagation();
+      setShowPaymentOptions(true);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
@@ -128,7 +142,7 @@ export const JoinNow: FC<EventDetails> = ({
           .then((response) => response.json())
           .then((result) => {
             const paymentUrl = result.data.initiatePayment.paymentLink;
-            window.open(paymentUrl, '_blank');
+            window.open(paymentUrl, '_self');
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -194,6 +208,7 @@ export const JoinNow: FC<EventDetails> = ({
                 name="name"
                 id="name"
                 label="Full Name"
+                value={userData.name}
                 type="text"
                 autoComplete="none"
                 fullWidth
@@ -208,6 +223,7 @@ export const JoinNow: FC<EventDetails> = ({
                 id="email"
                 label="Email Address"
                 type="email"
+                value={userData.email}
                 autoComplete="none"
                 fullWidth
                 variant="standard"

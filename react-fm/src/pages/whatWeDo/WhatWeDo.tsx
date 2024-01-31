@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import type { YouTubeProps } from 'react-youtube';
 import YouTube from 'react-youtube';
@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import Footer from '@/sections/Footer';
+import Header from '@/sections/Header';
 
 import styles from './WhatWeDo.module.scss';
 import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
@@ -18,6 +20,7 @@ import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
 function WhatWeDo() {
   const [hideIndicators, setHideIndicator] = useState(true);
   const isPortrait = useOrientation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const opts: YouTubeProps['opts'] = {
     height: '450',
@@ -27,6 +30,14 @@ function WhatWeDo() {
       autoplay: 0,
     },
   };
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const onReady = (event: { target: { pauseVideo: () => void } }) => {
     event.target.pauseVideo();
@@ -62,6 +73,9 @@ function WhatWeDo() {
   return (
     <>
       <Meta title="What We Do" />
+      <div>
+        <Header loggedIn={isLoggedIn} />
+      </div>
       <Box className={styles.box}>
         <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
           <Typography variant="h3" className={styles.heading}>
@@ -119,6 +133,7 @@ function WhatWeDo() {
           </Box>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 }
