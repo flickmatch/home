@@ -44,7 +44,6 @@ export function parseMessage(message) {
       return "";
     }
     if (line.trim() === '') {
-      console.log("Not processing: " + line);
       return "";
     }
     return line.substring(nameStartIdx + 1).trim();
