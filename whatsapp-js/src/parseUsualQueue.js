@@ -37,8 +37,13 @@ export function parseMessage(message) {
   }
 
   const removeIndex = (line) => {
+    line = line.replace(/[\u200B-\u200D\uFEFF]/g, '');
     var nameStartIdx = line.search("[.]");
     if (nameStartIdx == -1 || nameStartIdx >= line.length) {
+      console.log("Not processing: " + line);
+      return "";
+    }
+    if (line.trim() === '') {
       console.log("Not processing: " + line);
       return "";
     }
