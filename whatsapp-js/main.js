@@ -4,6 +4,7 @@ import qrcode from "qrcode-terminal";
 import pkg from "whatsapp-web.js";
 const { Client, LocalAuth } = pkg;
 import { processGroup } from "./src/inputParser.js";
+import { createMessage } from "./src/notificationRequestParser.js";
 
 export const isProd =
   process.platform !== "win32" && process.platform !== "darwin";
@@ -12,13 +13,16 @@ export const groupName = isProd ? "Online Queue Update" : "Test group ";
 
 import express from "express";
 const app = express();
+app.use(express.json());
 const port = 3000;
 const ggnSouthCityChatId = "120363030960923086@g.us";
 const hydChatId = "120363104642020865@g.us";
 
-app.post("/", (req, res) => {
+app.post("/notification", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
-  client.sendMessage(testGroupChatId, "Post Endpoint hit");
+  const jsonData = req.body;
+  //console.log('Received JSON data:', JSON.stringify(jsonData));
+  client.sendMessage(testGroupChatId, createMessage(jsonData));
   res.send("Hello World!");
 });
 

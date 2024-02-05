@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickmatch.platform.records.WhatsAppNotification;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,10 +19,12 @@ public class WhatsAppProxy {
     // Create a RestTemplate
     @Autowired
     private RestTemplate restTemplate;
+    @Value("${whatsapp.endpoint}")
+    private String nodeServerUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void sendNotification(WhatsAppNotification eventDataForNotification) {
-        String nodeServerUrl = "http://ec2-18-223-205-234.us-east-2.compute.amazonaws.com:3000/";
+        //String nodeServerUrl = "http://ec2-18-223-205-234.us-east-2.compute.amazonaws.com:3000/";
 
         // Create headers
         HttpHeaders headers = new HttpHeaders();
