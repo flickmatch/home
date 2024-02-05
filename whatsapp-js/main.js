@@ -26,12 +26,6 @@ app.post("/notification", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/", (req, res) => {
-  const testGroupChatId = "120363088832118953@g.us";
-  client.sendMessage(testGroupChatId, "Get Endpoint hit");
-  res.send("Hello World!");
-});
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
