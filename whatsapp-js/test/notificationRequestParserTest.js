@@ -4,13 +4,15 @@ const jsonData = '{"startTime":1699715640000,"endTime":1699719240000,"venueName"
 const expected = `HotFut GachiBowli (https://goo.gl/maps/1QzakRkJPHxT8GjRA)
 20:44 - 21:44 11-10-2023 (Saturday)
 5v5
-200/- Per Person.
+₹200/- Per Person.
 
 Confirmed Players:
 1. Player1
 2. Player2
 3. sam
-4. nooo`;
+4. nooo
+
+Please pay at play.flickmatch.in to confirm your spot.`;
 
 function assertEqual(actual, expected, label) {
     const areEqual = JSON.stringify(actual) === JSON.stringify(expected);

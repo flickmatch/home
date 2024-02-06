@@ -41,11 +41,12 @@ export const createMessage = (jsonData) => {
     var message = `${venueName} (${mapLink})
 ${dateTime}
 ${format}v${format}
-${charges}/- Per Person.
+₹${charges}/- Per Person.
 
 Confirmed Players:`;
   for (const [index, value] of jsonData.playerNameList.entries()) {
     message = message + '\n' + `${index+1}. ${value}`;
   }
+  message = message + '\n\nPlease pay at play.flickmatch.in to confirm your spot.';
     return message;
 } 

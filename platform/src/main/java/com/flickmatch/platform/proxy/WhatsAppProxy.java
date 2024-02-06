@@ -24,7 +24,6 @@ public class WhatsAppProxy {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void sendNotification(WhatsAppNotification eventDataForNotification) {
-        //String nodeServerUrl = "http://ec2-18-223-205-234.us-east-2.compute.amazonaws.com:3000/";
 
         // Create headers
         HttpHeaders headers = new HttpHeaders();
