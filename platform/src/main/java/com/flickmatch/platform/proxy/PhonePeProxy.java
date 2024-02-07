@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PhonePeProxy {
 
+    private static final String REDIRECT_URL = "https://play.flickmatch.in/match-queues#%s";
+    private static final String CALLBACK_URL = "https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/payment";
+    private static final String MERCHANT_USER_ID = "merchantUserId";
     @Autowired
     private PhonePePaymentClient phonePeClient;
 
@@ -25,19 +28,17 @@ public class PhonePeProxy {
      *
      * @return payment link
      */
-    public String initiatePayment(final String merchantTransactionId, final long amount) {
-        String callbackUrl = "https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/payment";
-        String merchantUserId = "merchantUserId";
+    public String initiatePayment(final String merchantTransactionId, final long amount, final String uniqueEventId) {
 
         PgPayRequest pgPayRequest = PgPayRequest.PayPagePayRequestBuilder()
                 .merchantId(merchantId)
                 .amount(amount)
                 .merchantTransactionId(merchantTransactionId)
-                .callbackUrl(callbackUrl)
+                .callbackUrl(CALLBACK_URL)
                 .callbackMode("REDIRECT")
-                .redirectUrl("https://play.flickmatch.in/")
+                .redirectUrl(String.format(REDIRECT_URL, uniqueEventId))
                 .redirectMode("REDIRECT")
-                .merchantUserId(merchantUserId)
+                .merchantUserId(MERCHANT_USER_ID)
                 .build();
 
         PhonePeResponse<PgPayResponse> payResponse = phonePeClient.pay(pgPayRequest);
