@@ -1,11 +1,11 @@
-name: Deploy React App
+name: Deploy Flickmatch React App
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'react-fm/**'
+      - "react-fm/**"
 
 permissions:
   contents: write

@@ -1,35 +1,35 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: CI
+name: Integration - Frontend
 
 on:
   pull_request:
     branches:
       - main
-    paths: 
-      - 'react-fm/**'
-      
+    paths:
+      - "react-fm/**"
+
 jobs:
   build:
     # Defines the type of runner the job runs on
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [18.x]
-    
+
     steps:
       - name: Checkout to the repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-        
+
       - name: Set up NodeJS environment
         uses: actions/setup-node@v3
-        with: 
+        with:
           node-version: ${{ matrix.node-version }}
-        
+
       # Consider this as an add on to optimize the execution of actions
       - name: Cache node modules
         id: cache-npm
@@ -44,21 +44,21 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-       
+
       - name: Install package dependencies
         run: npm ci
         working-directory: react-fm
-      
+
       - name: Check linting and formatting
         # Custom script for checking the linting and formatting being in place
         run: npm run lint
         working-directory: react-fm
-      
+
       # Run test cases and this could ensure minimum coverage as well if set
-#       - name: Execute test cases
-#         run: npm run test
-#         working-directory: react-fm
-        
+      #       - name: Execute test cases
+      #         run: npm run test
+      #         working-directory: react-fm
+
       - name: Create test build
         run: npm run build
         working-directory: react-fm
