@@ -30,7 +30,7 @@ public class PaymentController {
             String merchantTransactionId = UUID.randomUUID().toString().substring(0,34);
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
-            String paymentLink = phonePeProxy.initiatePayment(merchantTransactionId, amount);
+            String paymentLink = phonePeProxy.initiatePayment(merchantTransactionId, amount, input.getUniqueEventId());
             paymentRequestBuilder.createPaymentRequest(merchantTransactionId,
                     input.getUniqueEventId(), input.getPlayerInputList());
             return InitiatePaymentOutput.builder()
