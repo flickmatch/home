@@ -1,4 +1,6 @@
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
@@ -25,6 +27,37 @@ interface event {
 
 export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
   const isPortrait = useOrientation();
+  //const navigate = useNavigate();
+  const location = useLocation();
+  const [highLighted, setHighlighted] = useState(false);
+
+  const handleClick = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const accordionButton = element.querySelector('[aria-expanded]');
+      if (accordionButton) {
+        (accordionButton as HTMLElement).click();
+      }
+
+      setHighlighted(true);
+      setTimeout(() => {
+        setHighlighted(false);
+      }, 2000);
+    }
+  };
+
+  useEffect(() => {
+    // Check if the current accordion should be expanded based on the URL parameter
+    gameEvent.forEach((newGame) => {
+      const hashValue = location.hash.substring(1);
+      if (hashValue === newGame.uniqueEventId) {
+        handleClick(hashValue);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
     <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
@@ -48,7 +81,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
     gameEvent.map((playingEvent) => (
       <Accordion
         className={isPortrait ? styles.mobileAccordion : styles.accordion}
-        key={playingEvent.eventId}
+        key={playingEvent.uniqueEventId}
+        id={playingEvent.uniqueEventId}
         sx={{
           '&:before': {
             display: 'none',
@@ -109,7 +143,13 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
         </AccordionSummary>
 
         {/*Players Details*/}
-        <AccordionDetails>
+        <AccordionDetails
+          className={
+            highLighted && location.hash.substring(1) === playingEvent.uniqueEventId
+              ? styles.blink
+              : ''
+          }
+        >
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
             <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
 

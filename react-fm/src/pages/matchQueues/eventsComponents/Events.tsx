@@ -1,9 +1,11 @@
 import type { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -147,7 +149,7 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const numberOfPlayers = () => (
-    <Grid item xs={4} sm={4} md={3}>
+    <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title}>
         Number of Players <span>{reservedPlayersCount}</span>
       </Typography>
@@ -156,7 +158,7 @@ export const EventsCard: FC<EventDetails> = ({
 
   const playersRequired = () =>
     openWaitList > 0 ? (
-      <Grid item xs={4} sm={4} md={4}>
+      <Grid item xs={4} sm={4} md={3}>
         <Typography className={styles.title}>
           Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
           <span>{openSpots == 0 ? openWaitList : openSpots}</span>
@@ -191,36 +193,42 @@ export const EventsCard: FC<EventDetails> = ({
 
   return (
     <>
+      <Link to={`#${uniqueEventId}`}>
+        <FlexBox
+          className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+            className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+          >
+            {price()}
+            {dateTime()}
+            {whatsappGroup()}
+          </Grid>
+        </FlexBox>
+      </Link>
       <FlexBox
         className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
         sx={{ flexGrow: 1 }}
       >
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
-        >
-          {price()}
-          {dateTime()}
-          {whatsappGroup()}
-        </Grid>
-      </FlexBox>
-      <FlexBox
-        className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
-        >
-          {googleLocation()}
-          {numberOfPlayers()}
-          {playersRequired()}
-          {joinNow()}
-        </Grid>
+        <Link to={`#${uniqueEventId}`} className={styles.linkTag}>
+          <Box>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
+            >
+              {googleLocation()}
+              {numberOfPlayers()}
+              {playersRequired()}
+            </Grid>
+          </Box>
+        </Link>
+        {joinNow()}
       </FlexBox>
     </>
   );

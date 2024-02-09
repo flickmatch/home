@@ -152,7 +152,7 @@ const dummyData = {
         events: [
           {
             uniqueEventId: '07-28-1-1-6',
-            eventId: '07-28-1',
+            eventId: '07-28-3',
             date: 'Sun, Jan 01',
             time: '7:00PM-8:00PM',
             dummyData: 'true',
@@ -235,7 +235,7 @@ const dummyData = {
           },
           {
             uniqueEventId: '07-28-1-1-6',
-            eventId: '07-28-2',
+            eventId: '07-28-4',
             date: 'Sun, Jan 01',
             time: '8:00PM-9:00PM',
             dummyData: 'true',

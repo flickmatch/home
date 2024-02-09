@@ -20,6 +20,11 @@ input:-webkit-autofill:active {
 .mobileEventSchedule {
   margin-top: 22px;
   width: 105% !important;
+  flex-flow: column;
+}
+
+.linkTag {
+  width: calc(100% - 40px);
 }
 
 .eventDetails,
@@ -34,6 +39,7 @@ input:-webkit-autofill:active {
 
 .mobileEventPlayersDetail {
   margin-bottom: 10px;
+  position: relative;
 }
 
 .locationIcon {
@@ -79,6 +85,8 @@ input:-webkit-autofill:active {
 .lock {
   font-size: 20px;
   transition: color 0.2s;
+  color: #fff;
+  text-align: center;
 }
 
 .lock:hover {
@@ -97,6 +105,7 @@ input:-webkit-autofill:active {
   width: 25%;
   justify-content: space-between;
   position: relative;
+  float: right;
 }
 
 .paymentOptionsPortrait {
