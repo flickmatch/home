@@ -47,6 +47,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
+  position: relative;
 }
 
 .venue Button {
@@ -68,6 +69,7 @@ body {
   font-size: 20px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .sportsIcon {
@@ -145,4 +147,8 @@ body {
   font-size: 20px;
   text-align: center;
   padding: 20px;
+}
+
+.blink {
+  background-color: #342e37;
 }
