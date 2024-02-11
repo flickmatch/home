@@ -18,8 +18,9 @@ import styles from './WhatWeDo.module.scss';
 import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
 
 function WhatWeDo() {
-  const [hideIndicators, setHideIndicator] = useState(true);
   const isPortrait = useOrientation();
+  const [hideIndicators, setHideIndicator] = useState(true);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const opts: YouTubeProps['opts'] = {
@@ -79,7 +80,10 @@ function WhatWeDo() {
       <Box className={styles.box}>
         <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
           <Typography variant="h3" className={styles.heading}>
-            Match Highlights
+            What We Do
+          </Typography>
+          <Typography className={styles.job}>
+            Flickmatch finds or organises football games near you.
           </Typography>
           <Carousel
             autoPlay={false}

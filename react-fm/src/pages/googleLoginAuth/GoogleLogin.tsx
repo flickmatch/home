@@ -72,7 +72,8 @@ function GoogleLogin() {
               <Typography className={styles.loginSignupText}>Login/Signup</Typography>
               <Typography className={styles.getStarted}>Let&#39;s get Started</Typography>
               <Typography className={styles.signUpImmediately}>
-                Join our sports organizing community and start your journey right away!
+                Join our community and start your <br />
+                journey right away!
               </Typography>
             </Box>
             <Box className={styles.loginSignupButton}>
