@@ -21,7 +21,7 @@ import useSidebar from '@/store/sidebar';
 //import useTheme from '@/store/theme';
 import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
-import mainlogo from '/logo.png';
+import { appLogo } from './constants';
 
 interface UserDetails {
   email: string;
@@ -106,11 +106,7 @@ const Header: FC<login> = ({ loggedIn }) => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314"
-                alt="logo"
-                className={styles.logo}
-              />
+              <img src={appLogo} alt="logo" className={styles.logo} />
             </Typography>
           </FlexBox>
           <FlexBox>
