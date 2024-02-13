@@ -21,7 +21,7 @@ import useSidebar from '@/store/sidebar';
 //import useTheme from '@/store/theme';
 import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
-import mainlogo from '/logo.png';
+import { appLogo } from './constants';
 
 interface UserDetails {
   email: string;
@@ -106,7 +106,7 @@ const Header: FC<login> = ({ loggedIn }) => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img src={mainlogo} alt="logo" className={styles.logo} />
+              <img src={appLogo} alt="logo" className={styles.logo} />
             </Typography>
           </FlexBox>
           <FlexBox>
