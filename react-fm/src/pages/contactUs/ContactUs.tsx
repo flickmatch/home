@@ -63,7 +63,7 @@ function ContactUs() {
           <FlexBox className={isPortrait ? styles.portraitContactSection : styles.contactSection}>
             <Box className={styles.innerCard}>
               <a
-                href="https://wa.me/message/V77TZJHDVM7WP1"
+                href="https://wa.me/message/YM7GOPO75EHPG1"
                 target="_blank"
                 rel="noreferrer"
                 className={styles.socialMediaLinks}
