@@ -318,6 +318,114 @@ const dummyData = {
           },
         ],
       },
+      {
+        cityId: '4',
+        cityName: 'San Jose',
+        dummyData: false,
+        events: [
+          {
+            uniqueEventId: '10-26-1-1-6',
+            eventId: '07-28-3',
+            date: 'Sun, Jan 01',
+            time: '7:00PM-8:00PM',
+            dummyData: 'true',
+            venueName: 'Vista Montana Park',
+            reservedPlayersCount: 18,
+            waitListPlayersCount: 9,
+            venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
+            team_division: false,
+            team1_color: '',
+            team2_color: '',
+            charges: 8.99,
+            reservedPlayersList: [
+              {
+                displayName: 'Chen',
+              },
+              {
+                displayName: 'Pablo',
+              },
+              {
+                displayName: 'Feng',
+              },
+              {
+                displayName: 'Leo',
+              },
+              {
+                displayName: 'Himesh',
+              },
+              {
+                displayName: 'Arturito',
+              },
+              {
+                displayName: 'Diego',
+              },
+              {
+                displayName: 'Mateo',
+              },
+              {
+                displayName: 'Rafael',
+              },
+              {
+                displayName: 'Shahin',
+              },
+              {
+                displayName: 'Eva',
+              },
+              {
+                displayName: 'Astva',
+              },
+              {
+                displayName: 'Rishi',
+              },
+              {
+                displayName: 'Frank',
+              },
+              {
+                displayName: 'Ahmad',
+              },
+              {
+                displayName: 'Luca',
+              },
+              {
+                displayName: 'Dario',
+              },
+              {
+                displayName: 'Bianca',
+              },
+            ],
+            waitListPlayers: [
+              {
+                displayName: 'Jiang',
+              },
+              {
+                displayName: 'Santiago',
+              },
+              {
+                displayName: 'Burhan',
+              },
+              {
+                displayName: 'Felipe',
+              },
+              {
+                displayName: 'Arihant',
+              },
+              {
+                displayName: 'John',
+              },
+              {
+                displayName: 'Alvaro',
+              },
+              {
+                displayName: 'Elise',
+              },
+              {
+                displayName: 'Louis',
+              },
+            ],
+            stripePaymentUrl: '',
+          },
+        ],
+      },
     ],
   },
 };
