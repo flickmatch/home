@@ -35,12 +35,18 @@ export const EventsCard: FC<EventDetails> = ({
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
-  const whatsappGroupLink =
-    eventId === 'Hyderabad'
-      ? hyderabadGroupLink
-      : eventId === 'Hyderabad'
-      ? gurugramGroupLink
-      : flickMatchLink;
+
+  let whatsappGroupLink: string | undefined;
+  switch (eventId) {
+    case 'Hyderabad':
+      whatsappGroupLink = hyderabadGroupLink;
+      break;
+    case 'Gurgaon':
+      whatsappGroupLink = gurugramGroupLink;
+      break;
+    default:
+      whatsappGroupLink = flickMatchLink;
+  }
 
   //getting next day date
   const tomorrow = new Date();
