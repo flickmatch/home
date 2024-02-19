@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
-import { gurugramGroupLink, hyderabadGroupLink } from '../constants';
+import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
@@ -34,7 +34,18 @@ export const EventsCard: FC<EventDetails> = ({
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
-  const whatsappGroupLink = eventId === 'Hyderabad' ? hyderabadGroupLink : gurugramGroupLink;
+
+  let whatsappGroupLink: string | undefined;
+  switch (eventId) {
+    case 'Hyderabad':
+      whatsappGroupLink = hyderabadGroupLink;
+      break;
+    case 'Gurgaon':
+      whatsappGroupLink = gurugramGroupLink;
+      break;
+    default:
+      whatsappGroupLink = flickMatchLink;
+  }
 
   //getting next day date
   const tomorrow = new Date();

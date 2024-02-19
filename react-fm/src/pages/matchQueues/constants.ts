@@ -57,8 +57,9 @@ const apiUrl = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graph
 
 const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
 const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';
+const flickMatchLink = 'https://wa.me/message/YM7GOPO75EHPG1';
 
-export { avatars, query, apiUrl, gurugramGroupLink, hyderabadGroupLink };
+export { avatars, query, apiUrl, gurugramGroupLink, hyderabadGroupLink, flickMatchLink };
 
 //fields to be add in the query inside events object
 // team_division,
