@@ -5,7 +5,6 @@ import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -95,18 +94,20 @@ export const EventsCard: FC<EventDetails> = ({
 
   const price = () => (
     <Grid item xs={4} sm={4} md={3}>
-      <Typography className={styles.title}>
-        Price{' '}
-        <span>
-          {currency()}
-          {charges}
-        </span>
-      </Typography>
+      <Link to={`#${uniqueEventId}`}>
+        <Typography className={styles.title}>
+          Price{' '}
+          <span>
+            {currency()}
+            {charges}
+          </span>
+        </Typography>
+      </Link>
     </Grid>
   );
 
   const whatsappGroup = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={6} md={4}>
       <Typography className={styles.title}>
         Game Group{' '}
         <a href={whatsappGroupLink} target="_blank" rel="noreferrer">
@@ -134,10 +135,12 @@ export const EventsCard: FC<EventDetails> = ({
 
   const dateTime = () => (
     <Grid item xs={4} sm={6} md={4}>
-      <Typography className={styles.title}>
-        Date{''}
-        {timeFrame()}
-      </Typography>
+      <Link to={`#${uniqueEventId}`}>
+        <Typography className={styles.title}>
+          Date{''}
+          {timeFrame()}
+        </Typography>
+      </Link>
     </Grid>
   );
 
@@ -154,19 +157,23 @@ export const EventsCard: FC<EventDetails> = ({
 
   const numberOfPlayers = () => (
     <Grid item xs={4} sm={4} md={4}>
-      <Typography className={styles.title}>
-        Number of Players <span>{reservedPlayersCount}</span>
-      </Typography>
+      <Link to={`#${uniqueEventId}`}>
+        <Typography className={styles.title}>
+          Number of Players <span>{reservedPlayersCount}</span>
+        </Typography>
+      </Link>
     </Grid>
   );
 
   const playersRequired = () =>
     openWaitList > 0 ? (
       <Grid item xs={4} sm={4} md={3}>
-        <Typography className={styles.title}>
-          Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
-          <span>{openSpots == 0 ? openWaitList : openSpots}</span>
-        </Typography>
+        <Link to={`#${uniqueEventId}`}>
+          <Typography className={styles.title}>
+            Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+            <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+          </Typography>
+        </Link>
       </Grid>
     ) : null;
 
@@ -197,41 +204,36 @@ export const EventsCard: FC<EventDetails> = ({
 
   return (
     <>
-      <Link to={`#${uniqueEventId}`}>
-        <FlexBox
-          className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
-          sx={{ flexGrow: 1 }}
-        >
-          <Grid
-            container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-            className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
-          >
-            {price()}
-            {dateTime()}
-            {whatsappGroup()}
-          </Grid>
-        </FlexBox>
-      </Link>
       <FlexBox
         className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
         sx={{ flexGrow: 1 }}
       >
-        <Link to={`#${uniqueEventId}`} className={styles.linkTag}>
-          <Box>
-            <Grid
-              container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-              className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
-            >
-              {googleLocation()}
-              {numberOfPlayers()}
-              {playersRequired()}
-            </Grid>
-          </Box>
-        </Link>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+          className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+        >
+          {price()}
+          {dateTime()}
+          {whatsappGroup()}
+        </Grid>
+      </FlexBox>
+
+      <FlexBox
+        className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+        sx={{ flexGrow: 1 }}
+      >
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+          className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
+        >
+          {googleLocation()}
+          {numberOfPlayers()}
+          {playersRequired()}
+        </Grid>
         {joinNow()}
       </FlexBox>
     </>
