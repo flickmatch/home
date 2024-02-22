@@ -1,4 +1,4 @@
-package com.flickmobile
+package com.flickmatch
 
 import android.app.Application
 import com.facebook.react.PackageList

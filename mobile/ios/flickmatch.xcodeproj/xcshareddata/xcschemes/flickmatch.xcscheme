@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "flickMobile.app"
-               BlueprintName = "flickMobile"
-               ReferencedContainer = "container:flickMobile.xcodeproj">
+               BuildableName = "flickmatch.app"
+               BlueprintName = "flickmatch"
+               ReferencedContainer = "container:flickmatch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "flickMobileTests.xctest"
-               BlueprintName = "flickMobileTests"
-               ReferencedContainer = "container:flickMobile.xcodeproj">
+               BuildableName = "flickmatchTests.xctest"
+               BlueprintName = "flickmatchTests"
+               ReferencedContainer = "container:flickmatch.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "flickMobile.app"
-            BlueprintName = "flickMobile"
-            ReferencedContainer = "container:flickMobile.xcodeproj">
+            BuildableName = "flickmatch.app"
+            BlueprintName = "flickmatch"
+            ReferencedContainer = "container:flickmatch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "flickMobile.app"
-            BlueprintName = "flickMobile"
-            ReferencedContainer = "container:flickMobile.xcodeproj">
+            BuildableName = "flickmatch.app"
+            BlueprintName = "flickmatch"
+            ReferencedContainer = "container:flickmatch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
