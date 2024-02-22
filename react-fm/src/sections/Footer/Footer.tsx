@@ -26,7 +26,7 @@ function Footer() {
         <Typography
           className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
           component={Link}
-          to="/contact-us"
+          to="/contact-8"
         >
           Contact us
         </Typography>
@@ -34,7 +34,7 @@ function Footer() {
         <Typography
           className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
           component={Link}
-          to="/refund-cancellation"
+          to="/general-clean"
         >
           Refund Policy
         </Typography>
@@ -43,14 +43,14 @@ function Footer() {
         <Typography
           className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
           component={Link}
-          to="/terms-conditions"
+          to="/general-clean-1"
         >
           Terms & Conditions
         </Typography>
         <Typography
           className={isPortrait ? styles.mobileMenuItem : styles.menuItem}
           component={Link}
-          to="/privacy-policy"
+          to="/services-7"
         >
           Privacy Policy
         </Typography>
