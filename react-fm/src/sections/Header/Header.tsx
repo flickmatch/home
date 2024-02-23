@@ -75,7 +75,7 @@ const Header: FC<login> = ({ loggedIn }) => {
           About us
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
-        <Typography className={styles.menuItem} component={Link} to="/contact-8">
+        <Typography className={styles.menuItem} component={Link} to="/contact-us">
           Contact us
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
