@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 //import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
 //import useHotKeysDialog from '@/store/hotkeys';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -125,12 +125,9 @@ const Header: FC<login> = ({ loggedIn }) => {
                 </Box>
               </Tooltip>
             ) : (
-              <Tooltip title="Sign up" arrow>
-                <IconButton edge="end" size="large" component={Link} to="/login">
-                  {/* <ThemeIcon /> */}
-                  <PersonPinIcon className={styles.signUp} />
-                </IconButton>
-              </Tooltip>
+              <Button variant="contained" className={styles.signUp} component={Link} to="/login">
+                Sign up
+              </Button>
             )}
           </FlexBox>
         </Toolbar>
