@@ -131,7 +131,7 @@ export const JoinNow: FC<EventDetails> = ({
             query: `mutation InitiatePayment {
                 initiatePayment(
                     input: {
-                        uniqueEventId: "${userInput.input.uniqueEventId}"
+                        uniqueEventId: "${uniqueEventId}"
                         playerInputList: [{ waNumber: "${phoneNumber}", name: "${name}" }]
                     }
                 ) {
