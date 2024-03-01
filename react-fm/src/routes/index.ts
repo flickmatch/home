@@ -82,6 +82,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/profile')),
     path: '/profile-page',
   },
+  [Pages.About2]: {
+    component: asyncComponentLoader(() => import('@/pages/aboutUs')),
+    path: '/about-2',
+  },
 };
 
 export default routes;

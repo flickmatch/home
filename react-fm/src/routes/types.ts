@@ -19,6 +19,7 @@ enum Pages {
   Contact8,
   GeneralRefundCancellation,
   Profile,
+  About2,
 }
 
 type PathRouteCustomProps = {
