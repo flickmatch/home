@@ -17,6 +17,8 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { Icon } from '@iconify/react';
 
+//import type { MuiChipsInputChip } from 'mui-chips-input';
+//import { MuiChipsInput } from 'mui-chips-input';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
@@ -40,6 +42,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
+  //const [value, setValue] = useState<MuiChipsInputChip[]>([]);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -113,8 +116,13 @@ export const JoinNow: FC<EventDetails> = ({
   const handlePay = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     history.replaceState(null, '', `#${uniqueEventId}`);
+
     const { name, email, phoneNumber }: { name: string; email: string; phoneNumber: string } =
       userData;
+
+    //setting names into array for multiple slots payment
+    const namesArray = name.split(', ');
+    const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
 
     if (name === '' || email === '' || phoneNumber === '') {
       alert('Please fill all the details');
@@ -132,20 +140,26 @@ export const JoinNow: FC<EventDetails> = ({
                 initiatePayment(
                     input: {
                         uniqueEventId: "${uniqueEventId}"
-                        playerInputList: [{ waNumber: "${phoneNumber}", name: "${name}" }]
+                        playerInputList: [${objectArray
+                          .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
+                          .join(',')}]
                     }
                 ) {
                     isInitiated
                     paymentLink
                 }
             }`,
-            variables: userInput,
+            variables: userInput.input,
           }),
         })
           .then((response) => response.json())
           .then((result) => {
+            if (result.errors) {
+              // Handle GraphQL errors
+              throw new Error(result.errors[0].message);
+            }
             const paymentUrl = result.data.initiatePayment.paymentLink;
-            window.open(paymentUrl, '_self');
+            window.open(paymentUrl, '_blank');
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -166,6 +180,10 @@ export const JoinNow: FC<EventDetails> = ({
   const onModalClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
   };
+
+  // const handleChange = (newValue: MuiChipsInputChip[]) => {
+  //   setValue(newValue);
+  // };
 
   return (
     <>
@@ -204,13 +222,14 @@ export const JoinNow: FC<EventDetails> = ({
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Become our standout Flickplayer</DialogTitle>
             <DialogContent>
+              {/* <MuiChipsInput value={value} onChange={handleChange} size="medium" hideClearAll /> */}
               <TextField
                 required
                 autoFocus
                 margin="dense"
                 name="name"
                 id="name"
-                label="Full Name"
+                label="Full Name (Book multiple slots by entering names separating with comma)"
                 value={userData.name}
                 type="text"
                 autoComplete="none"
@@ -219,6 +238,7 @@ export const JoinNow: FC<EventDetails> = ({
                 onChange={handleName}
                 onClick={onModalClick}
               />
+
               <TextField
                 required
                 margin="dense"
@@ -265,3 +285,4 @@ export const JoinNow: FC<EventDetails> = ({
     </>
   );
 };
+// playerInputList: [{ waNumber: "${parseInt(phoneNumber)}", name: "${name}" }, { waNumber: "${parseInt(phoneNumber)}", name: "${name}" }, { waNumber: "${parseInt(phoneNumber)}", name: "${name}" }, { waNumber: "${parseInt(phoneNumber)}", name: "${name}" }]
