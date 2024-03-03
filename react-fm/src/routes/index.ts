@@ -43,12 +43,7 @@ const routes: Routes = {
     path: '/login',
     title: 'Login | Signup',
   },
-  // [Pages.ContactUs]: {
-  //   component: asyncComponentLoader(() => import('@/pages/contactUs')),
-  //   path: '/contact-us',
-  //   title: 'Contact Us',
-  //   icon: ContactPageIcon,
-  // },
+
   [Pages.ContactUs]: {
     component: asyncComponentLoader(() => import('@/pages/contactUs')),
     path: '/contact-us',
@@ -67,20 +62,30 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/privacyPolicy')),
     path: '/privacy-policy',
   },
+  [Pages.ServicesPrivacyPolicy]: {
+    component: asyncComponentLoader(() => import('@/pages/privacyPolicy')),
+    path: '/services-7',
+  },
+  [Pages.GeneralTermsConditions]: {
+    component: asyncComponentLoader(() => import('@/pages/termsConditions')),
+    path: '/general-clean-1',
+  },
+  [Pages.Contact8]: {
+    component: asyncComponentLoader(() => import('@/pages/contactUs')),
+    path: '/contact-8',
+  },
+  [Pages.GeneralRefundCancellation]: {
+    component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
+    path: '/general-clean',
+  },
   [Pages.Profile]: {
     component: asyncComponentLoader(() => import('@/pages/profile')),
     path: '/profile-page',
   },
-
-  // [Pages.ContactUs]: {
-  //   component: () => {
-  //     window.location.href = 'https://www.flickmatch.in/contact-8';
-  //     return null;
-  //   },
-  //   path: '/contact-us',
-  //   title: 'Contact Us',
-  //   icon: ContactPageIcon,
-  // },
+  [Pages.About2]: {
+    component: asyncComponentLoader(() => import('@/pages/aboutUs')),
+    path: '/about-2',
+  },
 };
 
 export default routes;

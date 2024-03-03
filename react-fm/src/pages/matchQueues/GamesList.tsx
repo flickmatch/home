@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
@@ -15,6 +16,7 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Queue.module.scss';
+import { avatars } from './constants';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
@@ -90,7 +92,11 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
         }}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={
+            <Link to={`#${playingEvent.uniqueEventId}`} className={styles.linkTag}>
+              <ExpandMoreIcon />
+            </Link>
+          }
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -203,7 +209,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
                     index < playingEvent.waitListPlayers.length
                       ? playingEvent.waitListPlayers[index]
                       : null;
-                  return renderPlayer(player, index);
+                  return renderPlayer(player, avatars.length - 1 - index);
                 })}
               </Grid>
             </Box>
