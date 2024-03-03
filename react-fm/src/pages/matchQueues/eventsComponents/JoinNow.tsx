@@ -117,7 +117,7 @@ export const JoinNow: FC<EventDetails> = ({
     const { name, email, phoneNumber }: { name: string; email: string; phoneNumber: string } =
       userData;
 
-    //setting names into array for multiple slots payment / one or more than one.
+    //setting names into array for multiple slots payment.
     const namesArray = name.split(', ');
     const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
 
