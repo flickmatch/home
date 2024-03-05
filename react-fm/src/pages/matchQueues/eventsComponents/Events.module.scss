@@ -112,14 +112,23 @@ input:-webkit-autofill:active {
 
 .cancel,
 .pay {
-  color: #4ce95a;
+  color: black;
+  border: 1px solid #4ce95a;
+  background: #4ce95a;
+  font-weight: 600;
 }
 
 .cancel:hover,
 .pay:hover {
-  color: #fff;
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
 }
 
 label {
   color: #fff !important;
+}
+
+.multipleSlotsText {
+  font-size: 15px;
+  padding-top: 0px;
 }

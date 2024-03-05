@@ -123,6 +123,8 @@ export const JoinNow: FC<EventDetails> = ({
 
     if (name === '' || email === '' || phoneNumber === '') {
       alert('Please fill all the details');
+    } else if (namesArray.length > openSpots) {
+      alert(`Names are more than openspots. Only ${openSpots} players are required`);
     } else {
       setOpen(false);
 
@@ -214,6 +216,9 @@ export const JoinNow: FC<EventDetails> = ({
 
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Become our standout Flickplayer</DialogTitle>
+            <DialogTitle className={styles.multipleSlotsText}>
+              Book multiple slots by entering names, separated by commas
+            </DialogTitle>
             <DialogContent>
               <TextField
                 required
@@ -221,7 +226,7 @@ export const JoinNow: FC<EventDetails> = ({
                 margin="dense"
                 name="name"
                 id="name"
-                label="Full Name (Book multiple slots by entering names, separated by commas)"
+                label="Full Name"
                 value={userData.name}
                 type="text"
                 autoComplete="none"
