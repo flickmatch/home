@@ -78,6 +78,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
       {teamBColor ? teamBColor : 'Blue'} (Team B)
     </Box>
   );
+  
 
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => (

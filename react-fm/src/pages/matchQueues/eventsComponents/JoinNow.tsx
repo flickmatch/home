@@ -113,11 +113,18 @@ export const JoinNow: FC<EventDetails> = ({
   const handlePay = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     history.replaceState(null, '', `#${uniqueEventId}`);
+
     const { name, email, phoneNumber }: { name: string; email: string; phoneNumber: string } =
       userData;
 
+    //setting names into array for multiple slots payment.
+    const namesArray = name.split(', ');
+    const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
+
     if (name === '' || email === '' || phoneNumber === '') {
       alert('Please fill all the details');
+    } else if (namesArray.length > openSpots) {
+      alert(`Names are more than openspots. Only ${openSpots} players are required`);
     } else {
       setOpen(false);
 
@@ -132,18 +139,24 @@ export const JoinNow: FC<EventDetails> = ({
                 initiatePayment(
                     input: {
                         uniqueEventId: "${uniqueEventId}"
-                        playerInputList: [{ waNumber: "${phoneNumber}", name: "${name}" }]
+                        playerInputList: [${objectArray
+                          .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
+                          .join(',')}] 
                     }
                 ) {
                     isInitiated
                     paymentLink
                 }
             }`,
-            variables: userInput,
+            variables: userInput.input,
           }),
         })
           .then((response) => response.json())
           .then((result) => {
+            if (result.errors) {
+              // Handle GraphQL errors
+              throw new Error(result.errors[0].message);
+            }
             const paymentUrl = result.data.initiatePayment.paymentLink;
             window.open(paymentUrl, '_self');
           })
@@ -203,6 +216,9 @@ export const JoinNow: FC<EventDetails> = ({
 
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Become our standout Flickplayer</DialogTitle>
+            <DialogTitle className={styles.multipleSlotsText}>
+              Book multiple slots by entering names, separated by commas
+            </DialogTitle>
             <DialogContent>
               <TextField
                 required
@@ -219,6 +235,7 @@ export const JoinNow: FC<EventDetails> = ({
                 onChange={handleName}
                 onClick={onModalClick}
               />
+
               <TextField
                 required
                 margin="dense"

@@ -24,6 +24,7 @@ function MatchQueue() {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
   const isPortrait = useOrientation();
 
   useEffect(() => {
@@ -116,6 +117,7 @@ function MatchQueue() {
                 cityId={city.cityId}
                 events={city.events}
                 dummyData={city.dummyData}
+                countryCode={city.countryCode}
               />
               <GamesList gameEvent={city.events} cityName={city.cityName} />
             </div>
