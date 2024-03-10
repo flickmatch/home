@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
-import NumbersIcon from '@mui/icons-material/Numbers';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import type { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
@@ -68,7 +72,7 @@ function AdminPage() {
     };
   }, []);
 
-  const handleCityName = (e: { target: { value: string } }) => {
+  const handleCityName = (e: SelectChangeEvent) => {
     setCityName(e.target.value);
   };
 
@@ -85,17 +89,8 @@ function AdminPage() {
       cityId: cityName,
       displayName: turfName,
       googleMapsLink: mapLink,
-      stripePaymentLinks: 'no idea',
+      stripePaymentLinks: [],
     },
-  };
-
-  const addTurf1 = () => {
-    console.log(cityName);
-    citiesData.map((element) => {
-      if (element.cityName === cityName) {
-        return console.log(element.cityId);
-      }
-    });
   };
 
   const addTurf = () => {
@@ -109,9 +104,9 @@ function AdminPage() {
             createSportsVenue(
                   input: {
                       cityId: "${cityName}"
-                      displayName: "${turfName}" 
+                      displayName: "${turfName}"
                       googleMapsLink: "${mapLink}"
-                      stripePaymentLinks: "no idea"
+                      stripePaymentLinks: []
                   }
               ) {
                 isSuccessful
@@ -127,6 +122,7 @@ function AdminPage() {
           // Handle GraphQL errors
           throw new Error(result.errors[0].message);
         }
+        // eslint-disable-next-line no-console
         console.log(result.data);
       })
       .catch((error) => {
@@ -134,6 +130,64 @@ function AdminPage() {
         console.log(error);
       });
   };
+
+  const sectionFirst = () => (
+    <Box className={styles.sectionFirst}>
+      <Typography className={styles.fieldTitle}>City Name</Typography>
+      <AccountBalanceIcon className={styles.fieldTitleIcon} />
+
+      <FormControl className={styles.selectInput}>
+        <Select
+          id="demo-simple-select-autowidth"
+          value={cityName}
+          onChange={handleCityName}
+          autoWidth
+        >
+          {citiesData.map((city, i) => (
+            <MenuItem value={city.cityId} key={i}>
+              {city.cityName}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  );
+
+  const sectionSecond = () => (
+    <Box className={styles.sectionSecond}>
+      <Typography className={styles.fieldTitle}>Turf Name</Typography>
+      <RoundedCornerOutlinedIcon className={styles.fieldTitleIcon} />
+      <TextField
+        fullWidth
+        value={turfName}
+        onChange={handleTurfName}
+        placeholder="Turf Name"
+        id="fullWidth"
+      />
+    </Box>
+  );
+
+  const sectionThird = () => (
+    <Box className={styles.sectionThird}>
+      <Typography className={styles.fieldTitle}>Google Map Link</Typography>
+      <CrisisAlertOutlinedIcon className={styles.fieldTitleIcon} />
+      <TextField
+        fullWidth
+        value={mapLink}
+        onChange={handleMapLink}
+        placeholder="G-Map Link"
+        id="fullWidth"
+      />
+    </Box>
+  );
+
+  const sectionFourth = () => (
+    <Box className={styles.sectionFourth}>
+      <Button variant="contained" color="success" className={styles.createButton} onClick={addTurf}>
+        Create
+      </Button>
+    </Box>
+  );
 
   return (
     <>
@@ -149,52 +203,10 @@ function AdminPage() {
           <Box className={styles.divider} />
         </Box>
         <FlexBox className={styles.formSection}>
-          <Box className={styles.sectionFirst}>
-            <Typography className={styles.fieldTitle}>City Id</Typography>
-            <NumbersIcon className={styles.fieldTitleIcon} />
-            <TextField
-              fullWidth
-              value={cityName}
-              onChange={handleCityName}
-              placeholder="City Id"
-              id="fullWidth"
-            />
-          </Box>
-
-          <Box className={styles.sectionSecond}>
-            <Typography className={styles.fieldTitle}>Turf Name</Typography>
-            <RoundedCornerOutlinedIcon className={styles.fieldTitleIcon} />
-            <TextField
-              fullWidth
-              value={turfName}
-              onChange={handleTurfName}
-              placeholder="Turf Name"
-              id="fullWidth"
-            />
-          </Box>
-
-          <Box className={styles.sectionThird}>
-            <Typography className={styles.fieldTitle}>Google Map Link</Typography>
-            <CrisisAlertOutlinedIcon className={styles.fieldTitleIcon} />
-            <TextField
-              fullWidth
-              value={mapLink}
-              onChange={handleMapLink}
-              placeholder="G-Map Link"
-              id="fullWidth"
-            />
-          </Box>
-
-          <Box className={styles.sectionFourth}>
-            <Button
-              variant="contained"
-              color="success"
-              className={styles.createButton}
-              onClick={addTurf1}
-            >
-              Create
-            </Button>
-          </Box>
+          {sectionFirst()}
+          {sectionSecond()}
+          {sectionThird()}
+          {sectionFourth()}
         </FlexBox>
       </FlexBox>
       <Footer />

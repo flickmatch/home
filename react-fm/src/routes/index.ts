@@ -52,7 +52,7 @@ const routes: Routes = {
   },
   [Pages.AdninPage]: {
     component: asyncComponentLoader(() => import('@/pages/adminPage')),
-    path: '/create-turf',
+    path: '/add-turf',
   },
   [Pages.RefundCancellation]: {
     component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
