@@ -35,6 +35,11 @@ const mapCityData = [
     iconUrl:
       'https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/hyderabad-charminar.png?alt=media&token=d61f97f6-3ffa-49bc-b53a-d1979dc8df39&_gl=1*j36n3t*_ga*MTA1NTE1NDY0MC4xNjg4ODgzODE5*_ga_CW55HF8NVT*MTY5ODgwNTE2MC40LjEuMTY5ODgwNjcyNC40My4wLjA.',
   },
+  {
+    city: 'Noida',
+    currency: 'INR',
+    iconUrl: '/building.png',
+  },
 ];
 
 export default mapCityData;
