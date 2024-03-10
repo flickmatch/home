@@ -50,6 +50,10 @@ const routes: Routes = {
     title: 'Contact Us',
     icon: ContactPageIcon,
   },
+  [Pages.AdninPage]: {
+    component: asyncComponentLoader(() => import('@/pages/adminPage')),
+    path: '/create-turf',
+  },
   [Pages.RefundCancellation]: {
     component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
     path: '/refund-cancellation',
