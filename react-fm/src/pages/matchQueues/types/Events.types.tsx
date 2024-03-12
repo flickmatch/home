@@ -29,7 +29,14 @@ type CityDetails = {
   cityName: string;
   dummyData: boolean;
   events: EventDetails[];
+  countryCode: string;
 };
+
+type Weather = {
+  temp: string,
+  description: string,
+  icon: string
+}
 
 type dummyDataArrays = {
   data: CityDetails[];
@@ -41,4 +48,5 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
+  Weather
 };
