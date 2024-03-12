@@ -38,6 +38,10 @@ type Weather = {
   icon: string
 }
 
+type WeatherIcon = {
+  [key: string] : string;
+}
+
 type dummyDataArrays = {
   data: CityDetails[];
 };
@@ -48,5 +52,6 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
-  Weather
+  Weather,
+  WeatherIcon
 };
