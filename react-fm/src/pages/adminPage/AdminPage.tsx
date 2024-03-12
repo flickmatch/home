@@ -44,7 +44,7 @@ function AdminPage() {
     const signal = controller.signal;
     const fetchData = async () => {
       try {
-        const url = apiUrl;
+        const url = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graphql';
         const response = await fetch(url, {
           method: 'POST',
           signal: signal,
@@ -60,7 +60,7 @@ function AdminPage() {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
             // eslint-disable-next-line no-console
-            console.log(error);
+            console.log(error.message);
           }
         }
       }
@@ -141,10 +141,10 @@ function AdminPage() {
           id="demo-simple-select-autowidth"
           value={cityName}
           onChange={handleCityName}
-          autoWidth
+          style={{ width: '100%' }}
         >
           {citiesData.map((city, i) => (
-            <MenuItem value={city.cityId} key={i}>
+            <MenuItem value={city.cityId} key={i} style={{ width: '100%' }}>
               {city.cityName}
             </MenuItem>
           ))}
