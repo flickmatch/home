@@ -14,7 +14,7 @@ enum Pages {
   RefundCancellation,
   TermsConditions,
   PrivacyPolicy,
-  AdminPage,
+  Admin,
   ServicesPrivacyPolicy,
   GeneralTermsConditions,
   Contact8,
