@@ -32,11 +32,13 @@ export const Cities: FC<CityDetails> = ({ cityName, cityId,countryCode }) => {
     }
   });
 
+  const key=import.meta.env.VITE_OPEN_WEATHER_KEY;
+
   useEffect(function() {
     async function fetchWeather() {
       try {
         const apiUrl =
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryCode}&units=metric&appid=2d9b4d6c529fae9a54f7e64abefede4c`;
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryCode}&units=metric&appid=${key}`;
         const res = await fetch(apiUrl);
         const data = await res.json();
         setWeather({
@@ -52,7 +54,8 @@ export const Cities: FC<CityDetails> = ({ cityName, cityId,countryCode }) => {
 
     }
     fetchWeather();
-  },[cityName, countryCode])
+  },[cityName, countryCode,key])
+
 
   const formattedWeather = (weather: Weather) => {
     const description = weather?.description?.charAt(0).toUpperCase() + weather?.description?.slice(1);
