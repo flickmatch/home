@@ -50,7 +50,7 @@ const routes: Routes = {
     title: 'Contact Us',
     icon: ContactPageIcon,
   },
-  [Pages.AdninPage]: {
+  [Pages.AdminPage]: {
     component: asyncComponentLoader(() => import('@/pages/adminPage')),
     path: '/add-turf',
   },

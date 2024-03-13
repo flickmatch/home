@@ -21,7 +21,7 @@ import Header from '@/sections/Header/Header';
 import { query } from '../matchQueues/constants';
 import type { CityDetails } from '../matchQueues/types/Events.types';
 import styles from './AdminPage.module.scss';
-import { apiUrl } from './constants';
+import { apiUrl, gameQueuesApiUrl } from './constants';
 
 function AdminPage() {
   const isPortrait = useOrientation();
@@ -44,8 +44,7 @@ function AdminPage() {
     const signal = controller.signal;
     const fetchData = async () => {
       try {
-        const url = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graphql';
-        const response = await fetch(url, {
+        const response = await fetch(gameQueuesApiUrl, {
           method: 'POST',
           signal: signal,
           headers: {
