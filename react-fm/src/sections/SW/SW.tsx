@@ -7,19 +7,19 @@ function SW() {
   //const [, notificationsActions] = useNotifications();
   //const notificationKey = useRef<SnackbarKey | null>(null);
   const {
-    offlineReady: [offlineReady, setOfflineReady],
+    ///offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW();
 
   const close = useCallback(() => {
-    setOfflineReady(false);
+    //setOfflineReady(false);
     setNeedRefresh(false);
-  }, [setOfflineReady, setNeedRefresh]);
+  }, [setNeedRefresh]);
 
   useEffect(() => {
     updateServiceWorker(true);
-  }, [close, needRefresh, offlineReady, updateServiceWorker]);
+  }, [close, needRefresh, updateServiceWorker]);
 
   return null;
 }
