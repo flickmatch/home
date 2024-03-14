@@ -18,16 +18,7 @@ function SW() {
   }, [setOfflineReady, setNeedRefresh]);
 
   useEffect(() => {
-    if (offlineReady) {
-      // notificationsActions.push({
-      //   options: {
-      //     autoHideDuration: 4500,
-      //     content: <Alert severity="success">App is ready to work offline.</Alert>,
-      //   },
-      // });
-    } else if (needRefresh) {
-      updateServiceWorker(true);
-    }
+    updateServiceWorker(true);
   }, [close, needRefresh, offlineReady, updateServiceWorker]);
 
   return null;
