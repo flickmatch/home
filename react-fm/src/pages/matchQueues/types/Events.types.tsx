@@ -31,6 +31,14 @@ type CityDetails = {
   events: EventDetails[];
 };
 
+type SportsVenues = {
+  toLowerCase(): { [s: string]: unknown } | ArrayLike<unknown>;
+  availableSportsIds: [];
+  displayName: string;
+  googleMapsLink: string;
+  sportsVenueId: string;
+};
+
 type dummyDataArrays = {
   data: CityDetails[];
 };
@@ -41,4 +49,5 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
+  SportsVenues,
 };
