@@ -4,6 +4,7 @@ const dummyData = {
       {
         cityId: '2',
         cityName: 'Hyderabad',
+        countryCode: 'IN',
         dummyData: false,
         events: [
           {
@@ -148,6 +149,7 @@ const dummyData = {
       {
         cityId: '1',
         cityName: 'Gurgaon',
+        countryCode: 'IN',
         dummyData: false,
         events: [
           {
@@ -321,6 +323,7 @@ const dummyData = {
       {
         cityId: '4',
         cityName: 'San Jose',
+        countryCode: 'US',
         dummyData: false,
         events: [
           {

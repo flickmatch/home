@@ -29,6 +29,7 @@ type CityDetails = {
   cityName: string;
   dummyData: boolean;
   events: EventDetails[];
+  countryCode: string;
 };
 
 type SportsVenues = {
@@ -37,6 +38,16 @@ type SportsVenues = {
   displayName: string;
   googleMapsLink: string;
   sportsVenueId: string;
+};
+
+type Weather = {
+  temp: string;
+  description: string;
+  icon: string;
+};
+
+type WeatherIcon = {
+  [key: string]: string;
 };
 
 type dummyDataArrays = {
@@ -50,4 +61,6 @@ export type {
   EventDetails,
   dummyDataArrays,
   SportsVenues,
+  Weather,
+  WeatherIcon,
 };
