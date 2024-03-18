@@ -49,6 +49,40 @@ class PhonePeCallBackControllerTest {
     }
 
     @Test
+    public void test_processCallBack_duplicateEvent() {
+        // arrange
+        CallBackResponse callBackResponse = new CallBackResponse();
+        callBackResponse.setResponse(SUCCESS_RESPONSE);
+        when(paymentRequestBuilder.getPaymentRequest(anyString()))
+                .thenReturn(PaymentRequest.builder().status("PAID").build());
+
+        // act
+        phonePeCallBackController.processCallBack(callBackResponse, "");
+
+        // verify no invocation
+        verify(paymentRequestBuilder, times(0))
+                .updatePaymentRequestStatus(any(PaymentRequest.class), eq(true));
+        verify(whatsAppProxy, times(0)).sendNotification(any());
+    }
+
+    @Test
+    public void test_processCallback_nullPaymentRequest() {
+        // arrange
+        CallBackResponse callBackResponse = new CallBackResponse();
+        callBackResponse.setResponse(SUCCESS_RESPONSE);
+        when(paymentRequestBuilder.getPaymentRequest(anyString()))
+                .thenReturn(null);
+
+        // act
+        phonePeCallBackController.processCallBack(callBackResponse, "");
+
+        // verify no invocation
+        verify(paymentRequestBuilder, times(0))
+                .updatePaymentRequestStatus(any(PaymentRequest.class), eq(true));
+        verify(whatsAppProxy, times(0)).sendNotification(any());
+    }
+
+    @Test
     public void test_processCallBack_whenPaymentFails() {
         CallBackResponse callBackResponse = new CallBackResponse();
         callBackResponse.setResponse(FAILURE_RESPONSE);

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Base64;
 import java.util.Map;
 
+import static java.lang.Boolean.valueOf;
+
 /**
  * Exposes POST endpoint for phonepe callback.
  * https://developer.phonepe.com/v1/reference/server-to-server-callback-5
@@ -28,6 +30,8 @@ import java.util.Map;
 public class PhonePeCallBackController {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final String PAID_STATUS = "PAID";
 
     @Autowired
     PaymentRequestBuilder paymentRequestBuilder;
@@ -48,10 +52,15 @@ public class PhonePeCallBackController {
                     new TypeReference<Map<String, Object>>() {});
             String merchantTransactionId = String.valueOf(data.get("merchantTransactionId"));
             PaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(merchantTransactionId);
+            // check payment status to avoid duplicate events
             if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
-                eventBuilder.joinEvent(paymentRequest);
-                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
-                whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
+                if(paymentRequest != null && PAID_STATUS.equals(paymentRequest.getStatus())) {
+                    log.info("Ignoring duplicate callback for merchantTransactionId: " + merchantTransactionId);
+                } else {
+                    eventBuilder.joinEvent(paymentRequest);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                    whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
+                }
             } else {
                 log.info(merchantTransactionId);
                 log.error(decodedResponse);
