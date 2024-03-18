@@ -9,8 +9,6 @@ import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
 import java.util.Map;
-
-import static java.lang.Boolean.valueOf;
 
 /**
  * Exposes POST endpoint for phonepe callback.

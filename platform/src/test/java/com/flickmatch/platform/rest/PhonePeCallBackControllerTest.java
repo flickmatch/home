@@ -5,16 +5,11 @@ import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
-import net.minidev.json.writer.JsonReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.json.GsonJsonParser;
-
-import java.io.FileReader;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
