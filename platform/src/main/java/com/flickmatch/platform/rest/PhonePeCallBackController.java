@@ -9,8 +9,6 @@ import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,6 +26,8 @@ import java.util.Map;
 public class PhonePeCallBackController {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final String PAID_STATUS = "PAID";
 
     @Autowired
     PaymentRequestBuilder paymentRequestBuilder;
@@ -48,10 +48,15 @@ public class PhonePeCallBackController {
                     new TypeReference<Map<String, Object>>() {});
             String merchantTransactionId = String.valueOf(data.get("merchantTransactionId"));
             PaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(merchantTransactionId);
+            // check payment status to avoid duplicate events
             if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
-                eventBuilder.joinEvent(paymentRequest);
-                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
-                whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
+                if(paymentRequest != null && PAID_STATUS.equals(paymentRequest.getStatus())) {
+                    log.info("Ignoring duplicate callback for merchantTransactionId: " + merchantTransactionId);
+                } else {
+                    eventBuilder.joinEvent(paymentRequest);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                    whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
+                }
             } else {
                 log.info(merchantTransactionId);
                 log.error(decodedResponse);

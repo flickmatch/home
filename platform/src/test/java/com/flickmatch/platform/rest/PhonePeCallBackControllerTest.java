@@ -5,16 +5,11 @@ import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
-import net.minidev.json.writer.JsonReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.json.GsonJsonParser;
-
-import java.io.FileReader;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -46,6 +41,40 @@ class PhonePeCallBackControllerTest {
                 .thenReturn(null);
         doNothing().when(whatsAppProxy).sendNotification(any());
         phonePeCallBackController.processCallBack(callBackResponse, "");
+    }
+
+    @Test
+    public void test_processCallBack_duplicateEvent() {
+        // arrange
+        CallBackResponse callBackResponse = new CallBackResponse();
+        callBackResponse.setResponse(SUCCESS_RESPONSE);
+        when(paymentRequestBuilder.getPaymentRequest(anyString()))
+                .thenReturn(PaymentRequest.builder().status("PAID").build());
+
+        // act
+        phonePeCallBackController.processCallBack(callBackResponse, "");
+
+        // verify no invocation
+        verify(paymentRequestBuilder, times(0))
+                .updatePaymentRequestStatus(any(PaymentRequest.class), eq(true));
+        verify(whatsAppProxy, times(0)).sendNotification(any());
+    }
+
+    @Test
+    public void test_processCallback_nullPaymentRequest() {
+        // arrange
+        CallBackResponse callBackResponse = new CallBackResponse();
+        callBackResponse.setResponse(SUCCESS_RESPONSE);
+        when(paymentRequestBuilder.getPaymentRequest(anyString()))
+                .thenReturn(null);
+
+        // act
+        phonePeCallBackController.processCallBack(callBackResponse, "");
+
+        // verify no invocation
+        verify(paymentRequestBuilder, times(0))
+                .updatePaymentRequestStatus(any(PaymentRequest.class), eq(true));
+        verify(whatsAppProxy, times(0)).sendNotification(any());
     }
 
     @Test
