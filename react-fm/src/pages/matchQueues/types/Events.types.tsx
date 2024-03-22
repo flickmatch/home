@@ -32,15 +32,23 @@ type CityDetails = {
   countryCode: string;
 };
 
+type SportsVenues = {
+  toLowerCase(): { [s: string]: unknown } | ArrayLike<unknown>;
+  availableSportsIds: [];
+  displayName: string;
+  googleMapsLink: string;
+  sportsVenueId: string;
+};
+
 type Weather = {
-  temp: string,
-  description: string,
-  icon: string
-}
+  temp: string;
+  description: string;
+  icon: string;
+};
 
 type WeatherIcon = {
-  [key: string] : string;
-}
+  [key: string]: string;
+};
 
 type dummyDataArrays = {
   data: CityDetails[];
@@ -52,6 +60,7 @@ export type {
   waitListPlayerDetails,
   EventDetails,
   dummyDataArrays,
+  SportsVenues,
   Weather,
-  WeatherIcon
+  WeatherIcon,
 };
