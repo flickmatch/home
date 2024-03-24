@@ -11,6 +11,7 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Zoom from '@mui/material/Zoom';
 
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
@@ -194,20 +195,22 @@ function AdminPage() {
       <div>
         <Header loggedIn={isLoggedIn} />
       </div>
-      <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
-        <Box>
-          <Typography variant="h3" className={styles.title}>
-            Add Turf
-          </Typography>
-          <Box className={styles.divider} />
-        </Box>
-        <FlexBox className={styles.formSection}>
-          {sectionFirst()}
-          {sectionSecond()}
-          {sectionThird()}
-          {sectionFourth()}
+      <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+        <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
+          <Box>
+            <Typography variant="h3" className={styles.title}>
+              Add Turf
+            </Typography>
+            <Box className={styles.divider} />
+          </Box>
+          <FlexBox className={styles.formSection}>
+            {sectionFirst()}
+            {sectionSecond()}
+            {sectionThird()}
+            {sectionFourth()}
+          </FlexBox>
         </FlexBox>
-      </FlexBox>
+      </Zoom>
       <Footer />
     </>
   );

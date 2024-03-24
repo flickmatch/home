@@ -54,6 +54,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/adminPage')),
     path: '/add-turf',
   },
+  [Pages.AddGame]: {
+    component: asyncComponentLoader(() => import('@/pages/addGame')),
+    path: '/add-game',
+  },
   [Pages.RefundCancellation]: {
     component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
     path: '/refund-cancellation',
