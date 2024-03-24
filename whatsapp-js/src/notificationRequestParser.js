@@ -9,7 +9,7 @@ const daysOfWeek = [
 ];
 
 // Function to convert timestamps to timeslot
-function convertToTimeSlot(timestamp1, timestamp2, timeZone) {
+export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
   // Convert timestamps to Date objects
   const date1 = new Date(timestamp1);
   const date2 = new Date(timestamp2);
@@ -39,7 +39,7 @@ function convertToTimeSlot(timestamp1, timestamp2, timeZone) {
   const timeSlot2 = `${padZero(hours2)}:${padZero(minutes2)}`;
 
   return `${timeSlot1} - ${timeSlot2} ${fullDate} (${daysOfWeek[day]})`;
-}
+};
 
 function parseTimeZoneOffset(timeZone) {
   const parts = timeZone.split(/[+-]/); // Splitting by '+' or '-'
