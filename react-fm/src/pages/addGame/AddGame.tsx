@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
+import { InputAdornment } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
@@ -27,6 +30,7 @@ import Header from '@/sections/Header/Header';
 import useNotifications from '@/store/notifications';
 
 import { query } from '../matchQueues/constants';
+import mapCityData from '../matchQueues/map';
 import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
@@ -40,6 +44,7 @@ function AddGame() {
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
   const [charges, setCharges] = useState('');
+  const [currencyType, setCurrencyType] = useState('');
   const [playersCount, setPlayersCount] = useState('');
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
@@ -69,6 +74,7 @@ function AddGame() {
         });
 
         const data = await response.json();
+
         setCitiesData(data.data.cities);
       } catch (error) {
         if (error instanceof Error) {
@@ -127,6 +133,12 @@ function AddGame() {
 
   const handleCityName = (e: SelectChangeEvent) => {
     setCityName(e.target.value);
+    setMapLink('');
+    mapCityData.forEach((data) => {
+      if (data.cityId === parseInt(e.target.value)) {
+        setCurrencyType(data.currency);
+      }
+    });
     fetchSportsTurf(e.target.value);
   };
 
@@ -334,6 +346,17 @@ function AddGame() {
             <Typography className={styles.fieldTitle}>Event Charges</Typography>
           </Box>
           <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  {currencyType === 'INR' ? (
+                    <CurrencyRupeeSharp />
+                  ) : currencyType === 'USD' ? (
+                    <AttachMoneyIcon />
+                  ) : null}
+                </InputAdornment>
+              ),
+            }}
             fullWidth
             value={charges}
             onChange={(e) => setCharges(e.target.value)}
