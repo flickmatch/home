@@ -15,6 +15,7 @@ enum Pages {
   TermsConditions,
   PrivacyPolicy,
   Admin,
+  AddGame,
   ServicesPrivacyPolicy,
   GeneralTermsConditions,
   Contact8,
