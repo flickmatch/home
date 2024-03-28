@@ -112,11 +112,12 @@ function MatchQueue() {
           <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
             <div className={isPortrait ? styles.mobileContainer : styles.container}>
               <Cities
-              cityName={city.cityName}
-              cityId={city.cityId}
-              events={city.events}
-              dummyData={city.dummyData} 
-              countryCode={city.countryCode} />
+                cityName={city.cityName}
+                cityId={city.cityId}
+                events={city.events}
+                dummyData={city.dummyData}
+                countryCode={city.countryCode}
+              />
               <GamesList gameEvent={city.events} cityName={city.cityName} />
             </div>
           </Zoom>
@@ -151,6 +152,9 @@ function MatchQueue() {
       <div>
         <Header loggedIn={isLoggedIn} />
       </div>
+      <br />
+      <br />
+      <h3>Checking netlify live urls from github pull requests</h3>
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
       {skeleton()}
