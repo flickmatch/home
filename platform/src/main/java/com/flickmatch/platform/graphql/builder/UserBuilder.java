@@ -6,6 +6,9 @@ import com.flickmatch.platform.graphql.input.CreateUserInput;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Log4j2
 @Service
 
@@ -17,13 +20,17 @@ public class UserBuilder {
     }
 
     public User createUser(CreateUserInput input) {
+//        Checking if the user already exists
+        Optional<User> existingUser = userRepository.findByEmail(input.getEmail());
+        if(existingUser.isPresent()) {
+            return existingUser.get();
+        }
         // Create a new User object
         User newUser = new User();
         newUser.setEmail(input.getEmail());
         newUser.setName(input.getName());
         newUser.setPhoneNumber(input.getPhoneNumber());
-//        newUser.setUserId("1");
-//        System.out.println(newUser.toString());
+
 
         try {
             // Save the new user to the repository
@@ -32,9 +39,17 @@ public class UserBuilder {
             return newUser;
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
-            return null;
+            throw e;
         }
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
+
+
 
 
 }

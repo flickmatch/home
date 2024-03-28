@@ -1,6 +1,7 @@
 type Query {
     cities: [City!]!
     city(cityId: ID!): City
+    users:[User]
 }
 
 type Mutation {
@@ -64,9 +65,16 @@ input CreateUserInput {
     phoneNumber:  String
 }
 
+type User {
+    email: String!
+    name: String!
+    phoneNumber:  String
+    userId: String
+}
+
 type UserResult {
     isSuccessful: Boolean!
-    userId: String!
+    userId: String
 }
 
 type InitiatePaymentOutput {
