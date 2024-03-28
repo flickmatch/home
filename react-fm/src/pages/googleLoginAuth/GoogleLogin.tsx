@@ -16,11 +16,49 @@ import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
 
 import styles from './GoogleLogin.module.scss';
+import { apiUrl } from './constants';
 
 function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+
+  const addUsers = (email:string,name:string) => {
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `mutation createUser {
+        createUser(input: {
+        email: "${email}"
+        name: "${name}"
+        }) {
+            isSuccessful
+            userId
+        }
+        }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          // Handle GraphQL errors
+          throw new Error(result.errors[0].message);
+          // console.log(result.errors[0].message)
+        }
+        // console.log(result)
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  };
+
+
 
   const getGoogleUserInfo = async (accessToken: string) => {
     axios
@@ -33,6 +71,7 @@ function GoogleLogin() {
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log(res.data);
+        addUsers(res.data.email,res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
         setIsLoggedIn(true);
         navigate('/match-queues');
