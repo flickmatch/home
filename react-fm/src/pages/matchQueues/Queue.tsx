@@ -155,6 +155,7 @@ function MatchQueue() {
       <br />
       <br />
       <h3>Checking netlify live urls from github pull requests</h3>
+      <h3>Checking netlify live urls from github pull requests</h3>
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
       {skeleton()}
