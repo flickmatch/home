@@ -21,8 +21,10 @@ const hydChatId = "120363104642020865@g.us";
 app.post("/notification", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
   const jsonData = req.body;
+  const url = `${req.protocol}://${req.get("host")}/match-queues`;
+  // console.log(url);
   //console.log('Received JSON data:', JSON.stringify(jsonData));
-  client.sendMessage(testGroupChatId, createMessage(jsonData));
+  client.sendMessage(testGroupChatId, createMessage(jsonData, url));
   res.send("Hello World!");
 });
 

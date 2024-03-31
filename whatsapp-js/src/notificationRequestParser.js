@@ -23,22 +23,27 @@ export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
 
   // Extract hours and minutes from the adjusted Date objects
   const padZero = (value) => (value < 10 ? `0${value}` : value);
-  const hours1 = date1.getHours();
+  const hours12 = (hours) => hours % 12 || 12; // Convert to 12-hour format
+  const amPm = (hours) => (hours < 12 ? "AM" : "PM"); // AM or PM
+  const hours1 = hours12(date1.getHours());
+  const hours2 = hours12(date2.getHours());
   const minutes1 = date1.getMinutes();
+  const minutes2 = date2.getMinutes();
   const date = date1.getDate();
   const month = date1.getMonth() + 1; // Months are zero-indexed
   const year = date1.getFullYear();
   const fullDate = `${padZero(date)}-${padZero(month)}-${year}`;
   const day = date1.getDay();
 
-  const hours2 = date2.getHours();
-  const minutes2 = date2.getMinutes();
+  // Format the timeslots in 12-hour format
+  const timeSlot1 = `${padZero(hours1)}:${padZero(minutes1)} ${amPm(
+    date1.getHours()
+  )}`;
+  const timeSlot2 = `${padZero(hours2)}:${padZero(minutes2)} ${amPm(
+    date2.getHours()
+  )}`;
 
-  // Format the timeslots
-  const timeSlot1 = `${padZero(hours1)}:${padZero(minutes1)}`;
-  const timeSlot2 = `${padZero(hours2)}:${padZero(minutes2)}`;
-
-  return `${timeSlot1} - ${timeSlot2} ${fullDate} (${daysOfWeek[day]})`;
+  return `${timeSlot1} - ${timeSlot2} \n${fullDate} (${daysOfWeek[day]})`;
 };
 
 function parseTimeZoneOffset(timeZone) {
@@ -49,7 +54,7 @@ function parseTimeZoneOffset(timeZone) {
   return sign * offset; // Return the offset considering the sign
 }
 
-export const createMessage = (jsonData) => {
+export const createMessage = (jsonData, url) => {
   //const jsonDataObject = JSON.parse(jsonData);
   const venueName = jsonData.venueName;
   const mapLink = jsonData.venueLocationLink;
@@ -71,6 +76,9 @@ Confirmed Players:`;
     message = message + "\n" + `${index + 1}. ${value}`;
   }
   message =
-    message + "\n\nPlease pay at play.flickmatch.in to confirm your spot.";
+    message +
+    "\n\nPlease pay at (" +
+    `${url}#${jsonData.uniqueEventId}` +
+    ") to confirm your spot.";
   return message;
 };

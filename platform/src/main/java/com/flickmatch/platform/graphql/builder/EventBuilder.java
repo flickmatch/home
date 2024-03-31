@@ -150,7 +150,8 @@ public class EventBuilder {
                 selectedEvent.getCharges(),
                 selectedEvent.getVenueLocationLink(),
                 localTimeZone,
-                playerNameList);
+                playerNameList,
+                uniqueEventId);
     }
 
     private Event.EventDetails getSelectedEvent(final String uniqueEventId) {
