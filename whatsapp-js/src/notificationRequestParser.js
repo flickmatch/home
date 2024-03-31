@@ -32,7 +32,7 @@ export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
   const date = date1.getDate();
   const month = date1.getMonth() + 1; // Months are zero-indexed
   const year = date1.getFullYear();
-  const fullDate = `${padZero(date)}-${padZero(month)}-${year}`;
+  const fullDate = `${padZero(date)}/${padZero(month)}/${year}`;
   const day = date1.getDay();
 
   // Format the timeslots in 12-hour format
@@ -43,7 +43,7 @@ export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
     date2.getHours()
   )}`;
 
-  return `${timeSlot1} - ${timeSlot2} \n${fullDate} (${daysOfWeek[day]})`;
+  return `🕐 ${timeSlot1} - ${timeSlot2} \n📅 ${fullDate} (${daysOfWeek[day]})`;
 };
 
 function parseTimeZoneOffset(timeZone) {
@@ -66,18 +66,18 @@ export const createMessage = (jsonData, url) => {
     jsonData.localTimeZone
   );
 
-  var message = `${venueName} (${mapLink})
+  var message = `Flickmatch football game at ${venueName} 📍 (${mapLink})
 ${dateTime}
-${format}v${format}
+${format} 🆚 ${format}
 ₹${charges}/- Per Person.
 
-Confirmed Players:`;
+🎫 Confirmed Players:`;
   for (const [index, value] of jsonData.playerNameList.entries()) {
     message = message + "\n" + `${index + 1}. ${value}`;
   }
   message =
     message +
-    "\n\nPlease pay at (" +
+    "\n\nPlease pay 💵 at (" +
     `${url}#${jsonData.uniqueEventId}` +
     ") to confirm your spot.";
   return message;
