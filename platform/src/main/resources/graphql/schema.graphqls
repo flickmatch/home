@@ -1,7 +1,6 @@
 type Query {
     cities: [City!]!
     city(cityId: ID!): City
-    users:[User]
 }
 
 type Mutation {
