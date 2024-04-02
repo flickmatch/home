@@ -16,6 +16,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 
+import Swal from 'sweetalert2';
+
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -33,6 +35,7 @@ function AdminPage() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
@@ -43,8 +46,34 @@ function AdminPage() {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
+      const userData = JSON.parse(storedData);
+
       setIsLoggedIn(true);
+
+      const fetchMailIds = async () => {
+        const response = await fetch(
+          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
+        );
+        const data = await response.json();
+
+        const check = data
+          .map((mailId: { EmailId: string }) => mailId.EmailId)
+          .includes(userData.email);
+        setHasAccess(check);
+        if (!check) {
+          Swal.fire({
+            title: 'Unauthorized Access',
+            text: 'You are not authorized to view this page.',
+            icon: 'error',
+          }).then(() => {
+            navigate('/match-queues');
+          });
+        }
+      };
+
+      fetchMailIds();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -290,26 +319,34 @@ function AdminPage() {
   return (
     <>
       <Meta title="Add Turf" />
+
       <div>
         <Header loggedIn={isLoggedIn} />
       </div>
-      <Zoom in={true} style={{ transitionDelay: '300ms' }}>
-        <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
-          <Box>
-            <Typography variant="h3" className={styles.title}>
-              Add Turf
-            </Typography>
-            <Box className={styles.divider} />
-          </Box>
-          <FlexBox className={styles.formSection}>
-            {sectionFirst()}
-            {sectionSecond()}
-            {sectionThird()}
-            {sectionFourth()}
-          </FlexBox>
-        </FlexBox>
-      </Zoom>
-      <Footer />
+      {hasAccess ? (
+        <>
+          <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+            <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
+              <Box>
+                <Typography variant="h3" className={styles.title}>
+                  Add Turf
+                </Typography>
+                <Box className={styles.divider} />
+              </Box>
+              <FlexBox className={styles.formSection}>
+                {sectionFirst()}
+                {sectionSecond()}
+                {sectionThird()}
+                {sectionFourth()}
+              </FlexBox>
+            </FlexBox>
+          </Zoom>
+
+          <Footer />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
