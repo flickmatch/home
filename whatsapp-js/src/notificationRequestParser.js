@@ -66,18 +66,19 @@ export const createMessage = (jsonData, url) => {
     jsonData.localTimeZone
   );
 
-  var message = `Flickmatch football game at ${venueName} 📍 (${mapLink})
+  var message = `Flickmatch football game at ${venueName}
+📍 (${mapLink})
 ${dateTime}
-${format} 🆚 ${format}
+${format} vs ${format}
 ₹${charges}/- Per Person.
 
-🎫 Confirmed Players:`;
+Confirmed Players:`;
   for (const [index, value] of jsonData.playerNameList.entries()) {
     message = message + "\n" + `${index + 1}. ${value}`;
   }
   message =
     message +
-    "\n\nPlease pay 💵 at (" +
+    "\n\nPlease pay at (" +
     `${url}#${jsonData.uniqueEventId}` +
     ") to confirm your spot.";
   return message;
