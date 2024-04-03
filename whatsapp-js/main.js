@@ -14,7 +14,7 @@ export const groupName = isProd ? "Online Queue Update" : "Test group ";
 import express from "express";
 const app = express();
 app.use(express.json());
-const port = 3000;
+const port = 3030;
 const ggnSouthCityChatId = "120363030960923086@g.us";
 const hydChatId = "120363104642020865@g.us";
 
