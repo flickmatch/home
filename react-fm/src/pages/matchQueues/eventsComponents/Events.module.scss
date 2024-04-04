@@ -89,16 +89,16 @@ input:-webkit-autofill:active {
   color: #4ce95a;
 }
 
-.payViaUpi {
-  margin-right: 10px !important;
-}
+// .payViaUpi {
+  // margin-right: 10px !important;
+// }
 
-.payViaCard {
-  margin-left: 10px !important;
-}
+// .payViaCard {
+  // margin-left: 10px !important;
+// }
 
 .paymentOptions {
-  width: 25%;
+  width: 35%;
   justify-content: space-between;
   position: relative;
   float: right;
@@ -132,3 +132,8 @@ label {
   font-size: 15px;
   padding-top: 0px;
 }
+
+// .payViaRazorpay {
+  // margin-left: 10px !important;
+  // height: inherit;
+// }

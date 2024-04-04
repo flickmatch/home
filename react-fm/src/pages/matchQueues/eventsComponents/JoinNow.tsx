@@ -24,6 +24,7 @@ import useNotifications from '@/store/notifications';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+// import axios from 'axios';
 
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
@@ -40,6 +41,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
+  // const [orderId, setOrderId] = useState('');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -180,6 +182,51 @@ export const JoinNow: FC<EventDetails> = ({
     e.stopPropagation();
   };
 
+  // const createOrder = async () => {
+  //   try {
+  //     // Make a POST request to your backend to create the order
+  //     const response = await axios.post(`http://localhost:8080/graphql/create-order`, {
+  //       amount: charges // Send the order amount to your backend
+  //     });
+
+  //     // Assuming your backend returns the order ID
+  //     const { orderId } = response.data;
+
+  //     // Update state with the generated order ID
+  //     // setOrderId(orderId);
+
+  //     // // Initiate Razorpay payment using the order ID
+  //     // const options = {
+  //     //   key: 'rzp_test_hpeD9rSq9zDwJN',
+  //     //   amount: charges,
+  //     //   currency: 'INR',
+  //     //   name: 'Your Company Name',
+  //     //   description: 'Payment for Order',
+  //     //   order_id: orderId,
+  //     //   handler: function (response) {
+  //     //     // Handle successful payment
+  //     //     alert('Payment successful!');
+  //     //   },
+  //     //   prefill: {
+  //     //     name: 'Customer Name',
+  //     //     email: 'customer@example.com'
+  //     //   },
+  //     //   notes: {
+  //     //     address: 'Customer Address'
+  //     //   },
+  //     //   theme: {
+  //     //     color: '#F37254'
+  //     //   }
+  //     // };
+  //     // const rzp = new window.Razorpay(options);
+  //     // rzp.open();
+  //     console.log(orderId);
+  //   } catch (error) {
+  //     console.error('Error creating order:', error);
+  //   }
+  // }
+
+
   return (
     <>
       {openWaitList > 0 ? (
@@ -208,8 +255,19 @@ export const JoinNow: FC<EventDetails> = ({
                   if (stripePaymentUrl) openInNewTab(stripePaymentUrl);
                   else alert('Match Full');
                 }}
-              >
+                >
                 Card
+              </Button>
+              <Button
+                variant="contained"
+                className={styles.payViaRazorpay}
+                startIcon={<Icon icon="simple-icons:razorpay" color='navy'/>}
+                // onClick={() => 
+                  // createOrder()
+            // }
+              >
+                
+                RazorPay
               </Button>
             </FlexBox>
           ) : null}
@@ -282,3 +340,4 @@ export const JoinNow: FC<EventDetails> = ({
     </>
   );
 };
+

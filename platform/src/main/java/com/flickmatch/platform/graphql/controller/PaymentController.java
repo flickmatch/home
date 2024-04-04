@@ -3,10 +3,16 @@ package com.flickmatch.platform.graphql.controller;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.graphql.input.InitiatePaymentInput;
+import com.flickmatch.platform.graphql.input.RazorPayInput;
 import com.flickmatch.platform.graphql.type.InitiatePaymentOutput;
+import com.flickmatch.platform.graphql.type.RazorPayOutput;
 import com.flickmatch.platform.proxy.PhonePeProxy;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
 import lombok.extern.log4j.Log4j2;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -44,4 +50,37 @@ public class PaymentController {
                     .build();
         }
     }
+
+    @Value("${razorpay.key.id}")
+    private String keyId;
+
+    @Value("${razorpay.key.secret}")
+    private String secret;
+
+    @Value("${razorpay.merchant.id}")
+    private String merchantTransactionId;
+
+    @MutationMapping
+    public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
+        try {
+            RazorpayClient razorpayClient = new RazorpayClient(keyId, secret);
+            JSONObject orderRequest = new JSONObject();
+            long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
+            long amount = eventAmount * input.getPlayerInputList().size();
+            orderRequest.put("amount", amount);
+//            orderRequest.put("currency", "INR");
+//            orderRequest.put("receipt", "order_receipt_11");
+            Order order = razorpayClient.orders.create(orderRequest);
+            paymentRequestBuilder.createPaymentRequest(merchantTransactionId,
+                    input.getUniqueEventId(), input.getPlayerInputList());
+            String orderId = order.get("id");
+            return RazorPayOutput.builder().orderId(orderId).isInitiated(true).build();
+        } catch (Exception e) {
+            log.error("Error creating order: {}", e.getMessage());
+            return RazorPayOutput.builder().isInitiated(false)
+                    .build();
+        }
+    }
+
+
 }
