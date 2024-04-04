@@ -9,6 +9,7 @@ type Mutation {
     joinEvent(input: JoinEventInput!): MutationResult!
     updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
+    createUser(input: CreateUserInput!): UserResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -55,6 +56,24 @@ input JoinEventInput {
 input InitiatePaymentInput {
     uniqueEventId: ID!
     playerInputList: [PlayerInput!]!
+}
+
+input CreateUserInput {
+    email: String!
+    name: String!
+    phoneNumber:  String
+}
+
+type User {
+    email: String!
+    name: String!
+    phoneNumber:  String
+    userId: String
+}
+
+type UserResult {
+    isSuccessful: Boolean!
+    userId: String
 }
 
 type InitiatePaymentOutput {
