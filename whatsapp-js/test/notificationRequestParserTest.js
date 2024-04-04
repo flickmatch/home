@@ -4,7 +4,7 @@ import {
 } from "../src/notificationRequestParser.js";
 
 const jsonData =
-  '{"startTime":1699715640000,"endTime":1699719240000,"venueName":"HotFut GachiBowli","reservedPlayersCount":10,"charges":200,"venueLocationLink":"https://goo.gl/maps/1QzakRkJPHxT8GjRA","localTimeZone":"GMT+5:30","playerNameList":["Player1","Player2","sam","nooo"],"uniqueEventId": "1-2024-03-28-1"}';
+  '{"startTime":1699715640000,"endTime":1699719240000,"venueName":"HotFut GachiBowli","reservedPlayersCount":10,"charges":200,"venueLocationLink":"https://goo.gl/maps/1QzakRkJPHxT8GjRA","localTimeZone":"GMT+5:30","playerNameList":["Player1","Player2","sam","nooo"],"uniqueEventId": "1-2024-03-28-1","currency":"INR"}';
 const expected = `Flickmatch football game at HotFut GachiBowli
 📍 (https://goo.gl/maps/1QzakRkJPHxT8GjRA)
 🕐 02:14 AM - 03:14 AM 
