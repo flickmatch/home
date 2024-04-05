@@ -137,6 +137,7 @@ public class EventBuilder {
         ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
         Optional<com.flickmatch.platform.dynamodb.model.City> city = cityRepository.findById(parsedUniqueEventId.cityId());
         String localTimeZone = null;
+        String currency = getCurrencyForCity(parsedUniqueEventId.cityId());
         if (city.isPresent()) {
             localTimeZone = city.get().getLocalTimeZone();
         }
@@ -151,7 +152,8 @@ public class EventBuilder {
                 selectedEvent.getVenueLocationLink(),
                 localTimeZone,
                 playerNameList,
-                uniqueEventId);
+                uniqueEventId,
+                currency);
     }
 
     private Event.EventDetails getSelectedEvent(final String uniqueEventId) {
