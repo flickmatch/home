@@ -75,7 +75,11 @@ function Footer() {
           <WhatsAppIcon className={styles.whatsappIcon} />
         </Tooltip>
       </a>
-      <a href="https://www.linkedin.com/company/flickmatch/about/" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.linkedin.com/company/flickmatch-incorporated"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Tooltip title="Follow on LinkedIn" arrow>
           <LinkedInIcon className={styles.linkedInIcon} />
         </Tooltip>
