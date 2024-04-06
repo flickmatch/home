@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Base64;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * Exposes POST endpoint for phonepe callback.
  * https://developer.phonepe.com/v1/reference/server-to-server-callback-5
@@ -48,9 +50,14 @@ public class PhonePeCallBackController {
                     new TypeReference<Map<String, Object>>() {});
             String merchantTransactionId = String.valueOf(data.get("merchantTransactionId"));
             PaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(merchantTransactionId);
+
+            if (paymentRequest == null) {
+                log.error(format("Payment Request can not be null for merchantTransactionId %s", merchantTransactionId));
+                return;
+            }
             // check payment status to avoid duplicate events
             if ("PAYMENT_SUCCESS".equals(phonePeResponse.get("code"))) {
-                if(paymentRequest != null && PAID_STATUS.equals(paymentRequest.getStatus())) {
+                if(PAID_STATUS.equals(paymentRequest.getStatus())) {
                     log.info("Ignoring duplicate callback for merchantTransactionId: " + merchantTransactionId);
                 } else {
                     eventBuilder.joinEvent(paymentRequest);
