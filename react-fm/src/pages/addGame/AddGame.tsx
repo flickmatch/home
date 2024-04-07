@@ -21,6 +21,7 @@ import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 
 import { parseInt } from 'lodash';
+import Swal from 'sweetalert2';
 
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
@@ -40,6 +41,7 @@ function AddGame() {
   const navigate = useNavigate();
   const [, notificationsActions] = useNotifications();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
@@ -55,8 +57,33 @@ function AddGame() {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
+      const userData = JSON.parse(storedData);
       setIsLoggedIn(true);
+
+      const fetchMailIds = async () => {
+        const response = await fetch(
+          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
+        );
+        const data = await response.json();
+
+        const check = data
+          .map((mailId: { EmailId: string }) => mailId.EmailId)
+          .includes(userData.email);
+        setHasAccess(check);
+        if (!check) {
+          Swal.fire({
+            title: 'Unauthorized Access',
+            text: 'You are not authorized to view this page.',
+            icon: 'error',
+          }).then(() => {
+            navigate('/match-queues');
+          });
+        }
+      };
+
+      fetchMailIds();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -399,25 +426,32 @@ function AddGame() {
       <div>
         <Header loggedIn={isLoggedIn} />
       </div>
-      <Zoom in={true} style={{ transitionDelay: '300ms' }}>
-        <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
-          <Box>
-            <Typography variant="h3" className={styles.title}>
-              Add Game
-            </Typography>
-            <Box className={styles.divider} />
-          </Box>
-          <FlexBox className={styles.formSection}>
-            {sectionFirst()}
-            {sectionSecond()}
-            {sectionThird()}
-            {sectionDatetime()}
-            {sectionChargesPlayers()}
-            {sectionFourth()}
-          </FlexBox>
-        </FlexBox>
-      </Zoom>
-      <Footer />
+      {hasAccess ? (
+        <>
+          <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+            <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
+              <Box>
+                <Typography variant="h3" className={styles.title}>
+                  Add Game
+                </Typography>
+                <Box className={styles.divider} />
+              </Box>
+              <FlexBox className={styles.formSection}>
+                {sectionFirst()}
+                {sectionSecond()}
+                {sectionThird()}
+                {sectionDatetime()}
+                {sectionChargesPlayers()}
+                {sectionFourth()}
+              </FlexBox>
+            </FlexBox>
+          </Zoom>
+
+          <Footer />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

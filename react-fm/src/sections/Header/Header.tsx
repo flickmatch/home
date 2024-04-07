@@ -41,6 +41,7 @@ const Header: FC<login> = ({ loggedIn }) => {
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
+  const [hasAccess, setHasAccess] = useState(false);
 
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
@@ -57,7 +58,22 @@ const Header: FC<login> = ({ loggedIn }) => {
     if (storedData) {
       const parseData = JSON.parse(storedData);
       setUserData(parseData);
+
+      const fetchMailIds = async () => {
+        const response = await fetch(
+          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
+        );
+        const data = await response.json();
+
+        const check = data
+          .map((mailId: { EmailId: string }) => mailId.EmailId)
+          .includes(parseData.email);
+        setHasAccess(check);
+      };
+
+      fetchMailIds();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const menus = () =>
@@ -82,6 +98,18 @@ const Header: FC<login> = ({ loggedIn }) => {
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
           Match Queue
         </Typography>
+        {hasAccess ? (
+          <>
+            <Divider className={styles.divider} orientation="vertical" flexItem />
+            <Typography className={styles.menuItem} component={Link} to="/add-game">
+              Add Game
+            </Typography>
+            <Divider className={styles.divider} orientation="vertical" flexItem />
+            <Typography className={styles.menuItem} component={Link} to="/add-turf">
+              Add Turf
+            </Typography>
+          </>
+        ) : null}
       </FlexBox>
     ) : null;
 
