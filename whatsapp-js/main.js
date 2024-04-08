@@ -31,11 +31,19 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
+// const client = new Client({
+//   authStrategy: new LocalAuth(),
+//   puppeteer: {
+//     headless: true,
+//     args: ["--no-sandbox"],
+//   },
+// });
+
 const client = new Client({
-  authStrategy: new LocalAuth(),
-  puppeteer: {
-    headless: true,
-    args: ["--no-sandbox"],
+  webVersionCache: {
+    type: "remote",
+    remotePath:
+      "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
   },
 });
 
