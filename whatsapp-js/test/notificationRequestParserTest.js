@@ -18,7 +18,7 @@ Confirmed Players:
 3. sam
 4. nooo
 
-Please pay at (https://play.flickmatch.in/match-queues#1-2024-03-28-1) to confirm your spot.`;
+Please pay at https://play.flickmatch.in/match-queues#1-2024-03-28-1 to confirm your spot.`;
 
 function assertEqual(actual, expected, label) {
   const areEqual = JSON.stringify(actual) === JSON.stringify(expected);

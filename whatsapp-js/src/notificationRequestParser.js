@@ -74,9 +74,9 @@ export const createMessage = (jsonData, url) => {
   const currency = currencyMap[jsonData.currency];
 
   var message = `Flickmatch football game at ${venueName}
-📍 (${mapLink})
+📍 ${mapLink}
 ${dateTime}
-${format} vs ${format}
+${format} 🆚 ${format}
 ${currency}${charges}/- Per Person.
 
 Confirmed Players:`;
@@ -85,8 +85,8 @@ Confirmed Players:`;
   }
   message =
     message +
-    "\n\nPlease pay at (" +
+    "\n\nPlease pay at " +
     `${url}#${jsonData.uniqueEventId}` +
-    ") to confirm your spot.";
+    " to confirm your spot.";
   return message;
 };
