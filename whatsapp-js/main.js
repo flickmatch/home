@@ -21,7 +21,7 @@ const hydChatId = "120363104642020865@g.us";
 app.post("/notification", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
   const jsonData = req.body;
-  const url = `play.flickmatch.in`;
+  const url = `play.flickmatch.in/match-queues`;
   //console.log('Received JSON data:', JSON.stringify(jsonData));
   client.sendMessage(testGroupChatId, createMessage(jsonData, url));
   res.send("Hello World!");
