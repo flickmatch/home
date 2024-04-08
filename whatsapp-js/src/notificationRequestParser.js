@@ -74,7 +74,7 @@ export const createMessage = (jsonData, url) => {
   const currency = currencyMap[jsonData.currency];
 
   var message = `Flickmatch football game at ${venueName}
-📍 ${mapLink}
+📍 (${mapLink})
 ${dateTime}
 ${format} 🆚 ${format}
 ${currency}${charges}/- Per Person.
