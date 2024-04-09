@@ -43,7 +43,7 @@ class WhatsAppProxyTest {
     }
 
     private WhatsAppNotification createNotificationData() {
-        return new WhatsAppNotification(null, null, null, null, null, null, null, null,null);
+        return new WhatsAppNotification(null, null, null, null, null, null, null, null,null,null);
 
     }
 }

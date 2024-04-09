@@ -8,6 +8,11 @@ const daysOfWeek = [
   "Saturday",
 ];
 
+const currencyMap = {
+  INR: "₹",
+  USD: "$",
+};
+
 // Function to convert timestamps to timeslot
 export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
   // Convert timestamps to Date objects
@@ -66,19 +71,22 @@ export const createMessage = (jsonData, url) => {
     jsonData.localTimeZone
   );
 
-  var message = `Flickmatch football game at ${venueName} 📍 (${mapLink})
+  const currency = currencyMap[jsonData.currency];
+
+  var message = `Flickmatch football game at ${venueName}
+📍 (${mapLink})
 ${dateTime}
 ${format} 🆚 ${format}
-₹${charges}/- Per Person.
+${currency}${charges}/- Per Person.
 
-🎫 Confirmed Players:`;
+Confirmed Players:`;
   for (const [index, value] of jsonData.playerNameList.entries()) {
     message = message + "\n" + `${index + 1}. ${value}`;
   }
   message =
     message +
-    "\n\nPlease pay 💵 at (" +
+    "\n\nPlease pay at " +
     `${url}#${jsonData.uniqueEventId}` +
-    ") to confirm your spot.";
+    " to confirm your spot.";
   return message;
 };

@@ -24,10 +24,11 @@ jobs:
           host: ${{ secrets.WA_SERVER }}
           username: ${{ secrets.WA_SERVER_USERNAME }}
           key: ${{ secrets.WA_SERVER_PRIVATE_KEY }}
+          password: ${{ secrets.WA_SERVER_PASSWORD }}
           port: 22
           script: |
-            cd ~/flickmatch/home/whatsapp-js
+            cd ~/safeuser/code/home/whatsapp-js
             git stash
             git pull origin main
             git status
-            ~/.nvm/versions/node/v18.15.0/bin/pm2 restart main
+            /usr/bin/pm2 restart main

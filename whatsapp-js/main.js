@@ -14,15 +14,14 @@ export const groupName = isProd ? "Online Queue Update" : "Test group ";
 import express from "express";
 const app = express();
 app.use(express.json());
-const port = 3000;
+const port = 3030;
 const ggnSouthCityChatId = "120363030960923086@g.us";
 const hydChatId = "120363104642020865@g.us";
 
 app.post("/notification", (req, res) => {
   const testGroupChatId = "120363088832118953@g.us";
   const jsonData = req.body;
-  const url = `${req.protocol}://${req.get("host")}/match-queues`;
-  // console.log(url);
+  const url = `play.flickmatch.in/match-queues`;
   //console.log('Received JSON data:', JSON.stringify(jsonData));
   client.sendMessage(testGroupChatId, createMessage(jsonData, url));
   res.send("Hello World!");
@@ -32,11 +31,19 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
+// const client = new Client({
+//   authStrategy: new LocalAuth(),
+//   puppeteer: {
+//     headless: true,
+//     args: ["--no-sandbox"],
+//   },
+// });
+
 const client = new Client({
-  authStrategy: new LocalAuth(),
-  puppeteer: {
-    headless: true,
-    args: ["--no-sandbox"],
+  webVersionCache: {
+    type: "remote",
+    remotePath:
+      "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
   },
 });
 

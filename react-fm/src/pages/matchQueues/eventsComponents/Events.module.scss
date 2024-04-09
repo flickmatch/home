@@ -90,11 +90,11 @@ input:-webkit-autofill:active {
 }
 
 // .payViaUpi {
-  // margin-right: 10px !important;
+// margin-right: 10px !important;
 // }
 
 // .payViaCard {
-  // margin-left: 10px !important;
+// margin-left: 10px !important;
 // }
 
 .paymentOptions {
@@ -134,19 +134,19 @@ label {
 }
 
 // .payViaRazorpay {
-  // margin-left: 10px !important;
-  // height: inherit;
+// margin-left: 10px !important;
+// height: inherit;
 // }
 .playersNumber {
   display: flex;
   align-items: center;
   gap: 2rem;
-  margin-bottom: 1rem;
-
+  // margin-bottom: 1rem;
 }
 
 .playerInputs {
   display: flex;
+  // justify-content: space-between;
   flex-wrap: wrap;
+  gap: 0 3rem;
 }
-
