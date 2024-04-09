@@ -132,3 +132,18 @@ label {
   font-size: 15px;
   padding-top: 0px;
 }
+
+.playersNumber {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  // margin-bottom: 1rem;
+
+}
+
+.playerInputs {
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 3rem;
+}

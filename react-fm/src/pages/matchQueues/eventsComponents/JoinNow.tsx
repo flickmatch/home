@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
+import { InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
@@ -40,6 +41,8 @@ export const JoinNow: FC<EventDetails> = ({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
+  const [value, setValue] = useState(1);
+  const [names, setNames] = useState<Array<string>>(['']);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -76,9 +79,9 @@ export const JoinNow: FC<EventDetails> = ({
     });
   }
 
-  const handleName = (e: { target: { value: string } }) => {
-    setUserData({ ...userData, name: e.target.value });
-  };
+  // const handleName = (e: { target: { value: string } }) => {
+  //   setUserData({ ...userData, name: e.target.value });
+  // };
 
   const handleEmail = (e: { target: { value: string } }) => {
     setUserData({ ...userData, email: e.target.value });
@@ -114,14 +117,15 @@ export const JoinNow: FC<EventDetails> = ({
     event.stopPropagation();
     history.replaceState(null, '', `#${uniqueEventId}`);
 
-    const { name, email, phoneNumber }: { name: string; email: string; phoneNumber: string } =
-      userData;
+    const { email, phoneNumber }: { email: string; phoneNumber: string } = userData;
 
     //setting names into array for multiple slots payment.
-    const namesArray = name.split(', ');
+    const namesArray = names;
     const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
 
-    if (name === '' || email === '' || phoneNumber === '') {
+    const emptyName = namesArray.filter((item) => item == '');
+
+    if (emptyName.length > 0 || email === '' || phoneNumber === '') {
       alert('Please fill all the details');
     } else if (namesArray.length > openSpots) {
       alert(`Names are more than openspots. Only ${openSpots} players are required`);
@@ -174,6 +178,8 @@ export const JoinNow: FC<EventDetails> = ({
     event.stopPropagation();
     setOpen(false);
     setShowPaymentOptions(false);
+    setValue(1);
+    setNames([]);
   };
 
   const onModalClick = (e: { stopPropagation: () => void }) => {
@@ -215,63 +221,97 @@ export const JoinNow: FC<EventDetails> = ({
           ) : null}
 
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Become our standout Flickplayer</DialogTitle>
-            <DialogTitle className={styles.multipleSlotsText}>
-              Book multiple slots by entering names, separated by commas
-            </DialogTitle>
-            <DialogContent>
-              <TextField
-                required
-                autoFocus
-                margin="dense"
-                name="name"
-                id="name"
-                label="Full Name"
-                value={userData.name}
-                type="text"
-                autoComplete="none"
-                fullWidth
-                variant="standard"
-                onChange={handleName}
-                onClick={onModalClick}
-              />
-
-              <TextField
-                required
-                margin="dense"
-                name="email"
-                id="email"
-                label="Email Address"
-                type="email"
-                value={userData.email}
-                autoComplete="none"
-                fullWidth
-                variant="standard"
-                onChange={handleEmail}
-                onClick={onModalClick}
-              />
-              <TextField
-                required
-                margin="dense"
-                name="number"
-                id="number"
-                label="Phone Number"
-                type="number"
-                autoComplete="none"
-                fullWidth
-                variant="standard"
-                onChange={handleNumber}
-                onClick={onModalClick}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button className={styles.cancel} onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button className={styles.pay} onClick={handlePay}>
-                Pay
-              </Button>
-            </DialogActions>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <DialogTitle>Become our standout Flickplayer</DialogTitle>
+              <DialogTitle className={styles.multipleSlotsText}>
+                Book multiple slots by entering names
+              </DialogTitle>
+              <DialogContent>
+                <div className={styles.playersNumber}>
+                  <InputLabel id="demo-simple-select-label">Number of Players</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={value}
+                    label="Age"
+                    variant="standard"
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      setValue(Number(e.target.value));
+                      setNames(Array.from({ length: Number(e.target.value) }, () => ''));
+                    }}
+                  >
+                    {Array.from({ length: 10 }, (_, index) => index + 1).map((value, idx) => (
+                      <MenuItem key={idx} value={value}>
+                        {value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+                <div className={styles.playerInputs}>
+                  {Array.from({ length: value }, (_, index) => index + 1).map((_, idx) => (
+                    <TextField
+                      key={idx}
+                      required
+                      autoFocus
+                      margin="dense"
+                      name="name"
+                      id={`name_${idx}`}
+                      label={`Name of Player ${idx + 1}`}
+                      value={names[idx]}
+                      type="text"
+                      autoComplete="none"
+                      variant="standard"
+                      onChange={(e) => {
+                        const newName = [...names];
+                        newName[idx] = e.target.value;
+                        setNames(newName);
+                      }}
+                      onClick={onModalClick}
+                    />
+                  ))}
+                </div>
+                <TextField
+                  required
+                  margin="dense"
+                  name="email"
+                  id="email"
+                  label="Email Address"
+                  type="email"
+                  value={userData.email}
+                  autoComplete="none"
+                  fullWidth
+                  variant="standard"
+                  onChange={handleEmail}
+                  onClick={onModalClick}
+                />
+                <TextField
+                  required
+                  margin="dense"
+                  name="number"
+                  id="number"
+                  label="Phone Number"
+                  type="number"
+                  autoComplete="none"
+                  fullWidth
+                  variant="standard"
+                  onChange={handleNumber}
+                  onClick={onModalClick}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button className={styles.cancel} onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button className={styles.pay} onClick={handlePay}>
+                  Pay
+                </Button>
+              </DialogActions>
+            </div>
           </Dialog>
         </>
       ) : (
