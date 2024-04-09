@@ -137,3 +137,16 @@ label {
   // margin-left: 10px !important;
   // height: inherit;
 // }
+.playersNumber {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+
+}
+
+.playerInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+

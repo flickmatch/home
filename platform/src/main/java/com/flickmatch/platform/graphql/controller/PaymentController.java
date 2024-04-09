@@ -57,8 +57,6 @@ public class PaymentController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
-    @Value("${razorpay.merchant.id}")
-    private String merchantTransactionId;
 
     @MutationMapping
     public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
@@ -67,13 +65,15 @@ public class PaymentController {
             JSONObject orderRequest = new JSONObject();
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
+            String[] parts =input.getUniqueEventId().split("-");
+            String cityId = parts[0];
+            String currency = eventBuilder.getCurrencyForCity(cityId);
             orderRequest.put("amount", amount);
-//            orderRequest.put("currency", "INR");
-//            orderRequest.put("receipt", "order_receipt_11");
+            orderRequest.put("currency", currency);
             Order order = razorpayClient.orders.create(orderRequest);
-            paymentRequestBuilder.createPaymentRequest(merchantTransactionId,
-                    input.getUniqueEventId(), input.getPlayerInputList());
             String orderId = order.get("id");
+            paymentRequestBuilder.createPaymentRequest(orderId,
+                    input.getUniqueEventId(), input.getPlayerInputList());
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).build();
         } catch (Exception e) {
             log.error("Error creating order: {}", e.getMessage());
@@ -81,6 +81,5 @@ public class PaymentController {
                     .build();
         }
     }
-
 
 }

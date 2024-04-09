@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
+import { InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
@@ -24,6 +25,7 @@ import useNotifications from '@/store/notifications';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+
 // import axios from 'axios';
 
 export const JoinNow: FC<EventDetails> = ({
@@ -42,6 +44,8 @@ export const JoinNow: FC<EventDetails> = ({
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   // const [orderId, setOrderId] = useState('');
+  const [razorPay, setRazorPay] = useState(false);
+  const [value, setValue] = useState(1);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -226,7 +230,6 @@ export const JoinNow: FC<EventDetails> = ({
   //   }
   // }
 
-
   return (
     <>
       {openWaitList > 0 ? (
@@ -255,18 +258,15 @@ export const JoinNow: FC<EventDetails> = ({
                   if (stripePaymentUrl) openInNewTab(stripePaymentUrl);
                   else alert('Match Full');
                 }}
-                >
+              >
                 Card
               </Button>
               <Button
                 variant="contained"
                 className={styles.payViaRazorpay}
-                startIcon={<Icon icon="simple-icons:razorpay" color='navy'/>}
-                // onClick={() => 
-                  // createOrder()
-            // }
+                startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
+                onClick={() => setRazorPay(true)}
               >
-                
                 RazorPay
               </Button>
             </FlexBox>
@@ -331,6 +331,85 @@ export const JoinNow: FC<EventDetails> = ({
               </Button>
             </DialogActions>
           </Dialog>
+          <Dialog open={razorPay} onClose={() => setRazorPay(false)}>
+            <DialogTitle>Become our standout Flickplayer</DialogTitle>
+            <DialogTitle className={styles.multipleSlotsText}>
+              Book multiple slots by adding players and their phone numbers
+            </DialogTitle>
+            <DialogContent>
+              <div className={styles.playersNumber}>
+                <InputLabel id="demo-simple-select-label">Number of Players</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={value}
+                  label="Age"
+                  onChange={(e) => setValue(Number(e.target.value))}
+                >
+                  {Array.from({ length: 10 }, (_, index) => index + 1).map((value, idx) => (
+                    <MenuItem key={idx} value={value}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+              <div className={styles.playerInputs}>
+                {Array.from({ length: value }, (_, index) => index + 1).map((_, idx) => (
+                  <TextField
+                    key={idx}
+                    required
+                    autoFocus
+                    margin="dense"
+                    name="name"
+                    id={`name_${idx}`}
+                    label={`Name of Player ${idx + 1}`}
+                    value={userData.name}
+                    type="text"
+                    autoComplete="none"
+                    variant="standard"
+                    onChange={handleName}
+                    onClick={onModalClick}
+                  />
+                ))}
+              </div>
+
+              <TextField
+                required
+                margin="dense"
+                name="email"
+                id="email"
+                label="Email Address"
+                type="email"
+                value={userData.email}
+                autoComplete="none"
+                fullWidth
+                variant="standard"
+                onChange={handleEmail}
+                onClick={onModalClick}
+              />
+              <TextField
+                required
+                margin="dense"
+                name="number"
+                id="number"
+                label="Phone Number"
+                type="number"
+                autoComplete="none"
+                fullWidth
+                variant="standard"
+                onChange={handleNumber}
+                onClick={onModalClick}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button className={styles.cancel} onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button className={styles.pay} onClick={handlePay}>
+                Pay
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       ) : (
         <Tooltip title="Event Locked" arrow>
@@ -340,4 +419,3 @@ export const JoinNow: FC<EventDetails> = ({
     </>
   );
 };
-
