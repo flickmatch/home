@@ -179,7 +179,8 @@ export const JoinNow: FC<EventDetails> = ({
 
         generateUrl();
       } else {
-        createOrder('2-2024-04-15-1', objectArray, setAmount) // to be changed after local testing
+        // createOrder('2-2024-04-15-1', objectArray, setAmount) // to be changed after local testing
+        createOrder(uniqueEventId, objectArray, setAmount) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
             setOpen(false);
