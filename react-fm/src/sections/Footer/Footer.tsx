@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TelegramIcon from '@mui/icons-material/Telegram';
@@ -82,6 +83,11 @@ function Footer() {
       >
         <Tooltip title="Follow on LinkedIn" arrow>
           <LinkedInIcon className={styles.linkedInIcon} />
+        </Tooltip>
+      </a>
+      <a href="https://github.com/flickmatch/home" target="_blank" rel="noreferrer">
+        <Tooltip title="Follow on github" arrow>
+          <GitHubIcon className={styles.githubIcon} />
         </Tooltip>
       </a>
     </>
