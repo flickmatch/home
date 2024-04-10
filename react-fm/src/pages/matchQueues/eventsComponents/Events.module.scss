@@ -90,12 +90,13 @@ input:-webkit-autofill:active {
 }
 
 // .payViaUpi {
-// margin-right: 10px !important;
-// }
-
-// .payViaCard {
 // margin-left: 10px !important;
 // }
+
+// .payViaRazorpay {
+// margin-right: 50px !important;
+// }
+
 
 .paymentOptions {
   width: 35%;
@@ -106,8 +107,9 @@ input:-webkit-autofill:active {
 
 .paymentOptionsPortrait {
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   position: relative;
+  gap: 1rem;
 }
 
 .cancel,
@@ -133,10 +135,7 @@ label {
   padding-top: 0px;
 }
 
-// .payViaRazorpay {
-// margin-left: 10px !important;
-// height: inherit;
-// }
+
 .playersNumber {
   display: flex;
   align-items: center;

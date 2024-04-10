@@ -25,6 +25,7 @@ import useNotifications from '@/store/notifications';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+import { createOrder, displayRazorpay } from './RazorPay';
 
 // import axios from 'axios';
 
@@ -43,10 +44,11 @@ export const JoinNow: FC<EventDetails> = ({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
-  // const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [razorPay, setRazorPay] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>(['']);
+  const [amount, setAmount] = useState(0);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -136,14 +138,15 @@ export const JoinNow: FC<EventDetails> = ({
     } else {
       setOpen(false);
 
-      const generateUrl = () => {
-        fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `mutation InitiatePayment {
+      if (!razorPay) {
+        const generateUrl = () => {
+          fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `mutation InitiatePayment {
                 initiatePayment(
                     input: {
                         uniqueEventId: "${uniqueEventId}"
@@ -156,25 +159,39 @@ export const JoinNow: FC<EventDetails> = ({
                     paymentLink
                 }
             }`,
-            variables: userInput.input,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
-              throw new Error(result.errors[0].message);
-            }
-            const paymentUrl = result.data.initiatePayment.paymentLink;
-            window.open(paymentUrl, '_self');
+              variables: userInput.input,
+            }),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.errors) {
+                // Handle GraphQL errors
+                throw new Error(result.errors[0].message);
+              }
+              const paymentUrl = result.data.initiatePayment.paymentLink;
+              window.open(paymentUrl, '_self');
+            })
+            .catch((error) => {
+              // eslint-disable-next-line no-console
+              console.log(error);
+            });
+        };
+
+        generateUrl();
+      } else {
+        createOrder('2-2024-04-15-1', objectArray, setAmount) // to be changed after local testing
+          .then((orderId) => {
+            setOrderId(orderId);
+            setOpen(false);
+            setShowPaymentOptions(false);
+            setValue(1);
+            setNames(['']);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
-            console.log(error);
+            console.error(error);
           });
-      };
-
-      generateUrl();
+      }
     }
   };
 
@@ -183,56 +200,18 @@ export const JoinNow: FC<EventDetails> = ({
     setOpen(false);
     setShowPaymentOptions(false);
     setValue(1);
-    setNames([]);
+    setNames(['']);
   };
 
   const onModalClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
   };
 
-  // const createOrder = async () => {
-  //   try {
-  //     // Make a POST request to your backend to create the order
-  //     const response = await axios.post(`http://localhost:8080/graphql/create-order`, {
-  //       amount: charges // Send the order amount to your backend
-  //     });
+  if (orderId) {
+    displayRazorpay(amount, orderId, userData.email, userData.name, userData.phoneNumber);
+  }
 
-  //     // Assuming your backend returns the order ID
-  //     const { orderId } = response.data;
-
-  //     // Update state with the generated order ID
-  //     // setOrderId(orderId);
-
-  //     // // Initiate Razorpay payment using the order ID
-  //     // const options = {
-  //     //   key: 'rzp_test_hpeD9rSq9zDwJN',
-  //     //   amount: charges,
-  //     //   currency: 'INR',
-  //     //   name: 'Your Company Name',
-  //     //   description: 'Payment for Order',
-  //     //   order_id: orderId,
-  //     //   handler: function (response) {
-  //     //     // Handle successful payment
-  //     //     alert('Payment successful!');
-  //     //   },
-  //     //   prefill: {
-  //     //     name: 'Customer Name',
-  //     //     email: 'customer@example.com'
-  //     //   },
-  //     //   notes: {
-  //     //     address: 'Customer Address'
-  //     //   },
-  //     //   theme: {
-  //     //     color: '#F37254'
-  //     //   }
-  //     // };
-  //     // const rzp = new window.Razorpay(options);
-  //     // rzp.open();
-  //     console.log(orderId);
-  //   } catch (error) {
-  //     console.error('Error creating order:', error);
-  //   }
-  // }
+  // console.log(orderId, amount);
 
   return (
     <>
@@ -249,10 +228,10 @@ export const JoinNow: FC<EventDetails> = ({
               <Button
                 variant="contained"
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
-                className={styles.payViaUpi}
+                className={isPortrait ? styles.payViaUpi : ''}
                 onClick={handleClickOpen}
               >
-                Pay via UPI
+                UPI
               </Button>
               <Button
                 variant="contained"
@@ -267,9 +246,12 @@ export const JoinNow: FC<EventDetails> = ({
               </Button>
               <Button
                 variant="contained"
-                className={styles.payViaRazorpay}
+                className={isPortrait ? styles.payViaRazorpay : ''}
                 startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
-                onClick={() => setRazorPay(true)}
+                onClick={() => {
+                  setRazorPay(true);
+                  setOpen(true);
+                }}
               >
                 RazorPay
               </Button>
@@ -368,85 +350,6 @@ export const JoinNow: FC<EventDetails> = ({
                 </Button>
               </DialogActions>
             </div>
-          </Dialog>
-          <Dialog open={razorPay} onClose={() => setRazorPay(false)}>
-            <DialogTitle>Become our standout Flickplayer</DialogTitle>
-            <DialogTitle className={styles.multipleSlotsText}>
-              Book multiple slots by adding players and their phone numbers
-            </DialogTitle>
-            <DialogContent>
-              <div className={styles.playersNumber}>
-                <InputLabel id="demo-simple-select-label">Number of Players</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={value}
-                  label="Age"
-                  onChange={(e) => setValue(Number(e.target.value))}
-                >
-                  {Array.from({ length: 10 }, (_, index) => index + 1).map((value, idx) => (
-                    <MenuItem key={idx} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-              <div className={styles.playerInputs}>
-                {Array.from({ length: value }, (_, index) => index + 1).map((_, idx) => (
-                  <TextField
-                    key={idx}
-                    required
-                    autoFocus
-                    margin="dense"
-                    name="name"
-                    id={`name_${idx}`}
-                    label={`Name of Player ${idx + 1}`}
-                    value={userData.name}
-                    type="text"
-                    autoComplete="none"
-                    variant="standard"
-                    onChange={handleName}
-                    onClick={onModalClick}
-                  />
-                ))}
-              </div>
-
-              <TextField
-                required
-                margin="dense"
-                name="email"
-                id="email"
-                label="Email Address"
-                type="email"
-                value={userData.email}
-                autoComplete="none"
-                fullWidth
-                variant="standard"
-                onChange={handleEmail}
-                onClick={onModalClick}
-              />
-              <TextField
-                required
-                margin="dense"
-                name="number"
-                id="number"
-                label="Phone Number"
-                type="number"
-                autoComplete="none"
-                fullWidth
-                variant="standard"
-                onChange={handleNumber}
-                onClick={onModalClick}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button className={styles.cancel} onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button className={styles.pay} onClick={handlePay}>
-                Pay
-              </Button>
-            </DialogActions>
           </Dialog>
         </>
       ) : (

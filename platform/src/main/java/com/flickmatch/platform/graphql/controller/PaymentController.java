@@ -1,14 +1,19 @@
 package com.flickmatch.platform.graphql.controller;
 
+import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.graphql.input.InitiatePaymentInput;
+import com.flickmatch.platform.graphql.input.RazorPayCallback;
 import com.flickmatch.platform.graphql.input.RazorPayInput;
 import com.flickmatch.platform.graphql.type.InitiatePaymentOutput;
+import com.flickmatch.platform.graphql.type.MutationResult;
 import com.flickmatch.platform.graphql.type.RazorPayOutput;
 import com.flickmatch.platform.proxy.PhonePeProxy;
+
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
+import com.razorpay.Utils;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
+
 
 import java.util.UUID;
 
@@ -74,10 +80,43 @@ public class PaymentController {
             String orderId = order.get("id");
             paymentRequestBuilder.createPaymentRequest(orderId,
                     input.getUniqueEventId(), input.getPlayerInputList());
-            return RazorPayOutput.builder().orderId(orderId).isInitiated(true).build();
+            return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
         } catch (Exception e) {
             log.error("Error creating order: {}", e.getMessage());
             return RazorPayOutput.builder().isInitiated(false)
+                    .build();
+        }
+    }
+
+    @MutationMapping
+    public MutationResult processRazorCallback(@Argument RazorPayCallback input) {
+        try {
+            RazorpayClient razorpay = new RazorpayClient(keyId, secret);
+            PaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(input.getRazorPayOrderId());
+            JSONObject options = new JSONObject();
+            options.put("razorpay_order_id", input.getRazorPayOrderId());
+            options.put("razorpay_payment_id", input.getRazorPaymentId());
+            options.put("razorpay_signature", input.getRazorPaySignature());
+
+            boolean status =  Utils.verifyPaymentSignature(options, secret);
+            if(status) {
+                eventBuilder.joinEvent(paymentRequest);
+                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                log.info("Player joined event successfully.");
+                return MutationResult.builder().isSuccessful(true)
+                        .build();
+
+            }
+
+            else {
+                return MutationResult.builder().isSuccessful(false).errorMessage("Invalid Signature")
+                        .build();
+            }
+
+        }
+        catch (Exception e) {
+            log.error("Error processing callback: {}", e.getMessage());
+            return MutationResult.builder().isSuccessful(false).errorMessage(e.getMessage())
                     .build();
         }
     }
