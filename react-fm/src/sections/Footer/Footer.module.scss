@@ -129,7 +129,8 @@ a {
 .youtubeIcon,
 .instaIcon,
 .whatsappIcon,
-.linkedInIcon {
+.linkedInIcon,
+.githubIcon {
   color: white;
   font-size: 28px;
   cursor: pointer;
@@ -160,6 +161,11 @@ a {
 }
 
 .linkedInIcon:hover {
+  color: #4ce95a;
+  transform: translateY(-5px);
+}
+
+.githubIcon:hover {
   color: #4ce95a;
   transform: translateY(-5px);
 }
