@@ -71,7 +71,7 @@ export const createMessage = (jsonData, url) => {
     jsonData.localTimeZone
   );
 
-  const currency = currencyMap[jsonData.currency];
+  const currency = currencyMap[jsonData.currency] || "₹";
 
   var message = `Flickmatch football game at ${venueName}
 📍 (${mapLink})
