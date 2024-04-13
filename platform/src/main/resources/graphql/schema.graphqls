@@ -11,7 +11,6 @@ type Mutation {
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
     initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
-    processRazorCallback(input:RazorPayCallbackInput): MutationResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -69,13 +68,6 @@ input CreateUserInput {
 input RazorPayInput {
     uniqueEventId: ID!
     playerInputList: [PlayerInput!]!
-}
-
-input RazorPayCallbackInput {
-    razorPaymentId: String!
-    razorPayOrderId: String!
-    razorPaySignature: String!
-
 }
 
 type User {
