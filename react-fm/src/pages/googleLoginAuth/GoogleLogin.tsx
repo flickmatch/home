@@ -23,9 +23,7 @@ function GoogleLogin() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-
-  const addUsers = (email:string,name:string) => {
+  const addUsers = (email: string, name: string) => {
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -58,8 +56,6 @@ function GoogleLogin() {
       });
   };
 
-
-
   const getGoogleUserInfo = async (accessToken: string) => {
     axios
       .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
@@ -71,7 +67,7 @@ function GoogleLogin() {
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log(res.data);
-        addUsers(res.data.email,res.data.name);
+        addUsers(res.data.email, res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
         setIsLoggedIn(true);
         navigate('/match-queues');
@@ -134,3 +130,7 @@ function GoogleLogin() {
 }
 
 export default GoogleLogin;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

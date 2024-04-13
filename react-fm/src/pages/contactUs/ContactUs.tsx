@@ -110,3 +110,7 @@ function ContactUs() {
 }
 
 export default ContactUs;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

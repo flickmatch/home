@@ -261,3 +261,7 @@ function Welcome() {
 }
 
 export default Welcome;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

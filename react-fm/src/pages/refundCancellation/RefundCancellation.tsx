@@ -116,3 +116,7 @@ function RefundCancellation() {
 }
 
 export default RefundCancellation;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

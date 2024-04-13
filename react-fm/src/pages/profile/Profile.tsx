@@ -205,3 +205,7 @@ function Profile() {
 }
 
 export default Profile;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

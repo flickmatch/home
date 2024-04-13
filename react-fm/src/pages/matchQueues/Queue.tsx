@@ -112,11 +112,12 @@ function MatchQueue() {
           <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
             <div className={isPortrait ? styles.mobileContainer : styles.container}>
               <Cities
-              cityName={city.cityName}
-              cityId={city.cityId}
-              events={city.events}
-              dummyData={city.dummyData} 
-              countryCode={city.countryCode} />
+                cityName={city.cityName}
+                cityId={city.cityId}
+                events={city.events}
+                dummyData={city.dummyData}
+                countryCode={city.countryCode}
+              />
               <GamesList gameEvent={city.events} cityName={city.cityName} />
             </div>
           </Zoom>
@@ -160,3 +161,7 @@ function MatchQueue() {
 }
 
 export default MatchQueue;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};

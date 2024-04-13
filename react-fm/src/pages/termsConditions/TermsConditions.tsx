@@ -123,3 +123,7 @@ function TermsConditions() {
 }
 
 export default TermsConditions;
+export const metadata = {
+  title: 'Flickmatch',
+  description: 'Find players, join teams and play matches!',
+};
