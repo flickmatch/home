@@ -123,3 +123,7 @@ function TermsConditions() {
 }
 
 export default TermsConditions;
+export const metadata = {
+  title: 'Terms & Conditions',
+  description: 'The use of this website is subject to the following terms of use:',
+};

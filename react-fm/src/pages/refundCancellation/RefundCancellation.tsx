@@ -116,3 +116,8 @@ function RefundCancellation() {
 }
 
 export default RefundCancellation;
+export const metadata = {
+  title: 'Refund & Cancellation',
+  description:
+    'Flickmatch Private Limited is committed to assisting its customers to the fullest extent possible, and as a result, maintains a lenient cancellation policy.',
+};

@@ -110,3 +110,7 @@ function ContactUs() {
 }
 
 export default ContactUs;
+export const metadata = {
+  title: 'Contact Us',
+  description: 'flickmatch@gmail.com',
+};

@@ -144,15 +144,7 @@ function WhatWeDo() {
 
 export default WhatWeDo;
 
-{
-  /* <Typography className={styles.highlights}>
-            Catch all the highlights on{' '}
-            <a href="https://www.youtube.com/@FlickMatch" className={styles.yout}>
-              YouTube
-            </a>{' '}
-            and{' '}
-            <a href="https://www.instagram.com/flickmatch/" className={styles.insta}>
-              Instagram.
-            </a>
-          </Typography> */
-}
+export const metadata = {
+  title: 'What We Do',
+  description: 'Flickmatch finds or organises football games near you.',
+};
