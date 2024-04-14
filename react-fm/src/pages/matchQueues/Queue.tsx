@@ -162,6 +162,6 @@ function MatchQueue() {
 
 export default MatchQueue;
 export const metadata = {
-  title: 'Flickmatch',
+  title: 'Match Queues',
   description: 'Find players, join teams and play matches!',
 };

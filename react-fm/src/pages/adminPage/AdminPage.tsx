@@ -352,7 +352,3 @@ function AdminPage() {
 }
 
 export default AdminPage;
-export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
-};

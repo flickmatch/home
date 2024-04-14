@@ -131,6 +131,6 @@ function GoogleLogin() {
 
 export default GoogleLogin;
 export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
+  title: 'Login | Singup',
+  description: 'Join our community and start your journey right away!',
 };

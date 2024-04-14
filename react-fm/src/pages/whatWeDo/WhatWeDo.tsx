@@ -145,6 +145,6 @@ function WhatWeDo() {
 export default WhatWeDo;
 
 export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
+  title: 'What We Do',
+  description: 'Flickmatch finds or organises football games near you.',
 };

@@ -59,6 +59,6 @@ function AboutUs() {
 
 export default AboutUs;
 export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
+  title: 'About Us',
+  description: 'Flickmatch finds or organises football games near you.',
 };

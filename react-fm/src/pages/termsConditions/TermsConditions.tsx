@@ -124,6 +124,6 @@ function TermsConditions() {
 
 export default TermsConditions;
 export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
+  title: 'Terms & Conditions',
+  description: 'The use of this website is subject to the following terms of use:',
 };

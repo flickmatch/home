@@ -151,6 +151,7 @@ function PrivacyPolicy() {
 
 export default PrivacyPolicy;
 export const metadata = {
-  title: 'Flickmatch',
-  description: 'Find players, join teams and play matches!',
+  title: 'Privacy Policy',
+  description:
+    'We are dedicated to protecting your privacy. If we request identifiable information while you use this website, be assured it will only be used as per this privacy statement.',
 };
