@@ -97,10 +97,21 @@ input:-webkit-autofill:active {
 // margin-right: 50px !important;
 // }
 
+.payViaUpi {
+
+  margin-right: 20px !important;
+
+}
+
+.payViaCard {
+
+  margin-left: 20px !important;
+
+}
 
 .paymentOptions {
-  width: 35%;
-  justify-content: space-between;
+  // width: 35%;
+  // justify-content: space-between;
   position: relative;
   float: right;
 }

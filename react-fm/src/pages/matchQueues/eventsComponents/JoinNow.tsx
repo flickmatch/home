@@ -179,7 +179,7 @@ export const JoinNow: FC<EventDetails> = ({
 
         generateUrl();
       } else {
-        // createOrder('2-2024-04-15-1', objectArray, setAmount) // to be changed after local testing
+        // createOrder('2-2024-04-20-1', objectArray, setAmount) // to be changed after local testing
         createOrder(uniqueEventId, objectArray, setAmount) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
@@ -245,7 +245,7 @@ export const JoinNow: FC<EventDetails> = ({
               >
                 Card
               </Button>
-              <Button
+              {/* <Button
                 variant="contained"
                 className={isPortrait ? styles.payViaRazorpay : ''}
                 startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
@@ -255,7 +255,7 @@ export const JoinNow: FC<EventDetails> = ({
                 }}
               >
                 RazorPay
-              </Button>
+              </Button> */}
             </FlexBox>
           ) : null}
 

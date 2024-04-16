@@ -7,6 +7,7 @@ import com.flickmatch.platform.dynamodb.repository.RazorPaymentRequestRepository
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
 import com.flickmatch.platform.graphql.type.MutationResult;
+import com.flickmatch.platform.proxy.RazorPayProxy;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 import lombok.extern.log4j.Log4j2;
@@ -30,9 +31,8 @@ public class RazorPaymentCallbackController {
     RazorPaymentRequestBuilder paymentRequestBuilder;
     @Autowired
     EventBuilder eventBuilder;
-
-    @Value("${razorpay.key.id}")
-    private String keyId;
+    @Autowired
+    private RazorPayProxy razorPayProxy;
 
     @Value("${razorpay.key.secret}")
     private String secret;
@@ -41,12 +41,14 @@ public class RazorPaymentCallbackController {
 //    @RequestMapping(value = "/processRazorPayment", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> processRazorCallback(@RequestBody RazorPaymentCallbackResponse callbackResponse){
         try {
-            RazorpayClient razorpay = new RazorpayClient(keyId, secret);
+            RazorpayClient razorpay = razorPayProxy.getRazorPayClient();
             RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(callbackResponse.getRazorpay_order_id());
             JSONObject options = new JSONObject();
             options.put("razorpay_order_id",callbackResponse.getRazorpay_order_id());
             options.put("razorpay_payment_id",callbackResponse.getRazorpay_payment_id());
             options.put("razorpay_signature", callbackResponse.getRazorpay_signature());
+
+//            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
             boolean status =  Utils.verifyPaymentSignature(options, secret);
             if(status) {
@@ -56,7 +58,7 @@ public class RazorPaymentCallbackController {
             }
 
             else {
-                log.info("Invalid signature.");
+                log.info("Invalid signature for orderId : "+callbackResponse.getRazorpay_order_id());
             }
 
         }

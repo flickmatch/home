@@ -3,7 +3,8 @@ const createOrder = (
   objectArray: { waNumber: string; name: string }[],
   setAmount: React.Dispatch<React.SetStateAction<number>>,
 ): Promise<string> =>
-  fetch('http://localhost:8080/graphql', {
+  // fetch('http://localhost:8080/graphql', {
+  fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const displayRazorpay = (
       image:
         'https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314',
       order_id: orderId,
-      callback_url: 'http://localhost:8080/processRazorPayment',
+      callback_url: 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/processRazorPayment',
       redirect: true,
       prefill: {
         name,

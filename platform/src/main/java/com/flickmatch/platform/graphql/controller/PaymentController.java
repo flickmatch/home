@@ -9,6 +9,7 @@ import com.flickmatch.platform.graphql.type.InitiatePaymentOutput;
 import com.flickmatch.platform.graphql.type.RazorPayOutput;
 import com.flickmatch.platform.proxy.PhonePeProxy;
 
+import com.flickmatch.platform.proxy.RazorPayProxy;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 
@@ -55,30 +56,21 @@ public class PaymentController {
         }
     }
 
-    @Value("${razorpay.key.id}")
-    private String keyId;
-
-    @Value("${razorpay.key.secret}")
-    private String secret;
 
     @Autowired
     RazorPaymentRequestBuilder razorPaymentRequestBuilder;
+
+    @Autowired
+    RazorPayProxy razorPayProxy;
 
 
     @MutationMapping
     public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
         try {
-            RazorpayClient razorpayClient = new RazorpayClient(keyId, secret);
-            JSONObject orderRequest = new JSONObject();
+            RazorpayClient razorpayClient = razorPayProxy.getRazorPayClient();
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
-            String[] parts =input.getUniqueEventId().split("-");
-            String cityId = parts[0];
-            String currency = eventBuilder.getCurrencyForCity(cityId);
-            orderRequest.put("amount", amount);
-            orderRequest.put("currency", currency);
-            Order order = razorpayClient.orders.create(orderRequest);
-            String orderId = order.get("id");
+            String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder,amount);
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
                     input.getUniqueEventId(), input.getPlayerInputList());
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
