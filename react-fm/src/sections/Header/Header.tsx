@@ -96,7 +96,7 @@ const Header: FC<login> = ({ loggedIn }) => {
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
-          Match Queue
+          Match Queues
         </Typography>
         {hasAccess ? (
           <>

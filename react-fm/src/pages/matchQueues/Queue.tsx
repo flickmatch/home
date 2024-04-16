@@ -106,22 +106,25 @@ function MatchQueue() {
     };
   }, []);
 
-  const events = () =>
-    citiesData.length > 0
-      ? citiesData.map((city: CityDetails) => (
-          <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
-            <div className={isPortrait ? styles.mobileContainer : styles.container}>
-              <Cities
-              cityName={city.cityName}
-              cityId={city.cityId}
-              events={city.events}
-              dummyData={city.dummyData} 
-              countryCode={city.countryCode} />
-              <GamesList gameEvent={city.events} cityName={city.cityName} />
-            </div>
-          </Zoom>
-        ))
-      : null;
+  const events = () => {
+    citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
+
+    const gameQueues = citiesData.map((city: CityDetails) => (
+      <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
+        <div className={isPortrait ? styles.mobileContainer : styles.container}>
+          <Cities
+            cityName={city.cityName}
+            cityId={city.cityId}
+            events={city.events}
+            dummyData={city.dummyData}
+            countryCode={city.countryCode}
+          />
+          <GamesList gameEvent={city.events} cityName={city.cityName} />
+        </div>
+      </Zoom>
+    ));
+    return gameQueues;
+  };
 
   const skeleton = () =>
     showSkeleton ? (
@@ -153,6 +156,7 @@ function MatchQueue() {
       </div>
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
+
       {skeleton()}
       <Footer />
     </>
