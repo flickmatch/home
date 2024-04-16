@@ -45,6 +45,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   const [orderId, setOrderId] = useState('');
+  // eslint-disable-next-line
   const [razorPay, setRazorPay] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>(['']);
