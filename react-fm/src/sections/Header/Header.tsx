@@ -9,6 +9,7 @@ import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -41,7 +42,7 @@ const Header: FC<login> = ({ loggedIn }) => {
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
-  const [hasAccess, setHasAccess] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
 
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
@@ -68,7 +69,7 @@ const Header: FC<login> = ({ loggedIn }) => {
         const check = data
           .map((mailId: { EmailId: string }) => mailId.EmailId)
           .includes(parseData.email);
-        setHasAccess(check);
+        setIsAdminMode(check);
       };
 
       fetchMailIds();
@@ -98,12 +99,14 @@ const Header: FC<login> = ({ loggedIn }) => {
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
           Match Queue
         </Typography>
-        {hasAccess ? (
+        {isAdminMode ? (
           <>
             <Divider className={styles.divider} orientation="vertical" flexItem />
+
             <Typography className={styles.menuItem} component={Link} to="/add-game">
               Add Game
             </Typography>
+
             <Divider className={styles.divider} orientation="vertical" flexItem />
             <Typography className={styles.menuItem} component={Link} to="/add-turf">
               Add Turf
@@ -136,6 +139,14 @@ const Header: FC<login> = ({ loggedIn }) => {
             <Typography component={Link} to="/home">
               <img src={appLogo} alt="logo" className={styles.logo} />
             </Typography>
+            {isAdminMode ? (
+              <Chip
+                label="admin mode"
+                color="primary"
+                variant="outlined"
+                className={styles.adminModeTag}
+              />
+            ) : null}
           </FlexBox>
           <FlexBox>
             {menus()}
