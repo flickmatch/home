@@ -25,6 +25,9 @@ import useNotifications from '@/store/notifications';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+import { createOrder, displayRazorpay } from './RazorPay';
+
+// import axios from 'axios';
 
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
@@ -41,8 +44,12 @@ export const JoinNow: FC<EventDetails> = ({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
+  const [orderId, setOrderId] = useState('');
+  // eslint-disable-next-line
+  const [razorPay, setRazorPay] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>(['']);
+  const [amount, setAmount] = useState(0);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -132,14 +139,15 @@ export const JoinNow: FC<EventDetails> = ({
     } else {
       setOpen(false);
 
-      const generateUrl = () => {
-        fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `mutation InitiatePayment {
+      if (!razorPay) {
+        const generateUrl = () => {
+          fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `mutation InitiatePayment {
                 initiatePayment(
                     input: {
                         uniqueEventId: "${uniqueEventId}"
@@ -152,25 +160,40 @@ export const JoinNow: FC<EventDetails> = ({
                     paymentLink
                 }
             }`,
-            variables: userInput.input,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
-              throw new Error(result.errors[0].message);
-            }
-            const paymentUrl = result.data.initiatePayment.paymentLink;
-            window.open(paymentUrl, '_self');
+              variables: userInput.input,
+            }),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.errors) {
+                // Handle GraphQL errors
+                throw new Error(result.errors[0].message);
+              }
+              const paymentUrl = result.data.initiatePayment.paymentLink;
+              window.open(paymentUrl, '_self');
+            })
+            .catch((error) => {
+              // eslint-disable-next-line no-console
+              console.log(error);
+            });
+        };
+
+        generateUrl();
+      } else {
+        // createOrder('2-2024-04-20-1', objectArray, setAmount) // to be changed after local testing
+        createOrder(uniqueEventId, objectArray, setAmount) // to be changed after local testing
+          .then((orderId) => {
+            setOrderId(orderId);
+            setOpen(false);
+            setShowPaymentOptions(false);
+            setValue(1);
+            setNames(['']);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
-            console.log(error);
+            console.error(error);
           });
-      };
-
-      generateUrl();
+      }
     }
   };
 
@@ -179,12 +202,18 @@ export const JoinNow: FC<EventDetails> = ({
     setOpen(false);
     setShowPaymentOptions(false);
     setValue(1);
-    setNames([]);
+    setNames(['']);
   };
 
   const onModalClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
   };
+
+  if (orderId) {
+    displayRazorpay(amount, orderId, userData.email, userData.name, userData.phoneNumber);
+  }
+
+  // console.log(orderId, amount);
 
   return (
     <>
@@ -201,10 +230,10 @@ export const JoinNow: FC<EventDetails> = ({
               <Button
                 variant="contained"
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
-                className={styles.payViaUpi}
+                className={isPortrait ? styles.payViaUpi : ''}
                 onClick={handleClickOpen}
               >
-                Pay via UPI
+                UPI
               </Button>
               <Button
                 variant="contained"
@@ -217,6 +246,17 @@ export const JoinNow: FC<EventDetails> = ({
               >
                 Card
               </Button>
+              {/* <Button
+                variant="contained"
+                className={isPortrait ? styles.payViaRazorpay : ''}
+                startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
+                onClick={() => {
+                  setRazorPay(true);
+                  setOpen(true);
+                }}
+              >
+                RazorPay
+              </Button> */}
             </FlexBox>
           ) : null}
 

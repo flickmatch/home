@@ -10,6 +10,7 @@ type Mutation {
     updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
+    initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
     """
     This is not implemented yet, will be required for P1
     """
@@ -64,11 +65,22 @@ input CreateUserInput {
     phoneNumber:  String
 }
 
+input RazorPayInput {
+    uniqueEventId: ID!
+    playerInputList: [PlayerInput!]!
+}
+
 type User {
     email: String!
     name: String!
     phoneNumber:  String
     userId: String
+}
+
+type RazorPayOutput {
+    orderId: String!
+    isInitiated: Boolean!
+    amount: Float!
 }
 
 type UserResult {

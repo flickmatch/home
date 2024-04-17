@@ -2,14 +2,25 @@ package com.flickmatch.platform.graphql.controller;
 
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
+import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
 import com.flickmatch.platform.graphql.input.InitiatePaymentInput;
+import com.flickmatch.platform.graphql.input.RazorPayInput;
 import com.flickmatch.platform.graphql.type.InitiatePaymentOutput;
+import com.flickmatch.platform.graphql.type.RazorPayOutput;
 import com.flickmatch.platform.proxy.PhonePeProxy;
+
+import com.flickmatch.platform.proxy.RazorPayProxy;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+
 import lombok.extern.log4j.Log4j2;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
+
 
 import java.util.UUID;
 
@@ -44,4 +55,30 @@ public class PaymentController {
                     .build();
         }
     }
+
+
+    @Autowired
+    RazorPaymentRequestBuilder razorPaymentRequestBuilder;
+
+    @Autowired
+    RazorPayProxy razorPayProxy;
+
+
+    @MutationMapping
+    public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
+        try {
+            RazorpayClient razorpayClient = razorPayProxy.getRazorPayClient();
+            long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
+            long amount = eventAmount * input.getPlayerInputList().size();
+            String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder,amount);
+            razorPaymentRequestBuilder.createPaymentRequest(orderId,
+                    input.getUniqueEventId(), input.getPlayerInputList());
+            return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
+        } catch (Exception e) {
+            log.error("Error creating order: {}", e.getMessage());
+            return RazorPayOutput.builder().isInitiated(false)
+                    .build();
+        }
+    }
+
 }
