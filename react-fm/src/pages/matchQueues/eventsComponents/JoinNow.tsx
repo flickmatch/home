@@ -45,7 +45,6 @@ export const JoinNow: FC<EventDetails> = ({
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   const [orderId, setOrderId] = useState('');
-  // eslint-disable-next-line
   const [razorPay, setRazorPay] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>(['']);
@@ -246,9 +245,10 @@ export const JoinNow: FC<EventDetails> = ({
               >
                 Card
               </Button>
-              {/* <Button
+              <Button
                 variant="contained"
-                className={isPortrait ? styles.payViaRazorpay : ''}
+                // className={isPortrait ? styles.payViaRazorpay : ''}
+                className={styles.payViaRazorpay}
                 startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
                 onClick={() => {
                   setRazorPay(true);
@@ -256,7 +256,7 @@ export const JoinNow: FC<EventDetails> = ({
                 }}
               >
                 RazorPay
-              </Button> */}
+              </Button>
             </FlexBox>
           ) : null}
 
