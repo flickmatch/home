@@ -47,7 +47,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [orderId, setOrderId] = useState('');
   const [razorPay, setRazorPay] = useState(false);
   const [value, setValue] = useState(1);
-  const [names, setNames] = useState<Array<string>>(['']);
+  const [names, setNames] = useState<Array<string>>([]);
   const [amount, setAmount] = useState(0);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
@@ -112,6 +112,14 @@ export const JoinNow: FC<EventDetails> = ({
     setOpen(true);
   };
 
+  const handleNameChange = (index: number, newName: string) => {
+    setNames((prevNames) => {
+      const newNames = [...prevNames];
+      newNames[index] = newName;
+      return newNames;
+    });
+  };
+
   const userInput = {
     input: {
       uniqueEventId: uniqueEventId,
@@ -129,7 +137,7 @@ export const JoinNow: FC<EventDetails> = ({
     const namesArray = names;
     const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
 
-    const emptyName = namesArray.filter((item) => item == '');
+    const emptyName = namesArray.filter((item) => item.trim() == '');
 
     if (emptyName.length > 0 || email === '' || phoneNumber === '') {
       alert('Please fill all the details');
@@ -137,6 +145,12 @@ export const JoinNow: FC<EventDetails> = ({
       alert(`Names are more than openspots. Only ${openSpots} players are required`);
     } else {
       setOpen(false);
+
+      // console.log([
+      //   `${objectArray
+      //     .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
+      //     .join(',')}`,
+      // ]);
 
       if (!razorPay) {
         const generateUrl = () => {
@@ -280,9 +294,9 @@ export const JoinNow: FC<EventDetails> = ({
                     label="Age"
                     variant="standard"
                     onChange={(e) => {
-                      e.stopPropagation();
-                      setValue(Number(e.target.value));
-                      setNames(Array.from({ length: Number(e.target.value) }, () => ''));
+                      const selectedValue = Number(e.target.value);
+                      setValue(selectedValue);
+                      setNames(Array.from({ length: selectedValue }, () => ''));
                     }}
                   >
                     {Array.from({ length: 10 }, (_, index) => index + 1).map((value, idx) => (
@@ -307,9 +321,7 @@ export const JoinNow: FC<EventDetails> = ({
                       autoComplete="none"
                       variant="standard"
                       onChange={(e) => {
-                        const newName = [...names];
-                        newName[idx] = e.target.value;
-                        setNames(newName);
+                        handleNameChange(idx, e.target.value);
                       }}
                       onClick={onModalClick}
                     />
