@@ -19,6 +19,7 @@ import styles from './Sidebar.module.scss';
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const [hasAccess, setHasAccess] = useState(false);
+  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -27,9 +28,7 @@ function Sidebar() {
       const parseData = JSON.parse(storedData);
 
       const fetchMailIds = async () => {
-        const response = await fetch(
-          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
-        );
+        const response = await fetch(`${mailSheet}`);
         const data = await response.json();
 
         const check = data

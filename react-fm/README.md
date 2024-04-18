@@ -13,6 +13,7 @@ This file houses the different commands to run this project.
 - Install `node` and `npm` with the latest versions.
 - Change your current working directory to `react-fm`.
 - Run the command `npm install`.
+- Get the home.env file from this link https://drive.google.com/drive/folders/1VF5jvZy3BQ2lcHbYVkBbR_GmftKuzi9I and add it to the root directory of react-fm.
 
 ### IDE Setup
 

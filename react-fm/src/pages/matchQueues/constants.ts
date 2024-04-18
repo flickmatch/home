@@ -53,7 +53,7 @@ const query = JSON.stringify({
     }`,
 });
 
-const apiUrl = 'https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/graphql';
+const apiUrl = `${import.meta.env.VITE_API_URL}`;
 
 const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
 const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';

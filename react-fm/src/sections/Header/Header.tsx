@@ -52,6 +52,8 @@ const Header: FC<login> = ({ loggedIn }) => {
     picture: '',
   });
 
+  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
@@ -60,9 +62,7 @@ const Header: FC<login> = ({ loggedIn }) => {
       setUserData(parseData);
 
       const fetchMailIds = async () => {
-        const response = await fetch(
-          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
-        );
+        const response = await fetch(`${mailSheet}`);
         const data = await response.json();
 
         const check = data

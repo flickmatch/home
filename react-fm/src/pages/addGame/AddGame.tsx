@@ -52,6 +52,7 @@ function AddGame() {
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -61,9 +62,7 @@ function AddGame() {
       setIsLoggedIn(true);
 
       const fetchMailIds = async () => {
-        const response = await fetch(
-          'https://sheet.best/api/sheets/ba455ca6-e174-4ce1-870b-b2f0ed772878',
-        );
+        const response = await fetch(`${mailSheet}`);
         const data = await response.json();
 
         const check = data
