@@ -113,6 +113,12 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const handleNameChange = (index: number, newName: string) => {
+    const lettersRegex = /^^[A-Za-z\s]+$/;
+    if (!lettersRegex.test(newName)) {
+      // newName contains invalid characters (numbers)
+      alert('Only letters are allowed.');
+      return;
+    }
     setNames((prevNames) => {
       const newNames = [...prevNames];
       newNames[index] = newName;
