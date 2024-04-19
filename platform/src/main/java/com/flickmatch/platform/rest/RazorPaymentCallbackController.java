@@ -37,16 +37,18 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
-    @PostMapping("/processRazorPayment")
-//    @RequestMapping(value = "/processRazorPayment", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> processRazorCallback(@RequestBody RazorPaymentCallbackResponse callbackResponse){
+//    @PostMapping("/processRazorPayment")
+    @RequestMapping(value = "/processRazorPayment", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> processRazorCallback(@RequestParam("razorpay_order_id") String orderId,
+                                                  @RequestParam("razorpay_payment_id") String paymentId,
+                                                  @RequestParam("razorpay_signature") String signature){
         try {
             RazorpayClient razorpay = razorPayProxy.getRazorPayClient();
-            RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(callbackResponse.getRazorpay_order_id());
             JSONObject options = new JSONObject();
-            options.put("razorpay_order_id",callbackResponse.getRazorpay_order_id());
-            options.put("razorpay_payment_id",callbackResponse.getRazorpay_payment_id());
-            options.put("razorpay_signature", callbackResponse.getRazorpay_signature());
+            options.put("razorpay_order_id",orderId);
+            options.put("razorpay_payment_id",paymentId);
+            options.put("razorpay_signature", signature);
+            RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
 
 //            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
@@ -58,18 +60,19 @@ public class RazorPaymentCallbackController {
             }
 
             else {
-                log.info("Invalid signature for orderId : "+callbackResponse.getRazorpay_order_id());
+                log.info("Invalid signature for orderId : "+orderId);
             }
 
         }
         catch (Exception e) {
-            log.error("Error processing callback: {}", e.getMessage());
+            log.error("Error processing callback: {}", e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "https://play.flickmatch.in/");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
+
 
     }
 }
