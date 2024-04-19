@@ -70,6 +70,11 @@ client.on("message", async (msg) => {
   if (!content || content === "") {
     return;
   }
+  if (isProd && message.body === "!ping") {
+    // send back "pong" to the chat the message was sent in
+    client.sendMessage(message.from, "pong");
+  }
+
   if (chat.name == groupName) {
     console.log(msg.from);
     processGroup(msg);
