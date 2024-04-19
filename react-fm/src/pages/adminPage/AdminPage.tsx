@@ -328,12 +328,12 @@ function AdminPage() {
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
             <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
-              <Chip
+              {/* <Chip
                 label="admin mode"
                 color="primary"
                 variant="outlined"
                 className={styles.adminModeTag}
-              />
+              /> */}
               <Box>
                 <Typography variant="h3" className={styles.title}>
                   Add Turf

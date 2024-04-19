@@ -96,20 +96,24 @@ const Header: FC<login> = ({ loggedIn }) => {
           Contact us
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
+
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
           Match Queue
         </Typography>
+
         {isAdminMode ? (
           <>
             <Divider className={styles.divider} orientation="vertical" flexItem />
 
             <Typography className={styles.menuItem} component={Link} to="/add-game">
               Add Game
+              <span className={styles.adminMode}>admin mode</span>
             </Typography>
 
             <Divider className={styles.divider} orientation="vertical" flexItem />
             <Typography className={styles.menuItem} component={Link} to="/add-turf">
               Add Turf
+              <span className={styles.adminMode}>admin mode</span>
             </Typography>
           </>
         ) : null}
