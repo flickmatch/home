@@ -10,6 +10,7 @@ import com.flickmatch.platform.graphql.input.RazorPayInput;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class RazorPaymentRequestBuilder {
    @Autowired
     RazorPaymentRequestRepository razorPaymentRequestRepository;
