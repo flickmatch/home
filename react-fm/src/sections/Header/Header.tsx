@@ -159,12 +159,18 @@ const Header: FC<login> = ({ loggedIn }) => {
             {loggedIn ? (
               <Tooltip title="Profile Page" arrow>
                 <Box component={Link} to="/profile-page">
-                  <img
-                    src={userData.picture}
-                    alt="Profile Pic"
-                    className={styles.profilePic}
-                    referrerPolicy="no-referrer"
-                  />
+                  {userData.picture ? (
+                    <img
+                      src={userData.picture}
+                      alt="Profile Pic"
+                      className={styles.profilePic}
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <Box className={styles.letterProfile}>
+                      {userData.name.charAt(0).toLocaleUpperCase()}
+                    </Box>
+                  )}
                 </Box>
               </Tooltip>
             ) : (

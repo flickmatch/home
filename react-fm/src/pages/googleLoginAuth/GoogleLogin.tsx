@@ -2,10 +2,12 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import axios from 'axios';
@@ -22,10 +24,13 @@ function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [emailLogin, setEmailLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
+  const adminPassword = 'admin@flickmatch';
 
-
-  const addUsers = (email:string,name:string) => {
+  const addUsers = (email: string, name: string) => {
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -58,8 +63,6 @@ function GoogleLogin() {
       });
   };
 
-
-
   const getGoogleUserInfo = async (accessToken: string) => {
     axios
       .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
@@ -71,7 +74,7 @@ function GoogleLogin() {
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log(res.data);
-        addUsers(res.data.email,res.data.name);
+        addUsers(res.data.email, res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
         setIsLoggedIn(true);
         navigate('/match-queues');
@@ -80,6 +83,19 @@ function GoogleLogin() {
         // eslint-disable-next-line no-console
         console.log(err);
       });
+  };
+
+  const emailLoginFunc = () => {
+    if (password === adminPassword) {
+      const name = email.split('@')[0];
+      const emailData = { email: email, password: password, id: '344665', name: name };
+
+      localStorage.setItem('userData', JSON.stringify(emailData));
+      setIsLoggedIn(true);
+      navigate('/match-queues');
+    } else {
+      alert('Incorrect password');
+    }
   };
 
   const loginFunc = useGoogleLogin({
@@ -115,16 +131,59 @@ function GoogleLogin() {
                 journey right away!
               </Typography>
             </Box>
-            <Box className={styles.loginSignupButton}>
-              <Button
-                variant="outlined"
-                className={isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton}
-                onClick={() => loginFunc()}
-                startIcon={<GoogleIcon />}
-              >
-                Sign up with Google
-              </Button>
-            </Box>
+            {!emailLogin ? (
+              <Box className={styles.loginSignupButton}>
+                <Button
+                  variant="outlined"
+                  className={
+                    isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
+                  }
+                  onClick={() => loginFunc()}
+                  startIcon={<GoogleIcon />}
+                >
+                  Sign up with Google
+                </Button>
+                <Box className={styles.loginDivider}>
+                  <Typography className={styles.loginOption}>OR</Typography>
+                </Box>
+
+                <Button
+                  variant="outlined"
+                  className={
+                    isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
+                  }
+                  onClick={() => setEmailLogin(true)}
+                  startIcon={<EmailIcon />}
+                >
+                  Sign Up with Email
+                </Button>
+              </Box>
+            ) : (
+              <Box className={styles.emailSignup}>
+                <TextField
+                  id="outlined-basic"
+                  label="Email"
+                  variant="outlined"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={styles.emailField}
+                />
+                <TextField
+                  id="outlined-basic"
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.passwordField}
+                />
+                <Button
+                  variant="outlined"
+                  className={isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton}
+                  onClick={() => emailLoginFunc()}
+                >
+                  Log In
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
