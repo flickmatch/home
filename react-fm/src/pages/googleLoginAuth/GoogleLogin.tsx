@@ -144,7 +144,7 @@ function GoogleLogin() {
                   Sign up with Google
                 </Button>
                 <Box className={styles.loginDivider}>
-                  <Typography className={styles.loginOption}>OR</Typography>
+                  <span className={styles.loginOption}>OR</span>
                 </Box>
 
                 <Button
@@ -180,7 +180,7 @@ function GoogleLogin() {
                   className={isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton}
                   onClick={() => emailLoginFunc()}
                 >
-                  Log In
+                  Sign In
                 </Button>
               </Box>
             )}

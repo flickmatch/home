@@ -119,6 +119,7 @@
   font-weight: 600;
   height: 45px;
   max-width: 65%;
+  margin-bottom: 10px;
 }
 
 .portraitGoogleLoginButton {
@@ -134,22 +135,17 @@
 
 .loginDivider {
   width: 90%;
-  border-bottom: 1px solid #606264;
-  margin: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  position: relative;
+  border-top: 1px solid #606264;
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
 }
 
 .loginOption {
-  position: absolute;
-  bottom: 0;
-  top: -12px;
-  text-align: center;
-  width: 100%;
-  background: transparent;
+  margin-top: -12px;
+  background-color: #111;
   font-weight: 600;
-  z-index: 99999;
+  padding: 0px 8px;
 }
 
 .emailSignup {

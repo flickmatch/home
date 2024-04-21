@@ -429,7 +429,7 @@ function AddGame() {
       {hasAccess ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
-            <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
+            <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
               <Chip
                 label="admin mode"
                 color="primary"
