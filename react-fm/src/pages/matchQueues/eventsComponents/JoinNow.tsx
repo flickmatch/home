@@ -61,6 +61,8 @@ export const JoinNow: FC<EventDetails> = ({
     }
   }, []);
 
+  // console.log(names);
+
   const openInNewTab = (url: string): void => {
     ReactGA.event({
       category: 'Button',
@@ -113,7 +115,7 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const handleNameChange = (index: number, newName: string) => {
-    const lettersRegex = /^^[A-Za-z\s]+$/;
+    const lettersRegex = /^[A-Za-z\s]*$/;
     if (!lettersRegex.test(newName)) {
       // newName contains invalid characters (numbers)
       alert('Only letters are allowed.');
@@ -322,7 +324,7 @@ export const JoinNow: FC<EventDetails> = ({
                       name="name"
                       id={`name_${idx}`}
                       label={`Name of Player ${idx + 1}`}
-                      value={names[idx]}
+                      value={names[idx] || ''}
                       type="text"
                       autoComplete="none"
                       variant="standard"
