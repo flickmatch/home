@@ -141,7 +141,7 @@ function GoogleLogin() {
                   onClick={() => loginFunc()}
                   startIcon={<GoogleIcon />}
                 >
-                  Sign up with Google
+                  Log In/Sign up with Google
                 </Button>
                 <Box className={styles.loginDivider}>
                   <span className={styles.loginOption}>OR</span>
@@ -155,7 +155,7 @@ function GoogleLogin() {
                   onClick={() => setEmailLogin(true)}
                   startIcon={<EmailIcon />}
                 >
-                  Sign Up with Email
+                  Log In/Sign Up with Email
                 </Button>
               </Box>
             ) : (
