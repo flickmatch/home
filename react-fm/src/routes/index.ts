@@ -41,7 +41,6 @@ const routes: Routes = {
   [Pages.GoogleLogin]: {
     component: asyncComponentLoader(() => import('@/pages/googleLoginAuth')),
     path: '/login',
-    title: 'Login | Signup',
   },
 
   [Pages.ContactUs]: {

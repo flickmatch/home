@@ -78,9 +78,13 @@ function Profile() {
         <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
           <FlexBox className={styles.profileSection}>
             <Box className={styles.profilePic}>
-              {userData ? (
+              {userData.picture ? (
                 <img src={userData.picture} alt={userData.name} referrerPolicy="no-referrer" />
-              ) : null}
+              ) : (
+                <Typography className={styles.profileIcon}>
+                  {userData.name.charAt(0).toLocaleUpperCase()}
+                </Typography>
+              )}
             </Box>
             {userData ? (
               <Box className={styles.nameSection}>

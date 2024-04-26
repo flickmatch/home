@@ -106,6 +106,8 @@
 }
 
 .googleLoginButton,
+.emailLoginButton,
+.portraitEmailLoginButton,
 .portraitGoogleLoginButton {
   background-color: transparent;
   color: #4ce95a;
@@ -116,11 +118,12 @@
   border-radius: 4px;
   font-weight: 600;
   height: 45px;
-  max-width: 65%;
+  max-width: 80%;
+  margin-bottom: 10px;
 }
 
 .portraitGoogleLoginButton {
-  max-width: 85%;
+  max-width: 100%;
 }
 
 .googleLoginButton:hover,
@@ -128,4 +131,49 @@
   background: #4ce95a;
   color: black;
   transition: all 0.4s ease;
+}
+
+.loginDivider {
+  width: 90%;
+  border-top: 1px solid #606264;
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.loginOption {
+  margin-top: -12px;
+  background-color: #111;
+  font-weight: 600;
+  padding: 0px 8px;
+}
+
+.emailSignup {
+  display: flex;
+  flex-flow: column;
+  width: 85%;
+  margin: auto;
+  margin-top: 30px;
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emailField,
+.passwordField {
+  margin-bottom: 35px;
+}
+
+.emailLoginButton,
+.portraitEmailLoginButton {
+  margin-left: 17.5%;
 }

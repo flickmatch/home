@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import DefaultIcon from '@mui/icons-material/Deblur';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import Chip from '@mui/material/Chip';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -20,6 +21,7 @@ function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const [hasAccess, setHasAccess] = useState(false);
   const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  const location = useLocation();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -39,8 +41,9 @@ function Sidebar() {
 
       fetchMailIds();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 
   // const toHome = (navTitle: string | undefined) => {
   //   navTitle === 'Home' ? (location.href = 'https://play.flickmatch.in/home') : null;
@@ -78,6 +81,12 @@ function Sidebar() {
                 <ListItemText>
                   <span className={styles.link}>Add game</span>
                 </ListItemText>
+                <Chip
+                  label="admin mode"
+                  color="primary"
+                  variant="outlined"
+                  className={styles.adminModeTag}
+                />
               </ListItemButton>
             </ListItem>
             <ListItem sx={{ p: 0 }}>
@@ -88,6 +97,12 @@ function Sidebar() {
                 <ListItemText>
                   <span className={styles.link}>Add turf</span>
                 </ListItemText>
+                <Chip
+                  label="admin mode"
+                  color="primary"
+                  variant="outlined"
+                  className={styles.adminModeTag}
+                />
               </ListItemButton>
             </ListItem>
           </>

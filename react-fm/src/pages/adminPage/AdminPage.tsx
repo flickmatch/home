@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-// import Chip from '@mui/material/Chip';
+import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import type { SelectChangeEvent } from '@mui/material/Select';
@@ -326,13 +326,13 @@ function AdminPage() {
       {hasAccess ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
-            <FlexBox className={isPortrait ? styles.portraitContainere : styles.container}>
-              {/* <Chip
+            <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
+              <Chip
                 label="admin mode"
                 color="primary"
                 variant="outlined"
                 className={styles.adminModeTag}
-              /> */}
+              />
               <Box>
                 <Typography variant="h3" className={styles.title}>
                   Add Turf
