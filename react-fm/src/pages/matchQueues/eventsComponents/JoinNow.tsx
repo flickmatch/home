@@ -256,17 +256,18 @@ export const JoinNow: FC<EventDetails> = ({
               >
                 UPI
               </Button>
-              <Button
-                variant="contained"
-                startIcon={<CreditCardIcon />}
-                className={styles.payViaCard}
-                onClick={() => {
-                  if (stripePaymentUrl) openInNewTab(stripePaymentUrl);
-                  else alert('Match Full');
-                }}
-              >
-                Card
-              </Button>
+              {stripePaymentUrl ? (
+                <Button
+                  variant="contained"
+                  startIcon={<CreditCardIcon />}
+                  className={styles.payViaCard}
+                  onClick={() => {
+                    openInNewTab(stripePaymentUrl);
+                  }}
+                >
+                  Card
+                </Button>
+              ) : null}
               <Button
                 variant="contained"
                 // className={isPortrait ? styles.payViaRazorpay : ''}
