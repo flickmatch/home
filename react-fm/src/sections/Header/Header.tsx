@@ -175,7 +175,7 @@ const Header: FC<login> = ({ loggedIn }) => {
               </Tooltip>
             ) : (
               <Button variant="contained" className={styles.signUp} component={Link} to="/login">
-                Login/Sign up
+                Login / Sign up
               </Button>
             )}
           </FlexBox>

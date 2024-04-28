@@ -124,7 +124,7 @@ function GoogleLogin() {
               <SportsSoccerIcon className={styles.sportsIcon} />
             </Box>
             <Box className={styles.loginSignupHeader}>
-              <Typography className={styles.loginSignupText}>Login/Signup</Typography>
+              <Typography className={styles.loginSignupText}>Login / Signup</Typography>
               <Typography className={styles.getStarted}>Let&#39;s get Started</Typography>
               <Typography className={styles.signUpImmediately}>
                 Join our community and start your <br />
@@ -141,7 +141,7 @@ function GoogleLogin() {
                   onClick={() => loginFunc()}
                   startIcon={<GoogleIcon />}
                 >
-                  Log In/Sign up with Google
+                  Log In / Sign up with Google
                 </Button>
                 <Box className={styles.loginDivider}>
                   <span className={styles.loginOption}>OR</span>
@@ -155,7 +155,7 @@ function GoogleLogin() {
                   onClick={() => setEmailLogin(true)}
                   startIcon={<EmailIcon />}
                 >
-                  Log In/Sign Up with Email
+                  Log In / Sign Up with Email
                 </Button>
               </Box>
             ) : (

@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import ReactGA from 'react-ga';
 import { useNavigate } from 'react-router-dom';
 
-import CreditCardIcon from '@mui/icons-material/CreditCard';
+//import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -259,20 +259,24 @@ export const JoinNow: FC<EventDetails> = ({
               {stripePaymentUrl ? (
                 <Button
                   variant="contained"
-                  startIcon={<CreditCardIcon />}
+                  startIcon={
+                    <Icon icon="simple-icons:stripe" color="navy" style={{ fontSize: 16 }} />
+                  }
                   className={styles.payViaCard}
                   onClick={() => {
                     openInNewTab(stripePaymentUrl);
                   }}
                 >
-                  Card
+                  Stripe
                 </Button>
               ) : null}
               <Button
                 variant="contained"
                 // className={isPortrait ? styles.payViaRazorpay : ''}
                 className={styles.payViaRazorpay}
-                startIcon={<Icon icon="simple-icons:razorpay" color="navy" />}
+                startIcon={
+                  <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
+                }
                 onClick={() => {
                   setRazorPay(true);
                   setOpen(true);
