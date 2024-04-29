@@ -93,35 +93,18 @@ input:-webkit-autofill:active {
 // margin-left: 10px !important;
 // }
 
-.payViaRazorpay {
-// margin-right: 50px !important;
-display: none;
-}
-
-.payViaUpi {
-
-  margin-right: 20px !important;
-
-}
-
-.payViaCard {
-
-  margin-left: 20px !important;
-
-}
-
 .paymentOptions {
-  // width: 35%;
-  // justify-content: space-between;
-  position: relative;
-  float: right;
+  width: 35%;
+  justify-content: space-between;
+  // position: relative;
+  // float: right;
 }
 
 .paymentOptionsPortrait {
   width: 100%;
-  justify-content: space-around;
+  margin-left: 5px;
   position: relative;
-  gap: 1rem;
+  gap: 0.7rem;
 }
 
 .cancel,
@@ -147,7 +130,6 @@ label {
   padding-top: 0px;
 }
 
-
 .playersNumber {
   display: flex;
   align-items: center;
@@ -161,4 +143,3 @@ label {
   flex-wrap: wrap;
   gap: 0 3rem;
 }
-
