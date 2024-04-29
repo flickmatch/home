@@ -53,7 +53,7 @@ const Header: FC<login> = ({ loggedIn }) => {
     picture: '',
   });
 
-  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -62,17 +62,20 @@ const Header: FC<login> = ({ loggedIn }) => {
       const parseData = JSON.parse(storedData);
       setUserData(parseData);
 
-      const fetchMailIds = async () => {
-        const response = await fetch(`${mailSheet}`);
-        const data = await response.json();
+      if (parseData.email === 'admin@flickmatch.in') {
+        setIsAdminMode(true);
+      }
+      // const fetchMailIds = async () => {
+      //   const response = await fetch(`${mailSheet}`);
+      //   const data = await response.json();
 
-        const check = data
-          .map((mailId: { EmailId: string }) => mailId.EmailId)
-          .includes(parseData.email);
-        setIsAdminMode(check);
-      };
+      //   const check = data
+      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
+      //     .includes(parseData.email);
+      //   setIsAdminMode(check);
+      // };
 
-      fetchMailIds();
+      // fetchMailIds();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

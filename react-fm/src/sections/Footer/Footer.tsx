@@ -85,7 +85,7 @@ function Footer() {
           <LinkedInIcon className={styles.linkedInIcon} />
         </Tooltip>
       </a>
-      <a href="https://github.com/flickmatch/home" target="_blank" rel="noreferrer">
+      <a href="https://github.com/flickmatch" target="_blank" rel="noreferrer">
         <Tooltip title="Follow on github" arrow>
           <GitHubIcon className={styles.githubIcon} />
         </Tooltip>

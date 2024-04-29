@@ -20,7 +20,7 @@ import styles from './Sidebar.module.scss';
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const [hasAccess, setHasAccess] = useState(false);
-  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
   const location = useLocation();
 
   useEffect(() => {
@@ -28,18 +28,21 @@ function Sidebar() {
 
     if (storedData) {
       const parseData = JSON.parse(storedData);
+      if (parseData.email === 'admin@flickmatch.in') {
+        setHasAccess(true);
+      }
 
-      const fetchMailIds = async () => {
-        const response = await fetch(`${mailSheet}`);
-        const data = await response.json();
+      // const fetchMailIds = async () => {
+      //   const response = await fetch(`${mailSheet}`);
+      //   const data = await response.json();
 
-        const check = data
-          .map((mailId: { EmailId: string }) => mailId.EmailId)
-          .includes(parseData.email);
-        setHasAccess(check);
-      };
+      //   const check = data
+      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
+      //     .includes(parseData.email);
+      //   setHasAccess(check);
+      // };
 
-      fetchMailIds();
+      // fetchMailIds();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
