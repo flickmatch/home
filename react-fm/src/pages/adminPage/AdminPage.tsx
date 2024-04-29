@@ -17,8 +17,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 
-import Swal from 'sweetalert2';
-
+//import Swal from 'sweetalert2';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -42,36 +41,38 @@ function AdminPage() {
   const [mapLink, setMapLink] = useState('');
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
-  const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
       const userData = JSON.parse(storedData);
-
+      if (userData.email === 'admin@flickmatch.in') {
+        setHasAccess(true);
+      }
       setIsLoggedIn(true);
 
-      const fetchMailIds = async () => {
-        const response = await fetch(`${mailSheet}`);
-        const data = await response.json();
+      // const fetchMailIds = async () => {
+      //   const response = await fetch(`${mailSheet}`);
+      //   const data = await response.json();
 
-        const check = data
-          .map((mailId: { EmailId: string }) => mailId.EmailId)
-          .includes(userData.email);
-        setHasAccess(check);
-        if (!check) {
-          Swal.fire({
-            title: 'Unauthorized Access',
-            text: 'You are not authorized to view this page.',
-            icon: 'error',
-          }).then(() => {
-            navigate('/match-queues');
-          });
-        }
-      };
+      //   const check = data
+      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
+      //     .includes(userData.email);
+      //   setHasAccess(check);
+      //   if (!check) {
+      //     Swal.fire({
+      //       title: 'Unauthorized Access',
+      //       text: 'You are not authorized to view this page.',
+      //       icon: 'error',
+      //     }).then(() => {
+      //       navigate('/match-queues');
+      //     });
+      //   }
+      // };
 
-      fetchMailIds();
+      // fetchMailIds();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
