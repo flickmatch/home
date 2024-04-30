@@ -53,7 +53,8 @@ const Header: FC<login> = ({ loggedIn }) => {
     picture: '',
   });
 
-  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  const mailSheet =
+    'https://script.google.com/macros/s/AKfycbxiFOFr4g3imIc8CpjtHzmGMm7G0O_UPCUhu2pX6UPjpqx3vTKHd3_HygnjTGDGH77J/exec';
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -63,21 +64,22 @@ const Header: FC<login> = ({ loggedIn }) => {
       setUserData(parseData);
 
       if (parseData.email === 'admin@flickmatch.in') {
-        setIsAdminMode(true);
+        return setIsAdminMode(true);
+      } else {
+        const fetchMailIds = async () => {
+          const response = await fetch(`${mailSheet}`);
+          const data = await response.json();
+
+          const check = data.data
+            .map((mailId: { EmailId: string }) => mailId.EmailId)
+            .includes(parseData.email);
+
+          return setIsAdminMode(check);
+        };
+
+        fetchMailIds();
       }
-      // const fetchMailIds = async () => {
-      //   const response = await fetch(`${mailSheet}`);
-      //   const data = await response.json();
-
-      //   const check = data
-      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
-      //     .includes(parseData.email);
-      //   setIsAdminMode(check);
-      // };
-
-      // fetchMailIds();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const menus = () =>
