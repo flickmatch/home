@@ -31,8 +31,7 @@ import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.type
 import styles from './AdminPage.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
-const mailSheet =
-  'https://script.google.com/macros/s/AKfycbxiFOFr4g3imIc8CpjtHzmGMm7G0O_UPCUhu2pX6UPjpqx3vTKHd3_HygnjTGDGH77J/exec';
+const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
 
 function AdminPage() {
   const [, notificationsActions] = useNotifications();
@@ -45,7 +44,6 @@ function AdminPage() {
   const [mapLink, setMapLink] = useState('');
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
-  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');

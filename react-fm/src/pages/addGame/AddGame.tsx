@@ -55,8 +55,7 @@ function AddGame() {
   const [endTime, setEndTime] = useState('');
   //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
-  const mailSheet =
-    'https://script.google.com/macros/s/AKfycbxiFOFr4g3imIc8CpjtHzmGMm7G0O_UPCUhu2pX6UPjpqx3vTKHd3_HygnjTGDGH77J/exec';
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');

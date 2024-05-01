@@ -20,8 +20,8 @@ import styles from './Sidebar.module.scss';
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const [hasAccess, setHasAccess] = useState(false);
-  const mailSheet =
-    'https://script.google.com/macros/s/AKfycbxiFOFr4g3imIc8CpjtHzmGMm7G0O_UPCUhu2pX6UPjpqx3vTKHd3_HygnjTGDGH77J/exec';
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+
   const location = useLocation();
 
   useEffect(() => {

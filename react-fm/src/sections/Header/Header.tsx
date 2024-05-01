@@ -53,8 +53,7 @@ const Header: FC<login> = ({ loggedIn }) => {
     picture: '',
   });
 
-  const mailSheet =
-    'https://script.google.com/macros/s/AKfycbxiFOFr4g3imIc8CpjtHzmGMm7G0O_UPCUhu2pX6UPjpqx3vTKHd3_HygnjTGDGH77J/exec';
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -80,6 +79,7 @@ const Header: FC<login> = ({ loggedIn }) => {
         fetchMailIds();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const menus = () =>
