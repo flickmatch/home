@@ -20,7 +20,8 @@ import styles from './Sidebar.module.scss';
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const [hasAccess, setHasAccess] = useState(false);
-  //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+
   const location = useLocation();
 
   useEffect(() => {
@@ -29,28 +30,24 @@ function Sidebar() {
     if (storedData) {
       const parseData = JSON.parse(storedData);
       if (parseData.email === 'admin@flickmatch.in') {
-        setHasAccess(true);
+        return setHasAccess(true);
+      } else {
+        const fetchMailIds = async () => {
+          const response = await fetch(`${mailSheet}`);
+          const data = await response.json();
+
+          const check = data.data
+            .map((mailId: { EmailId: string }) => mailId.EmailId)
+            .includes(parseData.email);
+          return setHasAccess(check);
+        };
+
+        fetchMailIds();
       }
-
-      // const fetchMailIds = async () => {
-      //   const response = await fetch(`${mailSheet}`);
-      //   const data = await response.json();
-
-      //   const check = data
-      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
-      //     .includes(parseData.email);
-      //   setHasAccess(check);
-      // };
-
-      // fetchMailIds();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
-  // const toHome = (navTitle: string | undefined) => {
-  //   navTitle === 'Home' ? (location.href = 'https://play.flickmatch.in/home') : null;
-  // };
 
   return (
     <SwipeableDrawer

@@ -22,8 +22,8 @@ import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 
 import { parseInt } from 'lodash';
+import Swal from 'sweetalert2';
 
-//import Swal from 'sweetalert2';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -55,6 +55,8 @@ function AddGame() {
   const [endTime, setEndTime] = useState('');
   //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
@@ -62,29 +64,29 @@ function AddGame() {
       const userData = JSON.parse(storedData);
       if (userData.email === 'admin@flickmatch.in') {
         setHasAccess(true);
+      } else {
+        const fetchMailIds = async () => {
+          const response = await fetch(`${mailSheet}`);
+          const data = await response.json();
+
+          const check = data.data
+            .map((mailId: { EmailId: string }) => mailId.EmailId)
+            .includes(userData.email);
+          setHasAccess(check);
+          if (!check) {
+            Swal.fire({
+              title: 'Unauthorized Access',
+              text: 'You are not authorized to view this page.',
+              icon: 'error',
+            }).then(() => {
+              navigate('/match-queues');
+            });
+          }
+        };
+
+        fetchMailIds();
       }
       setIsLoggedIn(true);
-
-      // const fetchMailIds = async () => {
-      //   const response = await fetch(`${mailSheet}`);
-      //   const data = await response.json();
-
-      //   const check = data
-      //     .map((mailId: { EmailId: string }) => mailId.EmailId)
-      //     .includes(userData.email);
-      //   setHasAccess(check);
-      //   if (!check) {
-      //     Swal.fire({
-      //       title: 'Unauthorized Access',
-      //       text: 'You are not authorized to view this page.',
-      //       icon: 'error',
-      //     }).then(() => {
-      //       navigate('/match-queues');
-      //     });
-      //   }
-      // };
-
-      // fetchMailIds();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
