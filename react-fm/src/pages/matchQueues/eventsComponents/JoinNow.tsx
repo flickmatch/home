@@ -251,18 +251,18 @@ export const JoinNow: FC<EventDetails> = ({
               <Button
                 variant="contained"
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
-                className={isPortrait ? styles.payViaUpi : ''}
+                className={isPortrait ? '' : styles.payViaUpi}
                 onClick={handleClickOpen}
               >
                 UPI
               </Button>
-              {stripePaymentUrl ? (
+              {stripePaymentUrl.slice(0, 5) === 'https' ? (
                 <Button
                   variant="contained"
                   startIcon={
                     <Icon icon="simple-icons:stripe" color="navy" style={{ fontSize: 16 }} />
                   }
-                  className={styles.payViaCard}
+                  className={isPortrait ? '' : styles.payViaCard}
                   onClick={() => {
                     openInNewTab(stripePaymentUrl);
                   }}
