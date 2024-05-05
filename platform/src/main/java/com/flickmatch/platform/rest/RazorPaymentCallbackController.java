@@ -8,6 +8,7 @@ import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
 import com.flickmatch.platform.graphql.type.MutationResult;
 import com.flickmatch.platform.proxy.RazorPayProxy;
+import com.flickmatch.platform.proxy.WhatsAppProxy;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @Log4j2
@@ -37,11 +40,16 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
+    @Autowired
+    WhatsAppProxy whatsAppProxy;
+
 //    @PostMapping("/processRazorPayment")
     @RequestMapping(value = "/processRazorPayment", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> processRazorCallback(@RequestParam("razorpay_order_id") String orderId,
                                                   @RequestParam("razorpay_payment_id") String paymentId,
-                                                  @RequestParam("razorpay_signature") String signature){
+                                                  @RequestParam("razorpay_signature") String signature) {
+
+        String uniqueEventId;
         try {
             RazorpayClient razorpay = razorPayProxy.getRazorPayClient();
             JSONObject options = new JSONObject();
@@ -49,6 +57,7 @@ public class RazorPaymentCallbackController {
             options.put("razorpay_payment_id",paymentId);
             options.put("razorpay_signature", signature);
             RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
+            uniqueEventId = paymentRequest.getUniqueEventId();
 
 //            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
@@ -69,8 +78,9 @@ public class RazorPaymentCallbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 
+        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "https://play.flickmatch.in/");
+        headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 
