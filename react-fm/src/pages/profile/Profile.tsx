@@ -19,6 +19,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import { getAuth, signOut } from 'firebase/auth';
+
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -39,6 +41,7 @@ interface UserDetails {
 function Profile() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  const auth = getAuth();
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
     family_name: '',
@@ -51,6 +54,16 @@ function Profile() {
 
   const logOut = () => {
     googleLogout();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        // eslint-disable-next-line no-console
+        console.log('Sign-out successful');
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error.message);
+      });
     localStorage.removeItem('userData');
     setIsLoggedIn(false);
     navigate('/');

@@ -1,4 +1,4 @@
-import { useGoogleLogin } from '@react-oauth/google';
+//import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,16 +6,26 @@ import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import axios from 'axios';
+//import axios from 'axios';
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import useNotifications from '@/store/notifications';
 
 import styles from './GoogleLogin.module.scss';
 import { apiUrl } from './constants';
@@ -23,14 +33,17 @@ import { apiUrl } from './constants';
 function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const [, notificationsActions] = useNotifications();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showSignup, setShowSignup] = useState(false);
 
-  const adminPassword = 'admin@flickmatch';
-
-  const addUsers = (email: string, name: string) => {
+  const addUsers = (email: unknown, name: unknown) => {
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -63,46 +76,111 @@ function GoogleLogin() {
       });
   };
 
-  const getGoogleUserInfo = async (accessToken: string) => {
-    axios
-      .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: 'application/json',
-        },
-      })
-      .then((res) => {
-        // eslint-disable-next-line no-console
-        console.log(res.data);
-        addUsers(res.data.email, res.data.name);
-        localStorage.setItem('userData', JSON.stringify(res.data));
+  // const getGoogleUserInfo = async (accessToken: string) => {
+  //   axios
+  //     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //         Accept: 'application/json',
+  //       },
+  //     })
+  //     .then((res) => {
+  //       addUsers(res.data.email, res.data.name);
+  //       localStorage.setItem('userData', JSON.stringify(res.data));
+  //       setIsLoggedIn(true);
+  //       navigate('/match-queues');
+  //     })
+  //     .catch((err) => {
+  //       // eslint-disable-next-line no-console
+  //       console.log(err);
+  //     });
+  // };
+
+  const googleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        const emailData = {
+          email: user.email,
+          id: user.uid,
+          name: user.displayName,
+          picture: user.photoURL,
+        };
+        //addUsers(user.email, user.displayName);
+        localStorage.setItem('userData', JSON.stringify(emailData));
         setIsLoggedIn(true);
         navigate('/match-queues');
       })
-      .catch((err) => {
+      .catch((error) => {
+        // Handle Errors here.
+        const errorMessage = error.message;
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.log(errorMessage);
       });
   };
 
-  const emailLoginFunc = () => {
-    if (password === adminPassword) {
-      const name = email.split('@')[0];
-      const emailData = { email: email, password: password, id: '344665', name: name };
+  const errorNotification = (errorMessage: string) =>
+    notificationsActions.push({
+      options: {
+        content: (
+          <Alert severity="error">
+            <AlertTitle className={styles.alertTitle}>{errorMessage}</AlertTitle>
+          </Alert>
+        ),
+      },
+    });
 
-      localStorage.setItem('userData', JSON.stringify(emailData));
-      setIsLoggedIn(true);
-      navigate('/match-queues');
-    } else {
-      alert('Incorrect password');
-    }
+  //email signup function
+  const emailSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const name = email.split('@')[0];
+        // Signed up
+        const user = userCredential.user;
+        const emailData = { email: user.email, id: user.uid, name: name };
+
+        localStorage.setItem('userData', JSON.stringify(emailData));
+        setIsLoggedIn(true);
+        navigate('/match-queues');
+      })
+      .catch((error) => {
+        const errorMessage = error.message.slice(10);
+        errorNotification(errorMessage);
+      });
   };
 
-  const loginFunc = useGoogleLogin({
-    onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
-    // eslint-disable-next-line no-console
-    onError: (error) => console.log('Login Failed ', error),
-  });
+  //email login function
+  const emailLogIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const name = email.split('@')[0];
+
+        // Signed in
+        const user = userCredential.user;
+        const emailData = { email: user.email, id: user.uid, name: name };
+
+        localStorage.setItem('userData', JSON.stringify(emailData));
+        setIsLoggedIn(true);
+        navigate('/match-queues');
+      })
+      .catch((error) => {
+        const errorMessage = error.message.slice(10);
+        errorNotification(errorMessage);
+      });
+  };
+
+  // const loginFunc = useGoogleLogin({
+  //   onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
+  //   // eslint-disable-next-line no-console
+  //   onError: (error) => console.log('Login Failed ', error),
+  // });
+
+  const emailLoginFunc = () => {
+    setShowLogin(true);
+    setEmailLogin(true);
+  };
 
   return (
     <>
@@ -124,7 +202,13 @@ function GoogleLogin() {
               <SportsSoccerIcon className={styles.sportsIcon} />
             </Box>
             <Box className={styles.loginSignupHeader}>
-              <Typography className={styles.loginSignupText}>Login / Signup</Typography>
+              {showSignup ? (
+                <Typography className={styles.loginSignupText}>Sign up</Typography>
+              ) : showLogin ? (
+                <Typography className={styles.loginSignupText}>Login</Typography>
+              ) : (
+                <Typography className={styles.loginSignupText}>Login / Sign up</Typography>
+              )}
               <Typography className={styles.getStarted}>Let&#39;s get Started</Typography>
               <Typography className={styles.signUpImmediately}>
                 Join our community and start your <br />
@@ -138,7 +222,7 @@ function GoogleLogin() {
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }
-                  onClick={() => loginFunc()}
+                  onClick={() => googleAuth()}
                   startIcon={<GoogleIcon />}
                 >
                   Log In / Sign up with Google
@@ -152,7 +236,7 @@ function GoogleLogin() {
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }
-                  onClick={() => setEmailLogin(true)}
+                  onClick={() => emailLoginFunc()}
                   startIcon={<EmailIcon />}
                 >
                   Log In / Sign Up with Email
@@ -175,13 +259,44 @@ function GoogleLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   className={styles.passwordField}
                 />
-                <Button
-                  variant="outlined"
-                  className={isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton}
-                  onClick={() => emailLoginFunc()}
-                >
-                  Sign In
-                </Button>
+                {showSignup ? (
+                  <Button
+                    variant="outlined"
+                    className={
+                      isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton
+                    }
+                    onClick={() => emailSignUp()}
+                  >
+                    Sign up
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    className={
+                      isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton
+                    }
+                    onClick={() => emailLogIn()}
+                  >
+                    Sign In
+                  </Button>
+                )}
+                <Box>
+                  {showSignup ? (
+                    <Typography style={{ marginTop: 10 }}>
+                      Already have an account?{' '}
+                      <span onClick={() => setShowSignup(false)} className={styles.signupText}>
+                        Sign in
+                      </span>
+                    </Typography>
+                  ) : (
+                    <Typography style={{ marginTop: 10 }}>
+                      Need an account?{' '}
+                      <span onClick={() => setShowSignup(true)} className={styles.signupText}>
+                        Sign up
+                      </span>
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             )}
           </Box>
