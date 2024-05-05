@@ -1,4 +1,3 @@
-//import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +11,6 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-//import axios from 'axios';
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -68,33 +66,12 @@ function GoogleLogin() {
           throw new Error(result.errors[0].message);
           // console.log(result.errors[0].message)
         }
-        // console.log(result)
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.log(error);
       });
   };
-
-  // const getGoogleUserInfo = async (accessToken: string) => {
-  //   axios
-  //     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //         Accept: 'application/json',
-  //       },
-  //     })
-  //     .then((res) => {
-  //       addUsers(res.data.email, res.data.name);
-  //       localStorage.setItem('userData', JSON.stringify(res.data));
-  //       setIsLoggedIn(true);
-  //       navigate('/match-queues');
-  //     })
-  //     .catch((err) => {
-  //       // eslint-disable-next-line no-console
-  //       console.log(err);
-  //     });
-  // };
 
   const googleAuth = () => {
     signInWithPopup(auth, provider)
@@ -108,13 +85,13 @@ function GoogleLogin() {
           name: user.displayName,
           picture: user.photoURL,
         };
-        //addUsers(user.email, user.displayName);
+        addUsers(user.email, user.displayName);
         localStorage.setItem('userData', JSON.stringify(emailData));
         setIsLoggedIn(true);
         navigate('/match-queues');
       })
       .catch((error) => {
-        // Handle Errors here.
+        // Handling Errors
         const errorMessage = error.message;
         // eslint-disable-next-line no-console
         console.log(errorMessage);
@@ -170,12 +147,6 @@ function GoogleLogin() {
         errorNotification(errorMessage);
       });
   };
-
-  // const loginFunc = useGoogleLogin({
-  //   onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
-  //   // eslint-disable-next-line no-console
-  //   onError: (error) => console.log('Login Failed ', error),
-  // });
 
   const emailLoginFunc = () => {
     setShowLogin(true);
