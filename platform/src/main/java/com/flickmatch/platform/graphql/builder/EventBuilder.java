@@ -88,9 +88,7 @@ public class EventBuilder {
 
 
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
-
         Date currentTime = new Date(System.currentTimeMillis());
-        List<com.flickmatch.platform.graphql.type.Event> prevDayList= getPastEvents(cityId,1,localTimeZone);
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
         final int GET_EVENT_DAYS = 7;
         for (int i = 0; i < GET_EVENT_DAYS; i++) {
@@ -103,7 +101,6 @@ public class EventBuilder {
                                 .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone, cityId))
                                 .toList();
                 eventList.addAll(dailyEventList);
-                eventList.addAll(prevDayList);
             }
         }
         return eventList;
