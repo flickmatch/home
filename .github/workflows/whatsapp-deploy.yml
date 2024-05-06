@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.WA_SERVER_PASSWORD }}
           port: 22
           script: |
-            cd ~/safeuser/code/home/whatsapp-js
+            cd ~/home/safeuser/home/whatsapp-js
             git stash
             git pull origin main
             git status
