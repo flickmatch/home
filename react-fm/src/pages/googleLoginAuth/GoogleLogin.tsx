@@ -107,8 +107,10 @@ function GoogleLogin() {
           name: user.displayName,
           picture: user.photoURL,
         };
+        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+          addUsers(user.email, user.displayName);
+        }
 
-        // addUsers(user.email, user.displayName);
         localStorage.setItem('userData', JSON.stringify(emailData));
         setIsLoggedIn(true);
         navigate('/match-queues');
