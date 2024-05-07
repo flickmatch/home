@@ -15,6 +15,8 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
+  onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -33,6 +35,8 @@ function GoogleLogin() {
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
+  //----------------------------------------------------------------
   const [, notificationsActions] = useNotifications();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState(false);
@@ -40,6 +44,24 @@ function GoogleLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSignup, setShowSignup] = useState(false);
+
+  const onAuthStateChange = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const creationTime = user.metadata.creationTime;
+        const lastSignInTime = user.metadata.lastSignInTime;
+
+        if (creationTime === lastSignInTime) {
+          // eslint-disable-next-line no-console
+          console.log('User is logging in for the first time');
+          addUsers(user.email, user.displayName);
+        } else {
+          // eslint-disable-next-line no-console
+          console.log('User has logged in before');
+        }
+      }
+    });
+  };
 
   const addUsers = (email: unknown, name: unknown) => {
     fetch(apiUrl, {
@@ -85,7 +107,8 @@ function GoogleLogin() {
           name: user.displayName,
           picture: user.photoURL,
         };
-        addUsers(user.email, user.displayName);
+
+        // addUsers(user.email, user.displayName);
         localStorage.setItem('userData', JSON.stringify(emailData));
         setIsLoggedIn(true);
         navigate('/match-queues');
@@ -113,18 +136,24 @@ function GoogleLogin() {
   const emailSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const name = email.split('@')[0];
-        // Signed up
-        const user = userCredential.user;
-        const emailData = { email: user.email, id: user.uid, name: name };
+        sendEmailVerification(userCredential.user).then(() => {
+          alert(
+            'Email verification link sent successfully! Please login after email verification successful',
+          );
+        });
+        setShowSignup(false);
 
-        localStorage.setItem('userData', JSON.stringify(emailData));
-        setIsLoggedIn(true);
-        navigate('/match-queues');
+        auth.signOut();
       })
       .catch((error) => {
         const errorMessage = error.message.slice(10);
-        errorNotification(errorMessage);
+        if (errorMessage === 'Error (auth/email-already-in-use).') {
+          errorNotification('Email id already exists! Try logging in with google');
+          setShowSignup(false);
+          setEmailLogin(false);
+        } else {
+          errorNotification(errorMessage);
+        }
       });
   };
 
@@ -136,11 +165,17 @@ function GoogleLogin() {
 
         // Signed in
         const user = userCredential.user;
-        const emailData = { email: user.email, id: user.uid, name: name };
 
-        localStorage.setItem('userData', JSON.stringify(emailData));
-        setIsLoggedIn(true);
-        navigate('/match-queues');
+        if (user.emailVerified) {
+          const emailData = { email: user.email, id: user.uid, name: name };
+
+          localStorage.setItem('userData', JSON.stringify(emailData));
+          onAuthStateChange();
+          setIsLoggedIn(true);
+          navigate('/match-queues');
+        } else {
+          alert('Please verify your email before logging in');
+        }
       })
       .catch((error) => {
         const errorMessage = error.message.slice(10);
