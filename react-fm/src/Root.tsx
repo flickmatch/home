@@ -13,13 +13,13 @@ import ThemeProvider from '@/theme/Provider';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyA2xbxgRiRWVbvs3Io2Cy-tEKrsrpi4vWU',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'flickmatch-6e505.firebaseapp.com',
   projectId: 'flickmatch-6e505',
   storageBucket: 'flickmatch-6e505.appspot.com',
-  messagingSenderId: '402436372416',
-  appId: '1:402436372416:web:13883a78b8f75b4f95fa25',
-  measurementId: 'G-XDRGTBJZML',
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const container = document.getElementById('root') as HTMLElement;
