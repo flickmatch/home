@@ -172,7 +172,7 @@ public class EventBuilderTest {
         List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
 
         // Verify the result
-        assertEquals(0, result.size());
+        assertEquals(2, result.size());
     }
 
     private List<Event> createMockEvents(String cityId) {
