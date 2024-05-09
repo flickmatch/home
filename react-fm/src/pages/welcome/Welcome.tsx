@@ -184,7 +184,8 @@ function Welcome() {
             <FlexBox className={isPortrait ? styles.portraitStepsContainer : styles.stepsContainer}>
               <Typography className={styles.title}>Make the payment</Typography>
               <Typography className={isPortrait ? styles.portraitStep : styles.step}>
-                You&apos;ll be assigned a team. Make sure you follow the team colors. hello
+                You&apos;ll be assigned a team. Make sure you follow the team colors. hello how are
+                u
               </Typography>
             </FlexBox>
           </FlexBox>
