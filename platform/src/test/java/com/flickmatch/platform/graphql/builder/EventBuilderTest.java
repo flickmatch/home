@@ -25,7 +25,6 @@ public class EventBuilderTest {
     private EventRepository eventRepository;
 
     private EventBuilder eventBuilder;
-
     @BeforeEach
     public void setup() {
         eventRepository = mock(EventRepository.class);
@@ -157,5 +156,45 @@ public class EventBuilderTest {
         String currencyForSanFrancisco = eventBuilder.getCurrencyForCity("5");
         assertEquals("USD", currencyForSanFrancisco);
 
+    }
+
+    @Test
+    public void testGetEvents() {
+        // Mock input data
+        String cityId = "2";
+        String localTimeZone = "GMT+5:030";
+        List<Event> events = createMockEvents(cityId);
+
+        // Mock the event repository to return the list of events
+        when(eventRepository.findAll()).thenReturn(events);
+
+        // Call the method under test
+        List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
+
+        // Verify the result
+        assertEquals(0, result.size());
+    }
+
+    private List<Event> createMockEvents(String cityId) {
+        List<Event> events = new ArrayList<>();
+
+        // Create mock events
+        Event event1 = new Event();
+        Event event2 = new Event();
+
+        // Set up event details
+        event1.setCityId(cityId);
+        event1.setDate("2024-05-06");
+        event1.setEventDetailsList(new ArrayList<>());
+
+        event2.setCityId(cityId); // Make sure to set the cityId property
+        event2.setDate("2024-05-07");
+        event2.setEventDetailsList(new ArrayList<>());
+
+        // Add events to the list
+        events.add(event1);
+        events.add(event2);
+
+        return events;
     }
 }
