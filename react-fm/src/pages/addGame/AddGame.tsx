@@ -204,7 +204,7 @@ function AddGame() {
       options: {
         content: (
           <Alert severity="success">
-            <AlertTitle className={styles.alertTitle}>Game Added Successfully</AlertTitle>
+            <AlertTitle className={styles.alertTitle}>Turf Added Successfully</AlertTitle>
           </Alert>
         ),
       },

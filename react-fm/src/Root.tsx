@@ -5,30 +5,10 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { RecoilRoot } from 'recoil';
 
-import { getAnalytics } from 'firebase/analytics';
-import { initializeApp } from 'firebase/app';
-
 import ThemeProvider from '@/theme/Provider';
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: 'flickmatch-6e505.firebaseapp.com',
-  projectId: 'flickmatch-6e505',
-  storageBucket: 'flickmatch-6e505.appspot.com',
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const analytics = getAnalytics(app);
 
 function render(App: ComponentType) {
   root.render(

@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -5,27 +6,16 @@ import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import {
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from 'firebase/auth';
+import axios from 'axios';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
-import useNotifications from '@/store/notifications';
 
 import styles from './GoogleLogin.module.scss';
 import { apiUrl } from './constants';
@@ -33,37 +23,14 @@ import { apiUrl } from './constants';
 function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
-  const auth = getAuth();
-  const provider = new GoogleAuthProvider();
-
-  //----------------------------------------------------------------
-  const [, notificationsActions] = useNotifications();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showSignup, setShowSignup] = useState(false);
 
-  const onAuthStateChange = () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const creationTime = user.metadata.creationTime;
-        const lastSignInTime = user.metadata.lastSignInTime;
+  const adminPassword = 'admin@flickmatch';
 
-        if (creationTime === lastSignInTime) {
-          // eslint-disable-next-line no-console
-          console.log('User is logging in for the first time');
-          addUsers(user.email, user.displayName);
-        } else {
-          // eslint-disable-next-line no-console
-          console.log('User has logged in before');
-        }
-      }
-    });
-  };
-
-  const addUsers = (email: unknown, name: unknown) => {
+  const addUsers = (email: string, name: string) => {
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -88,6 +55,7 @@ function GoogleLogin() {
           throw new Error(result.errors[0].message);
           // console.log(result.errors[0].message)
         }
+        // console.log(result)
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -95,100 +63,46 @@ function GoogleLogin() {
       });
   };
 
-  const googleAuth = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const user = result.user;
-
-        const emailData = {
-          email: user.email,
-          id: user.uid,
-          name: user.displayName,
-          picture: user.photoURL,
-        };
-        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-          addUsers(user.email, user.displayName);
-        }
-
-        localStorage.setItem('userData', JSON.stringify(emailData));
+  const getGoogleUserInfo = async (accessToken: string) => {
+    axios
+      .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+      })
+      .then((res) => {
+        // eslint-disable-next-line no-console
+        console.log(res.data);
+        addUsers(res.data.email, res.data.name);
+        localStorage.setItem('userData', JSON.stringify(res.data));
         setIsLoggedIn(true);
         navigate('/match-queues');
       })
-      .catch((error) => {
-        // Handling Errors
-        const errorMessage = error.message;
+      .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(errorMessage);
-      });
-  };
-
-  const errorNotification = (errorMessage: string) =>
-    notificationsActions.push({
-      options: {
-        content: (
-          <Alert severity="error">
-            <AlertTitle className={styles.alertTitle}>{errorMessage}</AlertTitle>
-          </Alert>
-        ),
-      },
-    });
-
-  //email signup function
-  const emailSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        sendEmailVerification(userCredential.user).then(() => {
-          alert(
-            'Email verification link sent successfully! Please login after email verification successful',
-          );
-        });
-        setShowSignup(false);
-
-        auth.signOut();
-      })
-      .catch((error) => {
-        const errorMessage = error.message.slice(10);
-        if (errorMessage === 'Error (auth/email-already-in-use).') {
-          errorNotification('Email id already exists! Try logging in with google');
-          setShowSignup(false);
-          setEmailLogin(false);
-        } else {
-          errorNotification(errorMessage);
-        }
-      });
-  };
-
-  //email login function
-  const emailLogIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const name = email.split('@')[0];
-
-        // Signed in
-        const user = userCredential.user;
-
-        if (user.emailVerified) {
-          const emailData = { email: user.email, id: user.uid, name: name };
-
-          localStorage.setItem('userData', JSON.stringify(emailData));
-          onAuthStateChange();
-          setIsLoggedIn(true);
-          navigate('/match-queues');
-        } else {
-          alert('Please verify your email before logging in');
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error.message.slice(10);
-        errorNotification(errorMessage);
+        console.log(err);
       });
   };
 
   const emailLoginFunc = () => {
-    setShowLogin(true);
-    setEmailLogin(true);
+    if (password === adminPassword) {
+      const name = email.split('@')[0];
+      const emailData = { email: email, password: password, id: '344665', name: name };
+
+      localStorage.setItem('userData', JSON.stringify(emailData));
+      setIsLoggedIn(true);
+      navigate('/match-queues');
+    } else {
+      alert('Incorrect password');
+    }
   };
+
+  const loginFunc = useGoogleLogin({
+    onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
+    // eslint-disable-next-line no-console
+    onError: (error) => console.log('Login Failed ', error),
+  });
 
   return (
     <>
@@ -210,13 +124,7 @@ function GoogleLogin() {
               <SportsSoccerIcon className={styles.sportsIcon} />
             </Box>
             <Box className={styles.loginSignupHeader}>
-              {showSignup ? (
-                <Typography className={styles.loginSignupText}>Sign up</Typography>
-              ) : showLogin ? (
-                <Typography className={styles.loginSignupText}>Login</Typography>
-              ) : (
-                <Typography className={styles.loginSignupText}>Login / Sign up</Typography>
-              )}
+              <Typography className={styles.loginSignupText}>Login / Signup</Typography>
               <Typography className={styles.getStarted}>Let&#39;s get Started</Typography>
               <Typography className={styles.signUpImmediately}>
                 Join our community and start your <br />
@@ -230,7 +138,7 @@ function GoogleLogin() {
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }
-                  onClick={() => googleAuth()}
+                  onClick={() => loginFunc()}
                   startIcon={<GoogleIcon />}
                 >
                   Log In / Sign up with Google
@@ -244,7 +152,7 @@ function GoogleLogin() {
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }
-                  onClick={() => emailLoginFunc()}
+                  onClick={() => setEmailLogin(true)}
                   startIcon={<EmailIcon />}
                 >
                   Log In / Sign Up with Email
@@ -267,44 +175,13 @@ function GoogleLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   className={styles.passwordField}
                 />
-                {showSignup ? (
-                  <Button
-                    variant="outlined"
-                    className={
-                      isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton
-                    }
-                    onClick={() => emailSignUp()}
-                  >
-                    Sign up
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    className={
-                      isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton
-                    }
-                    onClick={() => emailLogIn()}
-                  >
-                    Sign In
-                  </Button>
-                )}
-                <Box>
-                  {showSignup ? (
-                    <Typography style={{ marginTop: 10 }}>
-                      Already have an account?{' '}
-                      <span onClick={() => setShowSignup(false)} className={styles.signupText}>
-                        Sign in
-                      </span>
-                    </Typography>
-                  ) : (
-                    <Typography style={{ marginTop: 10 }}>
-                      Need an account?{' '}
-                      <span onClick={() => setShowSignup(true)} className={styles.signupText}>
-                        Sign up
-                      </span>
-                    </Typography>
-                  )}
-                </Box>
+                <Button
+                  variant="outlined"
+                  className={isPortrait ? styles.portraitEmailLoginButton : styles.emailLoginButton}
+                  onClick={() => emailLoginFunc()}
+                >
+                  Sign In
+                </Button>
               </Box>
             )}
           </Box>

@@ -314,7 +314,7 @@ function AdminPage() {
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button variant="contained" color="success" className={styles.createButton} onClick={addTurf}>
-        Add Turf
+        Create
       </Button>
     </Box>
   );
