@@ -31,15 +31,12 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// const client = new Client({
-//   authStrategy: new LocalAuth(),
-//   puppeteer: {
-//     headless: true,
-//     args: ["--no-sandbox"],
-//   },
-// });
-
 const client = new Client({
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    headless: true,
+    args: ["--no-sandbox"],
+  },
   webVersionCache: {
     type: "remote",
     remotePath:
@@ -70,9 +67,10 @@ client.on("message", async (msg) => {
   if (!content || content === "") {
     return;
   }
-  if (isProd && message.body === "!ping") {
+  // if (isProd && message.body === "!ping") {
+  if (msg.body === "!ping") {
     // send back "pong" to the chat the message was sent in
-    client.sendMessage(message.from, "pong");
+    client.sendMessage(msg.from, "pong");
   }
 
   if (chat.name == groupName) {
