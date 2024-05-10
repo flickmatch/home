@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class EventBuilderTest {
@@ -162,14 +163,20 @@ public class EventBuilderTest {
     public void testGetEvents() {
         // Mock input data
         String cityId = "2";
-        String localTimeZone = "GMT+5:030";
+        String localTimeZone = "GMT+05:30";
         List<Event> events = createMockEvents(cityId);
-
+        // Print details of each event
+//        for (Event event : events) {
+//            System.out.println("Event Details:");
+//            System.out.println("City ID: " + event.getCityId());
+//            System.out.println("Date: " + event.getDate());
+//            // Add more details as needed
+//        }
         // Mock the event repository to return the list of events
         when(eventRepository.findAll()).thenReturn(events);
 
         // Call the method under test
-        List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
+        List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents("2", "GMT+5:30");
 
         // Verify the result
         assertEquals(2, result.size());
@@ -178,22 +185,25 @@ public class EventBuilderTest {
     private List<Event> createMockEvents(String cityId) {
         List<Event> events = new ArrayList<>();
 
-        // Create mock events
-        Event event1 = new Event();
-        Event event2 = new Event();
+        // Get today's date
+        LocalDate today = LocalDate.now();
 
-        // Set up event details
-        event1.setCityId(cityId);
-        event1.setDate("2024-05-06");
-        event1.setEventDetailsList(new ArrayList<>());
+        // Create an event for today
+        Event eventToday = new Event();
+        eventToday.setCityId(cityId);
+        eventToday.setDate(today.toString());
+        eventToday.setEventDetailsList(new ArrayList<>());
+        events.add(eventToday);
 
-        event2.setCityId(cityId); // Make sure to set the cityId property
-        event2.setDate("2024-05-07");
-        event2.setEventDetailsList(new ArrayList<>());
+        // Get yesterday's date
+        LocalDate yesterday = today.minusDays(1);
 
-        // Add events to the list
-        events.add(event1);
-        events.add(event2);
+        // Create an event for yesterday
+        Event eventYesterday = new Event();
+        eventYesterday.setCityId(cityId);
+        eventYesterday.setDate(yesterday.toString());
+        eventYesterday.setEventDetailsList(new ArrayList<>());
+        events.add(eventYesterday);
 
         return events;
     }
