@@ -1,22 +1,32 @@
 package com.flickmatch.platform.graphql.builder;
 
+import static com.flickmatch.platform.graphql.util.DateUtil.extractDateFromISOFormatDate;
+import static java.time.Instant.now;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.util.Date.from;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
+import com.flickmatch.platform.graphql.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class EventBuilderTest {
@@ -92,34 +102,42 @@ public class EventBuilderTest {
                 .build();
 
         List<Event.EventDetails> eventDetailsList = new ArrayList<>();
-
-        Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
-                .name("name")
-                .waNumber("waNumber")
-                .build();
-
-        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
-        playerDetailsList.add(playerDetails);
-
-        Event.EventDetails eventDetails = Event.EventDetails.builder()
-                .index(1)
-                .startTime(new Date())
-                .endTime(new Date())
-                .charges(10.0)
-                .reservedPlayersCount(0)
-                .waitListPlayersCount(1)
-                .sportName("Football")
-                .venueName("venueName")
-                .venueLocationLink("venueLocationLink")
-                .playerDetailsList(playerDetailsList)
-                .build();
-        eventDetailsList.add(eventDetails);
+        eventDetailsList.add(getEventDetails(new Date(), new Date()));
 
         Optional<Event> event = Optional.ofNullable(Event.builder()
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build());
         return event;
+    }
+
+    private List<Event.PlayerDetails> getListOfPlayerDetails() {
+        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
+        playerDetailsList.add(getPlayerDetails());
+
+        return playerDetailsList;
+    }
+
+    private Event.PlayerDetails getPlayerDetails() {
+        return Event.PlayerDetails.builder()
+                .name("name")
+                .waNumber("waNumber")
+                .build();
+    }
+
+    private Event.EventDetails getEventDetails(Date startTime, Date endTime) {
+        return Event.EventDetails.builder()
+                .index(1)
+                .startTime(startTime)
+                .endTime(endTime)
+                .charges(10.0)
+                .reservedPlayersCount(0)
+                .waitListPlayersCount(1)
+                .sportName("Football")
+                .venueName("venueName")
+                .venueLocationLink("venueLocationLink")
+                .playerDetailsList(getListOfPlayerDetails())
+                .build();
     }
 
     @Test
@@ -157,5 +175,60 @@ public class EventBuilderTest {
         String currencyForSanFrancisco = eventBuilder.getCurrencyForCity("5");
         assertEquals("USD", currencyForSanFrancisco);
 
+    }
+
+    @Test
+    public void testGetEvents() {
+        // Mock input data
+        String cityId = "2";
+        String localTimeZone = "GMT+05:30";
+
+        List<Event> pastEvents = new ArrayList<>();
+
+        Instant currentTime = Instant.now();
+
+        String todayDate = extractDateFromISOFormatDate(from(currentTime), localTimeZone);
+        String yesterdayDate = extractDateFromISOFormatDate(from(currentTime.minus(1, DAYS)), localTimeZone);
+        Event eventToday = getMockEvent(cityId, todayDate, getEventDetailsList(currentTime));
+        Event eventYesterday = getMockEvent(cityId, yesterdayDate, getEventDetailsList(currentTime));
+        pastEvents.add(eventYesterday);
+
+        Event.EventId eventIdForToday = Event.EventId.builder().cityId(cityId).date(todayDate).build();
+
+        // Mock the event repository to return the list of events
+        when(eventRepository.findById(eq(eventIdForToday))).thenReturn(Optional.of(eventToday));
+        when(eventRepository.findAll()).thenReturn(pastEvents);
+
+
+        // Call the method under test
+        List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
+
+        // Verify the result
+        assertEquals(2, result.size());
+    }
+
+    private List<Event.EventDetails> getEventDetailsList(Instant currentTime) {
+
+        Event.EventDetails eventInFuture1 = getEventDetails(from(currentTime.plus(1, HOURS)),
+                from(currentTime.plus(2, HOURS)));
+
+        Event.EventDetails eventInPast1 = getEventDetails(from(currentTime.minus(4, HOURS)),
+                from(currentTime.minus(3, HOURS)));
+
+        Event.EventDetails eventInPast2 = getEventDetails(from(currentTime.minus(4, DAYS)),
+                from(currentTime.minus(3, DAYS)));
+
+        List<Event.EventDetails> listOfEventDetailsForADay = new ArrayList<>();
+        listOfEventDetailsForADay.add(eventInFuture1);
+        listOfEventDetailsForADay.add(eventInPast1);
+
+        return listOfEventDetailsForADay;
+    }
+
+    private Event getMockEvent(String cityId, String date, List<Event.EventDetails> eventDetailsList) {
+        return Event.builder()
+                .eventId(Event.EventId.builder().cityId(cityId).date(date).build())
+                .eventDetailsList(eventDetailsList)
+                .build();
     }
 }
