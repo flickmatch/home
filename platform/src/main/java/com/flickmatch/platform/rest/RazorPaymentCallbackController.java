@@ -74,7 +74,7 @@ public class RazorPaymentCallbackController {
 
         }
         catch (Exception e) {
-            log.error("Error processing callback: ", e);
+            log.error("Error processing callback: {}", e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 
