@@ -12,7 +12,7 @@ const expected = `Flickmatch football game at HotFut GachiBowli
 5 🆚 5
 ₹200/- Per Person.
 
-Confirmed Players:
+🎫 Confirmed Players:
 1. Player1
 2. Player2
 3. sam

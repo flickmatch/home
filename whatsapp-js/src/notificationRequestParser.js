@@ -40,13 +40,9 @@ export const convertToTimeSlot = (timestamp1, timestamp2, timeZone) => {
   const fullDate = `${padZero(date)}/${padZero(month)}/${year}`;
   const day = date1.getDay();
 
-  // Format the timeslots in 12-hour format
-  const timeSlot1 = `${padZero(hours1)}:${padZero(minutes1)} ${amPm(
-    date1.getHours()
-  )}`;
-  const timeSlot2 = `${padZero(hours2)}:${padZero(minutes2)} ${amPm(
-    date2.getHours()
-  )}`;
+  // Format the timeslots
+  const timeSlot1 = `${padZero(hours1)}:${padZero(minutes1)}`;
+  const timeSlot2 = `${padZero(hours2)}:${padZero(minutes2)}`;
 
   return `🕐 ${timeSlot1} - ${timeSlot2} \n📅 ${fullDate} (${daysOfWeek[day]})`;
 };
@@ -79,7 +75,7 @@ ${dateTime}
 ${format} 🆚 ${format}
 ${currency}${charges}/- Per Person.
 
-Confirmed Players:`;
+🎫 Confirmed Players:`;
   for (const [index, value] of jsonData.playerNameList.entries()) {
     message = message + "\n" + `${index + 1}. ${value}`;
   }
