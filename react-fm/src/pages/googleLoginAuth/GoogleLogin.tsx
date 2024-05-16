@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,14 +12,13 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import axios from 'axios';
 import {
-  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   sendEmailVerification,
   signInWithEmailAndPassword,
-  signInWithPopup,
 } from 'firebase/auth';
 
 import Meta from '@/components/Meta';
@@ -34,7 +34,6 @@ function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const auth = getAuth();
-  const provider = new GoogleAuthProvider();
 
   //----------------------------------------------------------------
   const [, notificationsActions] = useNotifications();
@@ -95,33 +94,33 @@ function GoogleLogin() {
       });
   };
 
-  const googleAuth = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const user = result.user;
-
-        const emailData = {
-          email: user.email,
-          id: user.uid,
-          name: user.displayName,
-          picture: user.photoURL,
-        };
-        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-          addUsers(user.email, user.displayName);
-        }
-
-        localStorage.setItem('userData', JSON.stringify(emailData));
+  const getGoogleUserInfo = async (accessToken: string) => {
+    axios
+      .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+      })
+      .then((res) => {
+        // eslint-disable-next-line no-console
+        console.log(res.data);
+        addUsers(res.data.email, res.data.name);
+        localStorage.setItem('userData', JSON.stringify(res.data));
         setIsLoggedIn(true);
         navigate('/match-queues');
       })
-      .catch((error) => {
-        // Handling Errors
-        const errorMessage = error.message;
+      .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(errorMessage);
+        console.log(err);
       });
   };
+
+  const loginFunc = useGoogleLogin({
+    onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
+    // eslint-disable-next-line no-console
+    onError: (error) => console.log('Login Failed ', error),
+  });
 
   const errorNotification = (errorMessage: string) =>
     notificationsActions.push({
@@ -230,7 +229,7 @@ function GoogleLogin() {
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }
-                  onClick={() => googleAuth()}
+                  onClick={() => loginFunc()}
                   startIcon={<GoogleIcon />}
                 >
                   Log In / Sign up with Google
