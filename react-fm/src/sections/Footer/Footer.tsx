@@ -16,7 +16,6 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Footer.module.scss';
-import mainlogo from '/logo.png';
 
 function Footer() {
   const isPortrait = useOrientation();
