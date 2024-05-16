@@ -37,6 +37,7 @@ function GoogleLogin() {
 
   //----------------------------------------------------------------
   const [, notificationsActions] = useNotifications();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -49,7 +50,6 @@ function GoogleLogin() {
       if (user) {
         const creationTime = user.metadata.creationTime;
         const lastSignInTime = user.metadata.lastSignInTime;
-
         if (creationTime === lastSignInTime) {
           // eslint-disable-next-line no-console
           console.log('User is logging in for the first time');
@@ -62,7 +62,7 @@ function GoogleLogin() {
     });
   };
 
-  const addUsers = (email: unknown, name: unknown) => {
+  const addUsers = (email: string | null, name: string | null) => {
     fetch(apiUrl, {
       method: 'POST',
       headers: {

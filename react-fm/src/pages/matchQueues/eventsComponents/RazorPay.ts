@@ -93,7 +93,6 @@ const displayRazorpay = (
       },
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const _window = window as any;
     const paymentObject = new _window.Razorpay(options);
     paymentObject.open();

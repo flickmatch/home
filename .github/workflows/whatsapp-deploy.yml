@@ -18,6 +18,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Check for QR code
+        run: |
+          if grep -q "QR RECEIVED" whatsapp-js/main.js; then
+            echo "QR code received, deployment failed"
+            exit 1
+          else
+            echo "No QR code received, continue deployment"
+          fi
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
@@ -27,7 +35,7 @@ jobs:
           password: ${{ secrets.WA_SERVER_PASSWORD }}
           port: 22
           script: |
-            cd ~/safeuser/code/home/whatsapp-js
+            cd ~/home/safeuser/home/whatsapp-js
             git stash
             git pull origin main
             git status
