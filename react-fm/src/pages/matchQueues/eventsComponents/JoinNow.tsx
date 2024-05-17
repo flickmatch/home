@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import ReactGA from 'react-ga';
-import { useNavigate } from 'react-router-dom';
 
-//import CreditCardIcon from '@mui/icons-material/CreditCard';
+//import { useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -40,7 +39,7 @@ export const JoinNow: FC<EventDetails> = ({
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
@@ -60,8 +59,6 @@ export const JoinNow: FC<EventDetails> = ({
       setUserData({ name: data.name, email: data.email, phoneNumber: '' });
     }
   }, []);
-
-  // console.log(names);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
@@ -87,10 +84,6 @@ export const JoinNow: FC<EventDetails> = ({
     });
   }
 
-  // const handleName = (e: { target: { value: string } }) => {
-  //   setUserData({ ...userData, name: e.target.value });
-  // };
-
   const handleEmail = (e: { target: { value: string } }) => {
     setUserData({ ...userData, email: e.target.value });
   };
@@ -100,13 +93,9 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const paymentOptions = (event: { stopPropagation: () => void }) => {
-    if (userData.name) {
-      event.stopPropagation();
-      history.replaceState(null, '', `#${uniqueEventId}`);
-      setShowPaymentOptions(true);
-    } else {
-      navigate('/login');
-    }
+    event.stopPropagation();
+    history.replaceState(null, '', `#${uniqueEventId}`);
+    setShowPaymentOptions(true);
   };
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
@@ -233,8 +222,6 @@ export const JoinNow: FC<EventDetails> = ({
   if (orderId) {
     displayRazorpay(amount, orderId, userData.email, userData.name, userData.phoneNumber);
   }
-
-  // console.log(orderId, amount);
 
   return (
     <>
