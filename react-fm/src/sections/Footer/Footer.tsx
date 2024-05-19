@@ -16,7 +16,6 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './Footer.module.scss';
-import mainlogo from '/logo.png';
 
 function Footer() {
   const isPortrait = useOrientation();
@@ -97,7 +96,11 @@ function Footer() {
     <AppBar color="transparent" elevation={1} position="static" className={styles.container}>
       <FlexBox className={isPortrait ? styles.mobileAppBar : styles.appBar}>
         <FlexBox className={isPortrait ? styles.mobileCompanyDetails : styles.companyDetails}>
-          <img src={mainlogo} alt="logo" className={styles.logo} />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314"
+            alt="logo"
+            className={styles.logo}
+          />
           <Typography className={styles.companyName}>Flickmatch Private Limited</Typography>
         </FlexBox>
         <FlexBox className={isPortrait ? styles.mobileMenuDetails : styles.menuDetails}>

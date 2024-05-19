@@ -118,7 +118,7 @@
   border-radius: 4px;
   font-weight: 600;
   height: 45px;
-  max-width: 80%;
+  max-width: 100%;
   margin-bottom: 10px;
 }
 
@@ -175,5 +175,12 @@
 
 .emailLoginButton,
 .portraitEmailLoginButton {
-  margin-left: 17.5%;
+  margin-left: 5px;
+}
+
+.signupText {
+  text-decoration: underline;
+  color: #606264;
+  font-weight: 500;
+  cursor: pointer;
 }
