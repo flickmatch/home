@@ -23,7 +23,7 @@ function PrivacyPolicy() {
     if (storedData) {
       dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

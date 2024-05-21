@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
@@ -26,7 +26,7 @@ function RefundCancellation() {
     if (storedData) {
       dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

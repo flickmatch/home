@@ -22,7 +22,7 @@ function TermsConditions() {
     if (storedData) {
       dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
