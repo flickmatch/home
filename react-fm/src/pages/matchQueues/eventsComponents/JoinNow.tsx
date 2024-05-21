@@ -240,6 +240,7 @@ export const JoinNow: FC<EventDetails> = ({
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
                 className={isPortrait ? '' : styles.payViaUpi}
                 onClick={handleClickOpen}
+                style={{ display: 'none' }}
               >
                 UPI
               </Button>
