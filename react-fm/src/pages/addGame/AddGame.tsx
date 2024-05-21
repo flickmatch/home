@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
@@ -29,6 +30,7 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header/Header';
+import { logingin } from '@/slices/loginSlice';
 import useNotifications from '@/store/notifications';
 
 import { query } from '../matchQueues/constants';
@@ -41,7 +43,7 @@ function AddGame() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const [, notificationsActions] = useNotifications();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
@@ -53,9 +55,11 @@ function AddGame() {
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+
   //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -86,7 +90,7 @@ function AddGame() {
 
         fetchMailIds();
       }
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -429,7 +433,7 @@ function AddGame() {
     <>
       <Meta title="Add Game" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       {hasAccess ? (
         <>

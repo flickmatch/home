@@ -4,4 +4,13 @@ type AtomEffectParams = {
   [key: string]: any;
 };
 
-export type { AtomEffectParams };
+interface LoginState {
+  isLoggedIn: boolean;
+}
+
+interface RootState {
+  login: LoginState;
+  // other state slices
+}
+
+export type { AtomEffectParams, RootState, LoginState };

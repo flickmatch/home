@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-
+// import { useEffect } from 'react';
+// import { useDispatch } from 'react-redux';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
@@ -8,25 +8,26 @@ import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
 
+// import { logingin } from '@/slices/loginSlice';
 import styles from './AboutUs.module.scss';
 
 function AboutUs() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('userData');
 
-    if (storedData) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  //   if (storedData) {
+  //     dispatch(logingin());
+  //   }
+  // }, [dispatch]);
 
   return (
     <>
       <Meta title="About Us" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <FullSizeCenteredFlexBox className={styles.box}>
         <Typography variant="h3" className={styles.ourStory}>

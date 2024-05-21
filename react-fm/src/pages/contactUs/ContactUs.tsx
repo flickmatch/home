@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -14,26 +15,27 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { logingin } from '@/slices/loginSlice';
 
 import styles from './ContactUs.module.scss';
 
 function ContactUs() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Meta title="Contact Us" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <div className={styles.contactPage}>
         <Typography variant="h3" className={styles.pageTitle}>

@@ -3,12 +3,15 @@ import type { ComponentType } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
 import { RecoilRoot } from 'recoil';
 
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 
 import ThemeProvider from '@/theme/Provider';
+
+import store from './store';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -37,7 +40,9 @@ function render(App: ComponentType) {
         <RecoilRoot>
           <HelmetProvider>
             <ThemeProvider>
-              <App />
+              <Provider store={store}>
+                <App />
+              </Provider>
             </ThemeProvider>
           </HelmetProvider>
         </RecoilRoot>

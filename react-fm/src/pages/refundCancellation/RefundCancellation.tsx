@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
@@ -11,18 +12,19 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { logingin } from '@/slices/loginSlice';
 
 import styles from './RefundCancellation.module.scss';
 
 function RefundCancellation() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
   }, []);
 
@@ -30,7 +32,7 @@ function RefundCancellation() {
     <>
       <Meta title="Refund & Cancellation" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <FlexBox className={isPortrait ? styles.portraitHome : styles.home}>
         <Typography variant="h3" className={styles.heading}>
