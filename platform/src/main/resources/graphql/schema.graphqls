@@ -68,6 +68,7 @@ input CreateUserInput {
 input RazorPayInput {
     uniqueEventId: ID!
     playerInputList: [PlayerInput!]!
+    currency: String!
 }
 
 type User {
