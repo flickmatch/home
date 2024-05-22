@@ -69,6 +69,7 @@ const displayRazorpay = (
     }
 
     const options = {
+      // key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
       key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
       amount: amount,
       currency: 'INR',
