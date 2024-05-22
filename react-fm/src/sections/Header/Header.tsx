@@ -22,6 +22,7 @@ import useSidebar from '@/store/sidebar';
 //import useTheme from '@/store/theme';
 import styles from './Header.module.scss';
 //import { HotKeysButton } from './styled';
+//import { HotKeysButton } from './styled';
 import { appLogo } from './constants';
 
 interface UserDetails {
