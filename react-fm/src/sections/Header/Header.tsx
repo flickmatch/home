@@ -38,6 +38,7 @@ const Header = () => {
   const [, sidebarActions] = useSidebar();
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
+  // const isPortrait = useOrientation();
   const isPortrait = useOrientation();
   const [isAdminMode, setIsAdminMode] = useState(false);
 
