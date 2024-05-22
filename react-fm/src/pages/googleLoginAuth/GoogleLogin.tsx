@@ -142,7 +142,6 @@ function GoogleLogin() {
 
         // Signed in
         const user = userCredential.user;
-
         if (user.emailVerified) {
           const emailData = { email: user.email, id: user.uid, name: name };
 
