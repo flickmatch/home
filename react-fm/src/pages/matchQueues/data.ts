@@ -6,6 +6,7 @@ const dummyData = {
         cityName: 'Hyderabad',
         countryCode: 'IN',
         dummyData: false,
+        currency: 'INR',
         events: [
           {
             uniqueEventId: '07-28-1-1-6',
@@ -150,6 +151,7 @@ const dummyData = {
         cityId: '1',
         cityName: 'Gurgaon',
         countryCode: 'IN',
+        currency: 'INR',
         dummyData: false,
         events: [
           {
@@ -324,6 +326,7 @@ const dummyData = {
         cityId: '4',
         cityName: 'San Jose',
         countryCode: 'US',
+        currency: 'USD',
         dummyData: false,
         events: [
           {
