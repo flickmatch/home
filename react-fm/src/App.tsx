@@ -20,7 +20,7 @@ function App() {
     ReactGA.initialize('G-12MG3SRC9K'); //tracking ID
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
-  //redux integrated
+  //redux integrated kjhjkhkjhk
   return (
     <StyledEngineProvider injectFirst>
       <Fragment>
