@@ -1,3 +1,4 @@
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
@@ -53,7 +54,7 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/Rewards')),
     path: '/rewards',
     title: 'Rewards',
-    icon: ContactPageIcon,
+    icon: AttachMoneyIcon,
   },
   [Pages.Admin]: {
     component: asyncComponentLoader(() => import('@/pages/adminPage')),
