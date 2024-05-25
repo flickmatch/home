@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -11,6 +12,7 @@ import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header/Header';
+import { logingin } from '@/slices/loginSlice';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -22,7 +24,7 @@ import type { CityDetails } from './types/Events.types';
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   const isPortrait = useOrientation();
 
@@ -30,9 +32,9 @@ function MatchQueue() {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -152,7 +154,7 @@ function MatchQueue() {
     <>
       <Meta title="Match Queues" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}

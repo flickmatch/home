@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -24,6 +25,7 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header/Header';
+import { logingin } from '@/slices/loginSlice';
 import useNotifications from '@/store/notifications';
 
 import { query } from '../matchQueues/constants';
@@ -32,12 +34,12 @@ import styles from './AdminPage.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
 const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-
 function AdminPage() {
+  const dispatch = useDispatch();
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
@@ -74,10 +76,10 @@ function AdminPage() {
 
         fetchMailIds();
       }
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -324,7 +326,7 @@ function AdminPage() {
       <Meta title="Add Turf" />
 
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       {hasAccess ? (
         <>

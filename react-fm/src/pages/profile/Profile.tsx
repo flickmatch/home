@@ -1,5 +1,6 @@
 import { googleLogout } from '@react-oauth/google';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -24,6 +25,7 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { logingout } from '@/slices/loginSlice';
 
 import styles from './Profile.module.scss';
 
@@ -47,12 +49,12 @@ function Profile() {
     name: '',
     picture: '',
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const dispatch = useDispatch();
   const logOut = () => {
     googleLogout();
     localStorage.removeItem('userData');
-    setIsLoggedIn(false);
+    dispatch(logingout());
     navigate('/');
   };
 
@@ -62,7 +64,6 @@ function Profile() {
     if (storedData) {
       const parseData = JSON.parse(storedData);
       setUserData(parseData);
-      setIsLoggedIn(true);
     }
   }, []);
 
@@ -72,7 +73,7 @@ function Profile() {
     <>
       <Meta title="Profile Page" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <FlexBox className={isPortrait ? styles.portraitProfileContaienr : styles.profileContainer}>
         <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
