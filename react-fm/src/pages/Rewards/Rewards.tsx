@@ -60,13 +60,13 @@ function Rewards() {
         <Header loggedIn={isLoggedIn} />
       </div>
       <div className={styles.parent}>
-        <Typography
-          variant="h3"
-          className={isPortrait ? styles.pageTitleVertical : styles.pageTitle}
-        >
-          Get Free Games
-        </Typography>
         <FlexBox className={`${styles.Container} ${isPortrait ? styles.portraitContainer : ''}`}>
+          <Typography
+            variant="h3"
+            className={isPortrait ? styles.pageTitleVertical : styles.pageTitle}
+          >
+            Get Free Games
+          </Typography>
           <Typography variant="h5" className={styles.primaryHeading}>
             Monthly passes and flickmatch rewards coming soon...
           </Typography>
