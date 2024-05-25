@@ -49,6 +49,12 @@ const routes: Routes = {
     title: 'Contact Us',
     icon: ContactPageIcon,
   },
+  [Pages.Rewards]: {
+    component: asyncComponentLoader(() => import('@/pages/Rewards')),
+    path: '/rewards',
+    title: 'Rewards',
+    icon: ContactPageIcon,
+  },
   [Pages.Admin]: {
     component: asyncComponentLoader(() => import('@/pages/adminPage')),
     path: '/add-turf',

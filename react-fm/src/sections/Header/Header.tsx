@@ -105,6 +105,10 @@ const Header: FC<login> = ({ loggedIn }) => {
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
           Match Queues
         </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/rewards">
+          Rewards
+        </Typography>
 
         {isAdminMode ? (
           <>
