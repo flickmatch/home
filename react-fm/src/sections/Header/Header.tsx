@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+// https://redux-toolkit.js.org/introduction/getting-started for redux implementation
 //import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
 //import useHotKeysDialog from '@/store/hotkeys';
