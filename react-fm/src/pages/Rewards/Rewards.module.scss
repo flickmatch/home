@@ -1,0 +1,110 @@
+::-webkit-scrollbar {
+    display: none;
+  }
+
+.parent {
+    color: #4ce95a;
+    text-align: center;
+    letter-spacing: 1.2px;
+    height: 100vh;
+    // margin: 4rem;
+  }
+
+  .pageTitle {
+    font-weight: 600;
+    margin-top: 2rem;
+  }
+
+  
+  
+  .Container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 4rem;
+    margin: 2rem;
+    width: 100%;
+    // box-shadow: rgba(76, 233, 90,.4) -5px 5px, rgba(76, 233, 90,.3) -10px 10px, rgba(76, 233, 90,.2) -15px 15px, rgba(76, 233, 90,.1) -20px 20px, rgba(76, 233, 90,.05) -25px 25px;
+    // box-shadow: rgb(85, 91, 255) -5px 5px, rgb(31, 193, 27) -10px 10px, rgb(255, 217, 19) -15px 15px, rgb(255, 156, 85) -20px 20px, rgb(255, 85, 85) -25px 25px;
+    // box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px, rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px, rgb(255, 85, 85) 0px 0px 0px 15px;
+    // box-shadow: rgba(74, 74, 75, 0.2) 0px 7px 15px 0px;
+
+  }
+  
+  .primaryHeading {
+    font-weight: 600;
+    margin: 1rem;
+  }
+  
+  .secondaryHeading {
+    font-weight: 500;
+    margin: 1rem;
+  }
+
+  .pageTitleVertical {
+    font-weight: 600;
+    // margin-top: 10rem;
+  }
+  
+  .portraitContainer {
+    margin: 2rem;
+    gap: 4rem;
+
+  }
+
+
+  .emailInput { 
+    width: 100%;
+   }
+
+   .emailInputPotrait {
+    width: 90%;
+   }
+
+  .submitBtn {
+    color: black;
+    border: 1px solid #4ce95a;
+    background: #4ce95a;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    // margin-right: -10px;
+  }
+  
+  .submitBtn:hover {
+    color: #4ce95a;
+    border: 1px solid #4ce95a;
+  }
+  
+  
+.primaryHeading::after {
+  content: "█";
+  // width: 5px;
+  // height: 20px;
+  background: #4ce95a;
+  display: inline-block;
+  animation: 1.5s infinite normal pointer;
+}
+  
+  @keyframes pointer {
+    0% {
+      opacity: 0;
+      left: 0;
+    }
+    40% {
+      opacity: 0;
+      left: -2px;
+    }
+    80% {
+      opacity: 1;
+      left: -2px;
+    }
+  }
+

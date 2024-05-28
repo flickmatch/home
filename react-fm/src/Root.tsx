@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 import ThemeProvider from '@/theme/Provider';
 
@@ -29,6 +30,9 @@ const root = createRoot(container);
 const app = initializeApp(firebaseConfig);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+export { db };
 
 function render(App: ComponentType) {
   root.render(
