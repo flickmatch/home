@@ -22,6 +22,7 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
 import { apiUrl } from '../constants';
+import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
@@ -36,6 +37,7 @@ export const JoinNow: FC<EventDetails> = ({
   waitListPlayersCount,
   venueName,
   uniqueEventId,
+  eventId,
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
@@ -83,6 +85,19 @@ export const JoinNow: FC<EventDetails> = ({
       },
     });
   }
+
+  const getCurrency = () => {
+    let currency = 'INR';
+    mapCityData.forEach((cityData) => {
+      // console.log(cityData.currency);
+      if (cityData.city === eventId) {
+        currency = cityData.currency;
+      }
+    });
+    return currency;
+  };
+
+  const currency = getCurrency();
 
   const handleEmail = (e: { target: { value: string } }) => {
     setUserData({ ...userData, email: e.target.value });
@@ -190,8 +205,8 @@ export const JoinNow: FC<EventDetails> = ({
 
         generateUrl();
       } else {
-        // createOrder('2-2024-04-20-1', objectArray, setAmount) // to be changed after local testing
-        createOrder(uniqueEventId, objectArray, setAmount) // to be changed after local testing
+        // createOrder('2-2024-04-20-1', objectArray, setAmount, currency || 'INR') // to be changed after local testing
+        createOrder(uniqueEventId, objectArray, setAmount, currency || 'INR') // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
             setOpen(false);
@@ -220,7 +235,15 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   if (orderId) {
-    displayRazorpay(amount, orderId, userData.email, userData.name, userData.phoneNumber);
+    displayRazorpay(
+      amount,
+      orderId,
+      userData.email,
+      userData.name,
+      userData.phoneNumber,
+      setOrderId,
+      setRazorPay,
+    );
   }
 
   return (
@@ -240,6 +263,7 @@ export const JoinNow: FC<EventDetails> = ({
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
                 className={isPortrait ? '' : styles.payViaUpi}
                 onClick={handleClickOpen}
+                style={{ display: 'none' }}
               >
                 UPI
               </Button>

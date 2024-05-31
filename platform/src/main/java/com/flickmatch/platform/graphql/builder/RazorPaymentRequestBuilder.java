@@ -29,7 +29,7 @@ public class RazorPaymentRequestBuilder {
            JSONObject orderRequest = new JSONObject();
            String[] parts =input.getUniqueEventId().split("-");
            String cityId = parts[0];
-           String currency = eventBuilder.getCurrencyForCity(cityId);
+           String currency = input.getCurrency();
            orderRequest.put("amount", amount);
            orderRequest.put("currency", currency);
            Order order = razorpayClient.orders.create(orderRequest);

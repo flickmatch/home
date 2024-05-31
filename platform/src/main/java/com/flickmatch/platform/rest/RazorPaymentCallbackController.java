@@ -40,8 +40,8 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
-    @Autowired
-    WhatsAppProxy whatsAppProxy;
+//    @Autowired
+//    WhatsAppProxy whatsAppProxy;
 
 //    @PostMapping("/processRazorPayment")
     @RequestMapping(value = "/processRazorPayment", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -78,7 +78,7 @@ public class RazorPaymentCallbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 
-        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
+//        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
