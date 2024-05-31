@@ -1,5 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import EmailIcon from '@mui/icons-material/Email';
@@ -24,6 +25,7 @@ import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { logingin } from '@/slices/loginSlice';
 
 import { generateFirebaseAuthErrorMessage } from './FirebaseError';
 import styles from './GoogleLogin.module.scss';
@@ -33,9 +35,10 @@ function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const auth = getAuth();
-
+  // const login = useSelector((store) => store.login);
+  const dispatch = useDispatch();
   //----------------------------------------------------------------
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [emailLogin, setEmailLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
@@ -101,7 +104,7 @@ function GoogleLogin() {
       .then((res) => {
         addUsers(res.data.email, res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
-        setIsLoggedIn(true);
+        dispatch(logingin());
         navigate('/match-queues');
       })
       .catch((err) => {
@@ -147,7 +150,7 @@ function GoogleLogin() {
 
           localStorage.setItem('userData', JSON.stringify(emailData));
           onAuthStateChange();
-          setIsLoggedIn(true);
+          dispatch(logingin());
           navigate('/match-queues');
         } else {
           alert('Please verify your email to login.');
@@ -169,7 +172,7 @@ function GoogleLogin() {
     <>
       <Meta title="Login/Signup" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>

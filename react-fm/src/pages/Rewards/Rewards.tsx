@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button, Input } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -17,17 +17,17 @@ import styles from './Rewards.module.scss';
 
 function Rewards() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const emailCollectionRef = collection(db, 'emails');
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('userData');
 
-    if (storedData) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  //   if (storedData) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, []);
 
   function handleSubmit() {
     if (
@@ -57,7 +57,7 @@ function Rewards() {
     <>
       <Meta title="Coming Soon" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <div className={styles.parent}>
         <FlexBox className={`${styles.Container} ${isPortrait ? styles.portraitContainer : ''}`}>

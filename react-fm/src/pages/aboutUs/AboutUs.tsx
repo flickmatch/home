@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
@@ -12,21 +10,12 @@ import styles from './AboutUs.module.scss';
 
 function AboutUs() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      setIsLoggedIn(true);
-    }
-  }, []);
 
   return (
     <>
       <Meta title="About Us" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <FullSizeCenteredFlexBox className={styles.box}>
         <Typography variant="h3" className={styles.ourStory}>
