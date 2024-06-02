@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+// import { useEffect } from 'react';
+// import { useDispatch } from 'react-redux';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
@@ -8,21 +7,21 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
-import { logingin } from '@/slices/loginSlice';
 
+// import { logingin } from '@/slices/loginSlice';
 import styles from './TermsConditions.module.scss';
 
 function TermsConditions() {
   const isPortrait = useOrientation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('userData');
 
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
+  //   if (storedData) {
+  //     dispatch(logingin());
+  //   }
+  // }, [dispatch]);
 
   return (
     <>

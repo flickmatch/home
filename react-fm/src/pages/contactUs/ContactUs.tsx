@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+// import { useEffect } from 'react';
+// import { useDispatch } from 'react-redux';
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
@@ -15,21 +14,21 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
-import { logingin } from '@/slices/loginSlice';
 
+// import { logingin } from '@/slices/loginSlice';
 import styles from './ContactUs.module.scss';
 
 function ContactUs() {
   const isPortrait = useOrientation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('userData');
 
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
+  //   if (storedData) {
+  //     dispatch(logingin());
+  //   }
+  // }, [dispatch]);
 
   return (
     <>
