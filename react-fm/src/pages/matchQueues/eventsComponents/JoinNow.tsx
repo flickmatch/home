@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import ReactGA from 'react-ga';
+import { useNavigate } from 'react-router-dom';
 
-//import { useNavigate } from 'react-router-dom';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -41,7 +42,7 @@ export const JoinNow: FC<EventDetails> = ({
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
@@ -108,9 +109,13 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const paymentOptions = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    history.replaceState(null, '', `#${uniqueEventId}`);
-    setShowPaymentOptions(true);
+    if (userData.name) {
+      event.stopPropagation();
+      history.replaceState(null, '', `#${uniqueEventId}`);
+      setShowPaymentOptions(true);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
@@ -263,6 +268,7 @@ export const JoinNow: FC<EventDetails> = ({
                 startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
                 className={isPortrait ? '' : styles.payViaUpi}
                 onClick={handleClickOpen}
+                style={{ display: 'none' }}
               >
                 UPI
               </Button>
@@ -270,14 +276,15 @@ export const JoinNow: FC<EventDetails> = ({
                 <Button
                   variant="contained"
                   startIcon={
-                    <Icon icon="simple-icons:stripe" color="navy" style={{ fontSize: 16 }} />
+                    <CreditCardIcon />
+                    // <Icon icon="simple-icons:stripe" color="navy" style={{ fontSize: 16 }} />
                   }
                   className={isPortrait ? '' : styles.payViaCard}
                   onClick={() => {
                     openInNewTab(stripePaymentUrl);
                   }}
                 >
-                  Stripe
+                  Pay via card
                 </Button>
               ) : null}
               <Button
@@ -292,7 +299,7 @@ export const JoinNow: FC<EventDetails> = ({
                   setOpen(true);
                 }}
               >
-                RazorPay
+                Pay via UPI
               </Button>
             </FlexBox>
           ) : null}

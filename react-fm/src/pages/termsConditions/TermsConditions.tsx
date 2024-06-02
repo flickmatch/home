@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Typography from '@mui/material/Typography';
 
@@ -7,26 +8,27 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { logingin } from '@/slices/loginSlice';
 
 import styles from './TermsConditions.module.scss';
 
 function TermsConditions() {
   const isPortrait = useOrientation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      setIsLoggedIn(true);
+      dispatch(logingin());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Meta title="Terms & Conditions" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <FlexBox className={isPortrait ? styles.portraitHead : styles.head}>
         <Typography variant="h3" className={styles.heading}>

@@ -22,6 +22,7 @@ enum Pages {
   GeneralRefundCancellation,
   Profile,
   About2,
+  Rewards,
 }
 
 type PathRouteCustomProps = {

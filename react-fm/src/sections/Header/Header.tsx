@@ -1,7 +1,8 @@
-import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+// https://redux-toolkit.js.org/introduction/getting-started for redux implementation
 //import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
 //import useHotKeysDialog from '@/store/hotkeys';
@@ -18,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useSidebar from '@/store/sidebar';
+import type { RootState } from '@/store/types';
 
 //import useTheme from '@/store/theme';
 import styles from './Header.module.scss';
@@ -33,11 +35,7 @@ interface UserDetails {
   picture: string;
 }
 
-type login = {
-  loggedIn: boolean;
-};
-
-const Header: FC<login> = ({ loggedIn }) => {
+const Header = () => {
   const [, sidebarActions] = useSidebar();
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
@@ -54,6 +52,7 @@ const Header: FC<login> = ({ loggedIn }) => {
   });
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+  const login = useSelector((state: RootState) => state.login);
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -104,6 +103,10 @@ const Header: FC<login> = ({ loggedIn }) => {
 
         <Typography className={styles.menuItem} component={Link} to="/match-queues">
           Match Queues
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/rewards">
+          Rewards
         </Typography>
 
         {isAdminMode ? (
@@ -161,7 +164,7 @@ const Header: FC<login> = ({ loggedIn }) => {
             {menus()}
             <Divider className={styles.divider} orientation="horizontal" flexItem />
 
-            {loggedIn ? (
+            {login.isLoggedIn ? (
               <Tooltip title="Profile Page" arrow>
                 <Box component={Link} to="/profile-page">
                   {userData.picture ? (

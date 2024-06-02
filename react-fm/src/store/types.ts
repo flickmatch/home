@@ -3,5 +3,10 @@ type AtomEffectParams = {
   // eslint-disable-next-line
   [key: string]: any;
 };
-
-export type { AtomEffectParams };
+interface LoginState {
+  isLoggedIn: boolean;
+}
+interface RootState {
+  login: LoginState;
+}
+export type { AtomEffectParams, RootState, LoginState };

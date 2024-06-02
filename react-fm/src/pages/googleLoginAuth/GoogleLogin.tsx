@@ -1,18 +1,18 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import axios from 'axios';
+import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -25,8 +25,9 @@ import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
-import useNotifications from '@/store/notifications';
+import { logingin } from '@/slices/loginSlice';
 
+import { generateFirebaseAuthErrorMessage } from './FirebaseError';
 import styles from './GoogleLogin.module.scss';
 import { apiUrl } from './constants';
 
@@ -34,11 +35,10 @@ function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const auth = getAuth();
-
+  // const login = useSelector((store) => store.login);
+  const dispatch = useDispatch();
   //----------------------------------------------------------------
-  const [, notificationsActions] = useNotifications();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailLogin, setEmailLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
@@ -85,7 +85,6 @@ function GoogleLogin() {
         if (result.errors) {
           // Handle GraphQL errors
           throw new Error(result.errors[0].message);
-          // console.log(result.errors[0].message)
         }
       })
       .catch((error) => {
@@ -103,35 +102,20 @@ function GoogleLogin() {
         },
       })
       .then((res) => {
-        // eslint-disable-next-line no-console
-        console.log(res.data);
         addUsers(res.data.email, res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
-        setIsLoggedIn(true);
+        dispatch(logingin());
         navigate('/match-queues');
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
+        alert(err);
       });
   };
 
   const loginFunc = useGoogleLogin({
     onSuccess: (credentialResponse) => getGoogleUserInfo(credentialResponse.access_token),
-    // eslint-disable-next-line no-console
-    onError: (error) => console.log('Login Failed ', error),
+    onError: (error) => alert('Login Failed ' + error),
   });
-
-  const errorNotification = (errorMessage: string) =>
-    notificationsActions.push({
-      options: {
-        content: (
-          <Alert severity="error">
-            <AlertTitle className={styles.alertTitle}>{errorMessage}</AlertTitle>
-          </Alert>
-        ),
-      },
-    });
 
   //email signup function
   const emailSignUp = () => {
@@ -139,7 +123,7 @@ function GoogleLogin() {
       .then((userCredential) => {
         sendEmailVerification(userCredential.user).then(() => {
           alert(
-            'Email verification link sent successfully! Please login after email verification successful',
+            'A verification email has been sent to your email address. Please verify your email to login.',
           );
         });
         setShowSignup(false);
@@ -147,13 +131,8 @@ function GoogleLogin() {
         auth.signOut();
       })
       .catch((error) => {
-        const errorMessage = error.message.slice(10);
-        if (errorMessage === 'Error (auth/email-already-in-use).') {
-          errorNotification('Email id already exists! Try logging in with google');
-          setShowSignup(false);
-          setEmailLogin(false);
-        } else {
-          errorNotification(errorMessage);
+        if (error instanceof FirebaseError) {
+          generateFirebaseAuthErrorMessage(error);
         }
       });
   };
@@ -166,21 +145,21 @@ function GoogleLogin() {
 
         // Signed in
         const user = userCredential.user;
-
         if (user.emailVerified) {
           const emailData = { email: user.email, id: user.uid, name: name };
 
           localStorage.setItem('userData', JSON.stringify(emailData));
           onAuthStateChange();
-          setIsLoggedIn(true);
+          dispatch(logingin());
           navigate('/match-queues');
         } else {
-          alert('Please verify your email before logging in');
+          alert('Please verify your email to login.');
         }
       })
       .catch((error) => {
-        const errorMessage = error.message.slice(10);
-        errorNotification(errorMessage);
+        if (error instanceof FirebaseError) {
+          generateFirebaseAuthErrorMessage(error);
+        }
       });
   };
 
@@ -193,7 +172,7 @@ function GoogleLogin() {
     <>
       <Meta title="Login/Signup" />
       <div>
-        <Header loggedIn={isLoggedIn} />
+        <Header />
       </div>
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>
