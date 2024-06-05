@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ExtensionIcon from '@mui/icons-material/Extension';
@@ -17,8 +16,6 @@ import Meta from '@/components/Meta';
 import { CenteredFlexBox, FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
-import { logingin } from '@/slices/loginSlice';
 
 import styles from './Welcome.module.scss';
 
@@ -26,7 +23,6 @@ function Welcome() {
   const [activeImage, setActiveImage] = useState<number | null>(1);
   const isPortrait = useOrientation();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // Check if the video element is available
@@ -36,14 +32,6 @@ function Welcome() {
       videoRef.current.play();
     }
   }, []);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
 
   const whatsApp = () => (
     <a href="https://wa.me/message/YM7GOPO75EHPG1" target="_blank" rel="noreferrer">
@@ -250,9 +238,7 @@ function Welcome() {
   return (
     <>
       <Meta title="Home" />
-      <div>
-        <Header />
-      </div>
+
       {videoContainer()}
       {secVision()}
       {whatIsFlickmatch()}
