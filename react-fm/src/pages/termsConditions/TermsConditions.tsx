@@ -6,29 +6,19 @@ import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 
-// import { logingin } from '@/slices/loginSlice';
+
+
 import styles from './TermsConditions.module.scss';
 
 function TermsConditions() {
   const isPortrait = useOrientation();
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('userData');
-
-  //   if (storedData) {
-  //     dispatch(logingin());
-  //   }
-  // }, [dispatch]);
+ 
 
   return (
     <>
       <Meta title="Terms & Conditions" />
-      <div>
-        <Header />
-      </div>
+      
       <FlexBox className={isPortrait ? styles.portraitHead : styles.head}>
         <Typography variant="h3" className={styles.heading}>
           Terms & Conditions

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // https://redux-toolkit.js.org/introduction/getting-started for redux implementation
@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import { logingin } from '@/slices/loginSlice';
 import useSidebar from '@/store/sidebar';
 import type { RootState } from '@/store/types';
 
@@ -53,6 +54,7 @@ const Header = () => {
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
   const login = useSelector((state: RootState) => state.login);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -80,6 +82,14 @@ const Header = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      dispatch(logingin());
+    }
+  }, [dispatch]);
 
   const menus = () =>
     !isPortrait ? (

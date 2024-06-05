@@ -1,35 +1,19 @@
-// import { useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 
-// import { logingin } from '@/slices/loginSlice';
 import styles from './PrivacyPolicy.module.scss';
 
 function PrivacyPolicy() {
   const isPortrait = useOrientation();
 
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('userData');
-
-  //   if (storedData) {
-  //     dispatch(logingin());
-  //   }
-  // }, [dispatch]);
-
   return (
     <>
       <Meta title="Privacy Policy" />
-      <div>
-        <Header />
-      </div>
+
       <FlexBox className={isPortrait ? styles.portraitHead : styles.head}>
         <Typography variant="h3" className={styles.heading}>
           Privacy Policy

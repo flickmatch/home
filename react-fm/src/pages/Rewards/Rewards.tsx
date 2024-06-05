@@ -11,23 +11,14 @@ import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 
 import styles from './Rewards.module.scss';
 
 function Rewards() {
   const isPortrait = useOrientation();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [email, setEmail] = useState('');
   const emailCollectionRef = collection(db, 'emails');
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('userData');
-
-  //   if (storedData) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
 
   function handleSubmit() {
     if (
@@ -56,9 +47,7 @@ function Rewards() {
   return (
     <>
       <Meta title="Coming Soon" />
-      <div>
-        <Header />
-      </div>
+
       <div className={styles.parent}>
         <FlexBox className={`${styles.Container} ${isPortrait ? styles.portraitContainer : ''}`}>
           <Typography

@@ -1,5 +1,3 @@
-// import { useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
@@ -12,21 +10,10 @@ import useOrientation from '@/hooks/useOrientation';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
 
-// import { logingin } from '@/slices/loginSlice';
 import styles from './RefundCancellation.module.scss';
 
 function RefundCancellation() {
   const isPortrait = useOrientation();
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('userData');
-
-  //   if (storedData) {
-  //     dispatch(logingin());
-  //   }
-  // }, [dispatch]);
-
   return (
     <>
       <Meta title="Refund & Cancellation" />
