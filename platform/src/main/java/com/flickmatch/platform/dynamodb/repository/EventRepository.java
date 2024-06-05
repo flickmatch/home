@@ -10,8 +10,8 @@ import java.util.List;
 
 @EnableScan
 public interface EventRepository extends CrudRepository<Event, Event.EventId> {
-    @Query("SELECT e FROM Event e WHERE e.cityId = :cityId AND e.date BETWEEN :startDate AND :endDate")
-    List<Event> findByCityIdAndDateRange(@Param("cityId") String cityId,
+    @Query(filterExpression = "SELECT e FROM Event e WHERE e.cityId = :cityId AND e.date BETWEEN :startDate AND :endDate")
+    List<Event> findByCityIdAndDate(@Param("cityId") String cityId,
                                          @Param("startDate") String startDate,
                                          @Param("endDate") String endDate);
 }
