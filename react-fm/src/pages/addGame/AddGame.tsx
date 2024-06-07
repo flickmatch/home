@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
@@ -28,9 +27,6 @@ import Swal from 'sweetalert2';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
-
 import useNotifications from '@/store/notifications';
 
 import { query } from '../matchQueues/constants';
@@ -58,7 +54,7 @@ function AddGame() {
   //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-  
+
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
@@ -88,8 +84,6 @@ function AddGame() {
 
         fetchMailIds();
       }
-
-      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -431,9 +425,7 @@ function AddGame() {
   return (
     <>
       <Meta title="Add Game" />
-      <div>
-        <Header />
-      </div>
+
       {hasAccess ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
@@ -460,8 +452,6 @@ function AddGame() {
               </FlexBox>
             </FlexBox>
           </Zoom>
-
-          <Footer />
         </>
       ) : (
         <></>

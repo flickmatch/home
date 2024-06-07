@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -146,7 +145,6 @@ function MatchQueue() {
       {events()}
 
       {skeleton()}
-      <Footer />
     </>
   );
 }

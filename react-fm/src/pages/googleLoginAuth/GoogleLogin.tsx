@@ -23,8 +23,6 @@ import {
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 import { logingin } from '@/slices/loginSlice';
 
 import { generateFirebaseAuthErrorMessage } from './FirebaseError';
@@ -171,9 +169,7 @@ function GoogleLogin() {
   return (
     <>
       <Meta title="Login/Signup" />
-      <div>
-        <Header />
-      </div>
+
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>
           <img
@@ -288,7 +284,6 @@ function GoogleLogin() {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }

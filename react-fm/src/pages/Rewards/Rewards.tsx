@@ -10,7 +10,6 @@ import { db } from '@/Root';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
 
 import styles from './Rewards.module.scss';
 
@@ -75,8 +74,6 @@ function Rewards() {
           </Box>
         </FlexBox>
       </div>
-
-      <Footer />
     </>
   );
 }

@@ -12,9 +12,7 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
 
-// import Header from '@/sections/Header';
 import styles from './ContactUs.module.scss';
 
 function ContactUs() {
@@ -23,7 +21,7 @@ function ContactUs() {
   return (
     <>
       <Meta title="Contact Us" />
-      <div>{/* <Header /> */}</div>
+
       <div className={styles.contactPage}>
         <Typography variant="h3" className={styles.pageTitle}>
           Reach out to us
@@ -93,7 +91,6 @@ function ContactUs() {
           </FlexBox>
         </FlexBox>
       </div>
-      <Footer />
     </>
   );
 }

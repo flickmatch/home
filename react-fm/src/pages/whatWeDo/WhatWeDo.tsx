@@ -12,8 +12,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 
 // import { logingin } from '@/slices/loginSlice';
 import styles from './WhatWeDo.module.scss';
@@ -76,9 +74,7 @@ function WhatWeDo() {
   return (
     <>
       <Meta title="What We Do" />
-      <div>
-        <Header />
-      </div>
+
       <Box className={styles.box}>
         <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
           <Typography variant="h3" className={styles.heading}>
@@ -139,7 +135,6 @@ function WhatWeDo() {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }

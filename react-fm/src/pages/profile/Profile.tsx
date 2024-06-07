@@ -23,8 +23,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 import { logingout } from '@/slices/loginSlice';
 
 import styles from './Profile.module.scss';
@@ -72,9 +70,7 @@ function Profile() {
   return (
     <>
       <Meta title="Profile Page" />
-      <div>
-        <Header />
-      </div>
+
       <FlexBox className={isPortrait ? styles.portraitProfileContaienr : styles.profileContainer}>
         <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
           <FlexBox className={styles.profileSection}>
@@ -204,7 +200,6 @@ function Profile() {
           </Grid>
         </Box>
       </FlexBox>
-      <Footer />
     </>
   );
 }

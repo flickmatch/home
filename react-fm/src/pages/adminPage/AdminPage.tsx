@@ -22,8 +22,6 @@ import Swal from 'sweetalert2';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
 import useNotifications from '@/store/notifications';
 
 import { query } from '../matchQueues/constants';
@@ -321,9 +319,6 @@ function AdminPage() {
     <>
       <Meta title="Add Turf" />
 
-      <div>
-        <Header />
-      </div>
       {hasAccess ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
@@ -348,8 +343,6 @@ function AdminPage() {
               </FlexBox>
             </FlexBox>
           </Zoom>
-
-          <Footer />
         </>
       ) : (
         <></>

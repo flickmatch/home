@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox, FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
 
 import styles from './Welcome.module.scss';
 
@@ -243,7 +242,6 @@ function Welcome() {
       {secVision()}
       {whatIsFlickmatch()}
       {howToPlay()}
-      <Footer />
     </>
   );
 }
