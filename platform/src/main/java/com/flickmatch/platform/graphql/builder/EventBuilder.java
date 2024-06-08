@@ -139,37 +139,37 @@ public class EventBuilder {
 //        return eventList;
 //    }
 
-//    public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
-//        Date currentTime = new Date(System.currentTimeMillis());
-//        List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
-//        final int GET_EVENT_DAYS = 7;
-//        final int LOOKBACK_DAYS = 2;
-//
-//        // Calculate date range
-//        Date startDate = Date.from(currentTime.toInstant().minus(LOOKBACK_DAYS, ChronoUnit.DAYS));
-//        Date endDate = Date.from(currentTime.toInstant().plus(GET_EVENT_DAYS - 1, ChronoUnit.DAYS));
-//
-//        String startFormattedDate = DateUtil.extractDateFromISOFormatDate(startDate, localTimeZone);
-//        String endFormattedDate = DateUtil.extractDateFromISOFormatDate(endDate, localTimeZone);
-//
-//        log.info(String.format("Fetching events for cityId %s from %s to %s", cityId, startFormattedDate, endFormattedDate));
-//
-//        // Fetch all events within the date range
-//        List<Event> eventsInRange = eventRepository.findByCityIdAndDate(cityId, startFormattedDate, endFormattedDate);
-//        log.info(eventsInRange.size());
-//
-//        for (Event event : eventsInRange) {
-//            log.info(event);
-////            String eventDate = event.getDate();
-////            List<com.flickmatch.platform.graphql.type.Event> dailyEventList = event.getEventDetailsList().stream()
-////                    .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-////                    .map(eventDetails -> mapEventToGQLType(eventDetails, eventDate, localTimeZone, cityId))
-////                    .toList();
-////            eventList.addAll(dailyEventList);
-//        }
-//
-//        return eventList;
-//    }
+    public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
+        Date currentTime = new Date(System.currentTimeMillis());
+        List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
+        final int GET_EVENT_DAYS = 7;
+        final int LOOKBACK_DAYS = 2;
+
+        // Calculate date range
+        Date startDate = Date.from(currentTime.toInstant().minus(LOOKBACK_DAYS, ChronoUnit.DAYS));
+        Date endDate = Date.from(currentTime.toInstant().plus(GET_EVENT_DAYS - 1, ChronoUnit.DAYS));
+
+        String startFormattedDate = DateUtil.extractDateFromISOFormatDate(startDate, localTimeZone);
+        String endFormattedDate = DateUtil.extractDateFromISOFormatDate(endDate, localTimeZone);
+
+        log.info(String.format("Fetching events for cityId %s from %s to %s", cityId, startFormattedDate, endFormattedDate));
+
+        // Fetch all events within the date range
+        List<Event> eventsInRange = eventRepository.findByCityIdAndDate(cityId, startFormattedDate, endFormattedDate);
+        log.info(eventsInRange.size());
+
+        for (Event event : eventsInRange) {
+            log.info(event);
+            String eventDate = event.getDate();
+            List<com.flickmatch.platform.graphql.type.Event> dailyEventList = event.getEventDetailsList().stream()
+                   .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
+                   .map(eventDetails -> mapEventToGQLType(eventDetails, eventDate, localTimeZone, cityId))
+                   .toList();
+            eventList.addAll(dailyEventList);
+        }
+
+        return eventList;
+    }
 
 
     public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {

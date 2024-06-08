@@ -200,10 +200,10 @@ public class EventBuilderTest {
         when(eventRepository.findAll()).thenReturn(pastEvents);
 
 
-        // Call the method under test
+
         List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
 
-        // Verify the result
+
         assertEquals(2, result.size());
     }
 
