@@ -65,7 +65,7 @@ public class RazorPaymentCallbackController {
             boolean status =  Utils.verifyPaymentSignature(options, secret);
             if(status) {
                 if(PAID_STATUS.equals(paymentRequest.getStatus())) {
-                    log.info("Payment already processed for orderId : "+orderId+ " ignoring duplicate payments.");
+                    log.info("Ignoring duplicate payments.");
                 }
                 else {
                     eventBuilder.joinEventRazorPayment(paymentRequest);
