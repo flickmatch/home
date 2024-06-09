@@ -40,6 +40,7 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
+
 //    @Autowired
 //    WhatsAppProxy whatsAppProxy;
 
@@ -63,9 +64,14 @@ public class RazorPaymentCallbackController {
 
             boolean status =  Utils.verifyPaymentSignature(options, secret);
             if(status) {
-                eventBuilder.joinEventRazorPayment(paymentRequest);
-                paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
-                log.info("Player joined event successfully.");
+                if(PAID_STATUS.equals(paymentRequest.getStatus())) {
+                    log.info("Payment already processed for orderId : "+orderId+ " ignoring duplicate payments.");
+                }
+                else {
+                    eventBuilder.joinEventRazorPayment(paymentRequest);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                    log.info("Player joined event successfully.");
+                }
             }
 
             else {
