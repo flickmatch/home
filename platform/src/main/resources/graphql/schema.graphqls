@@ -11,6 +11,7 @@ type Mutation {
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
     initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
+    createSubscription(input: CreateSubscriptionInput!): SubscriptionResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -70,6 +71,20 @@ input RazorPayInput {
     playerInputList: [PlayerInput!]!
     currency: String!
 }
+
+input CreateSubscriptionInput {
+    userId: String!
+    passId: String!
+    startDate: String!
+    endDate: String!
+    gamesUsed: Int!
+    status: String!
+    passType: String!
+}
+
+type SubscriptionResult {
+    isSuccessful: Boolean!
+ }
 
 type User {
     email: String!
