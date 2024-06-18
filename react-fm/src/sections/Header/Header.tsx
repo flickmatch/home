@@ -67,7 +67,7 @@ const Header = () => {
         const fetchMailIds = async () => {
           const response = await fetch(`${mailSheet}`);
           const data = await response.json();
-          console.log(data);
+
           localStorage.setItem('adminIds', JSON.stringify(data));
           const check = data.data
             .map((mailId: { EmailId: string }) => mailId.EmailId)
