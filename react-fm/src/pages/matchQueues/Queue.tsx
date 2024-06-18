@@ -121,7 +121,7 @@ function MatchQueue() {
             dummyData={city.dummyData}
             countryCode={city.countryCode}
           />
-          <GamesList gameEvent={city.events} cityName={city.cityName} />
+          <GamesList gameEvent={city.events} cityName={city.cityName} cityNameId={city.cityId} />
         </div>
       </Zoom>
     ));

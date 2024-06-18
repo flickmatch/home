@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Accordion from '@mui/material/Accordion';
@@ -15,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { AddPlayer } from './AddPlayer';
 import styles from './Queue.module.scss';
 import { avatars } from './constants';
 import { EventsCard } from './eventsComponents/Events';
@@ -25,13 +27,16 @@ import type { EventDetails, ReservedPlayerDetails } from './types/Events.types';
 interface event {
   gameEvent: EventDetails[];
   cityName: string;
+  cityNameId: string;
 }
 
-export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
+export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId }) => {
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
   const location = useLocation();
   const [highLighted, setHighlighted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
@@ -50,6 +55,10 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
     }
   };
 
+  const handleOpen = () => {
+    setOpen((prevState) => !prevState);
+  };
+
   useEffect(() => {
     // Check if the current accordion should be expanded based on the URL parameter
     gameEvent.forEach((newGame) => {
@@ -58,7 +67,26 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
         handleClick(hashValue);
       }
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const adminMailId = localStorage.getItem('adminIds');
+    const storedData = localStorage.getItem('userData');
+
+    if (storedData) {
+      const parseUserData = JSON.parse(storedData);
+
+      if (adminMailId) {
+        const parseAdminData = JSON.parse(adminMailId);
+        const check = parseAdminData.data
+          .map((mailId: { EmailId: string }) => mailId.EmailId)
+          .includes(parseUserData.email);
+
+        return setIsAdminMode(check);
+      }
+    }
   }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
@@ -77,6 +105,15 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
       <span className={styles.colorTeamB} style={{ background: teamBColor }} />
       {teamBColor ? teamBColor : 'Blue'} (Team B)
     </Box>
+  );
+
+  const AddingPlayer = (uniqueEventId: string) => (
+    <AddPlayer
+      isOpen={open}
+      onToggle={handleOpen}
+      uniqueEventId={uniqueEventId}
+      cityId={cityNameId}
+    />
   );
 
   const EventsMapFunc = () =>
@@ -157,7 +194,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName }) => {
           }
         >
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
-            <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
+            <Box className={styles.reservedPlayersContainer}>
+              <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
+              {isAdminMode ? (
+                <BorderColorIcon className={styles.editIcon} onClick={handleOpen} />
+              ) : null}
+            </Box>
+
+            {isAdminMode ? AddingPlayer(playingEvent.uniqueEventId) : null}
 
             {playingEvent.team_division ? (
               <Box>
