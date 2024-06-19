@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @DynamoDBTable(tableName="RazorPaymentRequest")
@@ -20,6 +21,10 @@ public class RazorPaymentRequest {
     private String uniqueEventId;
     private List<Event.PlayerDetails> playerDetailsList;
     private String status;
+    private LocalDate date;
+    private String location;
+    private String gameNumber;
+
 
     @DynamoDBHashKey(attributeName="orderId")
     public String getOrderId() {
@@ -57,5 +62,31 @@ public class RazorPaymentRequest {
         this.status = status;
     }
 
+    @DynamoDBAttribute(attributeName="date")
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    @DynamoDBAttribute(attributeName="location")
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @DynamoDBAttribute(attributeName="gameNumber")
+    public String getGameNumber() {
+        return gameNumber;
+    }
+
+    public void setGameNumber(String gameNumber) {
+        this.gameNumber = gameNumber;
+    }
 
 }

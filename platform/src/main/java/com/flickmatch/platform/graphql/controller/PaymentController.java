@@ -5,23 +5,22 @@ import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
 import com.flickmatch.platform.graphql.input.InitiatePaymentInput;
 import com.flickmatch.platform.graphql.input.RazorPayInput;
+import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.InitiatePaymentOutput;
 import com.flickmatch.platform.graphql.type.RazorPayOutput;
 import com.flickmatch.platform.proxy.PhonePeProxy;
 
 import com.flickmatch.platform.proxy.RazorPayProxy;
-import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 
 import lombok.extern.log4j.Log4j2;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
@@ -34,6 +33,8 @@ public class PaymentController {
     PaymentRequestBuilder paymentRequestBuilder;
     @Autowired
     EventBuilder eventBuilder;
+    @Autowired
+    CityController cityController;
 
     @MutationMapping
     public InitiatePaymentOutput initiatePayment(@Argument InitiatePaymentInput input) {
@@ -71,11 +72,16 @@ public class PaymentController {
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
             String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder,amount);
+            LocalDate date = LocalDate.now();
+            City city = cityController.getCity(input.getUniqueEventId().split("-")[0]);
+            String location = city.getCityName();
+            String gameNumber = input.getUniqueEventId().split("-")[4];
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
-                    input.getUniqueEventId(), input.getPlayerInputList());
+                    input.getUniqueEventId(), input.getPlayerInputList(),date,location,gameNumber);
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
         } catch (Exception e) {
             log.error("Error creating order: {}", e.getMessage());
+//            log.error("Error creating order: {}", e.getStackTrace());
             return RazorPayOutput.builder().isInitiated(false)
                     .build();
         }
