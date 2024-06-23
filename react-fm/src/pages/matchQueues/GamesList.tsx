@@ -28,9 +28,10 @@ interface event {
   gameEvent: EventDetails[];
   cityName: string;
   cityNameId: string;
+  addPlayerInQueue: (name: string) => void;
 }
 
-export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId }) => {
+export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
   const location = useLocation();
@@ -57,6 +58,10 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId }) => {
 
   const handleOpen = () => {
     setOpen((prevState) => !prevState);
+  };
+
+  const passName = (name: string) => {
+    addPlayerInQueue(name);
   };
 
   useEffect(() => {
@@ -113,6 +118,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId }) => {
       onToggle={handleOpen}
       uniqueEventId={uniqueEventId}
       cityId={cityNameId}
+      handlePassName={passName}
     />
   );
 

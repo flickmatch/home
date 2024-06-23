@@ -24,9 +24,14 @@ import type { CityDetails } from './types/Events.types';
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [players, setPlayers] = useState<string[]>([]);
   const dispatch = useDispatch();
 
   const isPortrait = useOrientation();
+
+  const addPlayerInQueue = (name: string) => {
+    setPlayers((prevData) => [...prevData, name]);
+  };
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -37,6 +42,8 @@ function MatchQueue() {
   }, [dispatch]);
 
   useEffect(() => {
+    setCitiesData([]);
+    setShowSkeleton(true);
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchData = async () => {
@@ -106,7 +113,7 @@ function MatchQueue() {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [players]);
 
   const events = () => {
     citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
@@ -121,7 +128,12 @@ function MatchQueue() {
             dummyData={city.dummyData}
             countryCode={city.countryCode}
           />
-          <GamesList gameEvent={city.events} cityName={city.cityName} cityNameId={city.cityId} />
+          <GamesList
+            gameEvent={city.events}
+            cityName={city.cityName}
+            cityNameId={city.cityId}
+            addPlayerInQueue={addPlayerInQueue}
+          />
         </div>
       </Zoom>
     ));

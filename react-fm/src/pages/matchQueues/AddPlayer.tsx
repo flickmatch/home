@@ -19,6 +19,7 @@ interface ChildProps {
   onToggle: () => void;
   uniqueEventId: string;
   cityId: string;
+  handlePassName: (name: string) => void;
 }
 
 const style = {
@@ -33,7 +34,13 @@ const style = {
   p: 4,
 };
 
-export const AddPlayer: FC<ChildProps> = ({ onToggle, isOpen, uniqueEventId, cityId }) => {
+export const AddPlayer: FC<ChildProps> = ({
+  onToggle,
+  isOpen,
+  uniqueEventId,
+  cityId,
+  handlePassName,
+}) => {
   const handleClose = () => onToggle();
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -78,6 +85,7 @@ export const AddPlayer: FC<ChildProps> = ({ onToggle, isOpen, uniqueEventId, cit
           // Handle GraphQL errors
           throw new Error(result.errors[0].message);
         } else {
+          handlePassName(name);
           showSuccessNotification();
           setName('');
           setPhoneNumber('');
