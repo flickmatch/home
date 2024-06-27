@@ -23,7 +23,7 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import { logingout } from '@/slices/loginSlice';
+import { logingout, settingAdmin } from '@/slices/loginSlice';
 
 import styles from './Profile.module.scss';
 
@@ -49,10 +49,12 @@ function Profile() {
   });
 
   const dispatch = useDispatch();
+
   const logOut = () => {
     googleLogout();
     localStorage.removeItem('userData');
     dispatch(logingout());
+    dispatch(settingAdmin(false));
     navigate('/');
   };
 

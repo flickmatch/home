@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -23,19 +24,21 @@ import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
+import type { RootState } from '@/store/types';
 
 import { query } from '../matchQueues/constants';
 import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
 import styles from './AdminPage.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
-const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+// const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
 function AdminPage() {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
 
-  const [hasAccess, setHasAccess] = useState(false);
+  const userState = useSelector((state: RootState) => state);
+  // const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
@@ -43,37 +46,18 @@ function AdminPage() {
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
 
   useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      const userData = JSON.parse(storedData);
-      if (userData.email === 'admin@flickmatch.in') {
-        setHasAccess(true);
-      } else {
-        const fetchMailIds = async () => {
-          const response = await fetch(`${mailSheet}`);
-          const data = await response.json();
-
-          const check = data.data
-            .map((mailId: { EmailId: string }) => mailId.EmailId)
-            .includes(userData.email);
-          setHasAccess(check);
-          if (!check) {
-            Swal.fire({
-              title: 'Unauthorized Access',
-              text: 'You are not authorized to view this page.',
-              icon: 'error',
-            }).then(() => {
-              navigate('/match-queues');
-            });
-          }
-        };
-
-        fetchMailIds();
-      }
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    if (!userState.login.isAdmin) {
+      Swal.fire({
+        title: 'Unauthorized Access',
+        text: 'You are not authorized to view this page.',
+        icon: 'error',
+      }).then(() => {
+        navigate('/match-queues');
+      });
+    }
+  }, [userState.login.isAdmin, navigate]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -319,7 +303,7 @@ function AdminPage() {
     <>
       <Meta title="Add Turf" />
 
-      {hasAccess ? (
+      {userState.login.isAdmin ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
             <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>

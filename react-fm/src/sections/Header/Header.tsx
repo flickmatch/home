@@ -18,7 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import { logingin } from '@/slices/loginSlice';
+import { logingin, settingAdmin } from '@/slices/loginSlice';
 import useSidebar from '@/store/sidebar';
 import type { RootState } from '@/store/types';
 
@@ -41,7 +41,7 @@ const Header = () => {
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  // const [isAdminMode, setIsAdminMode] = useState(false);
 
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
@@ -53,7 +53,7 @@ const Header = () => {
   });
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-  const login = useSelector((state: RootState) => state.login);
+  const userState = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -64,30 +64,31 @@ const Header = () => {
       setUserData(parseData);
 
       if (parseData.email === 'admin@flickmatch.in') {
-        return setIsAdminMode(true);
+        dispatch(settingAdmin(true));
       } else {
         const fetchMailIds = async () => {
-          const response = await fetch(`${mailSheet}`);
+          const response = await fetch(mailSheet);
           const data = await response.json();
 
           const check = data.data
             .map((mailId: { EmailId: string }) => mailId.EmailId)
             .includes(parseData.email);
 
-          return setIsAdminMode(check);
+          // console.log(check);
+
+          dispatch(settingAdmin(check));
         };
 
         fetchMailIds();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, mailSheet]);
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      dispatch(logingin());
+      dispatch(logingin(storedData));
     }
   }, [dispatch]);
 
@@ -119,7 +120,7 @@ const Header = () => {
           Rewards
         </Typography>
 
-        {isAdminMode ? (
+        {userState.login.isAdmin ? (
           <>
             <Divider className={styles.divider} orientation="vertical" flexItem />
 
@@ -161,7 +162,7 @@ const Header = () => {
             <Typography component={Link} to="/home">
               <img src={appLogo} alt="logo" className={styles.logo} />
             </Typography>
-            {isAdminMode ? (
+            {userState.login.isAdmin ? (
               <Chip
                 label="admin mode"
                 color="primary"
@@ -174,12 +175,12 @@ const Header = () => {
             {menus()}
             <Divider className={styles.divider} orientation="horizontal" flexItem />
 
-            {login.isLoggedIn ? (
+            {userState.login.isLoggedIn ? (
               <Tooltip title="Profile Page" arrow>
                 <Box component={Link} to="/profile-page">
-                  {userData.picture ? (
+                  {userState.login.picture || userData.picture ? (
                     <img
-                      src={userData.picture}
+                      src={userState.login.picture || userData.picture}
                       alt="Profile Pic"
                       className={styles.profilePic}
                       referrerPolicy="no-referrer"

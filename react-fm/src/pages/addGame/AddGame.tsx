@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
@@ -28,6 +29,7 @@ import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
+import type { RootState } from '@/store/types';
 
 import { query } from '../matchQueues/constants';
 import mapCityData from '../matchQueues/map';
@@ -40,7 +42,7 @@ function AddGame() {
   const navigate = useNavigate();
   const [, notificationsActions] = useNotifications();
 
-  const [hasAccess, setHasAccess] = useState(false);
+  // const [hasAccess, setHasAccess] = useState(false);
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
@@ -53,40 +55,22 @@ function AddGame() {
   const [endTime, setEndTime] = useState('');
   //const mailSheet = import.meta.env.VITE_MAIL_SHEET;
 
-  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+  const userState = useSelector((state: RootState) => state);
+  // const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
 
   useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      const userData = JSON.parse(storedData);
-      if (userData.email === 'admin@flickmatch.in') {
-        setHasAccess(true);
-      } else {
-        const fetchMailIds = async () => {
-          const response = await fetch(`${mailSheet}`);
-          const data = await response.json();
-
-          const check = data.data
-            .map((mailId: { EmailId: string }) => mailId.EmailId)
-            .includes(userData.email);
-          setHasAccess(check);
-          if (!check) {
-            Swal.fire({
-              title: 'Unauthorized Access',
-              text: 'You are not authorized to view this page.',
-              icon: 'error',
-            }).then(() => {
-              navigate('/match-queues');
-            });
-          }
-        };
-
-        fetchMailIds();
-      }
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    if (!userState.login.isAdmin) {
+      Swal.fire({
+        title: 'Unauthorized Access',
+        text: 'You are not authorized to view this page.',
+        icon: 'error',
+      }).then(() => {
+        navigate('/match-queues');
+      });
+    }
+  }, [userState.login.isAdmin, navigate]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -426,7 +410,7 @@ function AddGame() {
     <>
       <Meta title="Add Game" />
 
-      {hasAccess ? (
+      {userState.login.isAdmin ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
             <FlexBox className={isPortrait ? styles.portraitContainer : styles.container}>
