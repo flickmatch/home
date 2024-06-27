@@ -123,3 +123,8 @@ These additional references should also help you:
 * [One time setup] Use this guide to install and run dynamodb in local [DynamoDBLocal.DownloadingAndRunning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
 * [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
 * To hit local dynamoDB set `spring.profiles.active=dev` in command to start application.
+
+### Server errors and their resolution
+
+*  tomcat runs on 8443 but to avoid using port number in https url we need to forward 443 to 8443
+*  Fix : sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
