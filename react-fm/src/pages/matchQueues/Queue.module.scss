@@ -2,6 +2,11 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 body {
   font-family: 'Montserrat Alt 1', sans-serif;
   font-weight: 600;
@@ -13,6 +18,7 @@ body {
   font-weight: 600;
   text-align: center;
   margin-top: 90px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .container {

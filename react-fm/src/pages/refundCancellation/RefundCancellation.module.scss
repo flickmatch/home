@@ -2,6 +2,11 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 .home {
   justify-content: center;
   margin-top: 100px;
@@ -16,6 +21,7 @@
   font-weight: 600;
   text-align: center;
   letter-spacing: 1.2px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .content {
@@ -34,6 +40,7 @@
 .subHeading {
   font-size: 28px;
   font-weight: 600;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .portraitSubheading {
@@ -81,6 +88,7 @@
   font-weight: 500;
   width: 80%;
   text-align: left;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .portraitConditionFirst,
@@ -92,6 +100,7 @@
   width: 95%;
   text-align: center;
   margin-top: 30px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .conditionFirstContainer,

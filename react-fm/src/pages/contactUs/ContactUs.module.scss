@@ -2,6 +2,11 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 .contactPage {
   margin-top: 90px;
 }
@@ -11,6 +16,7 @@
   font-weight: 600;
   text-align: center;
   letter-spacing: 1.2px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .container {
