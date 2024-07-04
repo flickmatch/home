@@ -1,23 +1,21 @@
 package com.flickmatch.platform.graphql.builder;
 
 import static com.flickmatch.platform.graphql.util.DateUtil.extractDateFromISOFormatDate;
-import static java.time.Instant.now;
+
 import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.HOURS;
 import static java.util.Date.from;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
-import com.flickmatch.platform.graphql.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,7 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class EventBuilderTest {
@@ -180,47 +179,53 @@ public class EventBuilderTest {
     @Test
     public void testGetEvents() {
         // Mock input data
+        List<Event> eventsList = new ArrayList<>();
         String cityId = "2";
         String localTimeZone = "GMT+05:30";
 
-        List<Event> pastEvents = new ArrayList<>();
-
         Instant currentTime = Instant.now();
+        String todayDateAsString = extractDateFromISOFormatDate(from(currentTime), localTimeZone);
+        String yesterdayDateAsString = extractDateFromISOFormatDate(from(currentTime.minus(1, DAYS)), localTimeZone);
+        String tenDaysFromNowDateAsString = extractDateFromISOFormatDate(from(currentTime.plus(10, DAYS)), localTimeZone);
 
-        String todayDate = extractDateFromISOFormatDate(from(currentTime), localTimeZone);
-        String yesterdayDate = extractDateFromISOFormatDate(from(currentTime.minus(1, DAYS)), localTimeZone);
-        Event eventToday = getMockEvent(cityId, todayDate, getEventDetailsList(currentTime));
-        Event eventYesterday = getMockEvent(cityId, yesterdayDate, getEventDetailsList(currentTime));
-        pastEvents.add(eventYesterday);
+        Event eventToday = getMockEvent(cityId, todayDateAsString, getEventDetailsList(todayDateAsString, localTimeZone));
+        Event eventYesterday = getMockEvent(cityId, yesterdayDateAsString, getEventDetailsList(yesterdayDateAsString, localTimeZone));
+        Event eventAfter10DaysFromToday = getMockEvent(cityId, tenDaysFromNowDateAsString, getEventDetailsList(tenDaysFromNowDateAsString, localTimeZone));
 
-        Event.EventId eventIdForToday = Event.EventId.builder().cityId(cityId).date(todayDate).build();
+        eventsList.add(eventToday);
+        eventsList.add(eventYesterday);
+        eventsList.add(eventAfter10DaysFromToday);
 
-        // Mock the event repository to return the list of events
-        when(eventRepository.findById(eq(eventIdForToday))).thenReturn(Optional.of(eventToday));
-        when(eventRepository.findAll()).thenReturn(pastEvents);
+        when(eventRepository.findByCityIdAndDate(any(), any(), any())).thenReturn(eventsList);
 
-
-
+        // Call the method under test
         List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
 
-
-        assertEquals(2, result.size());
+        // Verify the result
+        // events for 10 days from now should not be included
+        assertEquals(4, result.size());
     }
 
-    private List<Event.EventDetails> getEventDetailsList(Instant currentTime) {
+    private List<Event.EventDetails> getEventDetailsList(String dateAsString, String localTimeZone) {
 
-        Event.EventDetails eventInFuture1 = getEventDetails(from(currentTime.plus(1, HOURS)),
-                from(currentTime.plus(2, HOURS)));
+        LocalDate date = LocalDate.parse(dateAsString);
 
-        Event.EventDetails eventInPast1 = getEventDetails(from(currentTime.minus(4, HOURS)),
-                from(currentTime.minus(3, HOURS)));
+        LocalDateTime game1startTime = date.atTime(20, 0); // 8 PM
+        LocalDateTime game1endTime = date.atTime(21, 0);   // 9 PM
+        LocalDateTime game2startTime = date.atTime(7, 0); // 7 AM
+        LocalDateTime game2endTime = date.atTime(8, 0);   // 8 AM
 
-        Event.EventDetails eventInPast2 = getEventDetails(from(currentTime.minus(4, DAYS)),
-                from(currentTime.minus(3, DAYS)));
+        Date game1startDate = Date.from(game1startTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game1endDate = Date.from(game1endTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game2startDate = Date.from(game2startTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game2endDate = Date.from(game2endTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+
+        Event.EventDetails event8PMto9PM = getEventDetails(game1startDate, game1endDate);
+        Event.EventDetails event7AMMto8AM = getEventDetails(game2startDate, game2endDate);
 
         List<Event.EventDetails> listOfEventDetailsForADay = new ArrayList<>();
-        listOfEventDetailsForADay.add(eventInFuture1);
-        listOfEventDetailsForADay.add(eventInPast1);
+        listOfEventDetailsForADay.add(event8PMto9PM);
+        listOfEventDetailsForADay.add(event7AMMto8AM);
 
         return listOfEventDetailsForADay;
     }

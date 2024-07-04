@@ -87,58 +87,6 @@ public class EventBuilder {
                 paymentRequest.getPlayerDetailsList());
     }
 
-
-
-//    public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
-//        Date currentTime = new Date(System.currentTimeMillis());
-//        List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
-////        List<com.flickmatch.platform.graphql.type.Event> prevDayList = getPastEvents(cityId, 2, localTimeZone);
-////        eventList.addAll(prevDayList);
-//        for(int i=1;i<=2;i++) {
-//            Date prevDate = Date.from(currentTime.toInstant().minus(i, ChronoUnit.DAYS));
-//            String prevFormattedDate = DateUtil.extractDateFromISOFormatDate(prevDate, localTimeZone);
-//            Event.EventId prevEventId = Event.EventId.builder().cityId(cityId).date(prevFormattedDate).build();
-//            Optional<Event> pastEventData = eventRepository.findById(prevEventId);
-//            List<com.flickmatch.platform.graphql.type.Event> pastEventList =
-//                    pastEventData.get().getEventDetailsList().stream()
-//                            .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-//                            .map(eventDetails -> mapEventToGQLType(eventDetails, prevFormattedDate, localTimeZone, cityId))
-//                            .toList();
-//            eventList.addAll(pastEventList);
-//        }
-////        Date prevDate = Date.from(currentTime.toInstant().minus(1, ChronoUnit.DAYS));
-////        String prevFormattedDate = DateUtil.extractDateFromISOFormatDate(prevDate, localTimeZone);
-////        Event.EventId prevEventId = Event.EventId.builder().cityId(cityId).date(prevFormattedDate).build();
-////        Optional<Event> pastEventData = eventRepository.findById(prevEventId);
-////        List<com.flickmatch.platform.graphql.type.Event> pastEventList =
-////                pastEventData.get().getEventDetailsList().stream()
-////                        // TODO: Add condition here to check the the event is starting no later than 7 days
-////                        .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-////                        .map(eventDetails -> mapEventToGQLType(eventDetails, prevFormattedDate, localTimeZone, cityId))
-////                        .toList();
-////        eventList.addAll(pastEventList);
-//        final int GET_EVENT_DAYS = 7;
-//        log.info(format("Fetching events for cityId %s in the next %d days", cityId, GET_EVENT_DAYS));
-//
-//        for (int i = 0; i < GET_EVENT_DAYS; i++) {
-//            Date currentDate = Date.from(currentTime.toInstant().plus(i, ChronoUnit.DAYS));
-//            String formattedDate = DateUtil.extractDateFromISOFormatDate(currentDate, localTimeZone);
-//            Event.EventId eventId = Event.EventId.builder().cityId(cityId).date(formattedDate).build();
-//            Optional<Event> eventData = eventRepository.findById(eventId);
-//
-//            if (eventData.isPresent()) {
-//                List<com.flickmatch.platform.graphql.type.Event> dailyEventList =
-//                        eventData.get().getEventDetailsList().stream()
-//                                // TODO: Add condition here to check the the event is starting no later than 7 days
-//                                .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-//                                .map(eventDetails -> mapEventToGQLType(eventDetails, formattedDate, localTimeZone, cityId))
-//                                .toList();
-//                eventList.addAll(dailyEventList);
-//            }
-//        }
-//        return eventList;
-//    }
-
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
         Date currentTime = new Date(System.currentTimeMillis());
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
@@ -156,18 +104,15 @@ public class EventBuilder {
 
         // Fetch all events within the date range
         List<Event> eventsInRange = eventRepository.findByCityIdAndDate(cityId, startFormattedDate, endFormattedDate);
-        log.info(eventsInRange.size());
 
         for (Event event : eventsInRange) {
-            log.info(event);
             String eventDate = event.getDate();
             List<com.flickmatch.platform.graphql.type.Event> dailyEventList = event.getEventDetailsList().stream()
-                   .filter(eventDetails -> eventDetails.getStartTime().after(currentTime))
-                   .map(eventDetails -> mapEventToGQLType(eventDetails, eventDate, localTimeZone, cityId))
-                   .toList();
+                    .filter(eventDetails -> eventDetails.getStartTime().after(startDate) && eventDetails.getEndTime().before(endDate))
+                    .map(eventDetails -> mapEventToGQLType(eventDetails, eventDate, localTimeZone, cityId))
+                    .toList();
             eventList.addAll(dailyEventList);
         }
-
         return eventList;
     }
 
