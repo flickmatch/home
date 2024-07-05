@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @DynamoDBTable(tableName="Event")
 @Builder
@@ -247,20 +246,6 @@ public class Event {
 
         public void setDate(String date) {
             this.date = date;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            EventId eventId = (EventId) o;
-            return Objects.equals(cityId, eventId.cityId) &&
-                    Objects.equals(date, eventId.date);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(cityId, date);
         }
 
     }
