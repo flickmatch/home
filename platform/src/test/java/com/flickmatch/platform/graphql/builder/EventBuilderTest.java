@@ -1,10 +1,15 @@
 package com.flickmatch.platform.graphql.builder;
 
+import static com.flickmatch.platform.graphql.util.DateUtil.extractDateFromISOFormatDate;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.Date.from;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.flickmatch.platform.dynamodb.model.Event;
@@ -17,6 +22,10 @@ import org.mockito.Mock;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class EventBuilderTest {
@@ -92,34 +101,42 @@ public class EventBuilderTest {
                 .build();
 
         List<Event.EventDetails> eventDetailsList = new ArrayList<>();
-
-        Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
-                .name("name")
-                .waNumber("waNumber")
-                .build();
-
-        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
-        playerDetailsList.add(playerDetails);
-
-        Event.EventDetails eventDetails = Event.EventDetails.builder()
-                .index(1)
-                .startTime(new Date())
-                .endTime(new Date())
-                .charges(10.0)
-                .reservedPlayersCount(0)
-                .waitListPlayersCount(1)
-                .sportName("Football")
-                .venueName("venueName")
-                .venueLocationLink("venueLocationLink")
-                .playerDetailsList(playerDetailsList)
-                .build();
-        eventDetailsList.add(eventDetails);
+        eventDetailsList.add(getEventDetails(new Date(), new Date()));
 
         Optional<Event> event = Optional.ofNullable(Event.builder()
                 .eventId(eventId)
                 .eventDetailsList(eventDetailsList)
                 .build());
         return event;
+    }
+
+    private List<Event.PlayerDetails> getListOfPlayerDetails() {
+        List<Event.PlayerDetails> playerDetailsList = new ArrayList<>();
+        playerDetailsList.add(getPlayerDetails());
+
+        return playerDetailsList;
+    }
+
+    private Event.PlayerDetails getPlayerDetails() {
+        return Event.PlayerDetails.builder()
+                .name("name")
+                .waNumber("waNumber")
+                .build();
+    }
+
+    private Event.EventDetails getEventDetails(Date startTime, Date endTime) {
+        return Event.EventDetails.builder()
+                .index(1)
+                .startTime(startTime)
+                .endTime(endTime)
+                .charges(10.0)
+                .reservedPlayersCount(0)
+                .waitListPlayersCount(1)
+                .sportName("Football")
+                .venueName("venueName")
+                .venueLocationLink("venueLocationLink")
+                .playerDetailsList(getListOfPlayerDetails())
+                .build();
     }
 
     @Test
@@ -157,5 +174,66 @@ public class EventBuilderTest {
         String currencyForSanFrancisco = eventBuilder.getCurrencyForCity("5");
         assertEquals("USD", currencyForSanFrancisco);
 
+    }
+
+    @Test
+    public void testGetEvents() {
+        // Mock input data
+        List<Event> eventsList = new ArrayList<>();
+        String cityId = "2";
+        String localTimeZone = "GMT+05:30";
+
+        Instant currentTime = Instant.now();
+        String todayDateAsString = extractDateFromISOFormatDate(from(currentTime), localTimeZone);
+        String yesterdayDateAsString = extractDateFromISOFormatDate(from(currentTime.minus(1, DAYS)), localTimeZone);
+        String tenDaysFromNowDateAsString = extractDateFromISOFormatDate(from(currentTime.plus(10, DAYS)), localTimeZone);
+
+        Event eventToday = getMockEvent(cityId, todayDateAsString, getEventDetailsList(todayDateAsString, localTimeZone));
+        Event eventYesterday = getMockEvent(cityId, yesterdayDateAsString, getEventDetailsList(yesterdayDateAsString, localTimeZone));
+        Event eventAfter10DaysFromToday = getMockEvent(cityId, tenDaysFromNowDateAsString, getEventDetailsList(tenDaysFromNowDateAsString, localTimeZone));
+
+        eventsList.add(eventToday);
+        eventsList.add(eventYesterday);
+        eventsList.add(eventAfter10DaysFromToday);
+
+        when(eventRepository.findByCityIdAndDate(any(), any(), any())).thenReturn(eventsList);
+
+        // Call the method under test
+        List<com.flickmatch.platform.graphql.type.Event> result = eventBuilder.getEvents(cityId, localTimeZone);
+
+        // Verify the result
+        // events for 10 days from now should not be included
+        assertEquals(4, result.size());
+    }
+
+    private List<Event.EventDetails> getEventDetailsList(String dateAsString, String localTimeZone) {
+
+        LocalDate date = LocalDate.parse(dateAsString);
+
+        LocalDateTime game1startTime = date.atTime(20, 0); // 8 PM
+        LocalDateTime game1endTime = date.atTime(21, 0);   // 9 PM
+        LocalDateTime game2startTime = date.atTime(7, 0); // 7 AM
+        LocalDateTime game2endTime = date.atTime(8, 0);   // 8 AM
+
+        Date game1startDate = Date.from(game1startTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game1endDate = Date.from(game1endTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game2startDate = Date.from(game2startTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+        Date game2endDate = Date.from(game2endTime.atZone(ZoneId.of(localTimeZone)).toInstant());
+
+        Event.EventDetails event8PMto9PM = getEventDetails(game1startDate, game1endDate);
+        Event.EventDetails event7AMMto8AM = getEventDetails(game2startDate, game2endDate);
+
+        List<Event.EventDetails> listOfEventDetailsForADay = new ArrayList<>();
+        listOfEventDetailsForADay.add(event8PMto9PM);
+        listOfEventDetailsForADay.add(event7AMMto8AM);
+
+        return listOfEventDetailsForADay;
+    }
+
+    private Event getMockEvent(String cityId, String date, List<Event.EventDetails> eventDetailsList) {
+        return Event.builder()
+                .eventId(Event.EventId.builder().cityId(cityId).date(date).build())
+                .eventDetailsList(eventDetailsList)
+                .build();
     }
 }
