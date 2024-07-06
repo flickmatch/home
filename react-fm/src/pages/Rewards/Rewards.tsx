@@ -81,7 +81,7 @@ function Rewards() {
               className={`${styles.emailInput} ${isPortrait ? styles.emailInputPotrait : ''}`}
             />
             <Button className={styles.submitBtn} onClick={handleSubmit}>
-              Join the wailist
+              Join the waitlist
             </Button>
           </Box>
         </FlexBox>
