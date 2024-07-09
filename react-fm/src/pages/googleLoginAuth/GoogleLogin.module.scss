@@ -2,8 +2,12 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 .container {
-  font-family: 'Montserrat Alt 1', sans-serif;
   margin: 0;
   padding: 0;
   display: flex;
@@ -87,17 +91,20 @@
   font-size: 30px;
   font-weight: 500;
   color: #4ce95a;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .getStarted {
   font-size: 28px;
   font-weight: 600;
   padding-top: 20px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .signUpImmediately {
   padding-top: 20px;
   font-weight: 500;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .loginSignupButton {
@@ -120,6 +127,7 @@
   height: 45px;
   max-width: 100%;
   margin-bottom: 10px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .portraitGoogleLoginButton {
@@ -146,6 +154,8 @@
   background-color: #111;
   font-weight: 600;
   padding: 0px 8px;
+  font-family: 'CustomFont', Arial, sans-serif;
+  letter-spacing: 1px;
 }
 
 .emailSignup {
@@ -183,4 +193,5 @@
   color: #606264;
   font-weight: 500;
   cursor: pointer;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
