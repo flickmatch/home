@@ -71,8 +71,8 @@ export const EventsCard: FC<EventDetails> = ({
   const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
 
   const checkValue = Math.sign(daysDifference);
-
-  const eventDate = checkValue <= 0 ? date : futureDate;
+// Change this to some other logic
+  const eventDate = checkValue <= 2 ? date : futureDate;
 
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
