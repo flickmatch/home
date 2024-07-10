@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import DefaultIcon from '@mui/icons-material/Deblur';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
@@ -25,7 +25,7 @@ function Sidebar() {
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
   const dispatch = useDispatch();
-  const location = useLocation();
+
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
