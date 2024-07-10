@@ -179,7 +179,7 @@ const Header = () => {
             {userState.login.isLoggedIn ? (
               <Tooltip title="Profile Page" arrow>
                 <Box component={Link} to="/profile-page">
-                  {userState.login.picture || userData.picture ? (
+                  {userState.login.picture || (userData.picture && userData.picture != '') ? (
                     <img
                       src={userState.login.picture || userData.picture}
                       alt="Profile Pic"

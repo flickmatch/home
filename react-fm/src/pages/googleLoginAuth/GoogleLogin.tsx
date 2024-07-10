@@ -170,7 +170,8 @@ function GoogleLogin() {
           const emailData = { email: user.email, id: user.uid, name: name };
           localStorage.setItem('userData', JSON.stringify(emailData));
           onAuthStateChange();
-          // dispatch(logingin(emailData));
+          dispatch(logingin(emailData));
+          console.log(emailData);
           checkAdmin(user.email as string);
           navigate('/match-queues');
         } else {
