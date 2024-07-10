@@ -171,7 +171,7 @@ function GoogleLogin() {
           localStorage.setItem('userData', JSON.stringify(emailData));
           onAuthStateChange();
           dispatch(logingin(emailData));
-          console.log(emailData);
+
           checkAdmin(user.email as string);
           navigate('/match-queues');
         } else {
