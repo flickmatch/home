@@ -30,6 +30,7 @@ export const EventsCard: FC<EventDetails> = ({
   waitListPlayers,
   waitListPlayersCount,
   stripePaymentUrl,
+  dummyData,
 }) => {
   const isPortrait = useOrientation();
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
@@ -54,29 +55,30 @@ export const EventsCard: FC<EventDetails> = ({
   const index = dateToString.indexOf('2024');
   const futureDate = dateToString.substring(0, index);
 
-  const dateFormat = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  });
+  // const dateFormat = new Date().toLocaleDateString('en-US', {
+  //   weekday: 'long',
+  //   month: 'long',
+  //   day: 'numeric',
+  // });
 
   // Parse the date strings into Date objects
-  const date1 = new Date(date);
-  const date2 = new Date(dateFormat);
+  // const date1 = new Date(date);
+  // const date2 = new Date(dateFormat);
 
   // Calculate the difference in milliseconds
-  const timeDifferenceMs = date2.getTime() - date1.getTime();
+  // const timeDifferenceMs = date2.getTime() - date1.getTime();
 
   // Convert milliseconds to days
-  const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+  //const daysDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
 
-  const checkValue = Math.sign(daysDifference);
-// Change this to some other logic
-  const eventDate = checkValue <= 2 ? date : futureDate;
+  //const checkValue = Math.sign(daysDifference);
+  // Change this to some other logic
+  //const eventDate = checkValue <= 0 ? date : futureDate;
+  //console.log(eventDate, checkValue, dummyData, uniqueEventId, date);
 
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
-  const usTime = eventDate + ' ' + startTime + ' - ' + endTime;
+  const usTime = (dummyData ? futureDate : date) + ' ' + startTime + ' - ' + endTime;
 
   time = time.split('GMT')[0].trim();
 
@@ -123,7 +125,7 @@ export const EventsCard: FC<EventDetails> = ({
       if (cityData.city === eventId && cityData.currency === 'INR') {
         timeZone = (
           <span>
-            {eventDate} {time}
+            {dummyData ? futureDate : date} {'    '} {time}
           </span>
         );
       } else if (cityData.city === eventId && cityData.currency === 'USD') {
@@ -197,6 +199,7 @@ export const EventsCard: FC<EventDetails> = ({
             team_division={false}
             team1_color={''}
             team2_color={''}
+            dummyData={dummyData}
           />
         </FlexBox>
       </Grid>
