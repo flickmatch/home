@@ -166,6 +166,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   team_division={false}
                   team1_color={playingEvent.team1_color ? playingEvent.team1_color : ''}
                   team2_color={playingEvent.team2_color ? playingEvent.team2_color : ''}
+                  dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 />
               )}
             </FlexBox>
@@ -187,6 +188,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               team_division={false}
               team1_color={playingEvent.team1_color ? playingEvent.team1_color : ''}
               team2_color={playingEvent.team2_color ? playingEvent.team2_color : ''}
+              dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
             />
           </FlexBox>
         </AccordionSummary>

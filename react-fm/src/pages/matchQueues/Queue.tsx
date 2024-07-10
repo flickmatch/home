@@ -59,7 +59,7 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         data.data.cities.forEach(
           (
             city: {

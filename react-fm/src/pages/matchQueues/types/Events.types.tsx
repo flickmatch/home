@@ -22,6 +22,7 @@ type EventDetails = {
   waitListPlayers: waitListPlayerDetails[];
   waitListPlayersCount: number;
   stripePaymentUrl: string;
+  dummyData: boolean;
 };
 
 type CityDetails = {
