@@ -58,7 +58,7 @@ function Sidebar() {
         fetchMailIds();
       }
     }
-  }, [location.pathname, dispatch, mailSheet]);
+  }, [dispatch, mailSheet]);
 
   return (
     <SwipeableDrawer
