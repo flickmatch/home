@@ -39,7 +39,7 @@ public class RazorPaymentRequestBuilder {
     public RazorPaymentRequest createPaymentRequest(final String orderId,
                                                     final String uniqueEventId,
                                                     final List<PlayerInput> playerInputList,
-                                                    final LocalDate date,
+                                                    final String date,
                                                     final String location,
                                                     final String gameNumber) {
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()

@@ -3,6 +3,7 @@ package com.flickmatch.platform.dynamodb.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class RazorPaymentRequest {
     private String uniqueEventId;
     private List<Event.PlayerDetails> playerDetailsList;
     private String status;
-    private LocalDate date;
+    private String date;
     private String location;
     private String gameNumber;
 
@@ -63,11 +64,11 @@ public class RazorPaymentRequest {
     }
 
     @DynamoDBAttribute(attributeName="date")
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

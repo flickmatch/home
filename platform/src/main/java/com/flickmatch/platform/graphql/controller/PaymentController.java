@@ -1,5 +1,6 @@
 package com.flickmatch.platform.graphql.controller;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMappingException;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Controller
@@ -39,7 +41,7 @@ public class PaymentController {
     @MutationMapping
     public InitiatePaymentOutput initiatePayment(@Argument InitiatePaymentInput input) {
         try {
-            String merchantTransactionId = UUID.randomUUID().toString().substring(0,34);
+            String merchantTransactionId = UUID.randomUUID().toString().substring(0, 34);
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
             String paymentLink = phonePeProxy.initiatePayment(merchantTransactionId, amount, input.getUniqueEventId());
@@ -71,20 +73,21 @@ public class PaymentController {
             RazorpayClient razorpayClient = razorPayProxy.getRazorPayClient();
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
             long amount = eventAmount * input.getPlayerInputList().size();
-            String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder,amount);
+            String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder, amount);
             LocalDate date = LocalDate.now();
+            String dateString = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             City city = cityController.getCity(input.getUniqueEventId().split("-")[0]);
             String location = city.getCityName();
             String gameNumber = input.getUniqueEventId().split("-")[4];
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
-                    input.getUniqueEventId(), input.getPlayerInputList(),date,location,gameNumber);
+                    input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber);
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
+        } catch (DynamoDBMappingException dbe) {
+            log.error("DynamoDB mapping error: {}", dbe.getMessage(), dbe);
         } catch (Exception e) {
-            log.error("Error creating order: {}", e.getMessage());
-//            log.error("Error creating order: {}", e.getStackTrace());
-            return RazorPayOutput.builder().isInitiated(false)
-                    .build();
+            log.error("Error creating order: {}", e.getMessage(), e);
         }
-    }
+        return RazorPayOutput.builder().isInitiated(false).build();
+}
 
 }
