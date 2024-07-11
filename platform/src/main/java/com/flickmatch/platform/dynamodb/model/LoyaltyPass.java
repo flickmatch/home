@@ -3,7 +3,6 @@ package com.flickmatch.platform.dynamodb.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
 
-import java.time.LocalDate;
 
 @DynamoDBTable(tableName = "LoyaltyPass")
 @Data
@@ -23,8 +22,8 @@ public class LoyaltyPass {
     private PassType passType;
     private Integer numberOfGames;
     private Integer validityPeriodInDays;
-    private LocalDate createdDate;
-    private LocalDate lastUpdatedDate;
+    private String createdDate;
+    private String lastUpdatedDate;
 
     @DynamoDBAttribute(attributeName = "validityPeriodInDays")
     public Integer getValidityPeriodInDays() {
@@ -36,20 +35,20 @@ public class LoyaltyPass {
     }
 
     @DynamoDBAttribute(attributeName = "createdDate")
-    public LocalDate getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
     @DynamoDBAttribute(attributeName = "lastUpdatedDate")
-    public LocalDate getLastUpdatedDate() {
+    public String getLastUpdatedDate() {
         return lastUpdatedDate;
     }
 
-    public void setLastUpdatedDate(LocalDate lastUpdatedDate) {
+    public void setLastUpdatedDate(String lastUpdatedDate) {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 

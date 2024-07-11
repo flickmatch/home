@@ -7,31 +7,29 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.Data;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @DynamoDBTable(tableName = "DaysSubscription")
 @ToString
 @Data
 public class DaysSubscription {
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private String daysSubscriptionId;
 
     @DynamoDBAttribute(attributeName = "startDate")
-   public LocalDate getStartDate() {
+   public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
     @DynamoDBAttribute(attributeName = "endDate")
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
