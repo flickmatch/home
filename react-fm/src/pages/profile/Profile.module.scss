@@ -2,6 +2,11 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 .portraitProfileContaienr {
   flex-flow: column;
 }
@@ -77,6 +82,7 @@
 .emailId {
   font-size: 22px;
   font-weight: 600;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .signOutSection {
@@ -93,6 +99,7 @@
   height: 50px;
   font-weight: 600;
   cursor: pointer;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .signOut:hover {
@@ -131,6 +138,7 @@
   font-size: 20px;
   flex: 0 0 26%;
   padding: 20px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .portraitSkills {

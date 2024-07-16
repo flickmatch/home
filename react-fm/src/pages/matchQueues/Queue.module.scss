@@ -2,6 +2,11 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
 body {
   font-family: 'Montserrat Alt 1', sans-serif;
   font-weight: 600;
@@ -13,6 +18,7 @@ body {
   font-weight: 600;
   text-align: center;
   margin-top: 90px;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .container {
@@ -84,6 +90,24 @@ body {
 .box {
   margin-top: 20px;
   margin-left: 25px;
+}
+
+.reservedPlayersContainer {
+  display: flex;
+}
+
+.editIcon {
+  margin-left: 10px;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 40px;
+  margin-top: -7px;
+}
+
+.editIcon:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .reservedPlayers,
