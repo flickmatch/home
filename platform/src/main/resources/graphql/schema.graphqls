@@ -1,6 +1,7 @@
 type Query {
     cities: [City!]!
     city(cityId: ID!): City
+    event(uniqueEventId: ID!): EVENT
 }
 
 type Mutation {
