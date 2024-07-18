@@ -58,7 +58,7 @@ const Header = () => {
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
-    console.log('called from header');
+
     if (userState.login.isLoggedIn) {
       if (storedData) {
         const parseData = JSON.parse(storedData);
@@ -89,6 +89,7 @@ const Header = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log(
       'is admin ',
       userState.login.isAdmin,
@@ -96,6 +97,7 @@ const Header = () => {
       'is logged in ',
       userState.login.isLoggedIn,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userState.login.isAdmin]);
 
   useEffect(() => {
