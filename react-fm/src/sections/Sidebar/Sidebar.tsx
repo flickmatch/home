@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import DefaultIcon from '@mui/icons-material/Deblur';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
@@ -13,41 +14,51 @@ import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import routes from '@/routes';
+import { settingAdmin } from '@/slices/loginSlice';
 import useSidebar from '@/store/sidebar';
+import type { RootState } from '@/store/types';
 
 import styles from './Sidebar.module.scss';
 
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
-  const [hasAccess, setHasAccess] = useState(false);
+
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+  const dispatch = useDispatch();
 
-  const location = useLocation();
+  const userState = useSelector((state: RootState) => state);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
       const parseData = JSON.parse(storedData);
       if (parseData.email === 'admin@flickmatch.in') {
-        return setHasAccess(true);
+        dispatch(settingAdmin(true));
       } else {
         const fetchMailIds = async () => {
-          const response = await fetch(`${mailSheet}`);
-          const data = await response.json();
+          try {
+            const response = await fetch(`${mailSheet}`);
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
 
-          const check = data.data
-            .map((mailId: { EmailId: string }) => mailId.EmailId)
-            .includes(parseData.email);
-          return setHasAccess(check);
+            const check = data.data
+              .map((mailId: { EmailId: string }) => mailId.EmailId)
+              .includes(parseData.email);
+            dispatch(settingAdmin(check));
+          } catch (error) {
+            // console.error('Failed to fetch mail IDs:', error);
+            dispatch(settingAdmin(false));
+          }
         };
 
         fetchMailIds();
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [dispatch, mailSheet]);
 
   return (
     <SwipeableDrawer
@@ -71,7 +82,7 @@ function Sidebar() {
               </ListItemButton>
             </ListItem>
           ))}
-        {hasAccess ? (
+        {userState.login.isAdmin && userState.login.isLoggedIn ? (
           <>
             <ListItem sx={{ p: 0 }}>
               <ListItemButton component={Link} to="/add-game" onClick={sidebarActions.close}>

@@ -3,8 +3,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
 
 import styles from './AboutUs.module.scss';
 
@@ -14,9 +12,7 @@ function AboutUs() {
   return (
     <>
       <Meta title="About Us" />
-      <div>
-        <Header />
-      </div>
+
       <FullSizeCenteredFlexBox className={styles.box}>
         <Typography variant="h3" className={styles.ourStory}>
           Our Story
@@ -41,7 +37,6 @@ function AboutUs() {
           &#x22;Sports do not build character. They reveal it.&#x22; ⚽
         </Typography>
       </FullSizeCenteredFlexBox>
-      <Footer />
     </>
   );
 }

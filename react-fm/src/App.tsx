@@ -9,11 +9,13 @@ import { withErrorHandler } from '@/error-handling';
 import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
 import Pages from '@/routes/Pages';
 //import Footer from '@/sections/Footer';
-// import Header from '@/sections/Header';
+import Header from '@/sections/Header';
 import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
+
+import Footer from './sections/Footer';
 
 function App() {
   useEffect(() => {
@@ -30,11 +32,11 @@ function App() {
         <SW />
         <BrowserRouter>
           <Notifications />
-          {/* <Header /> */}
+          <Header />
           <Notifications />
           <Sidebar />
           <Pages />
-          {/* <Footer /> */}
+          <Footer />
         </BrowserRouter>
       </Fragment>
     </StyledEngineProvider>

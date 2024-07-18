@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // https://redux-toolkit.js.org/introduction/getting-started for redux implementation
@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import { logingin, settingAdmin } from '@/slices/loginSlice';
 import useSidebar from '@/store/sidebar';
 import type { RootState } from '@/store/types';
 
@@ -40,7 +41,7 @@ const Header = () => {
   //const [, themeActions] = useTheme();
   //const [, hotKeysDialogActions] = useHotKeysDialog();
   const isPortrait = useOrientation();
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  // const [isAdminMode, setIsAdminMode] = useState(false);
 
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
@@ -52,35 +53,58 @@ const Header = () => {
   });
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-  const login = useSelector((state: RootState) => state.login);
+  const userState = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+    console.log('called from header');
+    if (userState.login.isLoggedIn) {
+      if (storedData) {
+        const parseData = JSON.parse(storedData);
+        setUserData(parseData);
+
+        if (parseData.email === 'admin@flickmatch.in') {
+          dispatch(settingAdmin(true));
+        } else {
+          const fetchMailIds = async () => {
+            const response = await fetch(mailSheet);
+            const data = await response.json();
+
+            localStorage.setItem('adminIds', JSON.stringify(data));
+            const check = data.data
+              .map((mailId: { EmailId: string }) => mailId.EmailId)
+              .includes(parseData.email);
+
+            // console.log(check);
+
+            dispatch(settingAdmin(check));
+          };
+
+          fetchMailIds();
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log(
+      'is admin ',
+      userState.login.isAdmin,
+      '=========',
+      'is logged in ',
+      userState.login.isLoggedIn,
+    );
+  }, [userState.login.isAdmin]);
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
 
     if (storedData) {
-      const parseData = JSON.parse(storedData);
-      setUserData(parseData);
-
-      if (parseData.email === 'admin@flickmatch.in') {
-        return setIsAdminMode(true);
-      } else {
-        const fetchMailIds = async () => {
-          const response = await fetch(`${mailSheet}`);
-          const data = await response.json();
-
-          localStorage.setItem('adminIds', JSON.stringify(data));
-          const check = data.data
-            .map((mailId: { EmailId: string }) => mailId.EmailId)
-            .includes(parseData.email);
-
-          return setIsAdminMode(check);
-        };
-
-        fetchMailIds();
-      }
+      dispatch(logingin(storedData));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const menus = () =>
     !isPortrait ? (
@@ -110,7 +134,7 @@ const Header = () => {
           Rewards
         </Typography>
 
-        {isAdminMode ? (
+        {userState.login.isAdmin && userState.login.isLoggedIn ? (
           <>
             <Divider className={styles.divider} orientation="vertical" flexItem />
 
@@ -152,7 +176,7 @@ const Header = () => {
             <Typography component={Link} to="/home">
               <img src={appLogo} alt="logo" className={styles.logo} />
             </Typography>
-            {isAdminMode ? (
+            {userState.login.isAdmin ? (
               <Chip
                 label="admin mode"
                 color="primary"
@@ -165,12 +189,12 @@ const Header = () => {
             {menus()}
             <Divider className={styles.divider} orientation="horizontal" flexItem />
 
-            {login.isLoggedIn ? (
+            {userState.login.isLoggedIn ? (
               <Tooltip title="Profile Page" arrow>
                 <Box component={Link} to="/profile-page">
-                  {userData.picture ? (
+                  {userState.login.picture || (userData.picture && userData.picture != '') ? (
                     <img
-                      src={userData.picture}
+                      src={userState.login.picture || userData.picture}
                       alt="Profile Pic"
                       className={styles.profilePic}
                       referrerPolicy="no-referrer"

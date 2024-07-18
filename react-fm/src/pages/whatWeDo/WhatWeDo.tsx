@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import type { YouTubeProps } from 'react-youtube';
 import YouTube from 'react-youtube';
 
@@ -12,10 +12,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
-import { logingin } from '@/slices/loginSlice';
 
+// import { logingin } from '@/slices/loginSlice';
 import styles from './WhatWeDo.module.scss';
 import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
 
@@ -23,7 +21,7 @@ function WhatWeDo() {
   const isPortrait = useOrientation();
   const [hideIndicators, setHideIndicator] = useState(true);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const opts: YouTubeProps['opts'] = {
     height: '450',
@@ -34,13 +32,13 @@ function WhatWeDo() {
     },
   };
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('userData');
 
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
+  //   if (storedData) {
+  //     dispatch(logingin());
+  //   }
+  // }, [dispatch]);
 
   const onReady = (event: { target: { pauseVideo: () => void } }) => {
     event.target.pauseVideo();
@@ -76,9 +74,7 @@ function WhatWeDo() {
   return (
     <>
       <Meta title="What We Do" />
-      <div>
-        <Header />
-      </div>
+
       <Box className={styles.box}>
         <Box className={isPortrait ? styles.smallDeviceContainer : styles.container}>
           <Typography variant="h3" className={styles.heading}>
@@ -139,7 +135,6 @@ function WhatWeDo() {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }
