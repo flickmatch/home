@@ -23,9 +23,7 @@ import {
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
-import { logingin } from '@/slices/loginSlice';
+import { logingin, settingAdmin } from '@/slices/loginSlice';
 
 import { generateFirebaseAuthErrorMessage } from './FirebaseError';
 import styles from './GoogleLogin.module.scss';
@@ -35,8 +33,11 @@ function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
   const auth = getAuth();
+  // const [emailId, setEmailId] = useState('');
   // const login = useSelector((store) => store.login);
   const dispatch = useDispatch();
+  const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
+
   //----------------------------------------------------------------
 
   const [emailLogin, setEmailLogin] = useState(false);
@@ -104,12 +105,32 @@ function GoogleLogin() {
       .then((res) => {
         addUsers(res.data.email, res.data.name);
         localStorage.setItem('userData', JSON.stringify(res.data));
-        dispatch(logingin());
+        checkAdmin(res.data.email);
+
+        dispatch(logingin(res.data));
+
         navigate('/match-queues');
       })
       .catch((err) => {
         alert(err);
       });
+  };
+
+  const checkAdmin = (email: string) => {
+    if (email === 'admin@flickmatch.in') dispatch(settingAdmin(true));
+    else {
+      const fetchMailIds = async (email: string) => {
+        const response = await fetch(mailSheet);
+        const data = await response.json();
+
+        const check = data.data
+          .map((mailId: { EmailId: string }) => mailId.EmailId)
+          .includes(email);
+
+        dispatch(settingAdmin(check));
+      };
+      fetchMailIds(email);
+    }
   };
 
   const loginFunc = useGoogleLogin({
@@ -147,10 +168,11 @@ function GoogleLogin() {
         const user = userCredential.user;
         if (user.emailVerified) {
           const emailData = { email: user.email, id: user.uid, name: name };
-
           localStorage.setItem('userData', JSON.stringify(emailData));
           onAuthStateChange();
-          dispatch(logingin());
+          dispatch(logingin(emailData));
+
+          checkAdmin(user.email as string);
           navigate('/match-queues');
         } else {
           alert('Please verify your email to login.');
@@ -171,9 +193,7 @@ function GoogleLogin() {
   return (
     <>
       <Meta title="Login/Signup" />
-      <div>
-        <Header />
-      </div>
+
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>
           <img
@@ -288,7 +308,6 @@ function GoogleLogin() {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { googleLogout } from '@react-oauth/google';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -23,9 +24,8 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
-import { logingout } from '@/slices/loginSlice';
+import { logingout, settingAdmin } from '@/slices/loginSlice';
+import type { RootState } from '@/store/types';
 
 import styles from './Profile.module.scss';
 
@@ -41,6 +41,7 @@ interface UserDetails {
 function Profile() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  const userState = useSelector((state: RootState) => state);
   const [userData, setUserData] = useState<UserDetails>({
     email: '',
     family_name: '',
@@ -51,7 +52,9 @@ function Profile() {
   });
 
   const dispatch = useDispatch();
+
   const logOut = () => {
+    dispatch(settingAdmin(false));
     googleLogout();
     localStorage.removeItem('userData');
     dispatch(logingout());
@@ -72,139 +75,139 @@ function Profile() {
   return (
     <>
       <Meta title="Profile Page" />
-      <div>
-        <Header />
-      </div>
-      <FlexBox className={isPortrait ? styles.portraitProfileContaienr : styles.profileContainer}>
-        <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
-          <FlexBox className={styles.profileSection}>
-            <Box className={styles.profilePic}>
-              {userData.picture ? (
-                <img src={userData.picture} alt={userData.name} referrerPolicy="no-referrer" />
-              ) : (
-                <Typography className={styles.profileIcon}>
-                  {userData.name.charAt(0).toLocaleUpperCase()}
-                </Typography>
-              )}
-            </Box>
-            {userData ? (
-              <Box className={styles.nameSection}>
-                <AccountBoxIcon className={styles.accountIcon} />
-                <Typography className={styles.name}>{userData.name}</Typography>
+      {userState.login.isLoggedIn ? (
+        <FlexBox className={isPortrait ? styles.portraitProfileContaienr : styles.profileContainer}>
+          <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
+            <FlexBox className={styles.profileSection}>
+              <Box className={styles.profilePic}>
+                {userData.picture ? (
+                  <img src={userData.picture} alt={userData.name} referrerPolicy="no-referrer" />
+                ) : (
+                  <Typography className={styles.profileIcon}>
+                    {userData.name.charAt(0).toLocaleUpperCase()}
+                  </Typography>
+                )}
               </Box>
-            ) : null}
-            {userData ? (
-              <Box className={styles.emailSection}>
-                <MailIcon className={styles.mailIcon} />
-                <Typography className={styles.emailId}>{userData.email}</Typography>
+              {userData ? (
+                <Box className={styles.nameSection}>
+                  <AccountBoxIcon className={styles.accountIcon} />
+                  <Typography className={styles.name}>{userData.name}</Typography>
+                </Box>
+              ) : null}
+              {userData ? (
+                <Box className={styles.emailSection}>
+                  <MailIcon className={styles.mailIcon} />
+                  <Typography className={styles.emailId}>{userData.email}</Typography>
+                </Box>
+              ) : null}
+              <Box className={styles.signOutSection}>
+                <Button
+                  onClick={() => logOut()}
+                  className={styles.signOut}
+                  endIcon={<ExitToAppIcon className={styles.signOutIcon} />}
+                >
+                  Sign out
+                </Button>
               </Box>
-            ) : null}
-            <Box className={styles.signOutSection}>
-              <Button
-                onClick={() => logOut()}
-                className={styles.signOut}
-                endIcon={<ExitToAppIcon className={styles.signOutIcon} />}
-              >
-                Sign out
-              </Button>
-            </Box>
-          </FlexBox>
-        </Box>
-        <Box className={isPortrait ? styles.portraitSkillSection : styles.skillsSection}>
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>10</Typography>
-                  <SportsSoccerIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Goals
-              </Box>
-            </Grid>
+            </FlexBox>
+          </Box>
+          <Box className={isPortrait ? styles.portraitSkillSection : styles.skillsSection}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>10</Typography>
+                    <SportsSoccerIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Goals
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>15</Typography>
-                  <Diversity1SharpIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Passes
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>15</Typography>
+                    <Diversity1SharpIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Passes
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>06</Typography>
-                  <CrisisAlertOutlinedIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Shots
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>06</Typography>
+                    <CrisisAlertOutlinedIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Shots
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>03</Typography>
-                  <RoundedCornerOutlinedIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Corners
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>03</Typography>
+                    <RoundedCornerOutlinedIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Corners
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>35</Typography>
-                  <TimerOutlinedIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Possession
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>35</Typography>
+                    <TimerOutlinedIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Possession
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>03</Typography>
-                  <EmojiEventsIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Wins
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>03</Typography>
+                    <EmojiEventsIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Wins
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>02</Typography>
-                  <SentimentVeryDissatisfiedOutlinedIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Losses
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>02</Typography>
+                    <SentimentVeryDissatisfiedOutlinedIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Losses
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>12</Typography>
-                  <Diversity2SharpIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Assists
-              </Box>
-            </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>12</Typography>
+                    <Diversity2SharpIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Assists
+                </Box>
+              </Grid>
 
-            <Grid item xs={2} sm={4} md={4}>
-              <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
-                <FlexBox className={styles.skillsDataCard}>
-                  <Typography className={styles.totalGoals}>04</Typography>
-                  <AdjustSharpIcon className={styles.skillsDataIcon} />
-                </FlexBox>
-                Shots on target
-              </Box>
+              <Grid item xs={2} sm={4} md={4}>
+                <Box className={isPortrait ? styles.portraitSkills : styles.skills}>
+                  <FlexBox className={styles.skillsDataCard}>
+                    <Typography className={styles.totalGoals}>04</Typography>
+                    <AdjustSharpIcon className={styles.skillsDataIcon} />
+                  </FlexBox>
+                  Shots on target
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </FlexBox>
-      <Footer />
+          </Box>
+        </FlexBox>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
