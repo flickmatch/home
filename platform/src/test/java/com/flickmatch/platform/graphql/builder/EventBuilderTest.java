@@ -246,9 +246,9 @@ public class EventBuilderTest {
     }
 
     @Test
-    public void testGetEventById() throws ParseException {
+    public void testGetUniqueEventById() throws ParseException {
         // Mock input data
-        String eventId = "1-2023-07-11-1";
+        String uniqueEventId = "1-2023-07-11-1";
 
         // Mock the CityBuilder to return a City with a specific timezone
         com.flickmatch.platform.graphql.type.City city = City.builder().cityId("1").localTimeZone("GMT+05:30").build();
@@ -277,11 +277,11 @@ public class EventBuilderTest {
         when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
 
         // Call the method under test
-        com.flickmatch.platform.graphql.type.Event result = eventBuilder.getEventById(eventId);
+        com.flickmatch.platform.graphql.type.Event result = eventBuilder.getEventById(uniqueEventId);
 
         // Assert the results
         assertThat(result, notNullValue());
-        assertThat(result.getUniqueEventId(), equalTo(eventId)); // Adjust this assertion to match your expected format
+        assertThat(result.getUniqueEventId(), equalTo(uniqueEventId)); // Adjust this assertion to match your expected format
         assertThat(result.getStartTime(), equalTo(eventDetails.getStartTime()));
         assertThat(result.getEndTime(), equalTo(eventDetails.getEndTime()));
         assertThat(result.getVenueName(), equalTo(eventDetails.getVenueName()));

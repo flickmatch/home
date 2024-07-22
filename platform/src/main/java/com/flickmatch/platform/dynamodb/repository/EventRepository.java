@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface EventRepository extends CrudRepository<Event, Event.EventId> {
 
     List<Event> findByEventIdCityIdAndEventIdDateBetween(String cityId, String startDate, String endDate);
-    Optional<Event> findById(Event.EventId eventId);
+
 }

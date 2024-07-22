@@ -122,8 +122,9 @@ public class EventBuilder {
         return eventList;
     }
 
-    public com.flickmatch.platform.graphql.type.Event getEventById(String eventId) {
-        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(eventId);
+//    uniqueEventId is of the form cityId-date-index , e.g.: 7-2024-07-21-1.
+    public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEventId) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
         try{
             Optional<Event> eventInCity =
                     eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
@@ -136,12 +137,12 @@ public class EventBuilder {
                 log.info("Event found: " + gqlEvent.toString());
                 return gqlEvent;
             }  else {
-                log.info("No event found for the given ID: " + eventId);
+                log.info("No event found for the given ID: " + uniqueEventId);
                 return null;
             }
         }
         catch (Exception e) {
-            log.error("Error fetching event by ID: " + eventId, e);
+            log.error("Error fetching event by ID: " + uniqueEventId, e);
             return null;
         }
     }
