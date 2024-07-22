@@ -86,7 +86,7 @@ const Header = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, userState.login.isLoggedIn]);
 
   useEffect(() => {
     // eslint-disable-next-line no-console

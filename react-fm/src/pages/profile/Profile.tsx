@@ -75,7 +75,7 @@ function Profile() {
   return (
     <>
       <Meta title="Profile Page" />
-      {userState.login.isAdmin && userState.login.isLoggedIn ? (
+      {userState.login.isLoggedIn ? (
         <FlexBox className={isPortrait ? styles.portraitProfileContaienr : styles.profileContainer}>
           <Box className={isPortrait ? styles.portraitProfileInfoArea : styles.profileInfoArea}>
             <FlexBox className={styles.profileSection}>
