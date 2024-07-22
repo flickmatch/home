@@ -18,5 +18,41 @@ public class RazorPaymentRequest {
     private List<Event.PlayerDetails> playerDetailsList;
     private String status;
 
+    @DynamoDBHashKey(attributeName="orderId")
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    @DynamoDBAttribute(attributeName="uniqueEventId")
+    public String getUniqueEventId() {
+        return uniqueEventId;
+    }
+
+    public void setUniqueEventId(String uniqueEventId) {
+        this.uniqueEventId = uniqueEventId;
+    }
+
+    @DynamoDBAttribute(attributeName="playerDetailsList")
+    public List<Event.PlayerDetails> getPlayerDetailsList() {
+        return playerDetailsList;
+    }
+
+    public void setPlayerDetailsList(List<Event.PlayerDetails> playerDetailsList) {
+        this.playerDetailsList = playerDetailsList;
+    }
+
+    @DynamoDBAttribute(attributeName="status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 
 }
