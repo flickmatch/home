@@ -56,7 +56,7 @@ const Header = () => {
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
-
+    // console.log(storedData);
     if (storedData) {
       const parseData = JSON.parse(storedData);
       setUserData(parseData);
