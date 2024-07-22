@@ -67,6 +67,9 @@ public class PaymentController {
     RazorPayProxy razorPayProxy;
 
 
+    String formatDateToString(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
     @MutationMapping
     public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
         try {
@@ -75,7 +78,7 @@ public class PaymentController {
             long amount = eventAmount * input.getPlayerInputList().size();
             String orderId = razorPaymentRequestBuilder.createOrderRequest(razorpayClient, input, eventBuilder, amount);
             LocalDate date = LocalDate.now();
-            String dateString = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String dateString = formatDateToString(date);
             City city = cityController.getCity(input.getUniqueEventId().split("-")[0]);
             String location = city.getCityName();
             String gameNumber = input.getUniqueEventId().split("-")[4];
