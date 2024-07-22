@@ -68,6 +68,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       .join(', ');
 
     //check status in console
+    // eslint-disable-next-line no-console
     console.log(
       'updated players array => ',
       updatedPlayers,
