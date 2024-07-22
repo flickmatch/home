@@ -59,7 +59,7 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         data.data.cities.forEach(
           (
             city: {
@@ -70,9 +70,9 @@ function MatchQueue() {
             i: number,
           ) => {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+            const eventArray = data.data.cities[i];
             if (cityExists) {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
                 setCitiesData((prevData) => [...prevData, eventArray]);
               } else {
                 dummyData.data.cities.forEach(
@@ -92,10 +92,10 @@ function MatchQueue() {
               }
             } else {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
                 setCitiesData((prevData) => [...prevData, eventArray]);
               }
             }
+
             setShowSkeleton(false);
           },
         );
@@ -113,6 +113,7 @@ function MatchQueue() {
     return () => {
       controller.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
   const events = () => {

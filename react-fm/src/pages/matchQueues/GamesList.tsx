@@ -94,8 +94,27 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     }
   }, []);
 
-  const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
+  const renderPlayer = (
+    player: ReservedPlayerDetails | null,
+    i: number,
+    playersList: EventDetails['reservedPlayersList'],
+    date: string,
+    time: string,
+    charges: number,
+    venueName: string,
+    eventId: string,
+  ) => (
+    <PlayerDetails
+      displayName={player ? player.displayName : '(Empty)'}
+      index={i}
+      key={i}
+      playerDetailsArray={playersList}
+      gameCharges={charges}
+      gameTime={time}
+      gameVenueName={venueName}
+      gameEventId={eventId}
+      handlePassName={passName}
+    />
   );
 
   const teamA = (teamAColor: string) => (
@@ -220,7 +239,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       i < playingEvent.reservedPlayersList.length
                         ? playingEvent.reservedPlayersList[i]
                         : null;
-                    return renderPlayer(player, i);
+                    return renderPlayer(
+                      player,
+                      i,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
                 <Typography className={styles.versus}>v/s</Typography>
@@ -234,7 +262,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                             i + playingEvent.reservedPlayersCount / 2
                           ]
                         : null;
-                    return renderPlayer(player, i + playingEvent.reservedPlayersCount / 2);
+                    return renderPlayer(
+                      player,
+                      i + playingEvent.reservedPlayersCount / 2,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
               </Box>
@@ -246,7 +283,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       i < playingEvent.reservedPlayersList.length
                         ? playingEvent.reservedPlayersList[i]
                         : null;
-                    return renderPlayer(player, i);
+                    return renderPlayer(
+                      player,
+                      i,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
               </Box>
@@ -261,7 +307,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     index < playingEvent.waitListPlayers.length
                       ? playingEvent.waitListPlayers[index]
                       : null;
-                  return renderPlayer(player, avatars.length - 1 - index);
+                  return renderPlayer(
+                    player,
+                    avatars.length - 1 - index,
+                    playingEvent.waitListPlayers,
+                    playingEvent.date,
+                    playingEvent.time,
+                    playingEvent.charges,
+                    playingEvent.venueName,
+                    playingEvent.eventId,
+                  );
                 })}
               </Grid>
             </Box>
