@@ -78,3 +78,44 @@ aws dynamodb put-item \
   }' \
   --return-consumed-capacity TOTAL \
   --endpoint-url http://localhost:8000
+
+  aws dynamodb create-table \
+   --table-name DaysSubscription \
+   --attribute-definitions \
+   AttributeName=daysSubscriptionId,AttributeType=S \
+   --key-schema \
+   AttributeName=daysSubscriptionId,KeyType=HASH \
+   --provisioned-throughput \
+   ReadCapacityUnits=5,WriteCapacityUnits=5 \
+   --table-class STANDARD
+
+   aws dynamodb create-table \
+   --table-name GamesSubscription \
+   --attribute-definitions \
+   AttributeName=gamesSubscriptionId,AttributeType=S \
+   --key-schema \
+   AttributeName=gamesSubscriptionId,KeyType=HASH \
+   --provisioned-throughput \
+   ReadCapacityUnits=5,WriteCapacityUnits=5 \
+   --billing-mode PROVISIONED
+
+   aws dynamodb create-table \
+   --table-name LoyaltyPass \
+   --attribute-definitions AttributeName=passId,AttributeType=S \
+   --key-schema AttributeName=passId,KeyType=HASH \
+   --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+   --billing-mode PROVISIONED
+
+   aws dynamodb create-table \
+   --table-name Subscription \
+   --attribute-definitions AttributeName=subscriptionId,AttributeType=S \
+   --key-schema AttributeName=subscriptionId,KeyType=HASH \
+   --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+   --billing-mode PROVISIONED
+
+   aws dynamodb create-table \
+   --table-name SubscriptionDetails \
+   --attribute-definitions AttributeName=subscriptionDetailsId,AttributeType=S \
+   --key-schema AttributeName=subscriptionDetailsId,KeyType=HASH \
+   --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+   --billing-mode PROVISIONED
