@@ -131,7 +131,7 @@ public class EventBuilder {
             if (eventInCity.isPresent()) {
                 Event event = eventInCity.get();
                 Event.EventDetails eventDetails = event.getEventDetailsList().get(0);
-                City city = cityBuilder.getCity(parsedUniqueEventId.cityId());
+                City city = cityBuilder.getCity(event.getCityId() );
                 String localTimeZone = city.getLocalTimeZone();
                 com.flickmatch.platform.graphql.type.Event gqlEvent = mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, parsedUniqueEventId.cityId());
                 log.info("Event found: " + gqlEvent.toString());
