@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -10,9 +9,6 @@ import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
-import { logingin } from '@/slices/loginSlice';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -25,7 +21,6 @@ function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [players, setPlayers] = useState<string[]>([]);
-  const dispatch = useDispatch();
 
   const isPortrait = useOrientation();
 
@@ -34,16 +29,6 @@ function MatchQueue() {
   };
 
   useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    setCitiesData([]);
-    setShowSkeleton(true);
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchData = async () => {
@@ -165,14 +150,11 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
-      <div>
-        <Header />
-      </div>
+
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
 
       {skeleton()}
-      <Footer />
     </>
   );
 }

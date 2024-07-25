@@ -5,6 +5,12 @@ type AtomEffectParams = {
 };
 interface LoginState {
   isLoggedIn: boolean;
+  isAdmin: boolean;
+  name: string;
+  picture: string;
+  family_name: string;
+  given_name: string;
+  id: string;
 }
 interface RootState {
   login: LoginState;
