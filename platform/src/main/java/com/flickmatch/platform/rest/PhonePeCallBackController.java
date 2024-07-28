@@ -46,7 +46,11 @@ public class PhonePeCallBackController {
 
     private String sanitizeLogInput(String input) {
         // Remove new-line characters for plain text logs
-        return input.replaceAll("\\R", " ");
+        if (input == null) {
+            return "";
+        }
+        // Remove newline characters and HTML encode
+        return StringEscapeUtils.escapeHtml4(input.replaceAll("[\\r\\n]+", " "));
 
     }
 
