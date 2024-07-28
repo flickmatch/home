@@ -18,6 +18,7 @@ import java.util.Base64;
 import java.util.Map;
 
 import static java.lang.String.format;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Exposes POST endpoint for phonepe callback.
@@ -38,10 +39,21 @@ public class PhonePeCallBackController {
     @Autowired
     WhatsAppProxy whatsAppProxy;
 
+
+
     @PostMapping("/payment")
+
+
+    private String sanitizeLogInput(String input) {
+        // Remove new-line characters for plain text logs
+        return input.replaceAll("\\R", " ");
+
+    }
+
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
                          @RequestHeader(value = "x_verify", required = false) String xVerify) {
-        log.info(xVerify); //We need to use this to verify callback https://developer.phonepe.com/v1/reference/java-callback-verification
+        String sanitizedXVerify = xVerify != null ? xVerify.replace("\n", "").replace("\r", "") : "null";
+        log.info("xVerify: {}", sanitizedXVerify); //We need to use this to verify callback https://developer.phonepe.com/v1/reference/java-callback-verification
         try {
             String decodedResponse = new String(Base64.getDecoder().decode(callBackResponse.getResponse()));
             Map<String, Object> phonePeResponse = objectMapper.readValue(decodedResponse,
@@ -65,8 +77,11 @@ public class PhonePeCallBackController {
                     whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
                 }
             } else {
-                log.info(merchantTransactionId);
-                log.error(decodedResponse);
+                String sanitizedTransactionId = sanitizeLogInput(merchantTransactionId);
+                String sanitizedResponse = sanitizeLogInput(decodedResponse);
+
+                log.info(sanitizedTransactionId);
+                log.error(sanitizedResponse);
                 paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, false);
             }
         } catch (JsonProcessingException e) {
