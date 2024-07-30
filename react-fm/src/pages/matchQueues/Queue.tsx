@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -10,9 +9,6 @@ import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
-import { logingin } from '@/slices/loginSlice';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -24,17 +20,13 @@ import type { CityDetails } from './types/Events.types';
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const dispatch = useDispatch();
+  const [players, setPlayers] = useState<string[]>([]);
 
   const isPortrait = useOrientation();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
+  const addPlayerInQueue = (name: string) => {
+    setPlayers((prevData) => [...prevData, name]);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -106,7 +98,7 @@ function MatchQueue() {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [players]);
 
   const events = () => {
     citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
@@ -121,7 +113,12 @@ function MatchQueue() {
             dummyData={city.dummyData}
             countryCode={city.countryCode}
           />
-          <GamesList gameEvent={city.events} cityName={city.cityName} />
+          <GamesList
+            gameEvent={city.events}
+            cityName={city.cityName}
+            cityNameId={city.cityId}
+            addPlayerInQueue={addPlayerInQueue}
+          />
         </div>
       </Zoom>
     ));
@@ -153,14 +150,11 @@ function MatchQueue() {
   return (
     <>
       <Meta title="Match Queues" />
-      <div>
-        <Header />
-      </div>
+
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       {events()}
 
       {skeleton()}
-      <Footer />
     </>
   );
 }

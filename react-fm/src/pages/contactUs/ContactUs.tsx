@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
@@ -13,30 +10,16 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header';
-import { logingin } from '@/slices/loginSlice';
 
 import styles from './ContactUs.module.scss';
 
 function ContactUs() {
   const isPortrait = useOrientation();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
 
   return (
     <>
       <Meta title="Contact Us" />
-      <div>
-        <Header />
-      </div>
+
       <div className={styles.contactPage}>
         <Typography variant="h3" className={styles.pageTitle}>
           Reach out to us
@@ -106,7 +89,6 @@ function ContactUs() {
           </FlexBox>
         </FlexBox>
       </div>
-      <Footer />
     </>
   );
 }
