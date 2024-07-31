@@ -39,11 +39,6 @@ public class PhonePeCallBackController {
     @Autowired
     WhatsAppProxy whatsAppProxy;
 
-
-
-    @PostMapping("/payment")
-
-
     private String sanitizeLogInput(String input) {
         // Remove new-line characters for plain text logs
         if (input == null) {
@@ -53,6 +48,11 @@ public class PhonePeCallBackController {
         return StringEscapeUtils.escapeHtml4(input.replaceAll("[\\r\\n]+", " "));
 
     }
+
+    @PostMapping("/payment")
+
+
+
 
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
                          @RequestHeader(value = "x_verify", required = false) String xVerify) {
