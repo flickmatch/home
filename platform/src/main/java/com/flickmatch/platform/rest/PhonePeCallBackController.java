@@ -50,10 +50,6 @@ public class PhonePeCallBackController {
     }
 
     @PostMapping("/payment")
-
-
-
-
     void processCallBack(@RequestBody CallBackResponse callBackResponse,
                          @RequestHeader(value = "x_verify", required = false) String xVerify) {
         String sanitizedXVerify = xVerify != null ? xVerify.replace("\n", "").replace("\r", "") : "null";
@@ -81,11 +77,12 @@ public class PhonePeCallBackController {
                     whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
                 }
             } else {
-                String sanitizedTransactionId = sanitizeLogInput(merchantTransactionId);
-                String sanitizedResponse = sanitizeLogInput(decodedResponse);
-
-                log.info(sanitizedTransactionId);
-                log.error(sanitizedResponse);
+//                String sanitizedTransactionId = sanitizeLogInput(merchantTransactionId);
+//                String sanitizedResponse = sanitizeLogInput(decodedResponse);
+//
+//                log.info(sanitizedTransactionId);
+//                log.error(sanitizedResponse);
+                handlePaymentFailure(merchantTransactionId, decodedResponse);
                 paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, false);
             }
         } catch (JsonProcessingException e) {
@@ -94,4 +91,13 @@ public class PhonePeCallBackController {
             log.error("Failed to process callback", exception);
         }
     }
+
+    private void handlePaymentFailure(String merchantTransactionId, String decodedResponse) {
+        String sanitizedTransactionId = sanitizeLogInput(merchantTransactionId);
+        String sanitizedResponse = sanitizeLogInput(decodedResponse);
+
+        log.info(sanitizedTransactionId);
+        log.error(sanitizedResponse);
+    }
+
 }
