@@ -1,6 +1,7 @@
 type Query {
     cities: [City!]!
     city(cityId: ID!): City
+    passes: [Pass!]!
 }
 
 type Mutation {
@@ -11,6 +12,7 @@ type Mutation {
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
     initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
+    createSubscription(input: CreateSubscriptionInput!): SubscriptionOutput!
     """
     This is not implemented yet, will be required for P1
     """
@@ -69,6 +71,26 @@ input RazorPayInput {
     uniqueEventId: ID!
     playerInputList: [PlayerInput!]!
     currency: String!
+}
+
+input CreateSubscriptionInput {
+    passId: String!
+    userId: String!
+}
+
+type SubscriptionOutput {
+    isSuccessful: Boolean!
+    errorMessage: String
+}
+
+type Pass {
+    passId: String!
+    cityId: String!
+    passType: String!
+    totalGames: Int!
+    totalDays: Int!
+    price: Int!
+    title: String!
 }
 
 type User {

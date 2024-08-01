@@ -167,3 +167,22 @@ aws dynamodb put-item \
   }' \
   --return-consumed-capacity TOTAL \
   --endpoint-url http://localhost:8000
+
+
+  aws dynamodb create-table ^
+      --table-name Pass ^
+      --attribute-definitions ^
+          AttributeName=passId,AttributeType=S ^
+      --key-schema ^
+          AttributeName=passId,KeyType=HASH ^
+      --billing-mode PAY_PER_REQUEST
+
+  aws dynamodb put-item ^
+   --table-name Pass^
+   --item "{\"cityId\": {\"S\": \"1\"},\"passId\": {\"S\": \"1\"},\"passType\": {\"S\": \"LimitedGames\"},\"totalGames\": {\"N\": \"10\"},\"totalDays\": {\"N\": \"3000\"},\"title\": {\"S\": \"10 games pass\"},\"price\": {\"N\": \"1000\"},\"status\": {\"S\": \"Active\"}}" ^
+   --return-consumed-capacity TOTAL
+
+   aws dynamodb put-item ^
+    --table-name Pass ^
+    --item "{\"cityId\": {\"S\": \"2\"},\"passId\": {\"S\": \"2\"},\"passType\": {\"S\": \"LimitedDays\"},\"totalGames\": {\"N\": \"1000\"},\"totalDays\": {\"N\": \"30\"},\"title\": {\"S\": \"30 days pass\"},\"price\": {\"N\": \"1000\"},\"status\": {\"S\": \"Active\"}}" ^
+    --return-consumed-capacity TOTAL
