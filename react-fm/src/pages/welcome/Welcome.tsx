@@ -130,11 +130,11 @@ function Welcome() {
         <Typography className={styles.question}>What is FLICKMATCH ?</Typography>
         <Box className={isPortrait ? styles.mottoMobileSection : styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
-            Flickmatch is envisioned to be a platform that offers matchmaking and record keeping for
-            casual everyday sports. Currently, Flickmatch finds or organises football games near
-            you. Whether you&#39;re a casual solo, in a group or a team looking to play Losers to
-            Pay (LTP), we take care of all your football matchmaking needs from finding players to
-            reserving grounds.
+            Flickmatch is a location-based platform that connects users with nearby sports games and
+            players.Currently, Flickmatch finds or organises football games near you. Whether
+            you&#39;re a casual solo, in a group or a team looking to play Losers to Pay (LTP), we
+            take care of all your football matchmaking needs from finding players to reserving
+            grounds.
           </Typography>
         </Box>
       </Box>
