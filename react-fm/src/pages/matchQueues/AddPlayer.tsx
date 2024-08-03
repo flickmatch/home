@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import useNotifications from '@/store/notifications';
 
 import styles from './AddPlayer.module.scss';
+import type { ReservedPlayerDetails } from './types/Events.types';
 
 interface ChildProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ interface ChildProps {
   uniqueEventId: string;
   cityId: string;
   handlePassName: (name: string) => void;
+  reservedPlayers: ReservedPlayerDetails[];
 }
 
 const style = {

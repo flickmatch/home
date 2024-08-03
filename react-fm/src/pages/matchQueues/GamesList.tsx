@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import BorderColorIcon from '@mui/icons-material/BorderColor';
+//import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import { Button } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -94,8 +95,27 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     }
   }, []);
 
-  const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
+  const renderPlayer = (
+    player: ReservedPlayerDetails | null,
+    i: number,
+    playersList: EventDetails['reservedPlayersList'],
+    date: string,
+    time: string,
+    charges: number,
+    venueName: string,
+    eventId: string,
+  ) => (
+    <PlayerDetails
+      displayName={player ? player.displayName : '(Empty)'}
+      index={i}
+      key={i}
+      playerDetailsArray={playersList}
+      gameCharges={charges}
+      gameTime={time}
+      gameVenueName={venueName}
+      gameEventId={eventId}
+      handlePassName={passName}
+    />
   );
 
   const teamA = (teamAColor: string) => (
@@ -112,13 +132,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     </Box>
   );
 
-  const AddingPlayer = (uniqueEventId: string) => (
+  const AddingPlayer = (uniqueEventId: string, reservedPlayers: ReservedPlayerDetails[]) => (
     <AddPlayer
       isOpen={open}
       onToggle={handleOpen}
       uniqueEventId={uniqueEventId}
       cityId={cityNameId}
       handlePassName={passName}
+      reservedPlayers={reservedPlayers}
     />
   );
 
@@ -205,11 +226,22 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             <Box className={styles.reservedPlayersContainer}>
               <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
               {isAdminMode ? (
-                <BorderColorIcon className={styles.editIcon} onClick={handleOpen} />
+                // <Tooltip title="Add Player" arrow>
+                //   <BorderColorIcon className={styles.editIcon} onClick={handleOpen} />
+                // </Tooltip>
+                <Button
+                  className={isPortrait ? styles.portraitAddPlayer : styles.addPlayerButton}
+                  variant="contained"
+                  onClick={handleOpen}
+                >
+                  Add Player
+                </Button>
               ) : null}
             </Box>
 
-            {isAdminMode ? AddingPlayer(playingEvent.uniqueEventId) : null}
+            {isAdminMode
+              ? AddingPlayer(playingEvent.uniqueEventId, playingEvent.reservedPlayersList)
+              : null}
 
             {playingEvent.team_division ? (
               <Box>
@@ -220,7 +252,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       i < playingEvent.reservedPlayersList.length
                         ? playingEvent.reservedPlayersList[i]
                         : null;
-                    return renderPlayer(player, i);
+                    return renderPlayer(
+                      player,
+                      i,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
                 <Typography className={styles.versus}>v/s</Typography>
@@ -234,7 +275,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                             i + playingEvent.reservedPlayersCount / 2
                           ]
                         : null;
-                    return renderPlayer(player, i + playingEvent.reservedPlayersCount / 2);
+                    return renderPlayer(
+                      player,
+                      i + playingEvent.reservedPlayersCount / 2,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
               </Box>
@@ -246,7 +296,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       i < playingEvent.reservedPlayersList.length
                         ? playingEvent.reservedPlayersList[i]
                         : null;
-                    return renderPlayer(player, i);
+                    return renderPlayer(
+                      player,
+                      i,
+                      playingEvent.reservedPlayersList,
+                      playingEvent.date,
+                      playingEvent.time,
+                      playingEvent.charges,
+                      playingEvent.venueName,
+                      playingEvent.eventId,
+                    );
                   })}
                 </Grid>
               </Box>
@@ -261,7 +320,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     index < playingEvent.waitListPlayers.length
                       ? playingEvent.waitListPlayers[index]
                       : null;
-                  return renderPlayer(player, avatars.length - 1 - index);
+                  return renderPlayer(
+                    player,
+                    avatars.length - 1 - index,
+                    playingEvent.waitListPlayers,
+                    playingEvent.date,
+                    playingEvent.time,
+                    playingEvent.charges,
+                    playingEvent.venueName,
+                    playingEvent.eventId,
+                  );
                 })}
               </Grid>
             </Box>

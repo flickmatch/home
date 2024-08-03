@@ -94,6 +94,7 @@ body {
 
 .reservedPlayersContainer {
   display: flex;
+  justify-content: space-between;
 }
 
 .editIcon {
@@ -179,4 +180,20 @@ body {
 
 .blink {
   background-color: #342e37;
+}
+
+.addPlayerButton,
+.portraitAddPlayer {
+  height: 33px;
+  margin-right: 15px;
+  font-weight: 600;
+  border: 1px solid #4ce95a;
+  background-color: transparent;
+  color: #4ce95a;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.portraitAddPlayer {
+  margin-bottom: 30px;
 }
