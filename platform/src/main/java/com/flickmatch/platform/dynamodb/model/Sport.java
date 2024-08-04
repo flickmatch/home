@@ -3,8 +3,14 @@ package com.flickmatch.platform.dynamodb.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @DynamoDBTable(tableName="Sport")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sport {
 
     private String sportId;
