@@ -2,6 +2,7 @@ package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.Pass;
 import com.flickmatch.platform.dynamodb.model.Subscription;
+import com.flickmatch.platform.dynamodb.model.SubscriptionKey;
 import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.PassRepository;
 import com.flickmatch.platform.dynamodb.repository.SubscriptionRepository;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class SubscriptionBuilder {
     @Autowired
     SubscriptionRepository subscriptionRepository;
+    
     @Autowired
     PassRepository passRepository;
 
@@ -32,7 +34,7 @@ public class SubscriptionBuilder {
         String email = input.getEmail();
         String passId = input.getPassId();
         try {
-            Optional<Pass> passOpt = passRepository.findById(passId);
+            Optional<Pass> passOpt = passRepository.findByPassId(passId);
             if(passOpt.isEmpty()) {
                 throw new Exception("The pass with the given passId has either been expired or does not exist");
             }
@@ -103,7 +105,12 @@ public class SubscriptionBuilder {
                 throw new Exception("The user does not have an active subscription");
             }
             String activeSubscriptionId = subscriptionHistory.get(subscriptionHistory.size() - 1);
-            Optional<Subscription> subscriptionOpt = subscriptionRepository.findById(activeSubscriptionId);
+            SubscriptionKey subscriptionKey = SubscriptionKey.builder()
+                                        .userId(user.getUserId())
+                                        .subscriptionId(activeSubscriptionId)
+                                        .build();
+
+            Optional<Subscription> subscriptionOpt = subscriptionRepository.findById(subscriptionKey);
             if (subscriptionOpt.isEmpty()) {
                 throw new Exception("The active subscription does not exist");
             }

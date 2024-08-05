@@ -15,7 +15,7 @@ public class PassController {
     @Autowired
     PassBuilder passBuilder;
    @QueryMapping(name = "passes")
-   private List<Pass> getPasses() {
-       return passBuilder.getPasses();
+   private List<Pass> getAllActivePasses() {
+       return passBuilder.getAllActivePasses();
    }
 }

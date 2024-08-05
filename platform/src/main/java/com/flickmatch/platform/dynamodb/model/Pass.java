@@ -2,6 +2,7 @@ package com.flickmatch.platform.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 
 @DynamoDBTable(tableName = "Pass")
@@ -28,24 +29,22 @@ public class Pass {
     @DynamoDBHashKey(attributeName = "cityId")
     private String cityId;
 
-    @DynamoDBAttribute(attributeName = "passType")
     @DynamoDBTypeConvertedEnum
     private PassType passType;
 
-    @DynamoDBAttribute(attributeName = "totalGames")
     private Integer totalGames;
 
-    @DynamoDBAttribute(attributeName = "totalDays")
     private Integer totalDays;
 
-    @DynamoDBAttribute(attributeName = "title")
     private String title;
 
-    @DynamoDBAttribute(attributeName = "price")
     private Double price;
 
-    @DynamoDBAttribute(attributeName = "status")
     @DynamoDBTypeConvertedEnum
     private Status status;
+
+    @Id
+    @DynamoDBIgnore
+    private PassKey passKey;
 }
 

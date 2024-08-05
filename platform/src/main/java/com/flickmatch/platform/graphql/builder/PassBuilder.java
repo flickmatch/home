@@ -11,9 +11,13 @@ import java.util.List;
 @Service
 @Log4j2
 public class PassBuilder {
-    @Autowired
     private PassRepository passRepository;
-    public List<Pass> getPasses() {
+
+    public PassBuilder(PassRepository passRepository) {
+        this.passRepository = passRepository;
+    }
+    
+    public List<Pass> getAllActivePasses() {
         try{
             return passRepository.findByStatus("Active");
         }
