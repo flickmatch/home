@@ -42,5 +42,10 @@ public class UserController {
             return userBuilder.getAllUsers();
         }
 
+        @QueryMapping(name="hasActiveSubscription")
+           public boolean hasActiveSubscription(@Argument String email) {
+                return userBuilder.hasActiveSubscription(email);
+            }
+
               
 }
