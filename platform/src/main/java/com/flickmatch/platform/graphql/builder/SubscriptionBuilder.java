@@ -1,0 +1,121 @@
+package com.flickmatch.platform.graphql.builder;
+
+import com.flickmatch.platform.dynamodb.model.Pass;
+import com.flickmatch.platform.dynamodb.model.Subscription;
+import com.flickmatch.platform.dynamodb.model.User;
+import com.flickmatch.platform.dynamodb.repository.PassRepository;
+import com.flickmatch.platform.dynamodb.repository.SubscriptionRepository;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
+import com.flickmatch.platform.graphql.input.CreateSubscriptionInput;
+import com.flickmatch.platform.graphql.type.MutationResult;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@Log4j2
+public class SubscriptionBuilder {
+    @Autowired
+    SubscriptionRepository subscriptionRepository;
+    @Autowired
+    PassRepository passRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    public MutationResult createSubscription(CreateSubscriptionInput input) {
+        String email = input.getEmail();
+        String passId = input.getPassId();
+        try {
+            Optional<Pass> passOpt = passRepository.findById(passId);
+            if(passOpt.isEmpty()) {
+                throw new Exception("The pass with the given passId has either been expired or does not exist");
+            }
+            Pass pass = passOpt.get();
+            Integer gamesLeft=pass.getTotalGames();
+            Integer totalDays=pass.getTotalDays();
+            LocalDate today = LocalDate.now();
+            LocalDate expiry = today.plusDays(totalDays);
+            // Define a formatter
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Convert the LocalDate to a String
+            String expiryDate = expiry.format(formatter);
+
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isEmpty()) {
+                throw new Exception("The user with the given email does not exist");
+            }
+
+            User user = userOpt.get();
+
+            Subscription subscription = Subscription.builder()
+                    .passId(passId)
+                    .userId(user.getUserId())
+                    .gamesLeft(gamesLeft)
+                    .status(Subscription.Status.Active)
+                    .expiryDate(expiryDate)
+                    .build();
+
+            // Save the Subscription to the repository
+            Subscription savedSubcription = subscriptionRepository.save(subscription);
+
+            user.setHasActiveSubscription(true);
+            List<String> subscriptionHistory = user.getSubscriptionHistory();
+            if (subscriptionHistory != null) {
+                subscriptionHistory.add(savedSubcription.getSubscriptionId());
+            } else {
+                subscriptionHistory = List.of(savedSubcription.getSubscriptionId());
+            }
+            user.setSubscriptionHistory(subscriptionHistory);
+            userRepository.save(user);
+
+            // Return a successful result
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception e) {
+            log.error("Error creating subscription: ", e);
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(e.getMessage())
+                    .build();
+        }
+    }
+
+    public Subscription getActiveSubscription(String email) {
+        try {
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isEmpty()) {
+                throw new Exception("The user with the given email does not exist");
+            }
+            User user = userOpt.get();
+            if (!user.getHasActiveSubscription()) {
+                throw new Exception("The user does not have an active subscription");
+            }
+            List<String> subscriptionHistory = user.getSubscriptionHistory();
+            if (subscriptionHistory.isEmpty()) {
+                throw new Exception("The user does not have an active subscription");
+            }
+            String activeSubscriptionId = subscriptionHistory.get(subscriptionHistory.size() - 1);
+            Optional<Subscription> subscriptionOpt = subscriptionRepository.findById(activeSubscriptionId);
+            if (subscriptionOpt.isEmpty()) {
+                throw new Exception("The active subscription does not exist");
+            }
+            return subscriptionOpt.get();
+        } catch (Exception e) {
+            log.error("Error getting active subscription: ", e);
+            return null;
+        }
+    }
+
+//    public Subscription updateSubscription(Subscription subscription) {
+//
+//    }
+
+}

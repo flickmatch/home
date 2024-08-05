@@ -1,13 +1,11 @@
 package com.flickmatch.platform.dynamodb.repository;
 
-import com.flickmatch.platform.dynamodb.model.Pass;
+import com.flickmatch.platform.dynamodb.model.Subscription;
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
 @EnableScan
-public interface PassRepository extends CrudRepository<Pass,String> {
-   List<Pass> findByStatus(String status);
+public interface SubscriptionRepository extends CrudRepository<Subscription,String> {
+
 
 }

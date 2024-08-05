@@ -2,6 +2,8 @@ type Query {
     cities: [City!]!
     city(cityId: ID!): City
     passes: [Pass!]!
+    hasActiveSubscription(email: String!): Boolean!
+    getActiveSubscription(email: String!): Subscription!
 }
 
 type Mutation {
@@ -12,7 +14,7 @@ type Mutation {
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
     initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
-    createSubscription(input: CreateSubscriptionInput!): SubscriptionOutput!
+    createSubscription(input: CreateSubscriptionInput!): MutationResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -75,12 +77,21 @@ input RazorPayInput {
 
 input CreateSubscriptionInput {
     passId: String!
-    userId: String!
+    email: String!
 }
 
 type SubscriptionOutput {
     isSuccessful: Boolean!
     errorMessage: String
+}
+
+type Subscription {
+    subscriptionId: String!
+    passId: String!
+    userId: String!
+    expiryDate: String!
+    gamesLeft: Int!
+    status: String!
 }
 
 type Pass {

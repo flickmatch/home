@@ -186,3 +186,11 @@ aws dynamodb put-item \
     --table-name Pass ^
     --item "{\"cityId\": {\"S\": \"2\"},\"passId\": {\"S\": \"2\"},\"passType\": {\"S\": \"LimitedDays\"},\"totalGames\": {\"N\": \"1000\"},\"totalDays\": {\"N\": \"30\"},\"title\": {\"S\": \"30 days pass\"},\"price\": {\"N\": \"1000\"},\"status\": {\"S\": \"Active\"}}" ^
     --return-consumed-capacity TOTAL
+
+      aws dynamodb create-table ^
+          --table-name Subscription ^
+          --attribute-definitions ^
+              AttributeName=subscriptionId,AttributeType=S ^
+          --key-schema ^
+              AttributeName=subscriptionId,KeyType=HASH ^
+          --billing-mode PAY_PER_REQUEST
