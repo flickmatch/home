@@ -1,0 +1,122 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
+body {
+  font-family: 'Montserrat Alt 1', sans-serif;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 36px;
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 90px;
+  font-family: 'CustomFont', Arial, sans-serif;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.mobileContainer {
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.accordion {
+  background: #1a1919;
+  margin-bottom: 35px;
+  border-radius: 10px;
+}
+
+.mobileAccordion {
+  margin-bottom: 20px;
+}
+
+.linkTag {
+  color: #fff;
+}
+
+.flexbox {
+  flex-flow: column;
+  width: 100%;
+}
+
+.venue {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.venue Button {
+  background: #4ce95a !important;
+  color: black;
+}
+
+.venueName {
+  color: #fff;
+  font-weight: bold;
+  font-size: 21px;
+  display: flex;
+  align-items: center;
+}
+
+.mobileVenueName {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.sportsIcon {
+  margin-right: 5px;
+  color: #4ce95a;
+}
+
+.box {
+  margin-top: 20px;
+  margin-left: 25px;
+}
+
+.reservedPlayersContainer {
+  display: flex;
+}
+
+.editIcon {
+  margin-left: 10px;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 40px;
+  margin-top: -7px;
+}
+
+.editIcon:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.reservedPlayers {
+  color: #4ce95a;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.blink {
+  background-color: #342e37;
+}
