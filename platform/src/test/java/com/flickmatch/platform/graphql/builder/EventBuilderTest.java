@@ -5,6 +5,7 @@ import static com.flickmatch.platform.graphql.util.DateUtil.extractDateFromISOFo
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Date.from;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
@@ -27,18 +28,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import org.mockito.MockitoAnnotations;
+import com.flickmatch.platform.graphql.type.City;
 
 public class EventBuilderTest {
 
     @Mock
     private EventRepository eventRepository;
+    @Mock
+    private CityBuilder cityBuilder;
 
     private EventBuilder eventBuilder;
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         eventRepository = mock(EventRepository.class);
         eventBuilder = new EventBuilder(eventRepository, null);
+        cityBuilder = mock(CityBuilder.class);
+        eventBuilder.cityBuilder = cityBuilder;
     }
 
     @Test
@@ -236,4 +244,104 @@ public class EventBuilderTest {
                 .eventDetailsList(eventDetailsList)
                 .build();
     }
+
+    @Test
+    public void testGetUniqueEventById() throws ParseException {
+
+        // Case where the event exists and is found :
+
+        // Mock input data
+        String uniqueEventId = "1-2023-07-11-1";
+
+        // Mock the CityBuilder to return a City with a specific timezone
+        com.flickmatch.platform.graphql.type.City city = City.builder().cityId("1").localTimeZone("GMT+05:30").build();
+        when(cityBuilder.getCity("1")).thenReturn(city);
+
+        // Mock the existing event in the repository
+        Event.EventDetails eventDetails = Event.EventDetails.builder()
+                .index(1)
+                .startTime(new SimpleDateFormat("yyyy-MM-dd").parse("2023-07-24"))
+                .endTime(new SimpleDateFormat("yyyy-MM-dd").parse("2023-07-24"))
+                .charges(10.0)
+                .reservedPlayersCount(5)
+                .waitListPlayersCount(2)
+                .sportName("Football")
+                .venueName("Stadium")
+                .venueLocationLink("https://maps.google.com/stadium")
+                .playerDetailsList(new ArrayList<>())
+                .build();
+
+        Event.EventId eventIdObj = new Event.EventId("1", "2023-07-11"); // Create EventId object
+
+        Event event = new Event(eventIdObj); // Use EventId object in Event constructor
+        event.setEventDetailsList(Collections.singletonList(eventDetails));
+
+        Optional<Event> optionalEvent = Optional.of(event);
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
+
+        // Call the method under test
+        com.flickmatch.platform.graphql.type.Event result = eventBuilder.getEventById(uniqueEventId);
+
+        // Assert the results
+        assertThat(result, notNullValue());
+        assertThat(result.getUniqueEventId(), equalTo(uniqueEventId)); // Adjust this assertion to match your expected format
+        assertThat(result.getStartTime(), equalTo(eventDetails.getStartTime()));
+        assertThat(result.getEndTime(), equalTo(eventDetails.getEndTime()));
+        assertThat(result.getVenueName(), equalTo(eventDetails.getVenueName()));
+        assertThat(result.getVenueLocationLink(), equalTo(eventDetails.getVenueLocationLink()));
+        assertThat(result.getReservedPlayersCount(), equalTo(eventDetails.getReservedPlayersCount()));
+        assertThat(result.getWaitListPlayersCount(), equalTo(eventDetails.getWaitListPlayersCount()));
+
+        // Case where event Id is invalid :
+        String uniqueEventId1 = "1-2026-07-11-1";
+
+        // Mock the event repository to return an empty Optional
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(Optional.empty());
+
+        // Call the method under test
+        com.flickmatch.platform.graphql.type.Event result1 = eventBuilder.getEventById(uniqueEventId1);
+
+        // Assert that the result is null
+        assertThat(result1, equalTo(null));
+
+    }
+
+    @Test
+    public void testGetEventById_IndexOutOfBounds() throws ParseException {
+        // Mock input data
+        String uniqueEventId = "1-2023-07-11-2"; // index 2 which is out of bounds
+
+        // Mock the CityBuilder to return a City with a specific timezone
+        com.flickmatch.platform.graphql.type.City city = City.builder().cityId("1").localTimeZone("GMT+05:30").build();
+        when(cityBuilder.getCity("1")).thenReturn(city);
+
+        // Mock the existing event in the repository
+        Event.EventDetails eventDetails = Event.EventDetails.builder()
+                .index(1)
+                .startTime(new SimpleDateFormat("yyyy-MM-dd").parse("2023-07-24"))
+                .endTime(new SimpleDateFormat("yyyy-MM-dd").parse("2023-07-24"))
+                .charges(10.0)
+                .reservedPlayersCount(5)
+                .waitListPlayersCount(2)
+                .sportName("Football")
+                .venueName("Stadium")
+                .venueLocationLink("https://maps.google.com/stadium")
+                .playerDetailsList(new ArrayList<>())
+                .build();
+
+        Event.EventId eventIdObj = new Event.EventId("1", "2023-07-11"); // Create EventId object
+
+        Event event = new Event(eventIdObj); // Use EventId object in Event constructor
+        event.setEventDetailsList(Collections.singletonList(eventDetails));
+
+        Optional<Event> optionalEvent = Optional.of(event);
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
+
+        // Call the method under test
+        com.flickmatch.platform.graphql.type.Event result = eventBuilder.getEventById(uniqueEventId);
+
+        // Assert that the result is null due to index out of bounds
+        assertThat(result, equalTo(null));
+    }
+
 }

@@ -3,6 +3,7 @@ package com.flickmatch.platform.dynamodb.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @DynamoDBTable(tableName="Event")
 @Builder
 @AllArgsConstructor
+@Getter
 public class Event {
 
     // Composite key guide https://medium.com/@leohoc/dynamodb-and-spring-data-a81c546a1305

@@ -7,6 +7,7 @@ import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
+import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
 import com.flickmatch.platform.graphql.type.StripePaymentLink;
@@ -14,6 +15,8 @@ import com.flickmatch.platform.graphql.util.DateUtil;
 import com.flickmatch.platform.records.ParsedUniqueEventId;
 import com.flickmatch.platform.records.WhatsAppNotification;
 import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,11 +35,13 @@ import static java.lang.String.format;
 public class EventBuilder {
 
     private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
+    private static final Logger log = LoggerFactory.getLogger(EventBuilder.class);
 
     EventRepository eventRepository;
     CityRepository cityRepository;
 
     @Autowired SportsVenueBuilder sportsVenueBuilder;
+    @Autowired CityBuilder cityBuilder;
 
     public EventBuilder(EventRepository eventRepository, CityRepository cityRepository) {
         this.eventRepository = eventRepository;
@@ -116,6 +121,38 @@ public class EventBuilder {
         }
         return eventList;
     }
+
+//    uniqueEventId is of the form cityId-date-index , e.g.: 7-2024-07-21-1.
+public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEventId) {
+    ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
+    try {
+        Optional<Event> eventInCity =
+                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+        if (eventInCity.isPresent()) {
+            Event event = eventInCity.get();
+            List<Event.EventDetails> eventDetailsList = event.getEventDetailsList();
+            int index = parsedUniqueEventId.index() - 1; // convert to zero-based index
+
+            if (index >= 0 && index < eventDetailsList.size()) {
+                Event.EventDetails eventDetails = eventDetailsList.get(index);
+                City city = cityBuilder.getCity(event.getCityId());
+                String localTimeZone = city.getLocalTimeZone();
+                com.flickmatch.platform.graphql.type.Event gqlEvent = mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, parsedUniqueEventId.cityId());
+                log.info("Event found: " + gqlEvent.toString());
+                return gqlEvent;
+            } else {
+                log.info("Index out of bounds for event details list. Index: " + parsedUniqueEventId.index() + ", List size: " + eventDetailsList.size());
+                return null;
+            }
+        } else {
+            log.info("No event found for the given ID: " + uniqueEventId);
+            return null;
+        }
+    } catch (Exception e) {
+        log.error("Error fetching event by ID: " + uniqueEventId, e);
+        return null;
+    }
+}
 
     public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {
         List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
