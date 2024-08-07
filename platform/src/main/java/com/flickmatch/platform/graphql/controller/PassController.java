@@ -1,6 +1,6 @@
 package com.flickmatch.platform.graphql.controller;
 
-import com.flickmatch.platform.dynamodb.model.Pass;
+import com.flickmatch.platform.graphql.type.Pass;
 import com.flickmatch.platform.graphql.builder.PassBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,9 @@ import java.util.List;
 public class PassController {
     @Autowired
     PassBuilder passBuilder;
-   @QueryMapping(name = "passes")
-   private List<Pass> getAllActivePasses() {
+   
+    @QueryMapping(name = "passes")
+    public List<Pass> getAllActivePasses() {
        return passBuilder.getAllActivePasses();
    }
 }

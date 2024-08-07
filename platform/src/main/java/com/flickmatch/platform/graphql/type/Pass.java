@@ -8,22 +8,13 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Pass {
+    private String passId; 
+    private String cityId; 
+    private String passType; 
+    private Integer totalGames; 
+    private Integer totalDays; 
+    private String title; 
+    private Double price; 
+    private String status; 
 
-    public static enum PassType {
-        LimitedGames,
-        LimitedDays
-    }
-    public static enum Status {
-        Active,
-        Expired
-    }
-
-    String passId;
-    String cityId;
-    PassType passType;
-    Integer totalGames;
-    Integer totalDays;
-    String title;
-    Double price;
-    Status status;
 }

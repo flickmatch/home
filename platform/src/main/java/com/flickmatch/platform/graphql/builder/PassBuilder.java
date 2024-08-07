@@ -1,12 +1,13 @@
 package com.flickmatch.platform.graphql.builder;
 
-import com.flickmatch.platform.dynamodb.model.Pass;
+import com.flickmatch.platform.graphql.type.Pass;
 import com.flickmatch.platform.dynamodb.repository.PassRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -18,12 +19,39 @@ public class PassBuilder {
     }
     
     public List<Pass> getAllActivePasses() {
-        try{
-            return passRepository.findByStatus("Active");
-        }
-        catch(Exception e) {
-            log.error("Error while fetching passes", e);
-            return null;
-        }
+        return passRepository.findAll().stream().map(this::mapEventToGQLType).collect(Collectors.toList());
+        // try {
+        //     return passRepository.findByStatus("Active")
+        //         .stream() 
+        //         .map(this::mapEventToGQLType) 
+        //         .collect(Collectors.toList()); 
+        // } catch (Exception e) {
+        //     log.error("Error while fetching passes", e);
+        //     return List.of(); 
+        // }
+    }
+
+    // to be used later with GQL query
+    public List<Pass> getAllActivePassesForCity(String cityId) {
+        return 
+        passRepository.findByCityIdAndStatus(cityId, "Active")
+            .stream() 
+            .map(this::mapEventToGQLType) 
+            .collect(Collectors.toList()); 
+    }
+
+    Pass mapEventToGQLType(com.flickmatch.platform.dynamodb.model.Pass ddbPass) {
+System.out.println(ddbPass.toString());
+
+        return Pass.builder()
+            .passId(ddbPass.getPassId())
+            .status(ddbPass.getStatus())
+            .cityId(ddbPass.getCityId())
+            .passType(ddbPass.getPassType())
+            .totalGames(ddbPass.getTotalGames())
+            .totalDays(ddbPass.getTotalDays())
+            .title(ddbPass.getTitle())
+            .price(ddbPass.getPrice())
+            .build();
     }
 }
