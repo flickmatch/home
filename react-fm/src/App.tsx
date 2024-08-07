@@ -15,6 +15,9 @@ import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
 
+import Footer from './sections/Footer';
+import Header from './sections/Header';
+
 function App() {
   useEffect(() => {
     ReactGA.initialize('G-12MG3SRC9K'); //tracking ID
@@ -30,11 +33,11 @@ function App() {
         <SW />
         <BrowserRouter>
           <Notifications />
-          {/* <Header /> */}
+          <Header />
           <Notifications />
           <Sidebar />
           <Pages />
-          {/* <Footer /> */}
+          <Footer />
         </BrowserRouter>
       </Fragment>
     </StyledEngineProvider>

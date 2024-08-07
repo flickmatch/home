@@ -56,9 +56,6 @@ function Rewards() {
   return (
     <>
       <Meta title="Coming Soon" />
-      <div>
-        <Header />
-      </div>
       <div className={styles.parent}>
         <FlexBox className={`${styles.Container} ${isPortrait ? styles.portraitContainer : ''}`}>
           <Typography
@@ -86,8 +83,6 @@ function Rewards() {
           </Box>
         </FlexBox>
       </div>
-
-      <Footer />
     </>
   );
 }

@@ -3,7 +3,7 @@ const apiUrl = `${import.meta.env.VITE_API_URL}`;
 const query = JSON.stringify({
   query: `
   query event {
-    event(uniqueEventId: "2-2024-08-03-1") {
+    event(uniqueEventId: '2-2024-08-03-1') {
       currency
       startTime
       endTime

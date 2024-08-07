@@ -19,6 +19,11 @@ type Event = {
   uniqueEventId: string;
   date: string;
   time: string;
+  waitListPlayers: WaitListPlayerList[];
+};
+
+type WaitListPlayerList = {
+  displayName: string;
 };
 
 type ReservedPlayerDetails = {

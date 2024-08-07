@@ -28,8 +28,6 @@ import Swal from 'sweetalert2';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
 import { logingin } from '@/slices/loginSlice';
 import useNotifications from '@/store/notifications';
 
@@ -432,9 +430,7 @@ function AddGame() {
   return (
     <>
       <Meta title="Add Game" />
-      <div>
-        <Header />
-      </div>
+
       {hasAccess ? (
         <>
           <Zoom in={true} style={{ transitionDelay: '300ms' }}>
@@ -461,8 +457,6 @@ function AddGame() {
               </FlexBox>
             </FlexBox>
           </Zoom>
-
-          <Footer />
         </>
       ) : (
         <></>

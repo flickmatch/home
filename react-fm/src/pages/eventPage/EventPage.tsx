@@ -37,12 +37,38 @@ import { apiUrl, query } from './constants';
 
 const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   try {
-    const response = await fetch(apiUrl, {
+    const response = await fetch('http://localhost:8080/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: query,
+      body: JSON.stringify({
+        query: `query event {
+          event(uniqueEventId: "${uniqueEventId}") {
+            currency
+            startTime
+            endTime
+            eventId
+            uniqueEventId
+            displayTitle
+            venueLocationLink
+            charges
+            date
+            time
+            venueName
+            reservedPlayersCount
+            waitListPlayersCount
+            stripePaymentUrl
+            reservedPlayersList {
+              displayName
+            }
+            waitListPlayers {
+              displayName
+            }
+          }
+        }
+      `,
+      }),
     });
 
     const result = await response.json();
@@ -114,6 +140,7 @@ const EventPage: React.FC = () => {
     const reservedPlayersCount = event?.reservedPlayersCount || 0;
     return reservedPlayersCount;
   }
+  const expanded = true;
 
   function cityName(event: Event | null) {
     const dateString = event?.eventId || '';
@@ -154,6 +181,7 @@ const EventPage: React.FC = () => {
           display: 'none',
         },
       }}
+      expanded={expanded}
     >
       <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
         <FlexBox className={styles.flexbox}>
@@ -223,6 +251,17 @@ const EventPage: React.FC = () => {
             </Grid>
           </Box>
         </Box>
+        {event.waitListPlayersCount > 0 ? (
+          <Box className={styles.box} sx={{ flexGrow: 1 }}>
+            <Typography className={styles.waitListPlayers}>Waitlist</Typography>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {Array.from({ length: event?.waitListPlayersCount }, (_, index) => {
+                const player = event?.waitListPlayers[index] ?? null;
+                return renderPlayer(player, index);
+              })}
+            </Grid>
+          </Box>
+        ) : null}
       </AccordionDetails>
     </Accordion>
   );
