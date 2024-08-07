@@ -1,0 +1,198 @@
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+}
+
+.logo {
+  height: 52px;
+  margin-top: 5px;
+}
+
+.heading {
+  color: #4ce95a;
+  font-family: 'CustomFont', sans-serif;
+}
+
+.pageContainer {
+  margin-top: 90px;
+  text-align: center;
+}
+
+.container {
+  //max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 60px;
+}
+
+.passCard,
+.portraitPassCard {
+  //background: linear-gradient(145deg, #ffffff, #d4d4d4);
+  background: #212529;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  position: relative;
+  padding: 30px;
+  flex: 1 1 calc(30% - 40px);
+  box-sizing: border-box;
+  text-align: center;
+  transition: transform 0.3s;
+  overflow: hidden;
+  max-width: 40%;
+}
+
+.portraitPassCard {
+  min-width: 100%;
+}
+
+.passCard:hover {
+  transform: scale(1.1);
+  z-index: 99999;
+}
+
+.ribbon {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  overflow: hidden;
+}
+
+.ribbon::before,
+.ribbon:after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  display: block;
+  border: 5px solid #ffc107;
+}
+
+.ribbon::before {
+  top: 0;
+  left: 0;
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+
+.ribbon::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+
+.ribbon span {
+  position: absolute;
+  display: block;
+  width: 225px;
+  padding: 15px 0;
+  background-color: #ffc107;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  left: -30px;
+  top: 30px;
+  transform: rotate(45deg);
+}
+
+.title {
+  margin-top: 0;
+  color: #f8f9fa;
+  font-size: 24px;
+  font-family: 'CustomFont', sans-serif;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+.subtitle {
+  color: #ced4da;
+  font-size: 16px;
+}
+
+.price {
+  font-size: 28px;
+  color: #28a745;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.currency {
+  font-size: 28px;
+  margin-bottom: -5px;
+  margin-right: -5px;
+}
+
+.status {
+  font-size: 14px;
+  color: #fff;
+  animation: blink 1s infinite;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.details {
+  margin: auto;
+  margin-top: 15px;
+  color: #adb5bd;
+  font-size: 13px;
+  width: 50%;
+  margin-bottom: 15px;
+}
+
+.sportsIcon {
+  margin-right: 15px;
+}
+
+@keyframes blink {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  50%,
+  75% {
+    opacity: 0;
+  }
+}
+
+.buyNow {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+  margin-top: 15px;
+}
+
+.buyNow:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .passCard {
+    flex: 1 1 calc(45% - 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .passCard {
+    flex: 1 1 100%;
+  }
+}
