@@ -19,16 +19,15 @@ public class PassBuilder {
     }
     
     public List<Pass> getAllActivePasses() {
-        return passRepository.findAll().stream().map(this::mapEventToGQLType).collect(Collectors.toList());
-        // try {
-        //     return passRepository.findByStatus("Active")
-        //         .stream() 
-        //         .map(this::mapEventToGQLType) 
-        //         .collect(Collectors.toList()); 
-        // } catch (Exception e) {
-        //     log.error("Error while fetching passes", e);
-        //     return List.of(); 
-        // }
+        try {
+            return passRepository.findByStatus("Active")
+                .stream() 
+                .map(this::mapEventToGQLType) 
+                .collect(Collectors.toList()); 
+        } catch (Exception e) {
+            log.error("Error while fetching passes", e);
+            return List.of(); 
+        }
     }
 
     // to be used later with GQL query
