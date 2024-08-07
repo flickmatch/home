@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ExtensionIcon from '@mui/icons-material/Extension';
@@ -16,9 +15,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox, FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
-import Header from '@/sections/Header/Header';
-import { logingin } from '@/slices/loginSlice';
 
 import styles from './Welcome.module.scss';
 
@@ -26,7 +22,6 @@ function Welcome() {
   const [activeImage, setActiveImage] = useState<number | null>(1);
   const isPortrait = useOrientation();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // Check if the video element is available
@@ -36,14 +31,6 @@ function Welcome() {
       videoRef.current.play();
     }
   }, []);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      dispatch(logingin());
-    }
-  }, [dispatch]);
 
   const whatsApp = () => (
     <a href="https://wa.me/message/YM7GOPO75EHPG1" target="_blank" rel="noreferrer">
@@ -143,11 +130,11 @@ function Welcome() {
         <Typography className={styles.question}>What is FLICKMATCH ?</Typography>
         <Box className={isPortrait ? styles.mottoMobileSection : styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
-            Flickmatch is envisioned to be a platform that offers matchmaking and record keeping for
-            casual everyday sports. Currently, Flickmatch finds or organises football games near
-            you. Whether you&#39;re a casual solo, in a group or a team looking to play Losers to
-            Pay (LTP), we take care of all your football matchmaking needs from finding players to
-            reserving grounds.
+            Flickmatch is a location-based platform that connects users with nearby sports games and
+            players.Currently, Flickmatch finds or organises football games near you. Whether
+            you&#39;re a casual solo, in a group or a team looking to play Losers to Pay (LTP), we
+            take care of all your football matchmaking needs from finding players to reserving
+            grounds.
           </Typography>
         </Box>
       </Box>
@@ -250,14 +237,11 @@ function Welcome() {
   return (
     <>
       <Meta title="Home" />
-      <div>
-        <Header />
-      </div>
+
       {videoContainer()}
       {secVision()}
       {whatIsFlickmatch()}
       {howToPlay()}
-      <Footer />
     </>
   );
 }

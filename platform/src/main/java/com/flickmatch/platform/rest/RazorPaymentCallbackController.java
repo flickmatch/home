@@ -75,7 +75,11 @@ public class RazorPaymentCallbackController {
             }
 
             else {
-                log.info("Invalid signature for orderId : "+orderId);
+                if (orderId.matches("\\w+")) {
+                    log.info("Invalid signature for orderId : " + orderId);
+                } else {
+                    log.info("Invalid signature for orderId :[INVALID]");
+                }
             }
 
         }
