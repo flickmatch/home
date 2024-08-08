@@ -180,3 +180,23 @@ body {
 .blink {
   background-color: #342e37;
 }
+
+.adminModeTag {
+  height: 26px;
+  border: 0.5px solid #4ce95a;
+  color: #fff;
+  margin-left: 15px;
+  animation: blinkAnimation 2s infinite;
+}
+
+@keyframes blinkAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
