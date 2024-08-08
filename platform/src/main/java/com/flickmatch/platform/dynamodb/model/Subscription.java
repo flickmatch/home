@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 @DynamoDBTable(tableName="Subscription")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Subscription {
 
     @DynamoDBHashKey(attributeName="userId")
