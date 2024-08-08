@@ -1,5 +1,6 @@
 package com.flickmatch.platform.graphql.builder;
 
+import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.Pass;
 import com.flickmatch.platform.dynamodb.model.Subscription;
 import com.flickmatch.platform.dynamodb.model.User;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -66,9 +68,12 @@ public class SubscriptionBuilder {
                     .expiryDate(expiryDate)
                     .build();
 
+            log.error("****");
+            log.error(subscription.toString());
+
             // Save the Subscription to the repository
             Subscription savedSubcription = subscriptionRepository.save(subscription);
-
+        
 
             user.setHasActiveSubscription(true);
             List<String> subscriptionHistory = user.getSubscriptionHistory();
@@ -85,6 +90,7 @@ public class SubscriptionBuilder {
                     .isSuccessful(true)
                     .build();
         } catch (Exception e) {
+            log.error("Exception occurred:", e);
             log.error("Error creating subscription: ", e.getLocalizedMessage());
             return MutationResult.builder()
                     .isSuccessful(false)
