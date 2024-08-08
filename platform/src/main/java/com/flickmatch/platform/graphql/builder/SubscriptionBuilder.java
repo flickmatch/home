@@ -2,7 +2,6 @@ package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.Pass;
 import com.flickmatch.platform.dynamodb.model.Subscription;
-import com.flickmatch.platform.dynamodb.model.SubscriptionKey;
 import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.PassRepository;
 import com.flickmatch.platform.dynamodb.repository.SubscriptionRepository;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class SubscriptionBuilder {
     @Autowired
     SubscriptionRepository subscriptionRepository;
-    
+
     @Autowired
     PassRepository passRepository;
 
@@ -58,14 +57,18 @@ public class SubscriptionBuilder {
 
             Subscription subscription = Subscription.builder()
                     .passId(passId)
-                    .userId(user.getUserId())
+                    .subscriptionKey(Subscription.SubscriptionKey.builder()
+                            .userId(user.getUserId())
+                            .subscriptionId(null)
+                            .build())
                     .gamesLeft(gamesLeft)
-                    .status(Subscription.Status.Active)
+                    .status("Active")
                     .expiryDate(expiryDate)
                     .build();
 
             // Save the Subscription to the repository
             Subscription savedSubcription = subscriptionRepository.save(subscription);
+
 
             user.setHasActiveSubscription(true);
             List<String> subscriptionHistory = user.getSubscriptionHistory();
@@ -82,7 +85,7 @@ public class SubscriptionBuilder {
                     .isSuccessful(true)
                     .build();
         } catch (Exception e) {
-            log.error("Error creating subscription: ", e);
+            log.error("Error creating subscription: ", e.getLocalizedMessage());
             return MutationResult.builder()
                     .isSuccessful(false)
                     .errorMessage(e.getMessage())
@@ -105,7 +108,7 @@ public class SubscriptionBuilder {
                 throw new Exception("The user does not have an active subscription");
             }
             String activeSubscriptionId = subscriptionHistory.get(subscriptionHistory.size() - 1);
-            SubscriptionKey subscriptionKey = SubscriptionKey.builder()
+            Subscription.SubscriptionKey subscriptionKey = Subscription.SubscriptionKey.builder()
                                         .userId(user.getUserId())
                                         .subscriptionId(activeSubscriptionId)
                                         .build();

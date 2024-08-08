@@ -215,3 +215,11 @@ aws dynamodb put-item \
    --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass2\"}, \"gamesLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
    --return-consumed-capacity TOTAL \
    --endpoint-url http://localhost:8000
+
+    aws dynamodb create-table ^
+     --table-name PassPaymentRequest ^
+     --attribute-definitions ^
+         AttributeName=orderId,AttributeType=S ^
+     --key-schema ^
+         AttributeName=orderId,KeyType=HASH ^
+     --billing-mode PAY_PER_REQUEST

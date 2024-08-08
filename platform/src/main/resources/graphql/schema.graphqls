@@ -2,6 +2,7 @@ type Query {
   cities: [City!]!
   city(cityId: ID!): City
   passes: [Pass!]!
+  passesForCity(cityId:ID!): [Pass!]
   hasActiveSubscription(email: String!): Boolean!
   getActiveSubscription(email: String!): Subscription!
 }
