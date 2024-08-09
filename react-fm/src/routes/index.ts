@@ -15,6 +15,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/home',
   },
+  [Pages.GamePasses]: {
+    component: asyncComponentLoader(() => import('@/pages/passes')),
+    path: '/game-passes',
+  },
   [Pages.Welcome]: {
     component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/',
