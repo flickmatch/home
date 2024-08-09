@@ -119,7 +119,7 @@ function Welcome() {
     <FlexBox className={`${isPortrait ? styles.portraitSecondSection : styles.secondSection}`}>
       <Box className={isPortrait ? styles.portraitPhoneSection : styles.phoneSection}>
         <Box>
-          <img className={styles.Iphone1} src="./Iphone1.webp" alt="iphone" />
+          <img className={styles.Iphone1} src="./Iphone1.webp" alt="iphone" height="523px" />
         </Box>
       </Box>
       <Box className={isPortrait ? styles.portraitInfoSection : styles.infoSection}>
@@ -202,11 +202,17 @@ function Welcome() {
     </Box>
   );
 
-  const gamesQueue = () => <img className={styles.games} src="./game.webp" alt="games" />;
+  const gamesQueue = () => (
+    <img className={styles.games} src="./game.webp" alt="games" height="500px" width="265px" />
+  );
 
-  const playerList = () => <img className={styles.games} src="./players.webp" alt="players" />;
+  const playerList = () => (
+    <img className={styles.games} src="./players.webp" alt="players" height="500px" width="265px" />
+  );
 
-  const joinNow = () => <img className={styles.games} src="./join.webp" alt="join-now" />;
+  const joinNow = () => (
+    <img className={styles.games} src="./join.webp" alt="join-now" height="500px" width="265px" />
+  );
 
   const switchImage = (index: number) => {
     setActiveImage(index);
