@@ -1,4 +1,5 @@
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -29,9 +30,18 @@ function GamePasses() {
           </Typography>
           <Typography className={styles.status}>Active</Typography>
           <ul className={styles.details}>
-            <li>Access to all fields</li>
-            <li>Join game in just 1 click</li>
-            <li>Exclusive member events</li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Access to all fields
+            </li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Join game in single click
+            </li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Exclusive member events
+            </li>
           </ul>
           <Box className={styles.ribbon}>
             <span>Best Value</span>
@@ -51,9 +61,18 @@ function GamePasses() {
           <Typography className={styles.status}>Active</Typography>
 
           <ul className={styles.details}>
-            <li>Access to all fields</li>
-            <li>Join game in just 1 click</li>
-            <li>Exclusive member events</li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Access to all fields
+            </li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Join game in single click
+            </li>
+            <li>
+              <SportsSoccerIcon className={styles.footballIcon} />
+              Exclusive member events
+            </li>
           </ul>
           <Button className={styles.buyNow}>Buy Now</Button>
         </Box>
