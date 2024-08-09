@@ -21,7 +21,8 @@ import useSidebar from '@/store/sidebar';
 import type { RootState } from '@/store/types';
 
 import styles from './Header.module.scss';
-import { appLogo } from './constants';
+
+//import { appLogo } from './constants';
 
 interface UserDetails {
   email: string;
