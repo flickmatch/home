@@ -60,23 +60,39 @@ function Footer() {
 
   const socialIcons = () => (
     <>
-      <a href="https://www.youtube.com/@FlickMatch" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.youtube.com/@FlickMatch"
+        aria-label="Connect via YouTube"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Tooltip title="Connect via YouTube" arrow>
           <YouTubeIcon className={styles.youtubeIcon} />
         </Tooltip>
       </a>
-      <a href="https://www.instagram.com/flickmatch/" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.instagram.com/flickmatch/"
+        aria-label="Connect via Instagram"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Tooltip title="Connect via Instagram" arrow>
           <InstagramIcon className={styles.instaIcon} />
         </Tooltip>
       </a>
-      <a href="https://wa.me/message/YM7GOPO75EHPG1" target="_blank" rel="noreferrer">
+      <a
+        href="https://wa.me/message/YM7GOPO75EHPG1"
+        aria-label="Message on Whatsapp"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Tooltip title="Message on Whatsapp" arrow>
           <WhatsAppIcon className={styles.whatsappIcon} />
         </Tooltip>
       </a>
       <a
         href="https://www.linkedin.com/company/flickmatch-incorporated"
+        aria-label="Follow on LinkedIn"
         target="_blank"
         rel="noreferrer"
       >
@@ -84,7 +100,12 @@ function Footer() {
           <LinkedInIcon className={styles.linkedInIcon} />
         </Tooltip>
       </a>
-      <a href="https://github.com/flickmatch" target="_blank" rel="noreferrer">
+      <a
+        href="https://github.com/flickmatch"
+        aria-label="Follow on github"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Tooltip title="Follow on github" arrow>
           <GitHubIcon className={styles.githubIcon} />
         </Tooltip>
