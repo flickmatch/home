@@ -153,7 +153,7 @@ const Header = () => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img src={appLogo} alt="logo" className={styles.logo} />
+              <img src="./fm_rainbow.webp" alt="logo" className={styles.logo} />
             </Typography>
             {userState.login.isAdmin ? (
               <Chip
