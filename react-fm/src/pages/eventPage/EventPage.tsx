@@ -1,20 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 /* eslint-disable no-useless-catch */
 // /* eslint-disable @typescript-eslint/no-unused-vars */
 // /* eslint-disable no-useless-catch */
-// // /**
-// //  * The function `EventPage` in the provided TypeScript React code fetches event details from a GraphQL
-// //  * API based on a unique event ID and displays the event information on the page.
-// //  * @param {string} uniqueEventId - The `uniqueEventId` parameter is used to uniquely identify an event.
-// //  * In the provided code snippet, it is a string parameter passed to the `getEventById` function to
-// //  * fetch event details from a GraphQL API. The `uniqueEventId` is used in the GraphQL query to retrieve
-// //  * specific event
-// //  * @returns The EventPage component is being returned. Inside the component, there is logic to fetch
-// //  * event details from a GraphQL API using the getEventById function. The component handles loading,
-// //  * error, and no event scenarios. Currently, it displays a simple message "event found" when an event
-// //  * is successfully fetched.
-// //  */
 // // /* eslint-disable no-useless-catch */
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -24,16 +10,17 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
+import Loading from '@/components/Loading';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
-import styles from '../matchQueues/Queue.module.scss';
 import { EventsCard } from '../matchQueues/eventsComponents/Events';
 import { JoinNow } from '../matchQueues/eventsComponents/JoinNow';
 import { PlayerDetails } from '../matchQueues/eventsComponents/Players';
+import NotFound from '../notFound';
+import styles from './EventPage.module.scss';
 import type { PlayerDetail } from './EventPage.types';
 import type { Event } from './EventPage.types';
-import { apiUrl, query } from './constants';
 
 const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   try {
@@ -62,8 +49,8 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
             reservedPlayersList {
               displayName
             }
-            waitListPlayers {
-              displayName
+            waitListPlayers{
+                displayName
             }
           }
         }
@@ -72,6 +59,8 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
     });
 
     const result = await response.json();
+
+    // console.log(result);
     if (result.errors) {
       throw new Error(result.errors[0].message);
     }
@@ -85,8 +74,7 @@ const EventPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const isPortrait = useOrientation();
   const location = useLocation();
-  const [highLighted, setHighlighted] = useState(false);
-  const [open, setOpen] = useState(true);
+  const highLighted = false;
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -163,7 +151,11 @@ const EventPage: React.FC = () => {
   );
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.loading}>
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
@@ -171,7 +163,13 @@ const EventPage: React.FC = () => {
   }
 
   if (!event) {
-    return <div>No event found</div>;
+    return (
+      <div className={isPortrait ? styles.portraitContainer : styles.parentContainer}>
+        <div className={styles.parent}>
+          <NotFound />
+        </div>
+      </div>
+    );
   }
   const EventsMapFunc = () => (
     <Accordion
@@ -208,6 +206,7 @@ const EventPage: React.FC = () => {
                 team1_color={''}
                 team2_color={''}
                 dummyData={false}
+                singleEvent={true}
               />
             )}
           </FlexBox>
@@ -266,7 +265,11 @@ const EventPage: React.FC = () => {
     </Accordion>
   );
 
-  return <>{EventsMapFunc()}</>;
+  return (
+    <div className={isPortrait ? styles.portraitContainer : styles.parentContainer}>
+      <div className={styles.parent}>{EventsMapFunc()}</div>
+    </div>
+  );
 };
 
 export default EventPage;

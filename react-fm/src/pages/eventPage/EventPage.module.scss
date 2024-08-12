@@ -12,25 +12,45 @@ body {
   font-weight: 600;
 }
 
-.title {
-  font-size: 36px;
-  color: #4ce95a;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 90px;
-  font-family: 'CustomFont', Arial, sans-serif;
+.loading {
+  position: relative;
+  height: 100vh;
+  margin: 4rem;
 }
 
-.container {
-  width: 80%;
-  margin: auto;
-  margin-top: 30px;
+.parentContainer {
+  position: relative;
+  height: 100vh;
+  margin: 1rem;
 }
 
-.mobileContainer {
+.portraitContainer {
+  // margin-top: 10rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  position: relative;
+  height: 100vh;
+}
+
+@media (max-width: 600px) {
+  .portraitContainer {
+    margin-top: 18rem;
+    margin-bottom: 18rem;
+  }
+}
+@media (max-width: 768px) {
+  .portraitContainer {
+    margin-top: 12rem;
+    margin-bottom: 12rem;
+  }
+}
+
+.parent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 90%;
-  margin: auto;
-  margin-top: 30px;
 }
 
 .accordion {
@@ -111,6 +131,13 @@ body {
 }
 
 .reservedPlayers {
+  color: #4ce95a;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.waitListPlayers {
   color: #4ce95a;
   margin-bottom: 15px;
   font-size: 20px;
