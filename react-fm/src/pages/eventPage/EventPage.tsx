@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable no-useless-catch */
 // /* eslint-disable @typescript-eslint/no-unused-vars */
 // /* eslint-disable no-useless-catch */
@@ -22,7 +24,25 @@ import styles from './EventPage.module.scss';
 import type { PlayerDetail } from './EventPage.types';
 import type { Event } from './EventPage.types';
 
+function validateUniqueEventId(id: string) {
+  // Regular expression for the pattern: Digit-Date-Digit
+  const regex = /^[0-9]-\d{4}-\d{2}-\d{2}-[0-9]$/;
+  return regex.test(id);
+}
+
+function sanitizeInput(input: string) {
+  // Remove any characters not matching the expected pattern
+  return input.replace(/[^0-9-\d{4}-\d{2}-\d{2}]/g, '');
+}
+
 const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
+  // Validate the uniqueEventId
+  if (!validateUniqueEventId(uniqueEventId)) {
+    throw new Error('Invalid uniqueEventId');
+  }
+
+  // Sanitize the uniqueEventId (optional but good practice)
+  uniqueEventId = sanitizeInput(uniqueEventId);
   try {
     const response = await fetch('http://localhost:8080/graphql', {
       method: 'POST',
