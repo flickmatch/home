@@ -1,11 +1,13 @@
 package com.flickmatch.platform.graphql.type;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Date;
 
 @Builder
+@Getter
 public class Event {
     private String currency;
     private Date startTime;
