@@ -23,6 +23,7 @@ import NotFound from '../notFound';
 import styles from './EventPage.module.scss';
 import type { PlayerDetail } from './EventPage.types';
 import type { Event } from './EventPage.types';
+import { apiUrl } from './constants';
 
 function validateUniqueEventId(id: string) {
   // Regular expression for the pattern: Digit-Date-Digit
@@ -36,7 +37,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
     throw new Error('Invalid uniqueEventId');
   }
   try {
-    const response = await fetch('http://localhost:8080/graphql', {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
