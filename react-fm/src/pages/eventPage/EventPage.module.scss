@@ -16,7 +16,6 @@ body {
   color: #4ce95a;
   font-weight: 600;
   text-align: center;
-  margin-top: 90px;
   font-family: 'CustomFont', Arial, sans-serif;
 }
 .loading {
@@ -27,36 +26,23 @@ body {
 
 .parentContainer {
   position: relative;
-  height: 100vh;
   margin: 1rem;
 }
 
 .portraitContainer {
-  // margin-top: 10rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   position: relative;
   height: 100vh;
 }
 
-@media (max-width: 600px) {
-  .portraitContainer {
-    margin-top: 18rem;
-    margin-bottom: 20rem;
-  }
-}
-@media (max-width: 768px) {
-  .portraitContainer {
-    margin-top: 12rem;
-    margin-bottom: 14rem;
-  }
+.parent,
+.portraitParent {
+  margin: 100px auto;
+  width: 80%;
 }
 
-.parent {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.portraitParent {
   width: 90%;
 }
 

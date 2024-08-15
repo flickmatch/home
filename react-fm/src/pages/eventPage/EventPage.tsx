@@ -145,9 +145,9 @@ const EventPage: React.FC = () => {
   const expanded = true;
 
   function cityId(event: Event | null) {
-    const dateString = event?.eventId || '';
+    const dateString = event?.uniqueEventId || '';
     const parts = dateString != '' ? dateString.split('-') : '';
-    const cityId = parts.length > 0 ? parts[parts.length - 1] : '3';
+    const cityId = parts.length > 0 ? parts[0] : '3';
     return cityId;
   }
 
@@ -155,11 +155,13 @@ const EventPage: React.FC = () => {
     const cityIdd = cityId(event);
     let cityName;
     if (cityIdd === '1') {
-      cityName = 'Hyderabad';
-    } else if (cityIdd === '2') {
       cityName = 'Gurgaon';
-    } else {
-      cityName = '';
+    } else if (cityIdd === '2') {
+      cityName = 'Hyderabad';
+    } else if (cityIdd === '6') {
+      cityName = 'Kolkata';
+    } else if (cityIdd == '7') {
+      cityName = 'Noida';
     }
     return cityName;
   }
@@ -194,7 +196,7 @@ const EventPage: React.FC = () => {
       <Typography className={styles.title}>Flickmatch Soccer</Typography>
       <Cities
         cityId={cityId(event)}
-        cityName={cityName(event)}
+        cityName={cityName(event) || ''}
         countryCode="IN"
         dummyData={false}
         events={[]}
@@ -296,9 +298,7 @@ const EventPage: React.FC = () => {
   );
 
   return (
-    <div className={isPortrait ? styles.portraitContainer : styles.parentContainer}>
-      <div className={styles.parent}>{EventsMapFunc()}</div>
-    </div>
+    <div className={isPortrait ? styles.portraitParent : styles.parent}>{EventsMapFunc()}</div>
   );
 };
 
