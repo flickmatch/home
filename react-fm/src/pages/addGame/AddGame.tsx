@@ -158,11 +158,11 @@ function AddGame() {
     setTurfName(e.target.value);
   };
 
-  function showErrorNotification() {
+  function showInfoNotification() {
     notificationsActions.push({
       options: {
         content: (
-          <Alert severity="error">
+          <Alert severity="info">
             <AlertTitle className={styles.alertTitle}>
               {cityName === ''
                 ? 'City name'
@@ -191,6 +191,18 @@ function AddGame() {
     });
   }
 
+  function showErrorNotification(error: string) {
+    notificationsActions.push({
+      options: {
+        content: (
+          <Alert severity="error">
+            <AlertTitle className={styles.alertTitle}>{error}</AlertTitle>
+          </Alert>
+        ),
+      },
+    });
+  }
+
   const userInput = {
     input: {
       cityId: cityName,
@@ -205,7 +217,7 @@ function AddGame() {
 
   const addTurf = () => {
     if (cityName === '' || turfName === '' || charges === '' || playersCount === '') {
-      showErrorNotification();
+      showInfoNotification();
     } else {
       fetch(apiUrl, {
         method: 'POST',
@@ -245,6 +257,7 @@ function AddGame() {
           console.log(result.data);
         })
         .catch((error) => {
+          showErrorNotification(error.message);
           // eslint-disable-next-line no-console
           console.log(error);
         });

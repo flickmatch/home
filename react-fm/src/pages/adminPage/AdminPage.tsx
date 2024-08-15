@@ -104,11 +104,11 @@ function AdminPage() {
     });
   }
 
-  function showErrorNotification() {
+  function showInforNotification() {
     notificationsActions.push({
       options: {
         content: (
-          <Alert severity="error">
+          <Alert severity="info">
             <AlertTitle className={styles.alertTitle}>
               {cityName === '' ? 'City Name' : turfName === '' ? 'Turf Name' : 'Google Map field'}{' '}
               cannot be empty!
@@ -119,12 +119,12 @@ function AdminPage() {
     });
   }
 
-  function existingTurfError() {
+  function showErrorNotification(error: string) {
     notificationsActions.push({
       options: {
         content: (
           <Alert severity="error">
-            <AlertTitle className={styles.alertTitle}>Turf already exists!</AlertTitle>
+            <AlertTitle className={styles.alertTitle}>{error}</AlertTitle>
           </Alert>
         ),
       },
@@ -194,10 +194,10 @@ function AdminPage() {
 
   const addTurf = () => {
     if (cityName === '' || mapLink === '' || turfName === '') {
-      showErrorNotification();
+      showInforNotification();
     } else {
       if (sportsVenues.some((venue) => Object.values(venue).includes(turfName))) {
-        return existingTurfError();
+        return showErrorNotification('Turf already exists!');
       } else {
         fetch(apiUrl, {
           method: 'POST',
@@ -234,6 +234,7 @@ function AdminPage() {
             }
           })
           .catch((error) => {
+            showErrorNotification(error.message);
             // eslint-disable-next-line no-console
             console.log(error);
           });

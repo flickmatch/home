@@ -39,7 +39,7 @@ export const VenueName: FC<venueDetails> = ({ venueName, date, dummyData }) => {
       <SportsSoccerIcon className={styles.sportsIcon} />
       {venueName}
       {batchVisible ? (
-        <Chip label="today" color="primary" variant="outlined" className={styles.adminModeTag} />
+        <Chip label="today" color="primary" variant="outlined" className={styles.todayGameTag} />
       ) : null}
     </Typography>
   );
