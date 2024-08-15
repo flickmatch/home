@@ -41,14 +41,15 @@ public class RazorPaymentRequestBuilder {
                                                     final List<PlayerInput> playerInputList,
                                                     final String date,
                                                     final String location,
-                                                    final String gameNumber) {
+                                                    final String gameNumber,
+                                                    final String email) {
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
-//        System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber);
+        // System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber + " " +email);
         RazorPaymentRequest razorPaymentRequest = RazorPaymentRequest.builder()
                 .orderId(orderId)
                 .uniqueEventId(uniqueEventId)
@@ -57,6 +58,7 @@ public class RazorPaymentRequestBuilder {
                 .date(date)
                 .location(location)
                 .gameNumber(gameNumber)
+                .email(email)
                 .build();
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }

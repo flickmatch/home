@@ -25,6 +25,7 @@ public class RazorPaymentRequest {
     private String date;
     private String location;
     private String gameNumber;
+    private String email;
 
 
     @DynamoDBHashKey(attributeName="orderId")
@@ -88,6 +89,14 @@ public class RazorPaymentRequest {
 
     public void setGameNumber(String gameNumber) {
         this.gameNumber = gameNumber;
+    }
+    @DynamoDBAttribute(attributeName="email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
