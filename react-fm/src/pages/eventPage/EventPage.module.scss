@@ -11,7 +11,14 @@ body {
   font-family: 'Montserrat Alt 1', sans-serif;
   font-weight: 600;
 }
-
+.title {
+  font-size: 36px;
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 90px;
+  font-family: 'CustomFont', Arial, sans-serif;
+}
 .loading {
   position: relative;
   height: 100vh;
@@ -35,13 +42,13 @@ body {
 @media (max-width: 600px) {
   .portraitContainer {
     margin-top: 18rem;
-    margin-bottom: 18rem;
+    margin-bottom: 20rem;
   }
 }
 @media (max-width: 768px) {
   .portraitContainer {
     margin-top: 12rem;
-    margin-bottom: 12rem;
+    margin-bottom: 14rem;
   }
 }
 

@@ -9,17 +9,17 @@ import type { CityDetails, Weather, WeatherIcon } from '../types/Events.types';
 import styles from './Cities.module.scss';
 
 const weatherIconMap: WeatherIcon = {
-  '01': 'weather-icons/clear.png',
-  '02': 'weather-icons/fewclouds.png',
-  '03': 'weather-icons/scatteredclouds.png',
-  '04': 'weather-icons/brokenclouds.png',
-  '05': 'weather-icons/showerrain.png',
-  '06': 'weather-icons/showerrain.png',
-  '09': 'weather-icons/showerrain.png',
-  '10': 'weather-icons/rain.png',
-  '11': 'weather-icons/thunderstorm.png',
-  '13': 'weather-icons/snow.png',
-  '50': 'weather-icons/mist.png',
+  '01': `${window.location.origin}/weather-icons/clear.png`,
+  '02': `${window.location.origin}/weather-icons/fewclouds.png`,
+  '03': `${window.location.origin}/weather-icons/scatteredclouds.png`,
+  '04': `${window.location.origin}/weather-icons/brokenclouds.png`,
+  '05': `${window.location.origin}/weather-icons/showerrain.png`,
+  '06': `${window.location.origin}/weather-icons/showerrain.png`,
+  '09': `${window.location.origin}/weather-icons/showerrain.png`,
+  '10': `${window.location.origin}/weather-icons/rain.png`,
+  '11': `${window.location.origin}/weather-icons/thunderstorm.png`,
+  '13': `${window.location.origin}/weather-icons/snow.png`,
+  '50': `${window.location.origin}/weather-icons/mist.png`,
 };
 
 export const Cities: FC<CityDetails> = ({ cityName, cityId, countryCode }) => {
@@ -67,6 +67,7 @@ export const Cities: FC<CityDetails> = ({ cityName, cityId, countryCode }) => {
       <div className={isPortrait ? styles.mobileWeather : styles.weather}>
         <span>{weather?.temp ? `${Math.round(Number(weather?.temp))} °C` : ''} </span>
         <span>{description || ''}</span>
+
         {image && (
           <img
             className={isPortrait ? styles.weatherImgMobile : styles.weatherImg}

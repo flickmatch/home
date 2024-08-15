@@ -16,6 +16,7 @@ import Loading from '@/components/Loading';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { Cities } from '../matchQueues/eventsComponents/Cities';
 import { EventsCard } from '../matchQueues/eventsComponents/Events';
 import { JoinNow } from '../matchQueues/eventsComponents/JoinNow';
 import { PlayerDetails } from '../matchQueues/eventsComponents/Players';
@@ -143,15 +144,19 @@ const EventPage: React.FC = () => {
   }
   const expanded = true;
 
-  function cityName(event: Event | null) {
+  function cityId(event: Event | null) {
     const dateString = event?.eventId || '';
     const parts = dateString != '' ? dateString.split('-') : '';
     const cityId = parts.length > 0 ? parts[parts.length - 1] : '3';
+    return cityId;
+  }
 
+  function cityName(event: Event | null) {
+    const cityIdd = cityId(event);
     let cityName;
-    if (cityId === '1') {
+    if (cityIdd === '1') {
       cityName = 'Hyderabad';
-    } else if (cityId === '2') {
+    } else if (cityIdd === '2') {
       cityName = 'Gurgaon';
     } else {
       cityName = '';
@@ -185,97 +190,109 @@ const EventPage: React.FC = () => {
     );
   }
   const EventsMapFunc = () => (
-    <Accordion
-      className={isPortrait ? styles.mobileAccordion : styles.accordion}
-      sx={{
-        '&:before': {
-          display: 'none',
-        },
-      }}
-      expanded={expanded}
-    >
-      <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-        <FlexBox className={styles.flexbox}>
-          <FlexBox className={styles.venue}>
-            <Typography className={isPortrait ? styles.mobileVenueName : styles.venueName}>
-              <SportsSoccerIcon className={styles.sportsIcon} />
-              {event?.venueName}
-            </Typography>
-            {isPortrait ? null : (
-              <JoinNow
-                stripePaymentUrl={event?.stripePaymentUrl || ''}
-                charges={event?.charges || 0}
-                date={event?.date || ''}
-                uniqueEventId={event?.uniqueEventId || ''}
-                eventId={evetnIdtoString(event)}
-                reservedPlayersCount={event?.reservedPlayersCount || 0}
-                reservedPlayersList={event?.reservedPlayersList || []}
-                time={event?.endTime || ''}
-                venueLocationLink={event?.venueLocationLink || ''}
-                venueName={event?.venueName || ''}
-                waitListPlayers={[]}
-                waitListPlayersCount={event?.waitListPlayersCount || 0}
-                team_division={false}
-                team1_color={''}
-                team2_color={''}
-                dummyData={false}
-                singleEvent={true}
-              />
-            )}
-          </FlexBox>
-          <EventsCard
-            uniqueEventId={event?.uniqueEventId || ''}
-            charges={event?.charges || 0}
-            date={event?.date || ''}
-            time={event?.time || ''}
-            venueLocationLink={event?.venueLocationLink || ''}
-            reservedPlayersCount={event?.reservedPlayersCount || 0}
-            waitListPlayersCount={event?.waitListPlayersCount || 0}
-            eventId={cityName(event) ?? ''}
-            reservedPlayersList={event?.reservedPlayersList || []}
-            venueName={event?.venueName || ''}
-            waitListPlayers={[]}
-            stripePaymentUrl={event?.stripePaymentUrl || ''}
-            team_division={false}
-            team1_color={''}
-            team2_color={''}
-            dummyData={false}
-          />
-        </FlexBox>
-      </AccordionSummary>
-      <AccordionDetails
-        className={
-          highLighted && location.hash.substring(1) === event?.index.toString() ? styles.blink : ''
-        }
+    <>
+      <Typography className={styles.title}>Flickmatch Soccer</Typography>
+      <Cities
+        cityId={cityId(event)}
+        cityName={cityName(event)}
+        countryCode="IN"
+        dummyData={false}
+        events={[]}
+      />
+      <Accordion
+        className={isPortrait ? styles.mobileAccordion : styles.accordion}
+        sx={{
+          '&:before': {
+            display: 'none',
+          },
+        }}
+        expanded={expanded}
       >
-        <Box className={styles.box} sx={{ flexGrow: 1 }}>
-          <Box className={styles.reservedPlayersContainer}>
-            <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-            {isAdminMode ? <BorderColorIcon className={styles.editIcon} /> : null}
-          </Box>
-          <Box>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {Array.from({ length: event?.reservedPlayersCount || 0 }, (_, i) => {
-                const player =
-                  i < reservedPlayersCount(event) || 0 ? event?.reservedPlayersList[i] : null;
-                return renderPlayer(player, i);
-              })}
-            </Grid>
-          </Box>
-        </Box>
-        {event.waitListPlayersCount > 0 ? (
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+          <FlexBox className={styles.flexbox}>
+            <FlexBox className={styles.venue}>
+              <Typography className={isPortrait ? styles.mobileVenueName : styles.venueName}>
+                <SportsSoccerIcon className={styles.sportsIcon} />
+                {event?.venueName}
+              </Typography>
+              {isPortrait ? null : (
+                <JoinNow
+                  stripePaymentUrl={event?.stripePaymentUrl || ''}
+                  charges={event?.charges || 0}
+                  date={event?.date || ''}
+                  uniqueEventId={event?.uniqueEventId || ''}
+                  eventId={evetnIdtoString(event)}
+                  reservedPlayersCount={event?.reservedPlayersCount || 0}
+                  reservedPlayersList={event?.reservedPlayersList || []}
+                  time={event?.endTime || ''}
+                  venueLocationLink={event?.venueLocationLink || ''}
+                  venueName={event?.venueName || ''}
+                  waitListPlayers={[]}
+                  waitListPlayersCount={event?.waitListPlayersCount || 0}
+                  team_division={false}
+                  team1_color={''}
+                  team2_color={''}
+                  dummyData={false}
+                  singleEvent={true}
+                />
+              )}
+            </FlexBox>
+            <EventsCard
+              uniqueEventId={event?.uniqueEventId || ''}
+              charges={event?.charges || 0}
+              date={event?.date || ''}
+              time={event?.time || ''}
+              venueLocationLink={event?.venueLocationLink || ''}
+              reservedPlayersCount={event?.reservedPlayersCount || 0}
+              waitListPlayersCount={event?.waitListPlayersCount || 0}
+              eventId={cityName(event) ?? ''}
+              reservedPlayersList={event?.reservedPlayersList || []}
+              venueName={event?.venueName || ''}
+              waitListPlayers={[]}
+              stripePaymentUrl={event?.stripePaymentUrl || ''}
+              team_division={false}
+              team1_color={''}
+              team2_color={''}
+              dummyData={false}
+            />
+          </FlexBox>
+        </AccordionSummary>
+        <AccordionDetails
+          className={
+            highLighted && location.hash.substring(1) === event?.index.toString()
+              ? styles.blink
+              : ''
+          }
+        >
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
-            <Typography className={styles.waitListPlayers}>Waitlist</Typography>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {Array.from({ length: event?.waitListPlayersCount }, (_, index) => {
-                const player = event?.waitListPlayers[index] ?? null;
-                return renderPlayer(player, index);
-              })}
-            </Grid>
+            <Box className={styles.reservedPlayersContainer}>
+              <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
+              {isAdminMode ? <BorderColorIcon className={styles.editIcon} /> : null}
+            </Box>
+            <Box>
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                {Array.from({ length: event?.reservedPlayersCount || 0 }, (_, i) => {
+                  const player =
+                    i < reservedPlayersCount(event) || 0 ? event?.reservedPlayersList[i] : null;
+                  return renderPlayer(player, i);
+                })}
+              </Grid>
+            </Box>
           </Box>
-        ) : null}
-      </AccordionDetails>
-    </Accordion>
+          {event.waitListPlayersCount > 0 ? (
+            <Box className={styles.box} sx={{ flexGrow: 1 }}>
+              <Typography className={styles.waitListPlayers}>Waitlist</Typography>
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                {Array.from({ length: event?.waitListPlayersCount }, (_, index) => {
+                  const player = event?.waitListPlayers[index] ?? null;
+                  return renderPlayer(player, index);
+                })}
+              </Grid>
+            </Box>
+          ) : null}
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 
   return (
