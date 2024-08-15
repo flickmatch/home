@@ -96,7 +96,7 @@ public class EventBuilder {
         Date currentTime = new Date(System.currentTimeMillis());
         List<com.flickmatch.platform.graphql.type.Event> eventList = new ArrayList<>();
         final int GET_EVENT_DAYS = 7;
-        final int LOOKBACK_DAYS = 2;
+        final int LOOKBACK_DAYS = 1;
 
         // Calculate date range
         Date startDate = Date.from(currentTime.toInstant().minus(LOOKBACK_DAYS, ChronoUnit.DAYS));
