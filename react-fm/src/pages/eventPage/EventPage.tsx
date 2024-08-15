@@ -16,6 +16,7 @@ import Loading from '@/components/Loading';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
+import { VenueName } from '../matchQueues/VenueName';
 import { Cities } from '../matchQueues/eventsComponents/Cities';
 import { EventsCard } from '../matchQueues/eventsComponents/Events';
 import { JoinNow } from '../matchQueues/eventsComponents/JoinNow';
@@ -213,10 +214,8 @@ const EventPage: React.FC = () => {
         <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <FlexBox className={styles.flexbox}>
             <FlexBox className={styles.venue}>
-              <Typography className={isPortrait ? styles.mobileVenueName : styles.venueName}>
-                <SportsSoccerIcon className={styles.sportsIcon} />
-                {event?.venueName}
-              </Typography>
+              <VenueName venueName={event?.venueName} dummyData={false} date={event?.date} />
+
               {isPortrait ? null : (
                 <JoinNow
                   stripePaymentUrl={event?.stripePaymentUrl || ''}

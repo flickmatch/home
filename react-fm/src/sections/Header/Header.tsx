@@ -24,6 +24,8 @@ import styles from './Header.module.scss';
 
 //import { appLogo } from './constants';
 
+const appLogo = `${window.location.origin}/fm_rainbow.webp`;
+
 interface UserDetails {
   email: string;
   family_name: string;
@@ -154,13 +156,7 @@ const Header = () => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img
-                src="./fm_rainbow.webp"
-                alt="logo"
-                className={styles.logo}
-                height="52px"
-                width="54.23px"
-              />
+              <img src={appLogo} alt="logo" className={styles.logo} height="52px" width="54.23px" />
             </Typography>
             {userState.login.isAdmin ? (
               <Chip
