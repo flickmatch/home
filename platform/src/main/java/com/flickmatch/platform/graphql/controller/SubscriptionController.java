@@ -1,6 +1,5 @@
 package com.flickmatch.platform.graphql.controller;
 
-import com.flickmatch.platform.dynamodb.model.Subscription;
 import com.flickmatch.platform.graphql.builder.SubscriptionBuilder;
 import com.flickmatch.platform.graphql.input.CreateSubscriptionInput;
 import com.flickmatch.platform.graphql.type.MutationResult;
@@ -25,7 +24,7 @@ public class SubscriptionController {
     }
 
     @QueryMapping
-    public Subscription getActiveSubscription(String email) {
+    public com.flickmatch.platform.graphql.type.Subscription  getActiveSubscription(String email) {
         return subscriptionBuilder.getActiveSubscription(email);
     }
 

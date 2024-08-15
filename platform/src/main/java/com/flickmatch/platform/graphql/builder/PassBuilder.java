@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,5 +52,11 @@ public class PassBuilder {
                 .title(ddbPass.getTitle())
                 .price(ddbPass.getPrice())
                 .build();
+    }
+
+    public double getAmountForPass(final String passId) {
+        Optional<com.flickmatch.platform.dynamodb.model.Pass> pass = passRepository.findByPassId(passId);
+        Double amount = pass.get().getPrice();
+        return amount;
     }
 }

@@ -15,6 +15,7 @@ type Mutation {
   initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
   createUser(input: CreateUserInput!): UserResult!
   initiateRazorPayment(input: RazorPayInput!): RazorPayOutput!
+  initiatePassPayment(input:PassPaymentInput!): PassPaymentOutput!
   createSubscription(input: CreateSubscriptionInput!): MutationResult!
   """
   This is not implemented yet, will be required for P1
@@ -76,6 +77,13 @@ input RazorPayInput {
   currency: String!
 }
 
+input PassPaymentInput {
+  passId: ID!
+  email: String!
+  currency: String!
+  location: String!
+}
+
 input CreateSubscriptionInput {
   passId: String!
   email: String!
@@ -111,6 +119,12 @@ type User {
   name: String!
   phoneNumber: String
   userId: String
+}
+
+type PassPaymentOutput {
+  orderId: String!
+  isInitiated: Boolean!
+  amount: Float!
 }
 
 type RazorPayOutput {

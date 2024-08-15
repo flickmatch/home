@@ -12,15 +12,10 @@ import lombok.*;
 @Data
 public class PassPaymentRequest {
 
-    public static enum Status {
-        Active, Expired
-    }
     @DynamoDBHashKey(attributeName="orderId")
     private String orderId;
     private String location;
-
-    @DynamoDBTypeConvertedEnum
-    private Status status;
+    private String status;
 
     private Double amount;
     private String userId;

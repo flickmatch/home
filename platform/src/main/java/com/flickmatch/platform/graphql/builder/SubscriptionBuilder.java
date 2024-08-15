@@ -1,6 +1,5 @@
 package com.flickmatch.platform.graphql.builder;
 
-import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.Pass;
 import com.flickmatch.platform.dynamodb.model.Subscription;
 import com.flickmatch.platform.dynamodb.model.User;
@@ -18,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -99,13 +99,14 @@ public class SubscriptionBuilder {
         }
     }
 
-    public Subscription getActiveSubscription(String email) {
+    public com.flickmatch.platform.graphql.type.Subscription getActiveSubscription(String email) {
         try {
             Optional<User> userOpt = userRepository.findByEmail(email);
             if (userOpt.isEmpty()) {
                 throw new Exception("The user with the given email does not exist");
             }
             User user = userOpt.get();
+
             if (!user.getHasActiveSubscription()) {
                 throw new Exception("The user does not have an active subscription");
             }
@@ -119,15 +120,28 @@ public class SubscriptionBuilder {
                                         .subscriptionId(activeSubscriptionId)
                                         .build();
 
-            Optional<Subscription> subscriptionOpt = subscriptionRepository.findById(subscriptionKey);
-            if (subscriptionOpt.isEmpty()) {
-                throw new Exception("The active subscription does not exist");
-            }
-            return subscriptionOpt.get();
+            com.flickmatch.platform.graphql.type.Subscription subscriptionOpt = subscriptionRepository.findById(subscriptionKey).stream().map(this::mapEventToGQLType).collect(Collectors.toList()).get(0);
+//            if (subscriptionOpt) {
+//                throw new Exception("The active subscription does not exist");
+//            }
+            return subscriptionOpt;
         } catch (Exception e) {
             log.error("Error getting active subscription: ", e);
             return null;
         }
+    }
+
+    com.flickmatch.platform.graphql.type.Subscription mapEventToGQLType(Subscription subs) {
+        System.out.println(subs.toString());
+
+        return com.flickmatch.platform.graphql.type.Subscription.builder()
+                .subscriptionId(subs.getSubscriptionId())
+                .passId(subs.getPassId())
+                .userId(subs.getUserId())
+                .expiryDate(subs.getExpiryDate())
+                .gamesLeft(subs.getGamesLeft())
+                .status(subs.getStatus())
+                .build();
     }
 
 //    public Subscription updateSubscription(Subscription subscription) {
