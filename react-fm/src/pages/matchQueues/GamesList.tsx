@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -18,6 +17,7 @@ import useOrientation from '@/hooks/useOrientation';
 
 import { AddPlayer } from './AddPlayer';
 import styles from './Queue.module.scss';
+import { VenueName } from './VenueName';
 import { avatars } from './constants';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
@@ -145,10 +145,11 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         >
           <FlexBox className={styles.flexbox}>
             <FlexBox className={styles.venue}>
-              <Typography className={isPortrait ? styles.mobileVenueName : styles.venueName}>
-                <SportsSoccerIcon className={styles.sportsIcon} />
-                {playingEvent.venueName}
-              </Typography>
+              <VenueName
+                venueName={playingEvent.venueName}
+                date={playingEvent.date}
+                dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
+              />
               {isPortrait ? null : (
                 <JoinNow
                   stripePaymentUrl={playingEvent.stripePaymentUrl}

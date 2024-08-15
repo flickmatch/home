@@ -75,12 +75,16 @@ public class RazorPaymentCallbackController {
             }
 
             else {
-                log.info("Invalid signature for orderId : "+orderId);
+                if (orderId.matches("\\w+")) {
+                    log.info("Invalid signature for orderId : " + orderId);
+                } else {
+                    log.info("Invalid signature for orderId :[INVALID]");
+                }
             }
 
         }
         catch (Exception e) {
-            log.error("Error processing callback: {}", e.getStackTrace());
+            log.error("Error processing callback: {}", e.getLocalizedMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
@@ -58,6 +59,11 @@ public class EventController {
     @SchemaMapping(typeName = "City", field = "events")
     public List<Event> getEvents(City city) {
         return eventBuilder.getEvents(city.getCityId(), city.getLocalTimeZone());
+    }
+
+    @QueryMapping(name = "event")
+    public Event getEvent(@Argument String uniqueEventId) {
+        return eventBuilder.getEventById(uniqueEventId);
     }
 
     @SchemaMapping(typeName = "City", field = "pastEvents")

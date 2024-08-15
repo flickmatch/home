@@ -5,6 +5,7 @@
 @font-face {
   font-family: 'CustomFont';
   src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+  font-display: swap;
 }
 
 body {
@@ -246,14 +247,12 @@ body {
   letter-spacing: 1.2px;
 }
 
-.Iphone1 {
-  height: 523px;
-}
+// .Iphone1 {
+//   height: 523px;
+// }
 
 .games {
   position: absolute;
-  height: 500px;
-  width: 265px;
   filter: drop-shadow(0 0 0.75rem rgb(12, 0, 0));
 }
 
