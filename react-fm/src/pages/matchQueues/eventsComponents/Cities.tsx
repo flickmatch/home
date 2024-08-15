@@ -84,7 +84,7 @@ export const Cities: FC<CityDetails> = ({ cityName, cityId, countryCode }) => {
         <Typography className={styles.citiesName} key={cityId}>
           {cityName}
         </Typography>
-        <img className={styles.citiesImg} src={cityImage} alt={cityName} />
+        <img className={styles.citiesImg} src={cityImage} alt={cityName} height="40px" />
       </div>
       {formattedWeather(weather)}
     </div>
