@@ -26,13 +26,13 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
-import { query } from '../matchQueues/constants';
-import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
-import styles from './AdminPage.module.scss';
+import { query } from '../../matchQueues/constants';
+import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
+import styles from './AddTurf.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
 // const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-function AdminPage() {
+function AddTurfPage() {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
@@ -336,4 +336,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default AddTurfPage;

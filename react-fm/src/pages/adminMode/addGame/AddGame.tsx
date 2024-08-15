@@ -31,9 +31,9 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
-import { query } from '../matchQueues/constants';
-import mapCityData from '../matchQueues/map';
-import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
+import { query } from '../../matchQueues/constants';
+import mapCityData from '../../matchQueues/map';
+import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
