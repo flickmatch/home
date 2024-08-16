@@ -14,7 +14,7 @@ enum Pages {
   RefundCancellation,
   TermsConditions,
   PrivacyPolicy,
-  Admin,
+  AddTurfPage,
   AddGame,
   ServicesPrivacyPolicy,
   GeneralTermsConditions,

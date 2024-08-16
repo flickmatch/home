@@ -26,13 +26,13 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
-import { query } from '../matchQueues/constants';
-import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
-import styles from './AdminPage.module.scss';
+import { query } from '../../matchQueues/constants';
+import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
+import styles from './AddTurf.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
 // const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
-function AdminPage() {
+function AddTurfPage() {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
@@ -104,11 +104,11 @@ function AdminPage() {
     });
   }
 
-  function showErrorNotification() {
+  function showInforNotification() {
     notificationsActions.push({
       options: {
         content: (
-          <Alert severity="error">
+          <Alert severity="info">
             <AlertTitle className={styles.alertTitle}>
               {cityName === '' ? 'City Name' : turfName === '' ? 'Turf Name' : 'Google Map field'}{' '}
               cannot be empty!
@@ -119,12 +119,12 @@ function AdminPage() {
     });
   }
 
-  function existingTurfError() {
+  function showErrorNotification(error: string) {
     notificationsActions.push({
       options: {
         content: (
           <Alert severity="error">
-            <AlertTitle className={styles.alertTitle}>Turf already exists!</AlertTitle>
+            <AlertTitle className={styles.alertTitle}>{error}</AlertTitle>
           </Alert>
         ),
       },
@@ -194,10 +194,10 @@ function AdminPage() {
 
   const addTurf = () => {
     if (cityName === '' || mapLink === '' || turfName === '') {
-      showErrorNotification();
+      showInforNotification();
     } else {
       if (sportsVenues.some((venue) => Object.values(venue).includes(turfName))) {
-        return existingTurfError();
+        return showErrorNotification('Turf already exists!');
       } else {
         fetch(apiUrl, {
           method: 'POST',
@@ -234,6 +234,7 @@ function AdminPage() {
             }
           })
           .catch((error) => {
+            showErrorNotification(error.message);
             // eslint-disable-next-line no-console
             console.log(error);
           });
@@ -335,4 +336,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default AddTurfPage;
