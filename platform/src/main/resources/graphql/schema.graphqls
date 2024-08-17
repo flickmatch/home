@@ -2,6 +2,8 @@ type Query {
     cities: [City!]!
     city(cityId: ID!): City
     event(uniqueEventId: ID!): EVENT
+    passes: [Pass!]!
+    passesForCity(cityId:ID!): [Pass!]
 }
 
 type Mutation {
@@ -70,6 +72,17 @@ input RazorPayInput {
     uniqueEventId: ID!
     playerInputList: [PlayerInput!]!
     currency: String!
+}
+
+type Pass {
+    passId: String!
+    cityId: String!
+    passType: String!
+    totalGames: Int!
+    totalDays: Int!
+    price: Int!
+    title: String!
+    status: String!
 }
 
 type User {
