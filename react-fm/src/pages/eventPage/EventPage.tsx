@@ -21,6 +21,7 @@ import { Cities } from '../matchQueues/eventsComponents/Cities';
 import { EventsCard } from '../matchQueues/eventsComponents/Events';
 import { JoinNow } from '../matchQueues/eventsComponents/JoinNow';
 import { PlayerDetails } from '../matchQueues/eventsComponents/Players';
+import mapCityData from '../matchQueues/map';
 import NotFound from '../notFound';
 import styles from './EventPage.module.scss';
 import type { PlayerDetail } from './EventPage.types';
@@ -148,23 +149,17 @@ const EventPage: React.FC = () => {
   function cityId(event: Event | null) {
     const dateString = event?.uniqueEventId || '';
     const parts = dateString != '' ? dateString.split('-') : '';
-    const cityId = parts.length > 0 ? parts[0] : '3';
+    let cityId = '99999';
+    cityId = parts.length > 0 ? parts[0] : '3';
     return cityId;
   }
 
   function cityName(event: Event | null) {
     const cityIdd = cityId(event);
-    let cityName;
-    if (cityIdd === '1') {
-      cityName = 'Gurgaon';
-    } else if (cityIdd === '2') {
-      cityName = 'Hyderabad';
-    } else if (cityIdd === '6') {
-      cityName = 'Kolkata';
-    } else if (cityIdd == '7') {
-      cityName = 'Noida';
-    }
-    return cityName;
+    const cityData = mapCityData.find((city) => city.cityId.toString() === cityIdd);
+
+    // Return the city name if found, otherwise return undefined
+    return cityData?.city;
   }
 
   const renderPlayer = (player: PlayerDetail | null | undefined, i: number) => (
