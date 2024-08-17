@@ -56,12 +56,12 @@ const routes: Routes = {
     title: 'Rewards',
     icon: AttachMoneyIcon,
   },
-  [Pages.Admin]: {
-    component: asyncComponentLoader(() => import('@/pages/adminPage')),
+  [Pages.AddTurfPage]: {
+    component: asyncComponentLoader(() => import('@/pages/adminMode/addTurf')),
     path: '/add-turf',
   },
   [Pages.AddGame]: {
-    component: asyncComponentLoader(() => import('@/pages/addGame')),
+    component: asyncComponentLoader(() => import('@/pages/adminMode/addGame')),
     path: '/add-game',
   },
   [Pages.RefundCancellation]: {

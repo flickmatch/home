@@ -28,6 +28,9 @@ function MatchQueue() {
     setPlayers((prevData) => [...prevData, name]);
   };
 
+  // Function to convert date strings to a comparable Date object
+  const parseDate = (event: { date: string }) => new Date(event.date);
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -58,7 +61,11 @@ function MatchQueue() {
             if (cityExists) {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                setCitiesData((prevData) => [...prevData, eventArray]);
+                eventArray.events.sort(
+                  (a: { date: string }, b: { date: string }) =>
+                    parseDate(b).getTime() - parseDate(a).getTime(),
+                ),
+                  setCitiesData((prevData) => [...prevData, eventArray]);
               } else {
                 dummyData.data.cities.forEach(
                   (
