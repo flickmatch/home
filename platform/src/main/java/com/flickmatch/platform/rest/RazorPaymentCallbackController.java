@@ -114,7 +114,7 @@ public class RazorPaymentCallbackController {
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
-            headers.add("Location", "/event/" + uniqueEventId);
+            headers.add("Location", "https://play.flickmatch.in/event/" + uniqueEventId);
         }
         else {
             headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
