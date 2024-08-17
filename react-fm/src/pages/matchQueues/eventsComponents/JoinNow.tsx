@@ -39,6 +39,7 @@ export const JoinNow: FC<EventDetails> = ({
   venueName,
   uniqueEventId,
   eventId,
+  singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
@@ -111,7 +112,7 @@ export const JoinNow: FC<EventDetails> = ({
   const paymentOptions = (event: { stopPropagation: () => void }) => {
     if (userData.name) {
       event.stopPropagation();
-      history.replaceState(null, '', `#${uniqueEventId}`);
+      if (!singleEvent) history.replaceState(null, '', `#${uniqueEventId}`);
       setShowPaymentOptions(true);
     } else {
       navigate('/login');

@@ -100,6 +100,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/aboutUs')),
     path: '/about-2',
   },
+  [Pages.Event]: {
+    component: asyncComponentLoader(() => import('@/pages/eventPage')),
+    path: '/event/:id',
+  },
 };
 
 export default routes;

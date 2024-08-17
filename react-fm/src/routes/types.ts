@@ -23,6 +23,7 @@ enum Pages {
   Profile,
   About2,
   Rewards,
+  Event,
 }
 
 type PathRouteCustomProps = {
