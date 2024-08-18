@@ -28,8 +28,6 @@ import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
-// import axios from 'axios';
-
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
   reservedPlayersCount,
@@ -63,6 +61,8 @@ export const JoinNow: FC<EventDetails> = ({
       setUserData({ name: data.name, email: data.email, phoneNumber: '' });
     }
   }, []);
+
+  // console.log(userData.email);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
@@ -211,8 +211,8 @@ export const JoinNow: FC<EventDetails> = ({
 
         generateUrl();
       } else {
-        // createOrder('2-2024-04-20-1', objectArray, setAmount, currency || 'INR') // to be changed after local testing
-        createOrder(uniqueEventId, objectArray, setAmount, currency || 'INR') // to be changed after local testing
+        createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
+          // createOrder(uniqueEventId, objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
             setOpen(false);
