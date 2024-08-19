@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,18 +38,27 @@ public class RazorPaymentRequestBuilder {
    }
     public RazorPaymentRequest createPaymentRequest(final String orderId,
                                                     final String uniqueEventId,
-                                                    final List<PlayerInput> playerInputList) {
+                                                    final List<PlayerInput> playerInputList,
+                                                    final String date,
+                                                    final String location,
+                                                    final String gameNumber,
+                                                    final String email) {
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
+        // System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber + " " +email);
         RazorPaymentRequest razorPaymentRequest = RazorPaymentRequest.builder()
                 .orderId(orderId)
                 .uniqueEventId(uniqueEventId)
                 .playerDetailsList(playerDetailsList)
                 .status("INITIATED")
+                .date(date)
+                .location(location)
+                .gameNumber(gameNumber)
+                .email(email)
                 .build();
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }

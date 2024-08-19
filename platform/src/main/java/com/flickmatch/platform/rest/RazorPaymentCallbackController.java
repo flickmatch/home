@@ -21,6 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 @RestController
@@ -51,6 +54,7 @@ public class RazorPaymentCallbackController {
                                                   @RequestParam("razorpay_signature") String signature) {
 
         String uniqueEventId;
+        int flag=0;
         try {
             RazorpayClient razorpay = razorPayProxy.getRazorPayClient();
             JSONObject options = new JSONObject();
@@ -59,6 +63,11 @@ public class RazorPaymentCallbackController {
             options.put("razorpay_signature", signature);
             RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
             uniqueEventId = paymentRequest.getUniqueEventId();
+
+            String[] parts =uniqueEventId.split("-");
+            String dateStr =  parts[1] + "-" + parts[2] + "-" + parts[3];
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate eventDate;
 
 //            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
@@ -82,16 +91,35 @@ public class RazorPaymentCallbackController {
                 }
             }
 
+            try {
+                eventDate = LocalDate.parse(dateStr, formatter);
+            } catch (DateTimeParseException e) {
+                log.error("Invalid date format in uniqueEventId: {}", dateStr);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid event date");
+            }
+
+            // Check if the event date is before today
+            if (eventDate.isBefore(LocalDate.now())) {
+                flag=1;
+            }
+
         }
         catch (Exception e) {
             log.error("Error processing callback: {}", e.getLocalizedMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
         }
 
+
+
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
-        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        if (flag==1) {
+            headers.add("Location", "https://play.flickmatch.in/event/" + uniqueEventId);
+        }
+        else {
+            headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
+        }
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 
     }

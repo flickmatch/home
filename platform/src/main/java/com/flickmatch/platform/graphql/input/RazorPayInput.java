@@ -12,4 +12,5 @@ public class RazorPayInput {
     String uniqueEventId;
     List<PlayerInput> playerInputList;
     String currency;
+    String email;
 }

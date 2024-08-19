@@ -3,11 +3,13 @@ package com.flickmatch.platform.dynamodb.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @DynamoDBTable(tableName="RazorPaymentRequest")
@@ -20,6 +22,11 @@ public class RazorPaymentRequest {
     private String uniqueEventId;
     private List<Event.PlayerDetails> playerDetailsList;
     private String status;
+    private String date;
+    private String location;
+    private String gameNumber;
+    private String email;
+
 
     @DynamoDBHashKey(attributeName="orderId")
     public String getOrderId() {
@@ -57,5 +64,39 @@ public class RazorPaymentRequest {
         this.status = status;
     }
 
+    @DynamoDBAttribute(attributeName="date")
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @DynamoDBAttribute(attributeName="location")
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @DynamoDBAttribute(attributeName="gameNumber")
+    public String getGameNumber() {
+        return gameNumber;
+    }
+
+    public void setGameNumber(String gameNumber) {
+        this.gameNumber = gameNumber;
+    }
+    @DynamoDBAttribute(attributeName="email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }

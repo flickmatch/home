@@ -54,7 +54,6 @@ export const EventsCard: FC<EventDetails> = ({
   const dateToString = tomorrow.toString();
   const index = dateToString.indexOf('2024');
   const futureDate = dateToString.substring(0, index);
-
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
   const usTime = (dummyData ? futureDate : date) + ' ' + startTime + ' - ' + endTime;
@@ -111,6 +110,7 @@ export const EventsCard: FC<EventDetails> = ({
         timeZone = <span>{usTime}</span>;
       }
     });
+
     return timeZone;
   };
 

@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.String.format;
 
 @Service
-@Log4j2
+
 public class EventBuilder {
 
     private static final String CLIENT_REFERENCE_ID = "?client_reference_id=";
