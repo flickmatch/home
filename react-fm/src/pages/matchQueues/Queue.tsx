@@ -58,6 +58,7 @@ function MatchQueue() {
             i: number,
           ) => {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+
             if (cityExists) {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
@@ -85,7 +86,11 @@ function MatchQueue() {
             } else {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                setCitiesData((prevData) => [...prevData, eventArray]);
+                eventArray.events.sort(
+                  (a: { date: string }, b: { date: string }) =>
+                    parseDate(b).getTime() - parseDate(a).getTime(),
+                ),
+                  setCitiesData((prevData) => [...prevData, eventArray]);
               }
             }
             setShowSkeleton(false);
