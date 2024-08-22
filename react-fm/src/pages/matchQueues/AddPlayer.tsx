@@ -59,13 +59,16 @@ export const AddPlayer: FC<ChildProps> = ({
   }
 
   const handlePay = () => {
-    fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `mutation {
+    if (!name || !phoneNumber) {
+      alert('All input fields are required.');
+    } else {
+      fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `mutation {
         joinEvent(input: {
               uniqueEventId: "${uniqueEventId}"
               cityId: "${cityId}"
@@ -77,23 +80,24 @@ export const AddPlayer: FC<ChildProps> = ({
           isSuccessful
         }
     }`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.errors) {
-          // Handle GraphQL errors
-          throw new Error(result.errors[0].message);
-        } else {
-          handlePassName(name);
-          showSuccessNotification();
-          setName('');
-          setPhoneNumber('');
-        }
+        }),
       })
-      .catch((error) => {
-        alert(error.message);
-      });
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.errors) {
+            // Handle GraphQL errors
+            throw new Error(result.errors[0].message);
+          } else {
+            handlePassName(name);
+            showSuccessNotification();
+            setName('');
+            setPhoneNumber('');
+          }
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
   };
 
   return (
@@ -128,6 +132,7 @@ export const AddPlayer: FC<ChildProps> = ({
           </Box>
           <Box>
             <TextField
+              type="number"
               fullWidth
               label="Phone No."
               id="fullWidth"
