@@ -1,15 +1,20 @@
-import type { FC } from 'react';
+import { type FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import copy from 'copy-text-to-clipboard';
+
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import useNotifications from '@/store/notifications';
 
 import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import mapCityData from '../map';
@@ -33,6 +38,8 @@ export const EventsCard: FC<EventDetails> = ({
   dummyData,
 }) => {
   const isPortrait = useOrientation();
+  const [, notificationsActions] = useNotifications();
+
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
 
@@ -158,6 +165,34 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
+  function showSuccessNotification() {
+    notificationsActions.push({
+      options: {
+        content: (
+          <Alert severity="success">
+            <AlertTitle className={styles.alertTitle}>Link Copied</AlertTitle>
+          </Alert>
+        ),
+      },
+    });
+  }
+
+  const copyLink = (e: { stopPropagation: () => void }) => {
+    const fullEventLink = `https://flickmatch.in/event/${uniqueEventId}`;
+    e.stopPropagation();
+    copy(fullEventLink);
+    showSuccessNotification();
+  };
+
+  const gameLink = () => (
+    <Grid item xs={4} sm={4} md={6}>
+      <Typography className={styles.title} onClick={copyLink}>
+        Game Link{' '}
+        <span className={styles.gameLink}>https://flickmatch.in/event/{uniqueEventId}</span>
+      </Typography>
+    </Grid>
+  );
+
   const joinNow = () =>
     isPortrait ? (
       <Grid item xs={4} sm={4} md={4}>
@@ -215,7 +250,10 @@ export const EventsCard: FC<EventDetails> = ({
           {googleLocation()}
           {numberOfPlayers()}
           {playersRequired()}
+
+          {gameLink()}
         </Grid>
+
         {joinNow()}
       </FlexBox>
     </>
