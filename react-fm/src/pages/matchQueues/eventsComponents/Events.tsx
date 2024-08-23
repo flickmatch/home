@@ -42,6 +42,8 @@ export const EventsCard: FC<EventDetails> = ({
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+  const currentUrl = window.location.href.slice(0, window.location.href.length - 13);
+  const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -178,7 +180,6 @@ export const EventsCard: FC<EventDetails> = ({
   }
 
   const copyLink = (e: { stopPropagation: () => void }) => {
-    const fullEventLink = `https://flickmatch.in/event/${uniqueEventId}`;
     e.stopPropagation();
     copy(fullEventLink);
     showSuccessNotification();
@@ -187,8 +188,7 @@ export const EventsCard: FC<EventDetails> = ({
   const gameLink = () => (
     <Grid item xs={4} sm={4} md={6}>
       <Typography className={styles.title} onClick={copyLink}>
-        Game Link{' '}
-        <span className={styles.gameLink}>https://flickmatch.in/event/{uniqueEventId}</span>
+        Game Link <span className={styles.gameLink}>{fullEventLink}</span>
       </Typography>
     </Grid>
   );
