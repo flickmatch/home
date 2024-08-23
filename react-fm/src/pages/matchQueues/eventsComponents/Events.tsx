@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-import { Link } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -83,15 +82,13 @@ export const EventsCard: FC<EventDetails> = ({
 
   const price = () => (
     <Grid item xs={4} sm={4} md={3}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Price{' '}
-          <span>
-            {currency()}
-            {charges}
-          </span>
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Price{' '}
+        <span>
+          {currency()}
+          {charges}
+        </span>
+      </Typography>
     </Grid>
   );
 
@@ -125,12 +122,10 @@ export const EventsCard: FC<EventDetails> = ({
 
   const dateTime = () => (
     <Grid item xs={4} sm={6} md={4}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Date{''}
-          {timeFrame()}
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Date{''}
+        {timeFrame()}
+      </Typography>
     </Grid>
   );
 
@@ -147,23 +142,19 @@ export const EventsCard: FC<EventDetails> = ({
 
   const numberOfPlayers = () => (
     <Grid item xs={4} sm={4} md={4}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Number of Players <span>{reservedPlayersCount}</span>
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Number of Players <span>{reservedPlayersCount}</span>
+      </Typography>
     </Grid>
   );
 
   const playersRequired = () =>
     openWaitList > 0 ? (
       <Grid item xs={4} sm={4} md={3}>
-        <Link to={`#${uniqueEventId}`}>
-          <Typography className={styles.title}>
-            Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
-            <span>{openSpots == 0 ? openWaitList : openSpots}</span>
-          </Typography>
-        </Link>
+        <Typography className={styles.title}>
+          Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+          <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        </Typography>
       </Grid>
     ) : null;
 
