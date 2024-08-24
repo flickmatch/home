@@ -275,17 +275,6 @@ const EventPage: React.FC = () => {
               </Grid>
             </Box>
           </Box>
-          {event.waitListPlayersCount > 0 ? (
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Typography className={styles.waitListPlayers}>Waitlist</Typography>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {Array.from({ length: event?.waitListPlayersCount }, (_, index) => {
-                  const player = event?.waitListPlayers[index] ?? null;
-                  return renderPlayer(player, index);
-                })}
-              </Grid>
-            </Box>
-          ) : null}
         </AccordionDetails>
       </Accordion>
     </>

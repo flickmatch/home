@@ -41,7 +41,7 @@ export const EventsCard: FC<EventDetails> = ({
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
-  const currentUrl = window.location.href.slice(0, window.location.href.length - 13);
+  const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
 
   let whatsappGroupLink: string | undefined;
