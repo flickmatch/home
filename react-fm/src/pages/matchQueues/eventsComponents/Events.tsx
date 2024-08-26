@@ -3,9 +3,11 @@ import { type FC } from 'react';
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShareIcon from '@mui/icons-material/Share';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -93,7 +95,7 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const whatsappGroup = () => (
-    <Grid item xs={4} sm={6} md={4}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Game Group{' '}
         <a href={whatsappGroupLink} target="_blank" rel="noreferrer">
@@ -163,7 +165,8 @@ export const EventsCard: FC<EventDetails> = ({
       options: {
         content: (
           <Alert severity="success">
-            <AlertTitle className={styles.alertTitle}>Link Copied</AlertTitle>
+            <AlertTitle className={styles.alertTitle}>Game link copied</AlertTitle>
+            Send the game link and bring your friends into the game.
           </Alert>
         ),
       },
@@ -179,7 +182,16 @@ export const EventsCard: FC<EventDetails> = ({
   const gameLink = () => (
     <Grid item xs={4} sm={4} md={6}>
       <Typography className={styles.title} onClick={copyLink}>
-        Game Link <span className={styles.gameLink}>{fullEventLink}</span>
+        {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
+        Game Invite{' '}
+        {/* <Chip label="Copy" color="primary" variant="outlined" className={styles.copyTag} /> */}
+        <Button
+          variant="contained"
+          endIcon={<ShareIcon className={styles.shareIcon} />}
+          className={styles.shareButton}
+        >
+          Share
+        </Button>
       </Typography>
     </Grid>
   );
