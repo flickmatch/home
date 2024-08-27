@@ -37,7 +37,7 @@ export const JoinNow: FC<EventDetails> = ({
   venueName,
   uniqueEventId,
   eventId,
-  singleEvent,
+  //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
@@ -71,7 +71,7 @@ export const JoinNow: FC<EventDetails> = ({
       label: 'Game Joined',
     });
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-    history.replaceState(null, '', `#${uniqueEventId}`);
+
     if (newWindow) newWindow.opener = null;
   };
 
@@ -112,7 +112,7 @@ export const JoinNow: FC<EventDetails> = ({
   const paymentOptions = (event: { stopPropagation: () => void }) => {
     if (userData.name) {
       event.stopPropagation();
-      if (!singleEvent) history.replaceState(null, '', `#${uniqueEventId}`);
+      //if (!singleEvent) history.replaceState(null, '', `#${uniqueEventId}`);
       setShowPaymentOptions(true);
     } else {
       navigate('/login');
@@ -147,7 +147,6 @@ export const JoinNow: FC<EventDetails> = ({
 
   const handlePay = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
-    history.replaceState(null, '', `#${uniqueEventId}`);
 
     const { email, phoneNumber }: { email: string; phoneNumber: string } = userData;
 

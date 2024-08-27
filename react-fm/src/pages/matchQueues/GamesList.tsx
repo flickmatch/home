@@ -1,7 +1,6 @@
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -34,28 +33,10 @@ interface event {
 export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
-  const location = useLocation();
-  const [highLighted, setHighlighted] = useState(false);
+
   const [open, setOpen] = useState(false);
 
   const userState = useSelector((state: RootState) => state);
-
-  const handleClick = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      const accordionButton = element.querySelector('[aria-expanded]');
-      if (accordionButton) {
-        (accordionButton as HTMLElement).click();
-      }
-
-      setHighlighted(true);
-      setTimeout(() => {
-        setHighlighted(false);
-      }, 2000);
-    }
-  };
 
   const handleOpen = () => {
     setOpen((prevState) => !prevState);
@@ -64,18 +45,6 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const passName = (name: string) => {
     addPlayerInQueue(name);
   };
-
-  useEffect(() => {
-    // Check if the current accordion should be expanded based on the URL parameter
-    gameEvent.forEach((newGame) => {
-      const hashValue = location.hash.substring(1);
-      if (hashValue === newGame.uniqueEventId) {
-        handleClick(hashValue);
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
     <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
@@ -118,11 +87,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         }}
       >
         <AccordionSummary
-          expandIcon={
-            <Link to={`#${playingEvent.uniqueEventId}`} className={styles.linkTag}>
-              <ExpandMoreIcon />
-            </Link>
-          }
+          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -178,13 +143,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         </AccordionSummary>
 
         {/*Players Details*/}
-        <AccordionDetails
-          className={
-            highLighted && location.hash.substring(1) === playingEvent.uniqueEventId
-              ? styles.blink
-              : ''
-          }
-        >
+        <AccordionDetails>
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
             <Box className={styles.reservedPlayersContainer}>
               <Typography className={styles.reservedPlayers}>Reserved Players</Typography>

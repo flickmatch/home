@@ -246,15 +246,12 @@ function AddGame() {
       })
         .then((response) => response.json())
         .then((result) => {
-          if (result.errors) {
-            // Handle GraphQL errors
-            throw new Error(result.errors[0].message);
+          if (result.data.createEvent.isSuccessful === false) {
+            showErrorNotification(result.data.createEvent.errorMessage);
           } else {
             showSuccessNotification();
             navigate('/match-queues');
           }
-          // eslint-disable-next-line no-console
-          console.log(result.data);
         })
         .catch((error) => {
           showErrorNotification(error.message);
