@@ -69,24 +69,24 @@ export const AddPlayer: FC<ChildProps> = ({
         },
         body: JSON.stringify({
           query: `mutation {
-        joinEvent(input: {
-              uniqueEventId: "${uniqueEventId}"
-              cityId: "${cityId}"
-              player: {
-                waNumber: "${phoneNumber}"
-                name: "${name}"
-            }
-        }) {
-          isSuccessful
-        }
-    }`,
+          joinEvent(input: {
+                uniqueEventId: "${uniqueEventId}"
+                cityId: "${cityId}"
+                player: {
+                  waNumber: "${phoneNumber}"
+                  name: "${name}"
+              }
+          }) {
+            isSuccessful
+          }
+      }`,
         }),
       })
         .then((response) => response.json())
         .then((result) => {
           if (result.errors) {
             // Handle GraphQL errors
-            throw new Error(result.errors[0].message);
+            alert(result.errors[0].message);
           } else {
             handlePassName(name);
             showSuccessNotification();
