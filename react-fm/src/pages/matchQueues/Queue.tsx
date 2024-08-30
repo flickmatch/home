@@ -32,6 +32,7 @@ function MatchQueue() {
   const parseDate = (event: { date: string }) => new Date(event.date);
 
   useEffect(() => {
+    setCitiesData([]);
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchData = async () => {

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -35,16 +35,51 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   //const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [highLighted, setHighlighted] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+
+  const handleClick = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const accordionButton = element.querySelector('[aria-expanded]');
+      if (accordionButton) {
+        (accordionButton as HTMLElement).click();
+      }
+
+      setHighlighted(true);
+      setTimeout(() => {
+        setHighlighted(false);
+      }, 2000);
+    }
+  };
 
   const userState = useSelector((state: RootState) => state);
 
-  const handleOpen = () => {
+  const handleOpen = (eventId: string) => {
+    history.replaceState(null, '', `#${eventId}`);
+    setSelectedEventId(eventId);
     setOpen((prevState) => !prevState);
+  };
+
+  const handleToggle = () => {
+    if (selectedEventId) {
+      handleOpen(selectedEventId);
+    }
   };
 
   const passName = (name: string) => {
     addPlayerInQueue(name);
   };
+
+  useEffect(() => {
+    // Passing current hash value to target particular accordion
+    const hashValue = window.location.hash.substring(1);
+    if (hashValue) {
+      handleClick(hashValue);
+    }
+  }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
     <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
@@ -62,16 +97,6 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       <span className={styles.colorTeamB} style={{ background: teamBColor }} />
       {teamBColor ? teamBColor : 'Blue'} (Team B)
     </Box>
-  );
-
-  const AddingPlayer = (uniqueEventId: string) => (
-    <AddPlayer
-      isOpen={open}
-      onToggle={handleOpen}
-      uniqueEventId={uniqueEventId}
-      cityId={cityNameId}
-      handlePassName={passName}
-    />
   );
 
   const EventsMapFunc = () =>
@@ -143,18 +168,35 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         </AccordionSummary>
 
         {/*Players Details*/}
-        <AccordionDetails>
+        <AccordionDetails
+          className={
+            highLighted && window.location.hash.substring(1) === playingEvent.uniqueEventId
+              ? styles.blink
+              : ''
+          }
+        >
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
             <Box className={styles.reservedPlayersContainer}>
               <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
               {userState.login.isAdmin && userState.login.isLoggedIn ? (
-                <BorderColorIcon className={styles.editIcon} onClick={handleOpen} />
+                <BorderColorIcon
+                  className={styles.editIcon}
+                  onClick={() => handleOpen(playingEvent.uniqueEventId)}
+                />
               ) : null}
             </Box>
 
-            {userState.login.isAdmin && userState.login.isLoggedIn
-              ? AddingPlayer(playingEvent.uniqueEventId)
-              : null}
+            {userState.login.isAdmin &&
+            userState.login.isLoggedIn &&
+            selectedEventId === playingEvent.uniqueEventId ? (
+              <AddPlayer
+                isOpen={open}
+                onToggle={handleToggle}
+                uniqueEventId={selectedEventId}
+                cityId={cityNameId}
+                handlePassName={passName}
+              />
+            ) : null}
 
             {playingEvent.team_division ? (
               <Box>
