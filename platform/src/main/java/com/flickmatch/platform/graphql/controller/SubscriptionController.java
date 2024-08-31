@@ -21,11 +21,13 @@ public class SubscriptionController {
 
     @MutationMapping
     public MutationResult createSubscription(@Argument CreateSubscriptionInput input) {
-        return subscriptionBuilder.createSubscription(input);
+        String email = input.getEmail();
+        String passId = input.getPassId();
+        return subscriptionBuilder.createSubscription(email, passId);
     }
 
     @QueryMapping
-    public com.flickmatch.platform.graphql.type.Subscription getActiveSubscription(String email) {
+    public com.flickmatch.platform.graphql.type.Subscription getActiveSubscription(@Argument String email) {
         return subscriptionBuilder.getActiveSubscription(email);
     }
 

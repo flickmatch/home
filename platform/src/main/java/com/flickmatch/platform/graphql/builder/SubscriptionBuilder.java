@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,9 +32,7 @@ public class SubscriptionBuilder {
     @Autowired
     UserRepository userRepository;
 
-    public MutationResult createSubscription(CreateSubscriptionInput input) {
-        String email = input.getEmail();
-        String passId = input.getPassId();
+    public MutationResult createSubscription(String email, String passId) {
         try {
             Optional<Pass> passOpt = passRepository.findByPassId(passId);
             if(passOpt.isEmpty()) {
@@ -68,22 +67,28 @@ public class SubscriptionBuilder {
                     .expiryDate(expiryDate)
                     .build();
 
-            log.error("****");
             log.error(subscription.toString());
+
 
             // Save the Subscription to the repository
             Subscription savedSubcription = subscriptionRepository.save(subscription);
 
-
             user.setHasActiveSubscription(true);
-            List<String> subscriptionHistory = user.getSubscriptionHistory();
-            if (subscriptionHistory != null) {
-                subscriptionHistory.add(savedSubcription.getSubscriptionId());
-            } else {
-                subscriptionHistory = List.of(savedSubcription.getSubscriptionId());
-            }
+//            List<String> subscriptionHistory = user.getSubscriptionHistory();
+//
+//            subscriptionHistory.add(savedSubcription.getSubscriptionId());
+//
+//            user.setSubscriptionHistory(subscriptionHistory);
+            List<String> subscriptionHistory = new ArrayList<>(user.getSubscriptionHistory());
+
+// Add the new subscription ID to the history
+            subscriptionHistory.add(savedSubcription.getSubscriptionId());
+
+// Update the user's subscription history
             user.setSubscriptionHistory(subscriptionHistory);
             userRepository.save(user);
+
+
 
             // Return a successful result
             return MutationResult.builder()
@@ -106,7 +111,7 @@ public class SubscriptionBuilder {
                 throw new Exception("The user with the given email does not exist");
             }
             User user = userOpt.get();
-
+            System.out.println(userOpt.get().getName());
             if (!user.getHasActiveSubscription()) {
                 throw new Exception("The user does not have an active subscription");
             }
@@ -145,7 +150,24 @@ public class SubscriptionBuilder {
                 .build();
     }
 
-//    public Subscription updateSubscription(Subscription subscription) {
+//    public MutationResult updateSubscription(Subscription subscription) {
+//        try {
+//            String passId = subscription.getPassId();
+//            Optional<Pass> passOpt = passRepository.findByPassId(passId);
+//            if (passOpt == null) {
+//                throw new Exception("The pass does not exist");
+//            }
+//            return MutationResult.builder()
+//                    .isSuccessful(true)
+//                    .build();
+//        } catch (Exception e) {
+//            log.error("Exception occurred:", e);
+//            log.error("Error finding the pass with the given passId: ", e.getLocalizedMessage());
+//            return MutationResult.builder()
+//                    .isSuccessful(false)
+//                    .errorMessage(e.getMessage())
+//                    .build();
+//        }
 //
 //    }
 

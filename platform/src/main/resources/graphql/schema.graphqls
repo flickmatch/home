@@ -5,7 +5,7 @@ type Query {
     passes: [Pass!]!
     passesForCity(cityId:ID!): [Pass!]
     hasActiveSubscription(email: String!): Boolean!
-    getActiveSubscription(email: String!): Subscription!
+    getActiveSubscription(email: String!): Subscription
 }
 
 type Mutation {

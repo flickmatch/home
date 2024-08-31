@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @DynamoDBTable(tableName="User")
@@ -16,7 +17,7 @@ public class User {
     private String name;
     private String phoneNumber;
     private String userId;
-    private List<String> subscriptionHistory;
+    private List<String> subscriptionHistory = new ArrayList<>();
     private Boolean hasActiveSubscription;
 
 
