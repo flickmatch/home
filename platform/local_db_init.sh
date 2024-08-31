@@ -167,3 +167,5 @@ aws dynamodb put-item \
   }' \
   --return-consumed-capacity TOTAL \
   --endpoint-url http://localhost:8000
+
+  aws dynamodb put-item --table-name City --item "{\"cityId\": {\"S\": \"7\"}, \"cityName\": {\"S\": \"Gwalior\"}, \"localTimeZone\": {\"S\": \"GMT+5:30\"}, \"iconUrl\": {\"S\": \"/mount-rushmore.webp\"}, \"countryCode\": {\"S\": \"IN\"}, \"currency\": {\"S\": \"INR\"}}" --return-consumed-capacity TOTAL

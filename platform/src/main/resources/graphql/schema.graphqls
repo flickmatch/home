@@ -51,8 +51,8 @@ input CreateEventInput {
 }
 
 input JoinEventInput {
-    eventId: ID @deprecated(reason: "Use `uniqueEventId`.")
-    cityId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    eventId: ID @deprecated(reason: "Use uniqueEventId.")
+    cityId: ID @deprecated(reason: "Use uniqueEventId.")
     uniqueEventId: ID
     player: PlayerInput!
 }
@@ -165,13 +165,16 @@ type City {
     sportsVenues: [SportsVenue!]
     events: [EVENT]
     pastEvents (inDays: Int!): [EVENT]!
+    currency: String!
+    countryCode: String!
+    iconUrl: String!
 }
 
 type EVENT {
     currency: String!
     startTime: String!
     endTime: String!
-    eventId: String! @deprecated(reason: "Use `uniqueEventId`.")
+    eventId: String! @deprecated(reason: "Use uniqueEventId.")
     uniqueEventId: String!
     displayTitle: String!
     venueLocationLink: String!
@@ -251,5 +254,3 @@ type Author {
     firstName: String
     lastName: String
 }
-
-
