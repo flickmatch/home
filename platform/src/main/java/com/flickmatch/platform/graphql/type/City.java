@@ -12,6 +12,9 @@ public class City {
     String cityId;
     String cityName;
     String localTimeZone;
+    String currency;
+    String iconUrl;
+    String countryCode;
     List<Event> events;
     List<SportsVenue> sportsVenues;
 
