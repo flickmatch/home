@@ -1,6 +1,7 @@
 package com.flickmatch.platform.graphql.controller;
 
 import com.flickmatch.platform.dynamodb.model.User;
+//import com.flickmatch.platform.dynamodb.service.PlayerService;
 import com.flickmatch.platform.graphql.builder.UserBuilder;
 import com.flickmatch.platform.graphql.input.CreateUserInput;
 import com.flickmatch.platform.graphql.type.UserResult;
@@ -19,6 +20,7 @@ public class UserController {
 
     @Autowired
     private UserBuilder userBuilder;
+    //private PlayerService playerService;
 
     @MutationMapping
     public UserResult createUser(@Argument CreateUserInput input) {
@@ -37,6 +39,11 @@ public class UserController {
 
 
     }
+
+//    @DeleteMapping("/{id}")
+//    public void deletePlayer(@PathVariable Long id) {
+//        playerService.deletePlayer(id);
+//    }
         @QueryMapping(name="users")
         public List<User> getAllUsers() {
             return userBuilder.getAllUsers();

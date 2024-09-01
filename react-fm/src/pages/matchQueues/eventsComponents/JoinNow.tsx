@@ -22,11 +22,13 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
-import { apiUrl } from '../constants';
+//import { apiUrl } from '../constants';
 import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
+
+const apiUrl = 'http://localhost:8080/graphql';
 
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
@@ -147,6 +149,7 @@ export const JoinNow: FC<EventDetails> = ({
 
   const handlePay = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
+    console.log(uniqueEventId);
 
     const { email, phoneNumber }: { email: string; phoneNumber: string } = userData;
 
@@ -211,7 +214,14 @@ export const JoinNow: FC<EventDetails> = ({
         generateUrl();
       } else {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
-        createOrder(uniqueEventId, objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
+        createOrder(
+          uniqueEventId,
+          objectArray,
+          setAmount,
+          currency || 'INR',
+          email,
+          userData.phoneNumber,
+        ) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
             setOpen(false);

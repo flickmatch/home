@@ -27,7 +27,10 @@ import { logingin, settingAdmin } from '@/slices/loginSlice';
 
 import { generateFirebaseAuthErrorMessage } from './FirebaseError';
 import styles from './GoogleLogin.module.scss';
-import { apiUrl } from './constants';
+
+//import { apiUrl } from './constants';
+
+const apiUrl = 'http://localhost:8080/graphql';
 
 function GoogleLogin() {
   const isPortrait = useOrientation();

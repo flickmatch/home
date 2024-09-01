@@ -7,6 +7,8 @@ import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
 import com.flickmatch.platform.dynamodb.repository.RazorPaymentRequestRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.RazorPayInput;
+import com.flickmatch.platform.dynamodb.model.User;
+import com.flickmatch.platform.graphql.input.CreateUserInput;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -20,15 +22,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 @Log4j2
 public class RazorPaymentRequestBuilder {
-   @Autowired
+
+    private static final Logger logger = LoggerFactory.getLogger(RazorPaymentRequestBuilder.class);
+    @Autowired
     RazorPaymentRequestRepository razorPaymentRequestRepository;
+
+    @Autowired
+    private UserBuilder userBuilder; // Inject UserBuilder
 
    public String createOrderRequest(RazorpayClient razorpayClient, RazorPayInput input, EventBuilder eventBuilder,long amount) throws RazorpayException {
            JSONObject orderRequest = new JSONObject();
-           String[] parts =input.getUniqueEventId().split("-");
+           String[] parts = input.getUniqueEventId().split("-");
            String cityId = parts[0];
            String currency = input.getCurrency();
            orderRequest.put("amount", amount);
@@ -42,13 +52,22 @@ public class RazorPaymentRequestBuilder {
                                                     final String date,
                                                     final String location,
                                                     final String gameNumber,
-                                                    final String email) {
+                                                    final String email,
+                                                    final String phoneNumber) {
+
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
+
+        // Create or update the user with the provided phone number
+        CreateUserInput createUserInput = CreateUserInput.builder()
+                .email(email) // Assuming email is used to identify the user
+                .phoneNumber(phoneNumber)
+                .build();
+
         // System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber + " " +email);
         RazorPaymentRequest razorPaymentRequest = RazorPaymentRequest.builder()
                 .orderId(orderId)
@@ -59,6 +78,7 @@ public class RazorPaymentRequestBuilder {
                 .location(location)
                 .gameNumber(gameNumber)
                 .email(email)
+                .phoneNumber(phoneNumber)
                 .build();
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }

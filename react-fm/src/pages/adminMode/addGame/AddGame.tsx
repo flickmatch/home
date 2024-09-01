@@ -35,7 +35,12 @@ import { query } from '../../matchQueues/constants';
 import mapCityData from '../../matchQueues/map';
 import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
-import { apiUrl, gameQueuesApiUrl } from './constants';
+
+//import { apiUrl, gameQueuesApiUrl } from './constants';
+
+const apiUrl = 'http://localhost:8080/graphql';
+
+const gameQueuesApiUrl = 'http://localhost:8080/graphql';
 
 function AddGame() {
   const isPortrait = useOrientation();
@@ -156,6 +161,7 @@ function AddGame() {
 
   const handleTurfName = (e: SelectChangeEvent) => {
     setTurfName(e.target.value);
+    console.log(e.target.value);
   };
 
   function showInfoNotification() {
