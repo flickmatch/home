@@ -73,6 +73,7 @@ input RazorPayInput {
     playerInputList: [PlayerInput!]!
     currency: String!
     email: String!
+    phoneNumber: String!
 }
 
 type Pass {

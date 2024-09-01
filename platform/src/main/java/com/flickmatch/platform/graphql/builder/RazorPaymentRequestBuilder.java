@@ -61,12 +61,13 @@ public class RazorPaymentRequestBuilder {
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
-
+        logger.info("This is an info message");
         // Create or update the user with the provided phone number
         CreateUserInput createUserInput = CreateUserInput.builder()
-                .email(email) // Assuming email is used to identify the user
+                .email(email) // Assuming you have the email from the payment request
                 .phoneNumber(phoneNumber)
                 .build();
+        userBuilder.createUser(createUserInput);
 
         // System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber + " " +email);
         RazorPaymentRequest razorPaymentRequest = RazorPaymentRequest.builder()

@@ -86,7 +86,7 @@ public class PaymentController {
             String phoneNumber = input.getPhoneNumber();
 
             // Log the phone number before creating the payment request
-            log.debug("Phone number to be saved: {}", phoneNumber);
+            log.info("Phone number to be saved: {}", phoneNumber);
 
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
                     input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber,email, phoneNumber);
