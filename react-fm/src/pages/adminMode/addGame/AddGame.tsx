@@ -161,7 +161,6 @@ function AddGame() {
 
   const handleTurfName = (e: SelectChangeEvent) => {
     setTurfName(e.target.value);
-    console.log(e.target.value);
   };
 
   function showInfoNotification() {

@@ -149,7 +149,6 @@ export const JoinNow: FC<EventDetails> = ({
 
   const handlePay = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
-    console.log(uniqueEventId);
 
     const { email, phoneNumber }: { email: string; phoneNumber: string } = userData;
 
