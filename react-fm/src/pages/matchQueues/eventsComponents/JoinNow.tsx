@@ -22,13 +22,11 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
-//import { apiUrl } from '../constants';
+import { apiUrl } from '../constants';
 import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
-
-const apiUrl = 'http://localhost:8080/graphql';
 
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,

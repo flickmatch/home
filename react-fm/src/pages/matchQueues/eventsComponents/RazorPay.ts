@@ -7,7 +7,7 @@ const createOrder = (
   phoneNumber: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
-  fetch('http://localhost:8080/graphql', {
+  fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const displayRazorpay = (
 
     const options = {
       // key: 'rzp_test_hpeD9rSq9zDwJN', // to be fixed for production
-      key: 'rzp_test_hpeD9rSq9zDwJN', // to be fixed for production
+      key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
       amount: amount,
       currency: 'INR',
       name: 'Flickmatch',
@@ -95,7 +95,7 @@ const displayRazorpay = (
       image:
         'https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314',
       order_id: orderId,
-      callback_url: 'http://localhost:5173/match-queues',
+      callback_url: 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/processRazorPayment',
       // callback_url: 'http://localhost:5173',
       redirect: true,
       prefill: {

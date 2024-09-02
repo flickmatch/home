@@ -35,12 +35,7 @@ import { query } from '../../matchQueues/constants';
 import mapCityData from '../../matchQueues/map';
 import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
-
-//import { apiUrl, gameQueuesApiUrl } from './constants';
-
-const apiUrl = 'http://localhost:8080/graphql';
-
-const gameQueuesApiUrl = 'http://localhost:8080/graphql';
+import { apiUrl, gameQueuesApiUrl } from './constants';
 
 function AddGame() {
   const isPortrait = useOrientation();
