@@ -4,6 +4,8 @@ type Query {
     event(uniqueEventId: ID!): EVENT
     passes: [Pass!]!
     passesForCity(cityId:ID!): [Pass!]
+    hasActiveSubscription(email: String!): Boolean!
+    getActiveSubscription(email: String!): Subscription
 }
 
 type Mutation {
@@ -14,6 +16,8 @@ type Mutation {
     initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
     createUser(input: CreateUserInput!): UserResult!
     initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
+    initiatePassPayment(input:PassPaymentInput!): PassPaymentOutput!
+    createSubscription(input: CreateSubscriptionInput!): MutationResult!
     """
     This is not implemented yet, will be required for P1
     """
@@ -51,8 +55,8 @@ input CreateEventInput {
 }
 
 input JoinEventInput {
-    eventId: ID @deprecated(reason: "Use `uniqueEventId`.")
-    cityId: ID @deprecated(reason: "Use `uniqueEventId`.")
+    eventId: ID @deprecated(reason: "Use uniqueEventId.")
+    cityId: ID @deprecated(reason: "Use uniqueEventId.")
     uniqueEventId: ID
     player: PlayerInput!
 }
@@ -74,6 +78,32 @@ input RazorPayInput {
     currency: String!
     email: String!
     phoneNumber: String!
+}
+
+input PassPaymentInput {
+    passId: ID!
+    email: String!
+    currency: String!
+    location: String!
+}
+
+input CreateSubscriptionInput {
+    passId: String!
+    email: String!
+}
+
+type SubscriptionOutput {
+    isSuccessful: Boolean!
+    errorMessage: String
+}
+
+type Subscription {
+    subscriptionId: String!
+    passId: String!
+    userId: String!
+    expiryDate: String!
+    gamesLeft: Int!
+    status: String!
 }
 
 type Pass {
@@ -154,6 +184,12 @@ input PlayerInput {
     name: String!
 }
 
+type PassPaymentOutput {
+    orderId: String!
+    isInitiated: Boolean!
+    amount: Float!
+}
+
 type MutationResult {
     isSuccessful: Boolean!
     errorMessage: String
@@ -166,13 +202,16 @@ type City {
     sportsVenues: [SportsVenue!]
     events: [EVENT]
     pastEvents (inDays: Int!): [EVENT]!
+    currency: String!
+    countryCode: String!
+    iconUrl: String!
 }
 
 type EVENT {
     currency: String!
     startTime: String!
     endTime: String!
-    eventId: String! @deprecated(reason: "Use `uniqueEventId`.")
+    eventId: String! @deprecated(reason: "Use uniqueEventId.")
     uniqueEventId: String!
     displayTitle: String!
     venueLocationLink: String!
@@ -252,5 +291,3 @@ type Author {
     firstName: String
     lastName: String
 }
-
-
