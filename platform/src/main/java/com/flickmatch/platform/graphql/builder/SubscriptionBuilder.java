@@ -150,25 +150,55 @@ public class SubscriptionBuilder {
                 .build();
     }
 
-//    public MutationResult updateSubscription(Subscription subscription) {
-//        try {
-//            String passId = subscription.getPassId();
-//            Optional<Pass> passOpt = passRepository.findByPassId(passId);
-//            if (passOpt == null) {
-//                throw new Exception("The pass does not exist");
-//            }
-//            return MutationResult.builder()
-//                    .isSuccessful(true)
-//                    .build();
-//        } catch (Exception e) {
-//            log.error("Exception occurred:", e);
-//            log.error("Error finding the pass with the given passId: ", e.getLocalizedMessage());
-//            return MutationResult.builder()
-//                    .isSuccessful(false)
-//                    .errorMessage(e.getMessage())
-//                    .build();
-//        }
-//
-//    }
+    MutationResult updateSubscription(Subscription subscription) {
+        try {
+            String passId = subscription.getPassId();
+            Optional<Pass> passOpt = passRepository.findByPassId(passId);
+            if (passOpt.isEmpty()) {
+                throw new Exception("The pass does not exist");
+            }
+            String type = passOpt.get().getPassType();
+            if(type.equals("LimitedDays")) {
+
+                LocalDate today = LocalDate.now();
+                String expiryDateString = subscription.getExpiryDate();
+                // Define the formatter for the date string
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                // Convert the string to a LocalDate
+                LocalDate expiryDate = LocalDate.parse(expiryDateString, formatter);
+                if (today.isAfter(expiryDate)) {
+                    subscription.setStatus("Expired");
+                    subscription.setGamesLeft(0);
+                }
+            }
+            else if(type.equals("LimitedGames")) {
+                Integer totalGamesLeft = passOpt.get().getTotalGames()-1;
+                subscription.setGamesLeft(totalGamesLeft);
+                if(totalGamesLeft==0) {
+                    subscription.setStatus("Expired");
+                    subscription.setExpiryDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                }
+            }
+            else {
+                throw new Exception("Invalid pass type");
+            }
+
+            subscriptionRepository.save(subscription);
+
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception e) {
+            log.error("Exception occurred:", e);
+            log.error("Error finding the pass with the given passId: ", e.getLocalizedMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(e.getMessage())
+                    .build();
+        }
+
+    }
+
 
 }
