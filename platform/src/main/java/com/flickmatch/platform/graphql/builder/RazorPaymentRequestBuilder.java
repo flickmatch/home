@@ -22,14 +22,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Service
 @Log4j2
 public class RazorPaymentRequestBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(RazorPaymentRequestBuilder.class);
     @Autowired
     RazorPaymentRequestRepository razorPaymentRequestRepository;
 
@@ -61,7 +57,7 @@ public class RazorPaymentRequestBuilder {
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
-        logger.info("This is an info message");
+
         // Create or update the user with the provided phone number
         CreateUserInput createUserInput = CreateUserInput.builder()
                 .email(email) // Assuming you have the email from the payment request
