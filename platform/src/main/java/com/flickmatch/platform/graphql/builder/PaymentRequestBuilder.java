@@ -26,6 +26,8 @@ public class PaymentRequestBuilder {
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
+        log.info("Razorpay Merchant Transaction Id", merchantTransactionId);
+        log.info("Players Joined", playerInputList);
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .merchantTransactionId(merchantTransactionId)
                 .uniqueEventId(uniqueEventId)
