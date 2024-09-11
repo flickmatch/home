@@ -25,6 +25,10 @@ public class SubscriptionController {
         String passId = input.getPassId();
         return subscriptionBuilder.createSubscription(email, passId);
     }
+    @MutationMapping
+    public MutationResult updateSubscription(@Argument String subscriptionId) {
+        return subscriptionBuilder.updateSubscription(subscriptionId);
+    }
 
     @QueryMapping
     public com.flickmatch.platform.graphql.type.Subscription getActiveSubscription(@Argument String email) {

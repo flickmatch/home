@@ -7,6 +7,7 @@ import com.flickmatch.platform.dynamodb.repository.PassRepository;
 import com.flickmatch.platform.dynamodb.repository.SubscriptionRepository;
 import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.input.CreateSubscriptionInput;
+import com.flickmatch.platform.graphql.input.UpdateSubscriptionInput;
 import com.flickmatch.platform.graphql.type.MutationResult;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,9 @@ public class SubscriptionBuilder {
             }
 
             User user = userOpt.get();
+            if(user.getHasActiveSubscription()!=false) {
+                throw new Exception("The user already has an active subscription");
+            }
 
             Subscription subscription = Subscription.builder()
                     .passId(passId)
@@ -111,7 +115,7 @@ public class SubscriptionBuilder {
                 throw new Exception("The user with the given email does not exist");
             }
             User user = userOpt.get();
-            System.out.println(userOpt.get().getName());
+//            System.out.println(userOpt.get().getName());
             if (!user.getHasActiveSubscription()) {
                 throw new Exception("The user does not have an active subscription");
             }
@@ -138,7 +142,7 @@ public class SubscriptionBuilder {
     }
 
     com.flickmatch.platform.graphql.type.Subscription mapEventToGQLType(Subscription subs) {
-        System.out.println(subs.toString());
+//        System.out.println(subs.toString());
 
         return com.flickmatch.platform.graphql.type.Subscription.builder()
                 .subscriptionId(subs.getSubscriptionId())
@@ -150,41 +154,46 @@ public class SubscriptionBuilder {
                 .build();
     }
 
-    MutationResult updateSubscription(Subscription subscription) {
+    public MutationResult updateSubscription(String subscriptionId) {
         try {
-            String passId = subscription.getPassId();
+            Subscription subs = subscriptionRepository.findBySubscriptionId(subscriptionId).get();
+            String passId = subs.getPassId();
             Optional<Pass> passOpt = passRepository.findByPassId(passId);
+            User user = userRepository.findById(subs.getUserId()).get();
             if (passOpt.isEmpty()) {
                 throw new Exception("The pass does not exist");
             }
             String type = passOpt.get().getPassType();
             if(type.equals("LimitedDays")) {
-
                 LocalDate today = LocalDate.now();
-                String expiryDateString = subscription.getExpiryDate();
+                String expiryDateString = subs.getExpiryDate();
                 // Define the formatter for the date string
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                 // Convert the string to a LocalDate
                 LocalDate expiryDate = LocalDate.parse(expiryDateString, formatter);
                 if (today.isAfter(expiryDate)) {
-                    subscription.setStatus("Expired");
-                    subscription.setGamesLeft(0);
+                    subs.setStatus("Expired");
+                    subs.setGamesLeft(0);
+                    user.setHasActiveSubscription(false);
                 }
             }
             else if(type.equals("LimitedGames")) {
-                Integer totalGamesLeft = passOpt.get().getTotalGames()-1;
-                subscription.setGamesLeft(totalGamesLeft);
+                Integer totalGamesLeft = subs.getGamesLeft()-1;
+//                System.out.println("TotalGamesLeft: "+totalGamesLeft);
+                subs.setGamesLeft(totalGamesLeft);
                 if(totalGamesLeft==0) {
-                    subscription.setStatus("Expired");
-                    subscription.setExpiryDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    subs.setStatus("Expired");
+                    subs.setExpiryDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    user.setHasActiveSubscription(false);
                 }
             }
             else {
                 throw new Exception("Invalid pass type");
             }
-
-            subscriptionRepository.save(subscription);
+//            System.out.println(subs.getGamesLeft());
+            subscriptionRepository.save(subs);
+            userRepository.save(user);
 
             return MutationResult.builder()
                     .isSuccessful(true)

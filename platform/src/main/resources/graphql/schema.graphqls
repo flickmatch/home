@@ -1,292 +1,293 @@
 type Query {
-    cities: [City!]!
-    city(cityId: ID!): City
-    event(uniqueEventId: ID!): EVENT
-    passes: [Pass!]!
-    passesForCity(cityId:ID!): [Pass!]
-    hasActiveSubscription(email: String!): Boolean!
-    getActiveSubscription(email: String!): Subscription
+  cities: [City!]!
+  city(cityId: ID!): City
+  event(uniqueEventId: ID!): EVENT
+  passes: [Pass!]!
+  passesForCity(cityId: ID!): [Pass!]
+  hasActiveSubscription(email: String!): Boolean!
+  getActiveSubscription(email: String!): Subscription
 }
 
 type Mutation {
-    createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
-    createEvent(input: CreateEventInput!): MutationResult!
-    joinEvent(input: JoinEventInput!): MutationResult!
-    updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
-    initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
-    createUser(input: CreateUserInput!): UserResult!
-    initiateRazorPayment(input:RazorPayInput!): RazorPayOutput!
-    initiatePassPayment(input:PassPaymentInput!): PassPaymentOutput!
-    createSubscription(input: CreateSubscriptionInput!): MutationResult!
-    """
-    This is not implemented yet, will be required for P1
-    """
-    registerModerator(input: RegisterModeratorInput!) :  MutationResult!
+  createSportsVenue(input: CreateSportsVenueInput!): MutationResult!
+  createEvent(input: CreateEventInput!): MutationResult!
+  joinEvent(input: JoinEventInput!): MutationResult!
+  updatePlayerList(input: UpdatePlayerListInput!): MutationResult!
+  initiatePayment(input: InitiatePaymentInput!): InitiatePaymentOutput!
+  createUser(input: CreateUserInput!): UserResult!
+  initiateRazorPayment(input: RazorPayInput!): RazorPayOutput!
+  initiatePassPayment(input: PassPaymentInput!): PassPaymentOutput!
+  createSubscription(input: CreateSubscriptionInput!): MutationResult!
+  updateSubscription(subscriptionId:String!): MutationResult!
+  """
+  This is not implemented yet, will be required for P1
+  """
+  registerModerator(input: RegisterModeratorInput!): MutationResult!
 }
 
 input CreateEventInput {
-    cityId: ID!
-    """
-    Input Format should be yyyy-MM-dd'T'HH:mmZ
-    e.g. "2023-03-27T20:00+0530"
-    """
-    startTime:String!
-    """
-    Input Format should be yyyy-MM-dd'T'HH:mmZ
-    e.g. "2023-03-27T20:00+0530"
-    """
-    endTime: String!
-    charges: Float!
-    sportsVenueId: ID!
-    reservedPlayersCount: Int!
-    waitListPlayersCount: Int!
-    """
-    Not required for P0, will be defaulted to FOOTBALL
-    """
-    sportId: ID
-    """
-    Not required for P0
-    """
-    status: Status
-    """
-    Not required for P0
-    """
-    moderatorId: ID
+  cityId: ID!
+  """
+  Input Format should be yyyy-MM-dd'T'HH:mmZ
+  e.g. "2023-03-27T20:00+0530"
+  """
+  startTime: String!
+  """
+  Input Format should be yyyy-MM-dd'T'HH:mmZ
+  e.g. "2023-03-27T20:00+0530"
+  """
+  endTime: String!
+  charges: Float!
+  sportsVenueId: ID!
+  reservedPlayersCount: Int!
+  waitListPlayersCount: Int!
+  """
+  Not required for P0, will be defaulted to FOOTBALL
+  """
+  sportId: ID
+  """
+  Not required for P0
+  """
+  status: Status
+  """
+  Not required for P0
+  """
+  moderatorId: ID
 }
 
 input JoinEventInput {
-    eventId: ID @deprecated(reason: "Use uniqueEventId.")
-    cityId: ID @deprecated(reason: "Use uniqueEventId.")
-    uniqueEventId: ID
-    player: PlayerInput!
+  eventId: ID @deprecated(reason: "Use uniqueEventId.")
+  cityId: ID @deprecated(reason: "Use uniqueEventId.")
+  uniqueEventId: ID
+  player: PlayerInput!
 }
 
 input InitiatePaymentInput {
-    uniqueEventId: ID!
-    playerInputList: [PlayerInput!]!
+  uniqueEventId: ID!
+  playerInputList: [PlayerInput!]!
 }
 
 input CreateUserInput {
-    email: String!
-    name: String!
-    phoneNumber:  String
+  email: String!
+  name: String!
+  phoneNumber: String
 }
 
 input RazorPayInput {
-    uniqueEventId: ID!
-    playerInputList: [PlayerInput!]!
-    currency: String!
-    email: String!
+  uniqueEventId: ID!
+  playerInputList: [PlayerInput!]!
+  currency: String!
+  email: String!
 }
 
 input PassPaymentInput {
-    passId: ID!
-    email: String!
-    currency: String!
-    location: String!
+  passId: ID!
+  email: String!
+  currency: String!
+  location: String!
 }
 
 input CreateSubscriptionInput {
-    passId: String!
-    email: String!
+  passId: String!
+  email: String!
 }
 
 type SubscriptionOutput {
-    isSuccessful: Boolean!
-    errorMessage: String
+  isSuccessful: Boolean!
+  errorMessage: String
 }
 
 type Subscription {
-    subscriptionId: String!
-    passId: String!
-    userId: String!
-    expiryDate: String!
-    gamesLeft: Int!
-    status: String!
+  subscriptionId: String!
+  passId: String!
+  userId: String!
+  expiryDate: String!
+  gamesLeft: Int!
+  status: String!
 }
 
 type Pass {
-    passId: String!
-    cityId: String!
-    passType: String!
-    totalGames: Int!
-    totalDays: Int!
-    price: Int!
-    title: String!
-    status: String!
+  passId: String!
+  cityId: String!
+  passType: String!
+  totalGames: Int!
+  totalDays: Int!
+  price: Int!
+  title: String!
+  status: String!
 }
 
 type User {
-    email: String!
-    name: String!
-    phoneNumber:  String
-    userId: String
+  email: String!
+  name: String!
+  phoneNumber: String
+  userId: String
 }
 
 type RazorPayOutput {
-    orderId: String!
-    isInitiated: Boolean!
-    amount: Float!
+  orderId: String!
+  isInitiated: Boolean!
+  amount: Float!
 }
 
 type UserResult {
-    isSuccessful: Boolean!
-    userId: String
+  isSuccessful: Boolean!
+  userId: String
 }
 
 type InitiatePaymentOutput {
-    paymentLink: String
-    isInitiated: Boolean!
+  paymentLink: String
+  isInitiated: Boolean!
 }
 
 input CreateSportsVenueInput {
-    cityId: ID!
-    displayName: String!
-    googleMapsLink: String!
-    """
-    Not required for P0
-    """
-    coordinates: String
-    """
-    Not required for P0, will be defaulted to FOOTBALL
-    """
-    availableSportsIds: [ID!]
+  cityId: ID!
+  displayName: String!
+  googleMapsLink: String!
+  """
+  Not required for P0
+  """
+  coordinates: String
+  """
+  Not required for P0, will be defaulted to FOOTBALL
+  """
+  availableSportsIds: [ID!]
 
-    stripePaymentLinks: [StripePaymentLinkInput!]!
+  stripePaymentLinks: [StripePaymentLinkInput!]!
 }
 
 input StripePaymentLinkInput {
-    amount: Float!
-    link: String!
+  amount: Float!
+  link: String!
 }
 
 input UpdatePlayerListInput {
-    startTime: String!
-    endTime: String!
-    venueName: String!
-    date: String!
-    charges: String!
-    format: String!
-    reservedPlayersList: [PlayerInput]!
-    waitListPlayers: [PlayerInput]!
+  startTime: String!
+  endTime: String!
+  venueName: String!
+  date: String!
+  charges: String!
+  format: String!
+  reservedPlayersList: [PlayerInput]!
+  waitListPlayers: [PlayerInput]!
 }
 
 input RegisterModeratorInput {
-    cityId: ID!
-    firstName: String!
-    lastName: String
-    contactNumber: Int!
+  cityId: ID!
+  firstName: String!
+  lastName: String
+  contactNumber: Int!
 }
 
 input PlayerInput {
-    waNumber: String
-    name: String!
+  waNumber: String
+  name: String!
 }
 
 type PassPaymentOutput {
-    orderId: String!
-    isInitiated: Boolean!
-    amount: Float!
+  orderId: String!
+  isInitiated: Boolean!
+  amount: Float!
 }
 
 type MutationResult {
-    isSuccessful: Boolean!
-    errorMessage: String
+  isSuccessful: Boolean!
+  errorMessage: String
 }
 
 type City {
-    cityId: ID!
-    cityName: String
-    localTimeZone: String
-    sportsVenues: [SportsVenue!]
-    events: [EVENT]
-    pastEvents (inDays: Int!): [EVENT]!
-    currency: String!
-    countryCode: String!
-    iconUrl: String!
+  cityId: ID!
+  cityName: String
+  localTimeZone: String
+  sportsVenues: [SportsVenue!]
+  events: [EVENT]
+  pastEvents(inDays: Int!): [EVENT]!
+  currency: String!
+  countryCode: String!
+  iconUrl: String!
 }
 
 type EVENT {
-    currency: String!
-    startTime: String!
-    endTime: String!
-    eventId: String! @deprecated(reason: "Use uniqueEventId.")
-    uniqueEventId: String!
-    displayTitle: String!
-    venueLocationLink: String!
-    charges: Float!
-    date: String!
-    time: String!
-    venueName: String!
-    reservedPlayersCount: Int!
-    waitListPlayersCount: Int!
-    reservedPlayersList: [Player]
-    waitListPlayers: [Player]
-    """
-    We need to make this mandatory in future
-    """
-    stripePaymentUrl: String
+  currency: String!
+  startTime: String!
+  endTime: String!
+  eventId: String! @deprecated(reason: "Use uniqueEventId.")
+  uniqueEventId: String!
+  displayTitle: String!
+  venueLocationLink: String!
+  charges: Float!
+  date: String!
+  time: String!
+  venueName: String!
+  reservedPlayersCount: Int!
+  waitListPlayersCount: Int!
+  reservedPlayersList: [Player]
+  waitListPlayers: [Player]
+  """
+  We need to make this mandatory in future
+  """
+  stripePaymentUrl: String
 }
 
 type Player {
-    displayName: String!
+  displayName: String!
 }
 
 type SportsVenue {
-    sportsVenueId: ID!
-    displayName: String!
-    googleMapsLink: String!
-    availableSportsIds: [ID!]
-    """
-    We need to make this mandatory in future
-    """
-    stripePaymentLinks: [StripePaymentLink!]
+  sportsVenueId: ID!
+  displayName: String!
+  googleMapsLink: String!
+  availableSportsIds: [ID!]
+  """
+  We need to make this mandatory in future
+  """
+  stripePaymentLinks: [StripePaymentLink!]
 }
 
 type StripePaymentLink {
-    amount: Float!
-    url: String!
+  amount: Float!
+  url: String!
 }
 
 type Sport {
-    displayName: String!
+  displayName: String!
 }
 
 """
 Not required for P0
 """
 type Moderator {
-    city: City!
-    moderatorId: String!
-    contactNumber: Int!
-    firstName: String!
-    lastName: String
+  city: City!
+  moderatorId: String!
+  contactNumber: Int!
+  firstName: String!
+  lastName: String
 }
 
 interface Person {
-    firstName: String!
-    lastName: String
+  firstName: String!
+  lastName: String
 }
 
 enum PaymentStatus {
-    PENDING
-    PAID
+  PENDING
+  PAID
 }
 
 enum Status {
-    BOOKING_OPEN
-    SCHEDULED
+  BOOKING_OPEN
+  SCHEDULED
 }
 
 type Book {
-    id: ID
-    name: String
-    pageCount: Int
-    author: Author
+  id: ID
+  name: String
+  pageCount: Int
+  author: Author
 }
 
 type Author {
-    id: ID
-    firstName: String
-    lastName: String
+  id: ID
+  firstName: String
+  lastName: String
 }
