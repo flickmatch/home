@@ -211,7 +211,14 @@ export const JoinNow: FC<EventDetails> = ({
         generateUrl();
       } else {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
-        createOrder(uniqueEventId, objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
+        createOrder(
+          uniqueEventId,
+          objectArray,
+          setAmount,
+          currency || 'INR',
+          email,
+          userData.phoneNumber,
+        ) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
             setOpen(false);

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 
 public class UserBuilder {
-    private  UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserBuilder(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -22,33 +22,43 @@ public class UserBuilder {
 
     public User createUser(CreateUserInput input) {
 //        Checking if the user already exists
-        Optional<User> existingUser = userRepository.findByEmail(input.getEmail());
-        if(existingUser.isPresent()) {
-            return existingUser.get();
-        }
-        // Create a new User object
-        User newUser = new User();
-        newUser.setEmail(input.getEmail());
-        newUser.setName(input.getName());
-        newUser.setPhoneNumber(input.getPhoneNumber());
-        newUser.setHasActiveSubscription(false);
-        newUser.setSubscriptionHistory(new ArrayList<>());
 
+        Optional<User> existingUserOptional = userRepository.findByEmail(input.getEmail());
+        User user;
+
+        if(existingUserOptional.isPresent()) {
+            // User already exists, update the phone number
+            user = existingUserOptional.get();
+            user.setPhoneNumber(input.getPhoneNumber());
+            log.info("User already exists, updating phone number for user: {}", user);
+            return userRepository.save(user);
+        } else {
+            // Create a new User object
+            user = new User();
+            user.setEmail(input.getEmail());
+            user.setName(input.getName());
+            user.setPhoneNumber(input.getPhoneNumber());
+            user.setHasActiveSubscription(false);
+            user.setSubscriptionHistory(new ArrayList<>());
+            log.info("Creating a new user: {}", user);
+        }
 
         try {
-            // Save the new user to the repository
-            userRepository.save(newUser);
-            log.info("User created successfully: {}", newUser);
-            return newUser;
+            // Save the user (new or updated) to the repository
+            userRepository.save(user);
+            log.info("User saved successfully: {}", user);
+            return user;
         } catch (Exception e) {
-            log.error("Error creating user: {}", e.getMessage());
+            log.error("Error saving user: {}", e.getMessage());
             throw e;
         }
+
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
 
     public void createUserSubscription(String email,String passId,String subscriptionId) {
         try {
