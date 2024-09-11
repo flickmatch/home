@@ -4,6 +4,7 @@ const createOrder = (
   setAmount: React.Dispatch<React.SetStateAction<number>>,
   currency: string,
   email: string,
+  phoneNumber: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
   fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -21,6 +22,7 @@ const createOrder = (
                 .join(',')}],
                 currency : "${currency}"
                 email : "${email}"
+                phoneNumber: "${phoneNumber}"
             }
         ) {
             orderId

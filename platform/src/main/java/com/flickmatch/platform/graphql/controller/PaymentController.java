@@ -83,8 +83,14 @@ public class PaymentController {
             String location = city.getCityName();
             String gameNumber = input.getUniqueEventId().split("-")[4];
             String email = input.getEmail();
+            String phoneNumber = input.getPhoneNumber();
+
+            // Log the phone number before creating the payment request
+            log.info("Phone number to be saved: {}", phoneNumber);
+            log.info("Razorpay OrderId Generated", orderId);
+
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
-                    input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber,email);
+                    input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber,email, phoneNumber);
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
         } catch (DynamoDBMappingException dbe) {
             log.error("DynamoDB mapping error: {}", dbe.getMessage(), dbe);
