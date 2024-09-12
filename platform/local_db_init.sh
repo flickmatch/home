@@ -169,3 +169,61 @@ aws dynamodb put-item \
   --endpoint-url http://localhost:8000
 
   aws dynamodb put-item --table-name City --item "{\"cityId\": {\"S\": \"7\"}, \"cityName\": {\"S\": \"Gwalior\"}, \"localTimeZone\": {\"S\": \"GMT+5:30\"}, \"iconUrl\": {\"S\": \"/mount-rushmore.webp\"}, \"countryCode\": {\"S\": \"IN\"}, \"currency\": {\"S\": \"INR\"}}" --return-consumed-capacity TOTAL
+
+
+  aws dynamodb create-table \
+    --table-name Pass \
+    --attribute-definitions \
+        AttributeName=cityId,AttributeType=S \
+        AttributeName=passId,AttributeType=S \
+    --key-schema \
+        AttributeName=cityId,KeyType=HASH \
+        AttributeName=passId,KeyType=RANGE \
+    --billing-mode PAY_PER_REQUEST \
+    --endpoint-url http://localhost:8000
+
+
+  aws dynamodb put-item \
+   --table-name Pass \
+   --item "{\"cityId\": {\"S\": \"1\"}, \"passId\": {\"S\": \"pass1\"}, \"passType\": {\"S\": \"LimitedGames\"}, \"totalGames\": {\"N\": \"10\"}, \"totalDays\": {\"N\": \"3000\"}, \"title\": {\"S\": \"10 games pass\"}, \"price\": {\"N\": \"1000\"}, \"status\": {\"S\": \"Active\"}}" \
+   --return-consumed-capacity TOTAL \
+   --endpoint-url http://localhost:8000
+
+  aws dynamodb put-item \
+   --table-name Pass \
+   --item "{\"cityId\": {\"S\": \"2\"},\"passId\": {\"S\": \"pass2\"},\"passType\": {\"S\": \"LimitedDays\"},\"totalGames\": {\"N\": \"1000\"},\"totalDays\": {\"N\": \"30\"},\"title\": {\"S\": \"30 days pass\"},\"price\": {\"N\": \"1000\"},\"status\": {\"S\": \"Active\"}}" \
+   --return-consumed-capacity TOTAL \
+   --endpoint-url http://localhost:8000
+
+aws dynamodb create-table \
+    --table-name Subscription \
+    --attribute-definitions \
+        AttributeName=userId,AttributeType=S \
+        AttributeName=subscriptionId,AttributeType=S \
+    --key-schema \
+        AttributeName=userId,KeyType=HASH \
+        AttributeName=subscriptionId,KeyType=RANGE \
+    --billing-mode PAY_PER_REQUEST \
+    --endpoint-url http://localhost:8000
+
+aws dynamodb put-item \
+   --table-name Subscription \
+   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass1\"}, \"gamesLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
+   --return-consumed-capacity TOTAL \
+   --endpoint-url http://localhost:8000
+
+aws dynamodb put-item \
+   --table-name Subscription \
+   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass2\"}, \"gamesLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
+   --return-consumed-capacity TOTAL \
+   --endpoint-url http://localhost:8000
+
+    aws dynamodb create-table \
+     --table-name PassPaymentRequest \
+     --attribute-definitions \
+         AttributeName=orderId,AttributeType=S \
+     --key-schema \
+         AttributeName=orderId,KeyType=HASH \
+     --billing-mode PAY_PER_REQUEST
+
+

@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
-@Setter
 @Getter
-public class RazorPayOutput {
+@Setter
+@Builder
+public class PassPaymentOutput {
     private String orderId;
     private boolean isInitiated;
     double amount;
