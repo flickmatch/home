@@ -49,6 +49,9 @@ function MatchQueue() {
 
         const data = await response.json();
 
+        const citiesOrder = ['San Francisco', 'San Jose', 'Mountain View'];
+        const reorderedCities: CityDetails[] = [];
+
         data.data.cities.forEach(
           (
             city: {
@@ -66,7 +69,7 @@ function MatchQueue() {
                   (a: { date: string }, b: { date: string }) =>
                     parseDate(b).getTime() - parseDate(a).getTime(),
                 ),
-                  setCitiesData((prevData) => [...prevData, eventArray]);
+                  reorderedCities.push(eventArray);
               } else {
                 dummyData.data.cities.forEach(
                   (
@@ -78,7 +81,7 @@ function MatchQueue() {
                     j: number,
                   ) => {
                     if (dummyCityData.cityName == city.cityName) {
-                      setCitiesData((prevData) => [...prevData, dummyData.data.cities[j]]);
+                      reorderedCities.push(dummyData.data.cities[j]);
                     }
                   },
                 );
@@ -90,12 +93,25 @@ function MatchQueue() {
                   (a: { date: string }, b: { date: string }) =>
                     parseDate(b).getTime() - parseDate(a).getTime(),
                 ),
-                  setCitiesData((prevData) => [...prevData, eventArray]);
+                  reorderedCities.push(eventArray);
               }
             }
             setShowSkeleton(false);
           },
         );
+
+        // Sort the reorderedCities array to move specified cities to the end
+        reorderedCities.sort((a, b) => {
+          const aIndex = citiesOrder.indexOf(a.cityName);
+          const bIndex = citiesOrder.indexOf(b.cityName);
+
+          if (aIndex === -1 && bIndex === -1) return 0;
+          if (aIndex === -1) return -1;
+          if (bIndex === -1) return 1;
+          return aIndex - bIndex;
+        });
+
+        setCitiesData(reorderedCities);
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
