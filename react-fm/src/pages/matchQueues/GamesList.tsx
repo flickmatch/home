@@ -1,11 +1,9 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -15,10 +13,11 @@ import Typography from '@mui/material/Typography';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import type { RootState } from '@/store/types';
 
 import { AddPlayer } from './AddPlayer';
 import styles from './Queue.module.scss';
-import { avatars } from './constants';
+import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
@@ -34,10 +33,10 @@ interface event {
 export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
-  const location = useLocation();
-  const [highLighted, setHighlighted] = useState(false);
+
   const [open, setOpen] = useState(false);
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [highLighted, setHighlighted] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
@@ -56,8 +55,18 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     }
   };
 
-  const handleOpen = () => {
+  const userState = useSelector((state: RootState) => state);
+
+  const handleOpen = (eventId: string) => {
+    history.replaceState(null, '', `#${eventId}`);
+    setSelectedEventId(eventId);
     setOpen((prevState) => !prevState);
+  };
+
+  const handleToggle = () => {
+    if (selectedEventId) {
+      handleOpen(selectedEventId);
+    }
   };
 
   const passName = (name: string) => {
@@ -65,32 +74,10 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   };
 
   useEffect(() => {
-    // Check if the current accordion should be expanded based on the URL parameter
-    gameEvent.forEach((newGame) => {
-      const hashValue = location.hash.substring(1);
-      if (hashValue === newGame.uniqueEventId) {
-        handleClick(hashValue);
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const adminMailId = localStorage.getItem('adminIds');
-    const storedData = localStorage.getItem('userData');
-
-    if (storedData) {
-      const parseUserData = JSON.parse(storedData);
-
-      if (adminMailId) {
-        const parseAdminData = JSON.parse(adminMailId);
-        const check = parseAdminData.data
-          .map((mailId: { EmailId: string }) => mailId.EmailId)
-          .includes(parseUserData.email);
-
-        return setIsAdminMode(check);
-      }
+    // Passing current hash value to target particular accordion
+    const hashValue = window.location.hash.substring(1);
+    if (hashValue) {
+      handleClick(hashValue);
     }
   }, []);
 
@@ -112,16 +99,6 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     </Box>
   );
 
-  const AddingPlayer = (uniqueEventId: string) => (
-    <AddPlayer
-      isOpen={open}
-      onToggle={handleOpen}
-      uniqueEventId={uniqueEventId}
-      cityId={cityNameId}
-      handlePassName={passName}
-    />
-  );
-
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => (
       <Accordion
@@ -135,20 +112,17 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         }}
       >
         <AccordionSummary
-          expandIcon={
-            <Link to={`#${playingEvent.uniqueEventId}`} className={styles.linkTag}>
-              <ExpandMoreIcon />
-            </Link>
-          }
+          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
           <FlexBox className={styles.flexbox}>
             <FlexBox className={styles.venue}>
-              <Typography className={isPortrait ? styles.mobileVenueName : styles.venueName}>
-                <SportsSoccerIcon className={styles.sportsIcon} />
-                {playingEvent.venueName}
-              </Typography>
+              <VenueName
+                venueName={playingEvent.venueName}
+                date={playingEvent.date}
+                dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
+              />
               {isPortrait ? null : (
                 <JoinNow
                   stripePaymentUrl={playingEvent.stripePaymentUrl}
@@ -196,7 +170,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         {/*Players Details*/}
         <AccordionDetails
           className={
-            highLighted && location.hash.substring(1) === playingEvent.uniqueEventId
+            highLighted && window.location.hash.substring(1) === playingEvent.uniqueEventId
               ? styles.blink
               : ''
           }
@@ -204,12 +178,25 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
           <Box className={styles.box} sx={{ flexGrow: 1 }}>
             <Box className={styles.reservedPlayersContainer}>
               <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-              {isAdminMode ? (
-                <BorderColorIcon className={styles.editIcon} onClick={handleOpen} />
+              {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                <BorderColorIcon
+                  className={styles.editIcon}
+                  onClick={() => handleOpen(playingEvent.uniqueEventId)}
+                />
               ) : null}
             </Box>
 
-            {isAdminMode ? AddingPlayer(playingEvent.uniqueEventId) : null}
+            {userState.login.isAdmin &&
+            userState.login.isLoggedIn &&
+            selectedEventId === playingEvent.uniqueEventId ? (
+              <AddPlayer
+                isOpen={open}
+                onToggle={handleToggle}
+                uniqueEventId={selectedEventId}
+                cityId={cityNameId}
+                handlePassName={passName}
+              />
+            ) : null}
 
             {playingEvent.team_division ? (
               <Box>
@@ -252,20 +239,6 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               </Box>
             )}
           </Box>
-          {playingEvent.waitListPlayers.length > 0 ? (
-            <Box className={styles.box} sx={{ flexGrow: 1 }}>
-              <Typography className={styles.waitListPlayers}>Waitlist</Typography>
-              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {Array.from({ length: playingEvent.waitListPlayersCount }, (_, index) => {
-                  const player =
-                    index < playingEvent.waitListPlayers.length
-                      ? playingEvent.waitListPlayers[index]
-                      : null;
-                  return renderPlayer(player, avatars.length - 1 - index);
-                })}
-              </Grid>
-            </Box>
-          ) : null}
         </AccordionDetails>
       </Accordion>
     ));

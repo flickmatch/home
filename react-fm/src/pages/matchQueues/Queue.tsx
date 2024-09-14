@@ -28,7 +28,11 @@ function MatchQueue() {
     setPlayers((prevData) => [...prevData, name]);
   };
 
+  // Function to convert date strings to a comparable Date object
+  const parseDate = (event: { date: string }) => new Date(event.date);
+
   useEffect(() => {
+    setCitiesData([]);
     const controller = new AbortController();
     const signal = controller.signal;
     const fetchData = async () => {
@@ -45,6 +49,9 @@ function MatchQueue() {
 
         const data = await response.json();
 
+        const citiesOrder = ['San Francisco', 'San Jose', 'Mountain View'];
+        const reorderedCities: CityDetails[] = [];
+
         data.data.cities.forEach(
           (
             city: {
@@ -58,7 +65,11 @@ function MatchQueue() {
             if (cityExists) {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                setCitiesData((prevData) => [...prevData, eventArray]);
+                eventArray.events.sort(
+                  (a: { date: string }, b: { date: string }) =>
+                    parseDate(b).getTime() - parseDate(a).getTime(),
+                ),
+                  reorderedCities.push(eventArray);
               } else {
                 dummyData.data.cities.forEach(
                   (
@@ -70,7 +81,7 @@ function MatchQueue() {
                     j: number,
                   ) => {
                     if (dummyCityData.cityName == city.cityName) {
-                      setCitiesData((prevData) => [...prevData, dummyData.data.cities[j]]);
+                      reorderedCities.push(dummyData.data.cities[j]);
                     }
                   },
                 );
@@ -78,12 +89,29 @@ function MatchQueue() {
             } else {
               if (city.events.length > 0) {
                 const eventArray = data.data.cities[i];
-                setCitiesData((prevData) => [...prevData, eventArray]);
+                eventArray.events.sort(
+                  (a: { date: string }, b: { date: string }) =>
+                    parseDate(b).getTime() - parseDate(a).getTime(),
+                ),
+                  reorderedCities.push(eventArray);
               }
             }
             setShowSkeleton(false);
           },
         );
+
+        // Sort the reorderedCities array to move specified cities to the end
+        reorderedCities.sort((a, b) => {
+          const aIndex = citiesOrder.indexOf(a.cityName);
+          const bIndex = citiesOrder.indexOf(b.cityName);
+
+          if (aIndex === -1 && bIndex === -1) return 0;
+          if (aIndex === -1) return -1;
+          if (bIndex === -1) return 1;
+          return aIndex - bIndex;
+        });
+
+        setCitiesData(reorderedCities);
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {

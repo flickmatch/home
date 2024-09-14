@@ -12,4 +12,14 @@ public class RazorPayInput {
     String uniqueEventId;
     List<PlayerInput> playerInputList;
     String currency;
+    String email;
+    String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

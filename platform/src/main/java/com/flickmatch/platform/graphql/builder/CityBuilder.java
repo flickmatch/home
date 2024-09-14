@@ -24,6 +24,9 @@ public class CityBuilder {
                 .cityId(city.getCityId())
                 .cityName(city.getCityName())
                 .localTimeZone(city.getLocalTimeZone())
+                .currency(city.getCurrency())
+                .iconUrl(city.getIconUrl())
+                .countryCode(city.getCountryCode())
                 .build()).toList();
     }
 
@@ -34,6 +37,9 @@ public class CityBuilder {
                     .cityId(city.get().getCityId())
                     .cityName(city.get().getCityName())
                     .localTimeZone(city.get().getLocalTimeZone())
+                    .currency(city.get().getCurrency())
+                    .iconUrl(city.get().getIconUrl())
+                    .countryCode(city.get().getCountryCode())
                     .build();
         }
         return null;

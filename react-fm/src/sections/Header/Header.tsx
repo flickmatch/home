@@ -21,7 +21,10 @@ import useSidebar from '@/store/sidebar';
 import type { RootState } from '@/store/types';
 
 import styles from './Header.module.scss';
-import { appLogo } from './constants';
+
+//import { appLogo } from './constants';
+
+const appLogo = `${window.location.origin}/fm_rainbow.webp`;
 
 interface UserDetails {
   email: string;
@@ -153,7 +156,7 @@ const Header = () => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img src={appLogo} alt="logo" className={styles.logo} />
+              <img src={appLogo} alt="logo" className={styles.logo} height="52px" width="54.23px" />
             </Typography>
             {userState.login.isAdmin ? (
               <Chip

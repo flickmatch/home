@@ -60,12 +60,12 @@ const routes: Routes = {
     title: 'Rewards',
     icon: AttachMoneyIcon,
   },
-  [Pages.Admin]: {
-    component: asyncComponentLoader(() => import('@/pages/adminPage')),
+  [Pages.AddTurfPage]: {
+    component: asyncComponentLoader(() => import('@/pages/adminMode/addTurf')),
     path: '/add-turf',
   },
   [Pages.AddGame]: {
-    component: asyncComponentLoader(() => import('@/pages/addGame')),
+    component: asyncComponentLoader(() => import('@/pages/adminMode/addGame')),
     path: '/add-game',
   },
   [Pages.RefundCancellation]: {
@@ -103,6 +103,10 @@ const routes: Routes = {
   [Pages.About2]: {
     component: asyncComponentLoader(() => import('@/pages/aboutUs')),
     path: '/about-2',
+  },
+  [Pages.Event]: {
+    component: asyncComponentLoader(() => import('@/pages/eventPage')),
+    path: '/event/:id',
   },
 };
 

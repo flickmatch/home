@@ -1,15 +1,21 @@
-import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { type FC } from 'react';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShareIcon from '@mui/icons-material/Share';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import copy from 'copy-text-to-clipboard';
+
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
+import useNotifications from '@/store/notifications';
 
 import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import mapCityData from '../map';
@@ -33,8 +39,12 @@ export const EventsCard: FC<EventDetails> = ({
   dummyData,
 }) => {
   const isPortrait = useOrientation();
+  const [, notificationsActions] = useNotifications();
+
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+  const currentUrl = window.location.origin;
+  const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -54,7 +64,6 @@ export const EventsCard: FC<EventDetails> = ({
   const dateToString = tomorrow.toString();
   const index = dateToString.indexOf('2024');
   const futureDate = dateToString.substring(0, index);
-
   const startTime = time.split('-')[0]; //8:00PM
   const endTime = time.split('-')[1].split(' ')[0];
   const usTime = (dummyData ? futureDate : date) + ' ' + startTime + ' - ' + endTime;
@@ -75,20 +84,18 @@ export const EventsCard: FC<EventDetails> = ({
 
   const price = () => (
     <Grid item xs={4} sm={4} md={3}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Price{' '}
-          <span>
-            {currency()}
-            {charges}
-          </span>
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Price{' '}
+        <span>
+          {currency()}
+          {charges}
+        </span>
+      </Typography>
     </Grid>
   );
 
   const whatsappGroup = () => (
-    <Grid item xs={4} sm={6} md={4}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Game Group{' '}
         <a href={whatsappGroupLink} target="_blank" rel="noreferrer">
@@ -111,17 +118,16 @@ export const EventsCard: FC<EventDetails> = ({
         timeZone = <span>{usTime}</span>;
       }
     });
+
     return timeZone;
   };
 
   const dateTime = () => (
     <Grid item xs={4} sm={6} md={4}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Date{''}
-          {timeFrame()}
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Date{''}
+        {timeFrame()}
+      </Typography>
     </Grid>
   );
 
@@ -138,25 +144,57 @@ export const EventsCard: FC<EventDetails> = ({
 
   const numberOfPlayers = () => (
     <Grid item xs={4} sm={4} md={4}>
-      <Link to={`#${uniqueEventId}`}>
-        <Typography className={styles.title}>
-          Number of Players <span>{reservedPlayersCount}</span>
-        </Typography>
-      </Link>
+      <Typography className={styles.title}>
+        Number of Players <span>{reservedPlayersCount}</span>
+      </Typography>
     </Grid>
   );
 
   const playersRequired = () =>
     openWaitList > 0 ? (
       <Grid item xs={4} sm={4} md={3}>
-        <Link to={`#${uniqueEventId}`}>
-          <Typography className={styles.title}>
-            Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
-            <span>{openSpots == 0 ? openWaitList : openSpots}</span>
-          </Typography>
-        </Link>
+        <Typography className={styles.title}>
+          Open {openSpots == 0 ? 'Waitlist' : 'Spots'}{' '}
+          <span>{openSpots == 0 ? openWaitList : openSpots}</span>
+        </Typography>
       </Grid>
     ) : null;
+
+  function showSuccessNotification() {
+    notificationsActions.push({
+      options: {
+        content: (
+          <Alert severity="success">
+            <AlertTitle className={styles.alertTitle}>Game link copied</AlertTitle>
+            Send the game link and bring your friends into the game.
+          </Alert>
+        ),
+      },
+    });
+  }
+
+  const copyLink = (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+    copy(fullEventLink);
+    showSuccessNotification();
+  };
+
+  const gameLink = () => (
+    <Grid item xs={4} sm={4} md={6}>
+      <Typography className={styles.title} onClick={copyLink}>
+        {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
+        Game Invite{' '}
+        {/* <Chip label="Copy" color="primary" variant="outlined" className={styles.copyTag} /> */}
+        <Button
+          variant="contained"
+          endIcon={<ShareIcon className={styles.shareIcon} />}
+          className={styles.shareButton}
+        >
+          Share
+        </Button>
+      </Typography>
+    </Grid>
+  );
 
   const joinNow = () =>
     isPortrait ? (
@@ -215,7 +253,10 @@ export const EventsCard: FC<EventDetails> = ({
           {googleLocation()}
           {numberOfPlayers()}
           {playersRequired()}
+
+          {gameLink()}
         </Grid>
+
         {joinNow()}
       </FlexBox>
     </>

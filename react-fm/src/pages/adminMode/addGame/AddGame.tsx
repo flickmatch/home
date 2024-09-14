@@ -31,9 +31,9 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
-import { query } from '../matchQueues/constants';
-import mapCityData from '../matchQueues/map';
-import type { CityDetails, SportsVenues } from '../matchQueues/types/Events.types';
+import { query } from '../../matchQueues/constants';
+import mapCityData from '../../matchQueues/map';
+import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
 
@@ -158,11 +158,11 @@ function AddGame() {
     setTurfName(e.target.value);
   };
 
-  function showErrorNotification() {
+  function showInfoNotification() {
     notificationsActions.push({
       options: {
         content: (
-          <Alert severity="error">
+          <Alert severity="info">
             <AlertTitle className={styles.alertTitle}>
               {cityName === ''
                 ? 'City name'
@@ -191,6 +191,18 @@ function AddGame() {
     });
   }
 
+  function showErrorNotification(error: string) {
+    notificationsActions.push({
+      options: {
+        content: (
+          <Alert severity="error">
+            <AlertTitle className={styles.alertTitle}>{error}</AlertTitle>
+          </Alert>
+        ),
+      },
+    });
+  }
+
   const userInput = {
     input: {
       cityId: cityName,
@@ -205,7 +217,7 @@ function AddGame() {
 
   const addTurf = () => {
     if (cityName === '' || turfName === '' || charges === '' || playersCount === '') {
-      showErrorNotification();
+      showInfoNotification();
     } else {
       fetch(apiUrl, {
         method: 'POST',
@@ -234,17 +246,15 @@ function AddGame() {
       })
         .then((response) => response.json())
         .then((result) => {
-          if (result.errors) {
-            // Handle GraphQL errors
-            throw new Error(result.errors[0].message);
+          if (result.data.createEvent.isSuccessful === false) {
+            showErrorNotification(result.data.createEvent.errorMessage);
           } else {
             showSuccessNotification();
             navigate('/match-queues');
           }
-          // eslint-disable-next-line no-console
-          console.log(result.data);
         })
         .catch((error) => {
+          showErrorNotification(error.message);
           // eslint-disable-next-line no-console
           console.log(error);
         });

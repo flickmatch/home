@@ -23,6 +23,7 @@ type EventDetails = {
   waitListPlayersCount: number;
   stripePaymentUrl: string;
   dummyData: boolean;
+  singleEvent?: boolean;
 };
 
 type CityDetails = {

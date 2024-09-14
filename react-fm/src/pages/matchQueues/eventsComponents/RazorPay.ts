@@ -3,6 +3,8 @@ const createOrder = (
   objectArray: { waNumber: string; name: string }[],
   setAmount: React.Dispatch<React.SetStateAction<number>>,
   currency: string,
+  email: string,
+  phoneNumber: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
   fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -19,6 +21,8 @@ const createOrder = (
                 .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
                 .join(',')}],
                 currency : "${currency}"
+                email : "${email}"
+                phoneNumber: "${phoneNumber}"
             }
         ) {
             orderId
@@ -82,7 +86,7 @@ const displayRazorpay = (
     }
 
     const options = {
-      // key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
+      // key: 'rzp_test_hpeD9rSq9zDwJN', // to be fixed for production
       key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
       amount: amount,
       currency: 'INR',

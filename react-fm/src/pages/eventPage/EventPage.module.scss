@@ -1,0 +1,125 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
+body {
+  font-family: 'Montserrat Alt 1', sans-serif;
+  font-weight: 600;
+}
+.title {
+  font-size: 36px;
+  color: #4ce95a;
+  font-weight: 600;
+  text-align: center;
+  font-family: 'CustomFont', Arial, sans-serif;
+}
+.loading {
+  position: relative;
+  height: 100vh;
+  margin: 4rem;
+}
+
+.parentContainer {
+  position: relative;
+  margin: 1rem;
+}
+
+.portraitContainer {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  position: relative;
+  height: 100vh;
+}
+
+.parent,
+.portraitParent {
+  margin: 100px auto;
+  width: 80%;
+}
+
+.portraitParent {
+  width: 90%;
+}
+
+.accordion {
+  background: #1a1919;
+  margin-bottom: 35px;
+  border-radius: 10px;
+}
+
+.mobileAccordion {
+  margin-bottom: 20px;
+}
+
+.linkTag {
+  color: #fff;
+}
+
+.flexbox {
+  flex-flow: column;
+  width: 100%;
+}
+
+.venue {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.venue Button {
+  background: #4ce95a !important;
+  color: black;
+}
+
+.sportsIcon {
+  margin-right: 5px;
+  color: #4ce95a;
+}
+
+.box {
+  margin-top: 20px;
+  margin-left: 25px;
+}
+
+.reservedPlayersContainer {
+  display: flex;
+}
+
+.editIcon {
+  margin-left: 10px;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 40px;
+  margin-top: -7px;
+}
+
+.editIcon:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.reservedPlayers {
+  color: #4ce95a;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.waitListPlayers {
+  color: #4ce95a;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.blink {
+  background-color: #342e37;
+}

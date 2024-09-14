@@ -10,5 +10,5 @@ import lombok.Setter;
 public class RazorPayOutput {
     private String orderId;
     private boolean isInitiated;
-    long amount;
+    double amount;
 }

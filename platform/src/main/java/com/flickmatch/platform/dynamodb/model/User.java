@@ -6,6 +6,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @DynamoDBTable(tableName="User")
 @ToString
 public class User {
@@ -14,6 +17,8 @@ public class User {
     private String name;
     private String phoneNumber;
     private String userId;
+    private List<String> subscriptionHistory = new ArrayList<>();
+    private Boolean hasActiveSubscription;
 
 
     @DynamoDBHashKey(attributeName="userId")
@@ -51,5 +56,22 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    @DynamoDBAttribute(attributeName="subscriptionHistory")
+    public List<String> getSubscriptionHistory() {
+        return subscriptionHistory;
+    }
+
+    public void setSubscriptionHistory(List<String> subscriptionHistory) {
+        this.subscriptionHistory = subscriptionHistory;
+    }
+
+    @DynamoDBAttribute(attributeName="hasActiveSubscription")
+    public Boolean getHasActiveSubscription() {
+        return hasActiveSubscription;
+    }
+
+    public void setHasActiveSubscription(Boolean hasActiveSubscription) {
+        this.hasActiveSubscription = hasActiveSubscription;
     }
 }

@@ -14,7 +14,7 @@ enum Pages {
   RefundCancellation,
   TermsConditions,
   PrivacyPolicy,
-  Admin,
+  AddTurfPage,
   AddGame,
   ServicesPrivacyPolicy,
   GeneralTermsConditions,
@@ -24,6 +24,7 @@ enum Pages {
   About2,
   Rewards,
   GamePasses,
+  Event,
 }
 
 type PathRouteCustomProps = {

@@ -6,12 +6,13 @@ import com.flickmatch.platform.dynamodb.repository.PaymentRequestRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import lombok.extern.log4j.Log4j2;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class PaymentRequestBuilder {
 
     @Autowired
@@ -26,6 +27,8 @@ public class PaymentRequestBuilder {
                         .waNumber(playerInput.getWaNumber())
                         .build())
                 .collect(Collectors.toList());
+        log.info("Razorpay Merchant Transaction Id", merchantTransactionId);
+        log.info("Players Joined", playerInputList);
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .merchantTransactionId(merchantTransactionId)
                 .uniqueEventId(uniqueEventId)
