@@ -2,6 +2,8 @@ const createOrder = (
   passId: string,
   email: string,
   setAmount: React.Dispatch<React.SetStateAction<number>>,
+  cityName: string,
+  currencyType: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
   fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -15,8 +17,8 @@ const createOrder = (
                 input: {
                     passId: "${passId}"
                     email: "${email}",
-                    currency: "INR",
-                    location: "Noida"
+                    currency: "${currencyType}",
+                    location: "${cityName}"
                 }
             ) {
                 orderId
@@ -32,7 +34,7 @@ const createOrder = (
         // Handle GraphQL errors
         throw new Error(result.errors[0].message);
       } else {
-        setAmount(result.data.initiatePassPayment.amount * 1000);
+        setAmount(result.data.initiatePassPayment.amount);
         return result.data.initiatePassPayment.orderId;
       }
     })

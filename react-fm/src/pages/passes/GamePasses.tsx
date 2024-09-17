@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import type { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
@@ -12,6 +21,9 @@ import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
 import { appLogo } from '../../sections/Header/constants';
+import { query as cityquery } from '../matchQueues/constants';
+import mapCityData from '../matchQueues/map';
+import type { CityDetails } from '../matchQueues/types/Events.types';
 import styles from './GamePasses.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
@@ -26,7 +38,7 @@ type PassDetails = {
   totalGames: number;
 };
 
-const query = JSON.stringify({
+const passquery = JSON.stringify({
   query: `query Passes {
   passes {
   passId
@@ -51,6 +63,11 @@ function GamePasses() {
   const [amount, setAmount] = useState(0);
   const [orderId, setOrderId] = useState('');
   const userState = useSelector((state: RootState) => state);
+  const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
+  const [cityName, setCityName] = useState('');
+  const [currencyType, setCurrencyType] = useState('');
+  const [matchPassId, setMatchPassId] = useState('');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const googleUserInfo = localStorage.getItem('userData');
@@ -68,7 +85,7 @@ function GamePasses() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: query,
+          body: passquery,
         });
         const data = await response.json();
         const passes = data.data.passes;
@@ -88,7 +105,81 @@ function GamePasses() {
     fetchData();
   }, []);
 
-  const buyPass = (passId: string) => {
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          signal: signal,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: cityquery,
+        });
+
+        const data = await response.json();
+
+        setCitiesData(data.data.cities);
+      } catch (error) {
+        if (error instanceof Error) {
+          if (error.name === 'TypeError') {
+            // eslint-disable-next-line no-console
+            console.log(error.message);
+          }
+        }
+      }
+    };
+    fetchData();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  const handleCityName = (e: SelectChangeEvent) => {
+    setCityName(e.target.value);
+
+    mapCityData.forEach((data) => {
+      if (data.cityId === parseInt(e.target.value)) {
+        setCurrencyType(data.currency);
+      }
+    });
+  };
+
+  const sectionFirst = () => (
+    <>
+      <Typography className={styles.fieldTitle}>City Name</Typography>
+      <AccountBalanceIcon className={styles.fieldTitleIcon} />
+
+      <RadioGroup
+        aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue="female"
+        name="radio-buttons-group"
+        onChange={handleCityName}
+      >
+        {citiesData.map((city, i) => (
+          <FormControlLabel
+            value={city.cityName}
+            control={
+              <Radio
+                sx={{
+                  '&, &.Mui-checked': {
+                    color: 'white',
+                  },
+                }}
+              />
+            }
+            label={city.cityName}
+            key={i}
+          />
+        ))}
+      </RadioGroup>
+    </>
+  );
+
+  const buyPass = () => {
     if (!razorPay) {
       const generateUrl = () => {
         fetch(url, {
@@ -100,7 +191,7 @@ function GamePasses() {
             query: `mutation InitiatePassPayment {
             initiatePassPayment(
                 input: {
-                    passId: "${passId}"
+                    passId: "${matchPassId}"
                     email: "${userData.email}",
                     currency: "INR",
                     location: "Noida"
@@ -120,9 +211,6 @@ function GamePasses() {
 
               throw new Error(result.errors[0].message);
             }
-
-            const paymentUrl = result.data.initiatePassPayment.paymentLink;
-            window.open(paymentUrl, '_self');
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -132,7 +220,7 @@ function GamePasses() {
 
       generateUrl();
     } else {
-      createOrder(passId, userData.email, setAmount) // to be changed after local testing
+      createOrder(matchPassId, userData.email, setAmount, cityName, currencyType) // to be changed after local testing
         .then((orderId) => {
           setOrderId(orderId);
         })
@@ -141,6 +229,15 @@ function GamePasses() {
           console.error(error);
         });
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = (passId: string) => {
+    setOpen(true);
+    setMatchPassId(passId);
   };
 
   if (orderId) {
@@ -157,12 +254,13 @@ function GamePasses() {
 
   return (
     <>
-      <Meta title="Add Turf" />
+      <Meta title="Game Passes" />
       {userState.login.isAdmin && userState.login.isLoggedIn ? (
         <Box className={styles.pageContainer}>
           <Typography variant="h3" className={styles.heading}>
             Flickmatch Passes
           </Typography>
+
           <Box className={styles.container}>
             {matchPasses.length > 0
               ? matchPasses.map((matchPass: PassDetails, i: number) => (
@@ -180,7 +278,7 @@ function GamePasses() {
                     </Typography>
                     <Typography className={styles.status}>{matchPass.status}</Typography>
 
-                    <ul className={styles.details}>
+                    <ul className={isPortrait ? styles.portraitDetails : styles.details}>
                       <li>
                         <SportsSoccerIcon className={styles.footballIcon} />
                         Access to all fields
@@ -197,7 +295,7 @@ function GamePasses() {
                     <Box className={styles.ribbon}>
                       <span>For {matchPass.totalDays} Days</span>
                     </Box>
-                    <Button className={styles.buyNow} onClick={() => buyPass(matchPass.passId)}>
+                    <Button className={styles.buyNow} onClick={() => handleOpen(matchPass.passId)}>
                       Buy Now
                     </Button>
                   </Box>
@@ -265,6 +363,18 @@ function GamePasses() {
             Join FPL
           </Button>
         </Box> */}
+            <Dialog open={open} onClose={handleClose} className={styles.diaglogBox}>
+              <DialogTitle>Please select your city</DialogTitle>
+              <DialogContent style={{ width: 350 }}>{sectionFirst()}</DialogContent>
+              <DialogActions>
+                <Button className={styles.cancel} onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button className={styles.pay} onClick={buyPass}>
+                  Pay
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         </Box>
       ) : null}

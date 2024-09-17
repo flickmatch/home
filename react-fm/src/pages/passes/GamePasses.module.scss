@@ -6,6 +6,7 @@
 body {
   margin: 0;
   padding: 20px;
+  width: 100%;
 }
 
 .logo {
@@ -21,6 +22,7 @@ body {
 .pageContainer {
   margin-top: 90px;
   text-align: center;
+  position: relative;
 }
 
 .container {
@@ -31,7 +33,7 @@ body {
   gap: 20px;
   justify-content: center;
   padding: 20px;
-  margin-top: 60px;
+  margin-top: 25px;
 }
 
 .passCard,
@@ -55,10 +57,10 @@ body {
   min-width: 100%;
 }
 
-.passCard:hover {
-  transform: scale(1.1);
-  z-index: 99999;
-}
+// .passCard:hover {
+//   transform: scale(1.1);
+//   z-index: 99999;
+// }
 
 .ribbon {
   width: 150px;
@@ -138,11 +140,6 @@ body {
 }
 
 .status {
-  // font-size: 14px;
-  // color: #fff;
-  // animation: blink 1s infinite;
-  // margin-bottom: 10px;
-  // font-weight: 600;
   font-size: 12px;
   color: #fff;
   background: linear-gradient(90deg, #ff8a00, #e52e71);
@@ -158,6 +155,15 @@ body {
   margin-top: 10px;
 }
 
+.portraitDetails {
+  margin: auto;
+  margin-top: 15px;
+  color: #adb5bd;
+  font-size: 13px;
+  width: 85%;
+  margin-bottom: 20px;
+}
+
 .details {
   margin: auto;
   margin-top: 15px;
@@ -165,6 +171,15 @@ body {
   font-size: 13px;
   width: 55%;
   margin-bottom: 20px;
+}
+
+.portraitDetails li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-size: 14px;
+  letter-spacing: 0.4px;
 }
 
 .details li {
@@ -236,4 +251,41 @@ body {
   margin-right: 8px;
   color: #28a745;
   font-size: 18px;
+}
+
+.diaglogBox {
+  position: absolute;
+  z-index: 99999;
+  width: 100%;
+}
+
+.fieldTitle {
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.fieldTitleIcon {
+  margin-bottom: -4px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.sectionFirst {
+  margin-bottom: 30px;
+}
+
+.cancel,
+.pay {
+  color: black;
+  border: 1px solid #4ce95a;
+  background: #4ce95a;
+  font-weight: 600;
+}
+
+.cancel:hover,
+.pay:hover {
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
 }
