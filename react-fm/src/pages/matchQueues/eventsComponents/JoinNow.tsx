@@ -28,6 +28,8 @@ import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
+const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
+
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
   reservedPlayersCount,
@@ -62,7 +64,39 @@ export const JoinNow: FC<EventDetails> = ({
     }
   }, []);
 
-  // console.log(userData.email);
+  useEffect(() => {
+    if (userData.email) {
+      const fetchData = async () => {
+        const query = JSON.stringify({
+          query: `query HasActiveSubscription {
+        hasActiveSubscription(email: "${userData.email}")
+          }`,
+        });
+
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: query,
+          });
+          const data = await response.json();
+          // eslint-disable-next-line no-console
+          console.log(data);
+        } catch (error) {
+          if (error instanceof Error) {
+            if (error.name === 'TypeError') {
+              // eslint-disable-next-line no-console
+              console.log(error);
+            }
+          }
+        }
+      };
+
+      fetchData();
+    }
+  }, [userData.email]);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
