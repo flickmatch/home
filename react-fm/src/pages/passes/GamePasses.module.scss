@@ -1,0 +1,291 @@
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  width: 100%;
+}
+
+.logo {
+  height: 52px;
+  margin-top: 5px;
+}
+
+.heading {
+  color: #4ce95a;
+  font-family: 'CustomFont', sans-serif;
+}
+
+.pageContainer {
+  margin-top: 90px;
+  text-align: center;
+  position: relative;
+}
+
+.container {
+  //max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+.passCard,
+.portraitPassCard {
+  //background: linear-gradient(145deg, #ffffff, #d4d4d4);
+  //background: #212529;
+  background: linear-gradient(135deg, #2b2b2b, #000);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  position: relative;
+  padding: 30px;
+  flex: 1 1 calc(30% - 40px);
+  box-sizing: border-box;
+  text-align: center;
+  transition: transform 0.3s;
+  overflow: hidden;
+  max-width: 40%;
+}
+
+.portraitPassCard {
+  min-width: 100%;
+}
+
+// .passCard:hover {
+//   transform: scale(1.1);
+//   z-index: 99999;
+// }
+
+.ribbon {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  overflow: hidden;
+}
+
+.ribbon::before,
+.ribbon:after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  display: block;
+  border: 5px solid #ffc107;
+}
+
+.ribbon::before {
+  top: 0;
+  left: 0;
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+
+.ribbon::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+
+.ribbon span {
+  position: absolute;
+  display: block;
+  width: 225px;
+  padding: 15px 0;
+  background-color: #a50034;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  left: -30px;
+  top: 30px;
+  transform: rotate(45deg);
+}
+
+.title {
+  margin-top: 0;
+  color: #f8f9fa;
+  font-size: 24px;
+  font-family: 'CustomFont', sans-serif;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+.subtitle {
+  color: #ced4da;
+  font-size: 16px;
+}
+
+.price {
+  font-size: 28px;
+  color: #28a745;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.currency {
+  font-size: 28px;
+  margin-bottom: -5px;
+  margin-right: -5px;
+}
+
+.status {
+  font-size: 12px;
+  color: #fff;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(255, 138, 0, 0.6);
+  animation: pulse 2s infinite;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.portraitDetails {
+  margin: auto;
+  margin-top: 15px;
+  color: #adb5bd;
+  font-size: 13px;
+  width: 85%;
+  margin-bottom: 20px;
+}
+
+.details {
+  margin: auto;
+  margin-top: 15px;
+  color: #adb5bd;
+  font-size: 13px;
+  width: 55%;
+  margin-bottom: 20px;
+}
+
+.portraitDetails li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+.details li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+.sportsIcon {
+  margin-right: 15px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 138, 0, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 138, 0, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 138, 0, 0.6);
+  }
+}
+
+// @keyframes blink {
+//   0%,
+//   50%,
+//   100% {
+//     opacity: 1;
+//   }
+//   25%,
+//   50%,
+//   75% {
+//     opacity: 0;
+//   }
+// }
+
+.buyNow {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+  margin-top: 15px;
+}
+
+.buyNow:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .passCard {
+    flex: 1 1 calc(45% - 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .passCard {
+    flex: 1 1 100%;
+  }
+}
+
+.footballIcon {
+  margin-right: 8px;
+  color: #28a745;
+  font-size: 18px;
+}
+
+.diaglogBox {
+  position: absolute;
+  z-index: 99999;
+  width: 100%;
+}
+
+.fieldTitle {
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.fieldTitleIcon {
+  margin-bottom: -4px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.sectionFirst {
+  margin-bottom: 30px;
+}
+
+.cancel,
+.pay {
+  color: black;
+  border: 1px solid #4ce95a;
+  background: #4ce95a;
+  font-weight: 600;
+}
+
+.cancel:hover,
+.pay:hover {
+  color: #4ce95a;
+  border: 1px solid #4ce95a;
+}
