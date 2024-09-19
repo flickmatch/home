@@ -59,6 +59,7 @@ public class PassPaymentCallBackController {
                 }
                 else {
                     subscriptionBuilder.createSubscription(email,passId);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
                     log.info("Subscription created successfully.");
                 }
             }
@@ -78,7 +79,7 @@ public class PassPaymentCallBackController {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "https://flickmatch.in/match-queues#");
+        headers.add("Location", "https://flickmatch.in/match-queues");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 

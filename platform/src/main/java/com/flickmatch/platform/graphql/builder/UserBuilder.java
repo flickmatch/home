@@ -101,6 +101,9 @@ public class UserBuilder {
             return false;
         }
         User user = userOpt.get();
+        if(user.getHasActiveSubscription()==null) {
+            return false;
+        }
         return user.getHasActiveSubscription();
     }
 
