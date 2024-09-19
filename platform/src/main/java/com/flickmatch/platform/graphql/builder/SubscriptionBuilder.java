@@ -56,7 +56,10 @@ public class SubscriptionBuilder {
             }
 
             User user = userOpt.get();
-            if(user.getHasActiveSubscription()!=false) {
+//            if(user.getHasActiveSubscription()!=false) {
+//                throw new Exception("The user already has an active subscription");
+//            }
+            if (Boolean.TRUE.equals(user.getHasActiveSubscription())) {
                 throw new Exception("The user already has an active subscription");
             }
 
@@ -83,7 +86,9 @@ public class SubscriptionBuilder {
 //            subscriptionHistory.add(savedSubcription.getSubscriptionId());
 //
 //            user.setSubscriptionHistory(subscriptionHistory);
-            List<String> subscriptionHistory = new ArrayList<>(user.getSubscriptionHistory());
+            List<String> subscriptionHistory = user.getSubscriptionHistory() != null
+                    ? new ArrayList<>(user.getSubscriptionHistory())
+                    : new ArrayList<>();
 
 // Add the new subscription ID to the history
             subscriptionHistory.add(savedSubcription.getSubscriptionId());
