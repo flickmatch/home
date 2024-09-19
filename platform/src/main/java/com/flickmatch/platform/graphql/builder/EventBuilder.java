@@ -105,7 +105,7 @@ public class EventBuilder {
         String startFormattedDate = DateUtil.extractDateFromISOFormatDate(startDate, localTimeZone);
         String endFormattedDate = DateUtil.extractDateFromISOFormatDate(endDate, localTimeZone);
 
-        log.info(String.format("Fetching events for cityId %s from %s to %s", cityId, startFormattedDate, endFormattedDate));
+//        log.info(String.format("Fetching events for cityId %s from %s to %s", cityId, startFormattedDate, endFormattedDate));
 
         // Fetch all events within the date range
         List<Event> eventsInRange = eventRepository.findByEventIdCityIdAndEventIdDateBetween(cityId, startFormattedDate, endFormattedDate);
