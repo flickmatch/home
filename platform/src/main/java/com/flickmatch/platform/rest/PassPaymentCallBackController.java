@@ -79,7 +79,7 @@ public class PassPaymentCallBackController {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "https://flickmatch.in/match-queues#");
+        headers.add("Location", "https://flickmatch.in/match-queues");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 
