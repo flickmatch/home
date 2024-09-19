@@ -142,7 +142,7 @@ function GamePasses() {
     setCityName(e.target.value);
 
     mapCityData.forEach((data) => {
-      if (data.cityId === parseInt(e.target.value)) {
+      if (data.city === e.target.value) {
         setCurrencyType(data.currency);
       }
     });
