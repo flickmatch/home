@@ -159,7 +159,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         Date currentTime = new Date(System.currentTimeMillis());
         // Calculate the date before inDays
         Date dateBeforeInDays = Date.from(currentTime.toInstant().minus(inDays, ChronoUnit.DAYS));
-        log.info(format("Fetching events for cityId %s in the last %d days.", cityId, inDays));
+//        log.info(format("Fetching events for cityId %s in the last %d days.", cityId, inDays));
         eventRepository.findAll().forEach(event -> {
             if (event.getCityId().equals(cityId)) {
                 List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity =

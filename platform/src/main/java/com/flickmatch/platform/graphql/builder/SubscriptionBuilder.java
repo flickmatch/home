@@ -56,7 +56,10 @@ public class SubscriptionBuilder {
             }
 
             User user = userOpt.get();
-            if(user.getHasActiveSubscription()!=false) {
+//            if(user.getHasActiveSubscription()!=false) {
+//                throw new Exception("The user already has an active subscription");
+//            }
+            if (Boolean.TRUE.equals(user.getHasActiveSubscription())) {
                 throw new Exception("The user already has an active subscription");
             }
 
