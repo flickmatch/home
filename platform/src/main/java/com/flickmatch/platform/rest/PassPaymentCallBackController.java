@@ -59,6 +59,7 @@ public class PassPaymentCallBackController {
                 }
                 else {
                     subscriptionBuilder.createSubscription(email,passId);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
                     log.info("Subscription created successfully.");
                 }
             }
