@@ -86,7 +86,9 @@ public class SubscriptionBuilder {
 //            subscriptionHistory.add(savedSubcription.getSubscriptionId());
 //
 //            user.setSubscriptionHistory(subscriptionHistory);
-            List<String> subscriptionHistory = new ArrayList<>(user.getSubscriptionHistory());
+            List<String> subscriptionHistory = user.getSubscriptionHistory() != null
+                    ? new ArrayList<>(user.getSubscriptionHistory())
+                    : new ArrayList<>();
 
 // Add the new subscription ID to the history
             subscriptionHistory.add(savedSubcription.getSubscriptionId());
