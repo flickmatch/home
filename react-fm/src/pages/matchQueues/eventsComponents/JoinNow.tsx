@@ -30,6 +30,15 @@ import { createOrder, displayRazorpay } from './RazorPay';
 
 const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
 
+type subscriptionType = {
+  subscriptionId: string;
+  passId: string;
+  userId: string;
+  expiryDate: number;
+  gamesLeft: number;
+  status: string;
+};
+
 export const JoinNow: FC<EventDetails> = ({
   stripePaymentUrl,
   reservedPlayersCount,
@@ -39,6 +48,8 @@ export const JoinNow: FC<EventDetails> = ({
   venueName,
   uniqueEventId,
   eventId,
+  handlePassName,
+  cityId,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -52,6 +63,15 @@ export const JoinNow: FC<EventDetails> = ({
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>([]);
   const [amount, setAmount] = useState(0);
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [activeSubscriptonData, setActiveSubscriptionData] = useState<subscriptionType>({
+    subscriptionId: '',
+    passId: '',
+    userId: '',
+    expiryDate: 0,
+    gamesLeft: 0,
+    status: '',
+  });
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -82,8 +102,8 @@ export const JoinNow: FC<EventDetails> = ({
             body: query,
           });
           const data = await response.json();
-          // eslint-disable-next-line no-console
-          console.log(data);
+
+          setHasSubscription(data.data.hasActiveSubscription);
         } catch (error) {
           if (error instanceof Error) {
             if (error.name === 'TypeError') {
@@ -97,6 +117,46 @@ export const JoinNow: FC<EventDetails> = ({
       fetchData();
     }
   }, [userData.email]);
+
+  useEffect(() => {
+    const getAcitveSubscription = async () => {
+      const getSubscription = JSON.stringify({
+        query: `query GetActiveSubscription {
+        getActiveSubscription(email: "kshitij@flickmatch.in") {
+        subscriptionId
+        passId
+        userId
+        expiryDate
+        gamesLeft
+        status
+    }}`,
+      });
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: getSubscription,
+        });
+        const subscriptions = await response.json();
+
+        setActiveSubscriptionData(subscriptions.data.getActiveSubscription);
+      } catch (error) {
+        if (error instanceof Error) {
+          if (error.name === 'TypeError') {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          }
+        }
+      }
+    };
+
+    if (hasSubscription) {
+      getAcitveSubscription();
+    }
+  }, [hasSubscription]);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
@@ -143,11 +203,83 @@ export const JoinNow: FC<EventDetails> = ({
     setUserData({ ...userData, phoneNumber: e.target.value });
   };
 
+  const joinGameViaSubscription = () => {
+    fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `mutation {
+        joinEvent(input: {
+              uniqueEventId: "${uniqueEventId}"
+              cityId: "${cityId}"
+              player: {
+                waNumber: "${userData.phoneNumber}"
+                name: "${userData.name}"
+            }
+        }) {
+          isSuccessful
+        }
+    }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          // Handle GraphQL errors
+          alert(result.errors[0].message);
+        } else {
+          if (handlePassName) {
+            handlePassName(userData.name);
+          }
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
   const paymentOptions = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+    history.replaceState(null, '', `#${uniqueEventId}`);
     if (userData.name) {
-      event.stopPropagation();
-      //if (!singleEvent) history.replaceState(null, '', `#${uniqueEventId}`);
-      setShowPaymentOptions(true);
+      if (hasSubscription && activeSubscriptonData.gamesLeft > 0) {
+        // eslint-disable-next-line no-console
+        console.log('Event Joined');
+
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `mutation UpdateSubscription {
+          updateSubscription(subscriptionId: "${activeSubscriptonData.subscriptionId}") {
+              isSuccessful
+              errorMessage
+          }
+      }`,
+          }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.errors) {
+              // Handle GraphQL errors
+              alert(result.errors[0].message);
+              throw new Error(result.errors[0].message);
+            }
+            // eslint-disable-next-line no-console
+            console.log(result.data);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          });
+        joinGameViaSubscription();
+      } else {
+        setShowPaymentOptions(true);
+      }
     } else {
       navigate('/login');
     }
@@ -196,12 +328,6 @@ export const JoinNow: FC<EventDetails> = ({
       alert(`Names are more than openspots. Only ${openSpots} players are required`);
     } else {
       setOpen(false);
-
-      // console.log([
-      //   `${objectArray
-      //     .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
-      //     .join(',')}`,
-      // ]);
 
       if (!razorPay) {
         const generateUrl = () => {
