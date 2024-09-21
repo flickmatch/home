@@ -105,7 +105,6 @@ type Subscription {
   expiryDate: String!
   gamesLeft: Int!
   status: String!
-  cityId: String!
 }
 
 type Pass {
