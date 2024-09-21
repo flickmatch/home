@@ -72,6 +72,7 @@ public class SubscriptionBuilder {
                     .gamesLeft(gamesLeft)
                     .status("Active")
                     .expiryDate(expiryDate)
+                    .cityId(pass.getCityId())
                     .build();
 
             log.error(subscription.toString());
@@ -156,6 +157,7 @@ public class SubscriptionBuilder {
                 .expiryDate(subs.getExpiryDate())
                 .gamesLeft(subs.getGamesLeft())
                 .status(subs.getStatus())
+                .cityId(subs.getCityId())
                 .build();
     }
 

@@ -43,6 +43,7 @@ public class Subscription {
     private Integer gamesLeft;
 
     private String expiryDate;
+    private String cityId;
 
     public String getStatus() {
         return status;
@@ -74,6 +75,14 @@ public class Subscription {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
     // This is a composite key made up of userId and subscriptionId

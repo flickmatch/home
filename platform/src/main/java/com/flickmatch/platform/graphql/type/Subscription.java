@@ -13,6 +13,6 @@ public class Subscription {
     private String passId;
     private String userId;
     private Integer gamesLeft;
-
+    private String cityId;
     private String expiryDate;
 }
