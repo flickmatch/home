@@ -4,8 +4,9 @@ import ReactGA from 'react-ga';
 import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import LockIcon from '@mui/icons-material/Lock';
-import { InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, InputLabel, MenuItem, Select } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
@@ -37,6 +38,7 @@ type subscriptionType = {
   expiryDate: number;
   gamesLeft: number;
   status: string;
+  cityId: number;
 };
 
 export const JoinNow: FC<EventDetails> = ({
@@ -71,6 +73,7 @@ export const JoinNow: FC<EventDetails> = ({
     expiryDate: 0,
     gamesLeft: 0,
     status: '',
+    cityId: 0,
   });
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
@@ -243,8 +246,13 @@ export const JoinNow: FC<EventDetails> = ({
   const paymentOptions = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     history.replaceState(null, '', `#${uniqueEventId}`);
+
     if (userData.name) {
-      if (hasSubscription && activeSubscriptonData.gamesLeft > 0) {
+      if (
+        hasSubscription &&
+        activeSubscriptonData.gamesLeft > 0 &&
+        activeSubscriptonData.cityId === Number(cityId)
+      ) {
         // eslint-disable-next-line no-console
         console.log('Event Joined');
 
@@ -423,9 +431,19 @@ export const JoinNow: FC<EventDetails> = ({
       {openWaitList > 0 ? (
         <>
           {!showPaymentOptions ? (
-            <Button variant="contained" onClick={paymentOptions}>
-              Join {stripePaymentUrl && openSpots > 0 ? 'Game' : 'Waitlist'}
-            </Button>
+            <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
+              <Button
+                className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                startIcon={<LocalOfferIcon />}
+                variant="contained"
+                onClick={() => navigate('/game-passes')}
+              >
+                Get Pass
+              </Button>
+              <Button variant="contained" onClick={paymentOptions}>
+                Join {stripePaymentUrl && openSpots > 0 ? 'Game' : 'Waitlist'}
+              </Button>
+            </Box>
           ) : null}
 
           {showPaymentOptions ? (
