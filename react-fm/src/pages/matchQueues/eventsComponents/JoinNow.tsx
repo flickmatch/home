@@ -125,13 +125,14 @@ export const JoinNow: FC<EventDetails> = ({
     const getAcitveSubscription = async () => {
       const getSubscription = JSON.stringify({
         query: `query GetActiveSubscription {
-        getActiveSubscription(email: "kshitij@flickmatch.in") {
+        getActiveSubscription(email: "${userData.email}") {
         subscriptionId
         passId
         userId
         expiryDate
         gamesLeft
         status
+        cityId
     }}`,
       });
 
