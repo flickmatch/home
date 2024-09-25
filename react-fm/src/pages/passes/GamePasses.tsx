@@ -260,7 +260,7 @@ function GamePasses() {
         <Zoom in={true} style={{ transitionDelay: '300ms' }}>
           <Box className={styles.pageContainer}>
             <Typography variant="h3" className={styles.heading}>
-              Flickmatch Passes
+              Flickmatch Pass
             </Typography>
 
             <Box className={styles.container}>

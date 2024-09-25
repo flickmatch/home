@@ -251,7 +251,7 @@ export const JoinNow: FC<EventDetails> = ({
       if (
         hasSubscription &&
         activeSubscriptonData.gamesLeft > 0 &&
-        activeSubscriptonData.cityId === Number(cityId)
+        Number(activeSubscriptonData.cityId) === Number(cityId)
       ) {
         // eslint-disable-next-line no-console
         console.log('Event Joined');
