@@ -160,6 +160,7 @@ export const JoinNow: FC<EventDetails> = ({
     if (hasSubscription) {
       getAcitveSubscription();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSubscription]);
 
   const openInNewTab = (url: string): void => {
