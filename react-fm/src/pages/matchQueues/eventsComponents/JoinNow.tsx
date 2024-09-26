@@ -125,13 +125,14 @@ export const JoinNow: FC<EventDetails> = ({
     const getAcitveSubscription = async () => {
       const getSubscription = JSON.stringify({
         query: `query GetActiveSubscription {
-        getActiveSubscription(email: "kshitij@flickmatch.in") {
+        getActiveSubscription(email: "${userData.email}") {
         subscriptionId
         passId
         userId
         expiryDate
         gamesLeft
         status
+        cityId
     }}`,
       });
 
@@ -159,6 +160,7 @@ export const JoinNow: FC<EventDetails> = ({
     if (hasSubscription) {
       getAcitveSubscription();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSubscription]);
 
   const openInNewTab = (url: string): void => {
@@ -251,7 +253,7 @@ export const JoinNow: FC<EventDetails> = ({
       if (
         hasSubscription &&
         activeSubscriptonData.gamesLeft > 0 &&
-        activeSubscriptonData.cityId === Number(cityId)
+        Number(activeSubscriptonData.cityId) === Number(cityId)
       ) {
         // eslint-disable-next-line no-console
         console.log('Event Joined');
