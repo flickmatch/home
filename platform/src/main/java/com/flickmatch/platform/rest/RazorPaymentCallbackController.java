@@ -77,8 +77,12 @@ public class RazorPaymentCallbackController {
 
             boolean status =  Utils.verifyPaymentSignature(options, secret);
 
-            log.info("OrderId: {}, PaymentId: {}, Signature: {}", orderId, paymentId, signature);
-            log.info("Secret key: {}", secret);
+            // Sanitize user inputs to avoid log injection
+            String sanitizedOrderId = orderId.replaceAll("[\n\r]", "");
+            String sanitizedPaymentId = paymentId.replaceAll("[\n\r]", "");
+            String sanitizedSignature = signature.replaceAll("[\n\r]", "");
+
+            log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
             log.info("Status: {}", status);
 
             if(status) {
