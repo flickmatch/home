@@ -53,7 +53,8 @@ public class RazorPaymentCallbackController {
                                                   @RequestParam("razorpay_payment_id") String paymentId,
                                                   @RequestParam("razorpay_signature") String signature) {
 
-        log.info("Processing callback for order " + orderId);
+        String sanitizedOrderId = orderId.replace("\n", "").replace("\r", "");
+        log.info("Processing callback for order {}", sanitizedOrderId);
         String uniqueEventId;
         int flag=0;
         try {
@@ -78,7 +79,7 @@ public class RazorPaymentCallbackController {
             boolean status =  Utils.verifyPaymentSignature(options, secret);
 
             // Sanitize user inputs to avoid log injection
-            String sanitizedOrderId = orderId.replaceAll("[\n\r]", "");
+            // String sanitizedOrderId = orderId.replaceAll("[\n\r]", "");
             String sanitizedPaymentId = paymentId.replaceAll("[\n\r]", "");
             String sanitizedSignature = signature.replaceAll("[\n\r]", "");
 
@@ -98,7 +99,7 @@ public class RazorPaymentCallbackController {
 
             else {
                 if (orderId.matches("\\w+")) {
-                    log.info("Invalid signature for orderId : " + orderId);
+                    log.info("Invalid signature for orderId : {}", sanitizedOrderId);
                 } else {
                     log.info("Invalid signature for orderId :[INVALID]");
                 }
@@ -131,10 +132,10 @@ public class RazorPaymentCallbackController {
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
-            headers.add("Location", "https://play.flickmatch.in/event/" + uniqueEventId);
+            headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
         }
         else {
-            headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
+            headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
