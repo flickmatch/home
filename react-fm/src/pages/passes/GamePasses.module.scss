@@ -1,6 +1,14 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 @font-face {
   font-family: 'CustomFont';
   src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -22,11 +30,9 @@ body {
 .pageContainer {
   margin-top: 90px;
   text-align: center;
-  position: relative;
 }
 
 .container {
-  //max-width: 1200px;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
@@ -56,11 +62,6 @@ body {
 .portraitPassCard {
   min-width: 100%;
 }
-
-// .passCard:hover {
-//   transform: scale(1.1);
-//   z-index: 99999;
-// }
 
 .ribbon {
   width: 150px;
@@ -207,19 +208,6 @@ body {
   }
 }
 
-// @keyframes blink {
-//   0%,
-//   50%,
-//   100% {
-//     opacity: 1;
-//   }
-//   25%,
-//   50%,
-//   75% {
-//     opacity: 0;
-//   }
-// }
-
 .buyNow {
   display: inline-block;
   padding: 10px 30px;
@@ -253,39 +241,23 @@ body {
   font-size: 18px;
 }
 
-.diaglogBox {
-  position: absolute;
-  z-index: 99999;
+//cityName and Icons styling
+.cityNameContainer {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.fieldTitle {
-  margin-bottom: 8px;
+.citiesName {
+  color: rgb(76, 233, 90);
+  font-size: 35px;
+  margin-bottom: 15px;
+  margin-right: 8px;
   font-weight: 600;
   display: inline-block;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
-.fieldTitleIcon {
-  margin-bottom: -4px;
-  font-size: 20px;
-  font-weight: 600;
-  margin-left: 5px;
-}
-
-.sectionFirst {
-  margin-bottom: 30px;
-}
-
-.cancel,
-.pay {
-  color: black;
-  border: 1px solid #4ce95a;
-  background: #4ce95a;
-  font-weight: 600;
-}
-
-.cancel:hover,
-.pay:hover {
-  color: #4ce95a;
-  border: 1px solid #4ce95a;
+.citiesImg {
+  height: 44px;
 }
