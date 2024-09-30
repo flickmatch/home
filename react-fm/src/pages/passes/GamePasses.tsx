@@ -15,6 +15,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
+import Zoom from '@mui/material/Zoom';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
@@ -256,127 +257,71 @@ function GamePasses() {
     <>
       <Meta title="Game Passes" />
       {userState.login.isAdmin && userState.login.isLoggedIn ? (
-        <Box className={styles.pageContainer}>
-          <Typography variant="h3" className={styles.heading}>
-            Flickmatch Passes
-          </Typography>
+        <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+          <Box className={styles.pageContainer}>
+            <Typography variant="h3" className={styles.heading}>
+              Flickmatch Pass
+            </Typography>
 
-          <Box className={styles.container}>
-            {matchPasses.length > 0
-              ? matchPasses.map((matchPass: PassDetails, i: number) => (
-                  <Box className={isPortrait ? styles.portraitPassCard : styles.passCard} key={i}>
-                    <img src={appLogo} alt="logo" className={styles.logo} />
-                    <Typography variant="h3" className={styles.title}>
-                      {matchPass.title}
-                    </Typography>
-                    <Typography className={styles.subtitle}>
-                      Pay for {matchPass.totalGames - 2} games, Play {matchPass.totalGames} games
-                    </Typography>
-                    <Typography className={styles.price}>
-                      <CurrencyRupeeIcon className={styles.currency} />
-                      {matchPass.price}
-                    </Typography>
-                    <Typography className={styles.status}>{matchPass.status}</Typography>
+            <Box className={styles.container}>
+              {matchPasses.length > 0
+                ? matchPasses.map((matchPass: PassDetails, i: number) => (
+                    <Box className={isPortrait ? styles.portraitPassCard : styles.passCard} key={i}>
+                      <img src={appLogo} alt="logo" className={styles.logo} />
+                      <Typography variant="h3" className={styles.title}>
+                        {matchPass.title}
+                      </Typography>
+                      <Typography className={styles.subtitle}>
+                        Pay for {matchPass.totalGames - 2} games, Play {matchPass.totalGames} games
+                      </Typography>
+                      <Typography className={styles.price}>
+                        <CurrencyRupeeIcon className={styles.currency} />
+                        {matchPass.price}
+                      </Typography>
+                      <Typography className={styles.status}>{matchPass.status}</Typography>
 
-                    <ul className={isPortrait ? styles.portraitDetails : styles.details}>
-                      <li>
-                        <SportsSoccerIcon className={styles.footballIcon} />
-                        Access to all fields
-                      </li>
-                      <li>
-                        <SportsSoccerIcon className={styles.footballIcon} />
-                        Join game in single click
-                      </li>
-                      <li>
-                        <SportsSoccerIcon className={styles.footballIcon} />
-                        Exclusive member events
-                      </li>
-                    </ul>
-                    <Box className={styles.ribbon}>
-                      <span>For {matchPass.totalDays} Days</span>
+                      <ul className={isPortrait ? styles.portraitDetails : styles.details}>
+                        <li>
+                          <SportsSoccerIcon className={styles.footballIcon} />
+                          Access to all fields
+                        </li>
+                        <li>
+                          <SportsSoccerIcon className={styles.footballIcon} />
+                          Join game in single click
+                        </li>
+                        <li>
+                          <SportsSoccerIcon className={styles.footballIcon} />
+                          Exclusive member events
+                        </li>
+                      </ul>
+                      <Box className={styles.ribbon}>
+                        <span>For {matchPass.totalDays} Days</span>
+                      </Box>
+                      <Button
+                        className={styles.buyNow}
+                        onClick={() => handleOpen(matchPass.passId)}
+                      >
+                        Buy Now
+                      </Button>
                     </Box>
-                    <Button className={styles.buyNow} onClick={() => handleOpen(matchPass.passId)}>
-                      Buy Now
-                    </Button>
-                  </Box>
-                ))
-              : null}
+                  ))
+                : null}
 
-            {/* <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
-          <img src={appLogo} alt="logo" className={styles.logo} />
-          <Typography variant="h3" className={styles.title}>
-            30 days pass
-          </Typography>
-          <Typography className={styles.subtitle}>Unlimited games for 1 month</Typography>
-          <Typography className={styles.price}>
-            <CurrencyRupeeIcon className={styles.currency} />
-            2500
-          </Typography>
-          <Typography className={styles.status}>Active</Typography>
-          <ul className={styles.details}>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />
-              Access to all fields
-            </li>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />
-              Join game in single click
-            </li>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />
-              Exclusive member events
-            </li>
-          </ul>
-          <Box className={styles.ribbon}>
-            <span>Best Value</span>
+              <Dialog open={open} onClose={handleClose} className={styles.diaglogBox}>
+                <DialogTitle>Please select your city</DialogTitle>
+                <DialogContent style={{ width: 350 }}>{sectionFirst()}</DialogContent>
+                <DialogActions>
+                  <Button className={styles.cancel} onClick={handleClose}>
+                    Cancel
+                  </Button>
+                  <Button className={styles.pay} onClick={buyPass}>
+                    Pay
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Box>
           </Box>
-          <Button className={styles.buyNow}>Buy Now</Button>
-        </Box>
-        <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
-          <img src={appLogo} alt="logo" className={styles.logo} />
-          <Typography variant="h3" className={styles.title}>
-            FPL Reward
-          </Typography>
-          <Typography className={styles.subtitle}>
-            Fantasy Premier League winner gets a free game!
-          </Typography>
-          <Typography className={styles.price}>Free</Typography>
-          <Typography className={styles.status}>LIMITED OFFER</Typography>
-
-          <ul className={styles.details}>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />1 free game at any location
-            </li>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />
-              Exclusive for the top winner
-            </li>
-            <li>
-              <SportsSoccerIcon className={styles.footballIcon} />
-              Valid for 1 week
-            </li>
-          </ul>
-          <Button
-            className={styles.buyNow}
-            href="https://fantasy.premierleague.com/leagues/auto-join/nl0zon"
-          >
-            Join FPL
-          </Button>
-        </Box> */}
-            <Dialog open={open} onClose={handleClose} className={styles.diaglogBox}>
-              <DialogTitle>Please select your city</DialogTitle>
-              <DialogContent style={{ width: 350 }}>{sectionFirst()}</DialogContent>
-              <DialogActions>
-                <Button className={styles.cancel} onClick={handleClose}>
-                  Cancel
-                </Button>
-                <Button className={styles.pay} onClick={buyPass}>
-                  Pay
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-        </Box>
+        </Zoom>
       ) : null}
     </>
   );

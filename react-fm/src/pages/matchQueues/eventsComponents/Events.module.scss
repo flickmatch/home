@@ -91,7 +91,7 @@ input:-webkit-autofill:active {
 
 .payViaUpi,
 .payViaCard {
-  margin-right: 30px !important;
+  margin-right: 15px !important;
 }
 
 .paymentOptions {
@@ -167,4 +167,24 @@ label {
 
 .shareButton:hover {
   background: #4ce95a;
+}
+
+.joinNowContainer {
+  position: absolute;
+  right: 0;
+  top: 2px;
+}
+
+.portraitJoinNowContainer {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.getPassButton {
+  margin-right: 15px;
+}
+
+.portraitGetPassButton {
+  margin-right: 15px !important;
 }

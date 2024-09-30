@@ -37,6 +37,7 @@ export const EventsCard: FC<EventDetails> = ({
   waitListPlayersCount,
   stripePaymentUrl,
   dummyData,
+  handlePassName,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
@@ -217,6 +218,7 @@ export const EventsCard: FC<EventDetails> = ({
             team1_color={''}
             team2_color={''}
             dummyData={dummyData}
+            handlePassName={handlePassName}
           />
         </FlexBox>
       </Grid>

@@ -24,6 +24,8 @@ type EventDetails = {
   stripePaymentUrl: string;
   dummyData: boolean;
   singleEvent?: boolean;
+  cityId?: string;
+  handlePassName?: (name: string) => void;
 };
 
 type CityDetails = {
