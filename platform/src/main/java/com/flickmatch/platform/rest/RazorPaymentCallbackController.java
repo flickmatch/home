@@ -43,6 +43,13 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
+    // Utility method to sanitize inputs for logging
+    private String sanitizeForLog(String input) {
+        if (input == null) return ""; // Avoid NullPointerException
+        return input.replaceAll("[\n\r\t]", "_")  // Replace newline, carriage return, tab with underscore
+                .replaceAll("[^\\p{Print}]", "");  // Remove non-printable characters
+    }
+
 
 //    @Autowired
 //    WhatsAppProxy whatsAppProxy;
@@ -53,7 +60,7 @@ public class RazorPaymentCallbackController {
                                                   @RequestParam("razorpay_payment_id") String paymentId,
                                                   @RequestParam("razorpay_signature") String signature) {
 
-        String sanitizedOrderId = orderId.replace("\n", "").replace("\r", "");
+        String sanitizedOrderId = sanitizeForLog(orderId);
         log.info("Processing callback for order {}", sanitizedOrderId);
         String uniqueEventId;
         int flag=0;
@@ -80,8 +87,8 @@ public class RazorPaymentCallbackController {
 
             // Sanitize user inputs to avoid log injection
             // String sanitizedOrderId = orderId.replaceAll("[\n\r]", "");
-            String sanitizedPaymentId = paymentId.replaceAll("[\n\r]", "");
-            String sanitizedSignature = signature.replaceAll("[\n\r]", "");
+            String sanitizedPaymentId = sanitizeForLog(paymentId);
+            String sanitizedSignature = sanitizeForLog(signature);
 
             log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
             log.info("Status: {}", status);
