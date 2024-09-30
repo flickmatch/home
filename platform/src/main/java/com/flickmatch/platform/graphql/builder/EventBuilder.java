@@ -109,7 +109,7 @@ public class EventBuilder {
 
         // Fetch all events within the date range
         List<Event> eventsInRange = eventRepository.findByEventIdCityIdAndEventIdDateBetween(cityId, startFormattedDate, endFormattedDate);
-        System.out.println("total events retrieved= " + eventsInRange.size());
+//        System.out.println("total events retrieved= " + eventsInRange.size());
 
         for (Event event : eventsInRange) {
             String eventDate = event.getDate();

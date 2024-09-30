@@ -43,6 +43,13 @@ public class RazorPaymentCallbackController {
     @Value("${razorpay.key.secret}")
     private String secret;
 
+    // Utility method to sanitize inputs for logging
+    private String sanitizeForLog(String input) {
+        if (input == null) return ""; // Avoid NullPointerException
+        return input.replaceAll("[\n\r\t]", "_")  // Replace newline, carriage return, tab with underscore
+                .replaceAll("[^\\p{Print}]", "");  // Remove non-printable characters
+    }
+
 
 //    @Autowired
 //    WhatsAppProxy whatsAppProxy;
@@ -53,6 +60,8 @@ public class RazorPaymentCallbackController {
                                                   @RequestParam("razorpay_payment_id") String paymentId,
                                                   @RequestParam("razorpay_signature") String signature) {
 
+        String sanitizedOrderId = sanitizeForLog(orderId);
+        log.info("Processing callback for order {}", sanitizedOrderId);
         String uniqueEventId;
         int flag=0;
         try {
@@ -62,6 +71,9 @@ public class RazorPaymentCallbackController {
             options.put("razorpay_payment_id",paymentId);
             options.put("razorpay_signature", signature);
             RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
+
+            log.info("Processing callback for email " + paymentRequest.getEmail() + " and uniqueEventId " + paymentRequest.getUniqueEventId());
+
             uniqueEventId = paymentRequest.getUniqueEventId();
 
             String[] parts =uniqueEventId.split("-");
@@ -72,6 +84,15 @@ public class RazorPaymentCallbackController {
 //            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
             boolean status =  Utils.verifyPaymentSignature(options, secret);
+
+            // Sanitize user inputs to avoid log injection
+            // String sanitizedOrderId = orderId.replaceAll("[\n\r]", "");
+            String sanitizedPaymentId = sanitizeForLog(paymentId);
+            String sanitizedSignature = sanitizeForLog(signature);
+
+            log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
+            log.info("Status: {}", status);
+
             if(status) {
                 if(PAID_STATUS.equals(paymentRequest.getStatus())) {
                     log.info("Ignoring duplicate payments.");
@@ -85,11 +106,13 @@ public class RazorPaymentCallbackController {
 
             else {
                 if (orderId.matches("\\w+")) {
-                    log.info("Invalid signature for orderId : " + orderId);
+                    log.info("Invalid signature for orderId : {}", sanitizedOrderId);
                 } else {
                     log.info("Invalid signature for orderId :[INVALID]");
                 }
             }
+
+            log.info("Proceeding for redirection part.");
 
             try {
                 eventDate = LocalDate.parse(dateStr, formatter);
@@ -107,17 +130,19 @@ public class RazorPaymentCallbackController {
         catch (Exception e) {
             log.error("Error processing callback: {}", e.getLocalizedMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
+//            log.error("Error processing callback: {}", e.getMessage(), e);
         }
+
 
 
 
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
-            headers.add("Location", "https://play.flickmatch.in/event/" + uniqueEventId);
+            headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
         }
         else {
-            headers.add("Location", "https://play.flickmatch.in/match-queues#"+uniqueEventId);
+            headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 

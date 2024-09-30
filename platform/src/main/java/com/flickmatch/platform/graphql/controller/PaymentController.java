@@ -66,6 +66,11 @@ public class PaymentController {
     @Autowired
     RazorPayProxy razorPayProxy;
 
+    public String sanitizeLog(String input) {
+        return input.replaceAll("[\r\n]", "");  // Remove line breaks to prevent log injection
+    }
+
+
 
     String formatDateToString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -86,8 +91,10 @@ public class PaymentController {
             String phoneNumber = input.getPhoneNumber();
 
             // Log the phone number before creating the payment request
-            log.info("Phone number to be saved: {}", phoneNumber);
-            log.info("Razorpay OrderId Generated", orderId);
+//            log.info("Phone number to be saved: {}", phoneNumber);
+//            log.info("Razorpay OrderId Generated", orderId);
+            log.info("Phone number to be saved: {}", sanitizeLog(phoneNumber));
+            log.info("Razorpay OrderId Generated", sanitizeLog(orderId));
 
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
                     input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber,email, phoneNumber);
