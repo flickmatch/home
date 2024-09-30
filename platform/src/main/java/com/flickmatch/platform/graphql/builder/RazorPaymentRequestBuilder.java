@@ -58,12 +58,16 @@ public class RazorPaymentRequestBuilder {
                         .build())
                 .collect(Collectors.toList());
 
+        try {
         // Create or update the user with the provided phone number
         CreateUserInput createUserInput = CreateUserInput.builder()
                 .email(email) // Assuming you have the email from the payment request
                 .phoneNumber(phoneNumber)
                 .build();
         userBuilder.createUser(createUserInput);
+        } catch (Exception e) {
+            log.error("Error creating user: " + e.getMessage());
+        }
 
         // System.out.println(orderId + " " + uniqueEventId + " " + " " + date + " " + location + " " + gameNumber + " " +email);
         RazorPaymentRequest razorPaymentRequest = RazorPaymentRequest.builder()

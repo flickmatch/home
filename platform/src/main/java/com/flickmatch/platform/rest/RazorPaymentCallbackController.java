@@ -53,6 +53,7 @@ public class RazorPaymentCallbackController {
                                                   @RequestParam("razorpay_payment_id") String paymentId,
                                                   @RequestParam("razorpay_signature") String signature) {
 
+        log.info("Processing callback for order " + orderId);
         String uniqueEventId;
         int flag=0;
         try {
@@ -62,6 +63,9 @@ public class RazorPaymentCallbackController {
             options.put("razorpay_payment_id",paymentId);
             options.put("razorpay_signature", signature);
             RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
+
+            log.info("Processing callback for email " + paymentRequest.getEmail() + " and uniqueEventId " + paymentRequest.getUniqueEventId());
+
             uniqueEventId = paymentRequest.getUniqueEventId();
 
             String[] parts =uniqueEventId.split("-");
@@ -72,6 +76,11 @@ public class RazorPaymentCallbackController {
 //            https://razorpay.com/docs/payments/server-integration/java/payment-gateway/build-integration/#generate-signature-on-your-server
 
             boolean status =  Utils.verifyPaymentSignature(options, secret);
+
+            log.info("OrderId: {}, PaymentId: {}, Signature: {}", orderId, paymentId, signature);
+            log.info("Secret key: {}", secret);
+            log.info("Status: {}", status);
+
             if(status) {
                 if(PAID_STATUS.equals(paymentRequest.getStatus())) {
                     log.info("Ignoring duplicate payments.");
@@ -91,6 +100,8 @@ public class RazorPaymentCallbackController {
                 }
             }
 
+            log.info("Proceeding for redirection part.");
+
             try {
                 eventDate = LocalDate.parse(dateStr, formatter);
             } catch (DateTimeParseException e) {
@@ -107,7 +118,9 @@ public class RazorPaymentCallbackController {
         catch (Exception e) {
             log.error("Error processing callback: {}", e.getLocalizedMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing callback");
+//            log.error("Error processing callback: {}", e.getMessage(), e);
         }
+
 
 
 
