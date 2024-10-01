@@ -241,7 +241,11 @@ function GamePasses() {
                           </li>
                         </ul>
                         <Box className={styles.ribbon}>
-                          <span>For {matchPass.pass.totalDays} Days</span>
+                          {matchPass.pass.title === 'Unlimited game pass' ? (
+                            <span style={{ fontWeight: 600 }}>Best Deal</span>
+                          ) : (
+                            <span>For {matchPass.pass.totalDays} Days</span>
+                          )}
                         </Box>
                         <Button
                           className={styles.buyNow}
