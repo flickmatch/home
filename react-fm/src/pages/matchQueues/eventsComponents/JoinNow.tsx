@@ -438,7 +438,7 @@ export const JoinNow: FC<EventDetails> = ({
                 className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
                 startIcon={<LocalOfferIcon />}
                 variant="contained"
-                onClick={() => navigate('/game-passes')}
+                onClick={() => navigate(`/game-passes/${cityId}`)}
               >
                 Get Pass
               </Button>

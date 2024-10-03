@@ -17,7 +17,7 @@ import mapCityData from '../matchQueues/map';
 import styles from './GamePasses.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
-type citiesData = {
+type CitiesData = {
   city: string;
   cityId: number;
   currency: string;
@@ -35,36 +35,20 @@ type PassDetails = {
   totalGames: number;
 };
 
-type CityPassData = {
-  cityDetails: citiesData;
-  pass: PassDetails;
-};
-
-const passquery = JSON.stringify({
-  query: `query Passes {
-  passes {
-  passId
-        cityId
-        passType
-        totalGames
-        totalDays
-        price
-        title
-        status
-  }
-    }`,
-});
-
 const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
 
 function GamePasses() {
   const isPortrait = useOrientation();
-  const [matchPasses, setMatchPasses] = useState<CityPassData[]>([]);
+  const [matchPasses, setMatchPasses] = useState<PassDetails[]>([]);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   const [razorPay, setRazorPay] = useState(true);
   const [amount, setAmount] = useState(0);
   const [orderId, setOrderId] = useState('');
   const userState = useSelector((state: RootState) => state);
+
+  const [passCity, setPassCity] = useState<CitiesData | null>(null);
+  const path = window.location.pathname;
+  const cityId = path.split('/').pop();
 
   useEffect(() => {
     const googleUserInfo = localStorage.getItem('userData');
@@ -82,27 +66,38 @@ function GamePasses() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: passquery,
+          body: JSON.stringify({
+            query: `query PassesForCity {
+            passesForCity(cityId: "${cityId}") {
+                  passId
+                  cityId
+                  passType
+                  totalGames
+                  totalDays
+                  price
+                  title
+                  status
+            }
+              }`,
+          }),
         });
         const data = await response.json();
-        const passes = data.data.passes;
-        const passesData: {
-          cityDetails: { city: string; cityId: number; currency: string; iconUrl: string };
-          pass: PassDetails;
-        }[] = [];
+
+        const passes = data.data.passesForCity;
+
         passes.forEach((pass: PassDetails) => {
           mapCityData.forEach((cityData) => {
             if (cityData.cityId === Number(pass.cityId)) {
-              const passData = { cityDetails: cityData, pass };
-              passesData.push(passData);
+              setPassCity({
+                city: cityData.city,
+                cityId: cityData.cityId,
+                currency: cityData.currency,
+                iconUrl: cityData.iconUrl,
+              });
             }
           });
         });
-        //console.log(passesData);
-        setMatchPasses(passesData);
-
-        // eslint-disable-next-line no-console
-        console.log(passesData);
+        setMatchPasses(passes);
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
@@ -114,7 +109,7 @@ function GamePasses() {
     };
 
     fetchData();
-  }, []);
+  }, [cityId]);
 
   const buyPass = (matchPassId: string, cityName: string, currencyType: string) => {
     if (!razorPay) {
@@ -189,47 +184,45 @@ function GamePasses() {
             <Typography variant="h3" className={styles.heading}>
               Flickmatch Pass
             </Typography>
-
+            {passCity != null ? (
+              <div className={styles.cityNameContainer}>
+                <Typography className={styles.citiesName} key={passCity.cityId}>
+                  {passCity.city}
+                </Typography>
+                <img
+                  className={styles.citiesImg}
+                  src={passCity.iconUrl}
+                  alt={passCity.city}
+                  height="40px"
+                />
+              </div>
+            ) : null}
             <Box className={styles.container}>
-              {matchPasses.length > 0
-                ? matchPasses.map((matchPass: CityPassData, i: number) => (
-                    <>
-                      <div className={styles.cityNameContainer}>
-                        <Typography
-                          className={styles.citiesName}
-                          key={matchPass.cityDetails.cityId}
-                        >
-                          {matchPass.cityDetails.city}
-                        </Typography>
-                        <img
-                          className={styles.citiesImg}
-                          src={matchPass.cityDetails.iconUrl}
-                          alt={matchPass.cityDetails.city}
-                          height="40px"
-                        />
-                      </div>
+              <>
+                {matchPasses.length > 0 && passCity != null
+                  ? matchPasses.map((matchPass: PassDetails, i: number) => (
                       <Box
                         className={isPortrait ? styles.portraitPassCard : styles.passCard}
                         key={i}
                       >
                         <img src={appLogo} alt="logo" className={styles.logo} />
                         <Typography variant="h3" className={styles.title}>
-                          {matchPass.pass.title}
+                          {matchPass.title}
                         </Typography>
                         <Typography className={styles.subtitle}>
-                          Pay for {matchPass.pass.totalGames - 2} games, Play{' '}
-                          {matchPass.pass.totalGames} games
+                          Pay for {matchPass.totalGames - 2} games, Play {matchPass.totalGames}{' '}
+                          games
                         </Typography>
                         <Typography className={styles.price}>
                           <CurrencyRupeeIcon className={styles.currency} />
-                          {matchPass.pass.price}
+                          {matchPass.price}
                         </Typography>
-                        <Typography className={styles.status}>{matchPass.pass.status}</Typography>
+                        <Typography className={styles.status}>{matchPass.status}</Typography>
 
                         <ul className={isPortrait ? styles.portraitDetails : styles.details}>
                           <li>
                             <SportsSoccerIcon className={styles.footballIcon} />
-                            Access to all fields
+                            No Waitlist
                           </li>
                           <li>
                             <SportsSoccerIcon className={styles.footballIcon} />
@@ -241,28 +234,24 @@ function GamePasses() {
                           </li>
                         </ul>
                         <Box className={styles.ribbon}>
-                          {matchPass.pass.title === 'Unlimited game pass' ? (
+                          {matchPass.title === 'Unlimited game pass' ? (
                             <span style={{ fontWeight: 600 }}>Best Deal</span>
                           ) : (
-                            <span>For {matchPass.pass.totalDays} Days</span>
+                            <span>For {matchPass.totalDays} Days</span>
                           )}
                         </Box>
                         <Button
                           className={styles.buyNow}
                           onClick={() =>
-                            buyPass(
-                              matchPass.pass.passId,
-                              matchPass.cityDetails.city,
-                              matchPass.cityDetails.currency,
-                            )
+                            buyPass(matchPass.passId, passCity.city, passCity.currency)
                           }
                         >
                           Buy Now
                         </Button>
                       </Box>
-                    </>
-                  ))
-                : null}
+                    ))
+                  : null}
+              </>
             </Box>
           </Box>
         </Zoom>
