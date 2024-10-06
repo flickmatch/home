@@ -1,6 +1,6 @@
-.avatar {
-  margin-right: 15px;
-}
+// .avatar {
+//   margin-right: 15px;
+// }
 
 .personAvatar {
   height: 43px;
@@ -12,10 +12,44 @@
 .grid {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  padding: 6px !important;
+  margin-top: 30px;
+  height: 80px;
 }
 
 .playerNames {
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+  margin-top: 5px;
+}
+
+.addName {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 6px !important;
+  margin-top: 30px;
+  height: 80px;
+  //background: #333;
+  border-radius: 15px;
+  margin-top: 40px;
+}
+
+.addIcon {
+  height: 40px;
+  width: 40px;
+  margin-right: 9px;
+  margin-left: -3px;
+}
+
+.profilePic {
+  border: 1.5px solid #4ce95a;
+  border-radius: 50%;
+
+  padding: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
