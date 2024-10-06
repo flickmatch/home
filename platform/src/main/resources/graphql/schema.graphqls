@@ -117,6 +117,9 @@ type Pass {
   price: Int!
   title: String!
   status: String!
+  features: [String]
+  description: String
+  payForGames: Int
 }
 
 type User {
