@@ -40,7 +40,7 @@ public class PassBuilder {
     }
 
     Pass mapEventToGQLType(com.flickmatch.platform.dynamodb.model.Pass ddbPass) {
-        System.out.println(ddbPass.toString());
+//        System.out.println(ddbPass.toString());
 
         return Pass.builder()
                 .passId(ddbPass.getPassId())
