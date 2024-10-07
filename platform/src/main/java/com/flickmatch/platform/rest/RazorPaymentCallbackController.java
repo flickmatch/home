@@ -99,7 +99,7 @@ public class RazorPaymentCallbackController {
                 }
                 else {
                     eventBuilder.joinEventRazorPayment(paymentRequest);
-                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest,paymentId, true);
                     log.info("Player joined event successfully.");
                 }
             }
@@ -139,10 +139,10 @@ public class RazorPaymentCallbackController {
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
-            headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
+            headers.add("Location", "https://flickmatch.in/event/" + sanitizedOrderId);
         }
         else {
-            headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
+            headers.add("Location", "https://flickmatch.in/match-queues#" + sanitizedOrderId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 

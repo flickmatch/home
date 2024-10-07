@@ -26,9 +26,17 @@ public class RazorPaymentRequest {
     private String location;
     private String gameNumber;
     private String email;
-
+    private String paymentId;
     private String phoneNumber;
 
+    @DynamoDBHashKey(attributeName="paymentId")
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
 
     @DynamoDBHashKey(attributeName="orderId")
     public String getOrderId() {
