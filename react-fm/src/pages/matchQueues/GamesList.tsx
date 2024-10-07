@@ -157,6 +157,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               reservedPlayersCount={playingEvent.reservedPlayersCount}
               waitListPlayersCount={playingEvent.waitListPlayersCount}
               eventId={cityName}
+              cityId={cityNameId}
               reservedPlayersList={playingEvent.reservedPlayersList}
               venueName={playingEvent.venueName}
               waitListPlayers={playingEvent.waitListPlayers}
