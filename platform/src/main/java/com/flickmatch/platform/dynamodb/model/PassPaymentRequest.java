@@ -20,4 +20,5 @@ public class PassPaymentRequest {
     private Double amount;
     private String userId;
     private String passId;
+    private String paymentId;
 }

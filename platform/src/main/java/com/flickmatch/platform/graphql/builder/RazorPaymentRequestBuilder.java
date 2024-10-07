@@ -84,10 +84,11 @@ public class RazorPaymentRequestBuilder {
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }
 
-    public RazorPaymentRequest updatePaymentRequestStatus(final RazorPaymentRequest razorPaymentRequest,
+    public RazorPaymentRequest updatePaymentRequestStatus(final RazorPaymentRequest razorPaymentRequest,final String paymentId,
                                                      final boolean isSuccessful) {
         if (isSuccessful) {
             razorPaymentRequest.setStatus("PAID");
+            razorPaymentRequest.setPaymentId(paymentId);
         } else {
             razorPaymentRequest.setStatus("FAILED");
         }
