@@ -29,7 +29,7 @@ public class RazorPaymentRequest {
     private String paymentId;
     private String phoneNumber;
 
-    @DynamoDBHashKey(attributeName="paymentId")
+    @DynamoDBAttribute(attributeName="paymentId")
     public String getPaymentId() {
         return paymentId;
     }

@@ -53,10 +53,11 @@ public class PassPaymentRequestBuilder {
         return passPaymentRequestRepository.save(paymentRequest);
     }
 
-    public PassPaymentRequest updatePaymentRequestStatus(final PassPaymentRequest passPaymentRequest,
+    public PassPaymentRequest updatePaymentRequestStatus(final PassPaymentRequest passPaymentRequest,final String paymentId,
                                                          final boolean isSuccessful) {
         if (isSuccessful) {
             passPaymentRequest.setStatus("PAID");
+            passPaymentRequest.setPaymentId(paymentId);
         } else {
             passPaymentRequest.setStatus("FAILED");
         }
