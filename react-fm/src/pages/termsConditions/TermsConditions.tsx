@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import Meta from '@/components/Meta';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-import Footer from '@/sections/Footer';
 
 import styles from './TermsConditions.module.scss';
 
@@ -105,7 +104,6 @@ function TermsConditions() {
           </li>
         </ul>
       </FlexBox>
-      <Footer />
     </>
   );
 }

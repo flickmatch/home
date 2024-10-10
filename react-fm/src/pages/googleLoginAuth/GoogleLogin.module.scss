@@ -2,12 +2,6 @@
   display: none;
 }
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
-  font-display: swap;
-}
-
 .container {
   margin: 0;
   padding: 0;
@@ -92,20 +86,20 @@
   font-size: 30px;
   font-weight: 500;
   color: #4ce95a;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .getStarted {
   font-size: 28px;
   font-weight: 600;
   padding-top: 20px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .signUpImmediately {
   padding-top: 20px;
   font-weight: 500;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .loginSignupButton {
@@ -121,14 +115,14 @@
   color: #4ce95a;
   border: 1px solid #4ce95a;
   padding: 10px 20px;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
   font-weight: 600;
   height: 55px;
   max-width: 100%;
   margin-bottom: 10px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .portraitGoogleLoginButton {
@@ -155,7 +149,7 @@
   background-color: #111;
   font-weight: 600;
   padding: 0px 8px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   letter-spacing: 1px;
 }
 
@@ -194,5 +188,5 @@
   color: #606264;
   font-weight: 500;
   cursor: pointer;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }

@@ -24,7 +24,6 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
 import { apiUrl } from '../constants';
-import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
@@ -49,7 +48,6 @@ export const JoinNow: FC<EventDetails> = ({
   waitListPlayersCount,
   venueName,
   uniqueEventId,
-  eventId,
   handlePassName,
   cityId,
   //singleEvent,
@@ -57,6 +55,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  const [currency, setCurrencyCode] = useState('');
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
@@ -79,12 +78,38 @@ export const JoinNow: FC<EventDetails> = ({
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
 
+  const currencyFromCity = async () => {
+    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query City {
+        city(cityId: ${cityId}) {
+        cityId
+        cityName
+        localTimeZone
+        countryCode
+        iconUrl
+    }
+  }`,
+      }),
+    });
+
+    const data = await response.json();
+    setCurrencyCode(data.data.city.countryCode);
+  };
+
   useEffect(() => {
     const googleUserInfo = localStorage.getItem('userData');
     if (googleUserInfo) {
       const data = JSON.parse(googleUserInfo);
       setUserData({ name: data.name, email: data.email, phoneNumber: '' });
     }
+
+    currencyFromCity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -186,19 +211,6 @@ export const JoinNow: FC<EventDetails> = ({
       },
     });
   }
-
-  const getCurrency = () => {
-    let currency = 'INR';
-    mapCityData.forEach((cityData) => {
-      // console.log(cityData.currency);
-      if (cityData.city === eventId) {
-        currency = cityData.currency;
-      }
-    });
-    return currency;
-  };
-
-  const currency = getCurrency();
 
   const handleEmail = (e: { target: { value: string } }) => {
     setUserData({ ...userData, email: e.target.value });

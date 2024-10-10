@@ -32,7 +32,6 @@ import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
 import { query } from '../../matchQueues/constants';
-import mapCityData from '../../matchQueues/map';
 import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
 import { apiUrl, gameQueuesApiUrl } from './constants';
@@ -143,14 +142,32 @@ function AddGame() {
     fetchData();
   };
 
-  const handleCityName = (e: SelectChangeEvent) => {
+  const handleCityName = async (e: SelectChangeEvent) => {
     setCityName(e.target.value);
     setMapLink('');
-    mapCityData.forEach((data) => {
-      if (data.cityId === parseInt(e.target.value)) {
-        setCurrencyType(data.currency);
-      }
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query City {
+        city(cityId: ${e.target.value}) {
+        cityId
+        cityName
+        localTimeZone
+        countryCode
+        iconUrl
+    }
+}`,
+      }),
     });
+
+    const data = await response.json();
+
+    if (data.data.city.cityId === e.target.value) {
+      setCurrencyType(data.data.city.countryCode);
+    }
     fetchSportsTurf(e.target.value);
   };
 

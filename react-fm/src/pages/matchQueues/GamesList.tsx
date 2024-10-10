@@ -82,7 +82,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   }, []);
 
   const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
+    <PlayerDetails displayName={player ? player.displayName : 'Add Name'} index={i} key={i} />
   );
 
   const teamA = (teamAColor: string) => (
@@ -157,6 +157,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               reservedPlayersCount={playingEvent.reservedPlayersCount}
               waitListPlayersCount={playingEvent.waitListPlayersCount}
               eventId={cityName}
+              cityId={cityNameId}
               reservedPlayersList={playingEvent.reservedPlayersList}
               venueName={playingEvent.venueName}
               waitListPlayers={playingEvent.waitListPlayers}
