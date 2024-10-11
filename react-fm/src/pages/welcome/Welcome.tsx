@@ -123,7 +123,7 @@ function Welcome() {
         </Box>
       </Box>
       <Box className={isPortrait ? styles.portraitInfoSection : styles.infoSection}>
-        <Typography className={styles.question}>What is FLICKMATCH ?</Typography>
+        <Typography className={styles.question}>What is Flickmatch ?</Typography>
         <Box className={isPortrait ? styles.mottoMobileSection : styles.mottoSection}>
           <Typography className={styles.whatIsFlickmatch}>
             Flickmatch is a location-based platform that connects users with nearby sports games and
