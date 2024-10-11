@@ -28,6 +28,16 @@ public class RazorPaymentRequest {
     private String email;
     private String paymentId;
     private String phoneNumber;
+    private String redirectUrl;
+
+    @DynamoDBAttribute(attributeName="redirectUrl")
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
 
     @DynamoDBAttribute(attributeName="paymentId")
     public String getPaymentId() {

@@ -23,6 +23,7 @@ const createOrder = (
                 currency : "${currency}"
                 email : "${email}"
                 phoneNumber: "${phoneNumber}"
+                redirectUrl: "${window.location.origin}"
             }
         ) {
             orderId

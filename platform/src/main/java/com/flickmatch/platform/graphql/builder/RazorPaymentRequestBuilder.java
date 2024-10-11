@@ -49,7 +49,8 @@ public class RazorPaymentRequestBuilder {
                                                     final String location,
                                                     final String gameNumber,
                                                     final String email,
-                                                    final String phoneNumber) {
+                                                    final String phoneNumber,
+                                                    final String redirectUrl) {
 
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
@@ -80,6 +81,7 @@ public class RazorPaymentRequestBuilder {
                 .gameNumber(gameNumber)
                 .email(email)
                 .phoneNumber(phoneNumber)
+                .redirectUrl(redirectUrl)
                 .build();
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }
