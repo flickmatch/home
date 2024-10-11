@@ -1,4 +1,5 @@
-import { type FC } from 'react';
+import { type FC, useEffect } from 'react';
+import { useState } from 'react';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -18,7 +19,6 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
 import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
-import mapCityData from '../map';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -29,6 +29,7 @@ export const EventsCard: FC<EventDetails> = ({
   time,
   uniqueEventId,
   eventId,
+  cityId,
   venueName,
   venueLocationLink,
   reservedPlayersCount,
@@ -41,6 +42,7 @@ export const EventsCard: FC<EventDetails> = ({
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
+  const [currencyCode, setCurrencyCode] = useState('');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -71,15 +73,42 @@ export const EventsCard: FC<EventDetails> = ({
 
   time = time.split('GMT')[0].trim();
 
+  useEffect(() => {
+    currencyFromCity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const currencyFromCity = async () => {
+    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query City {
+        city(cityId: ${cityId}) {
+        cityId
+        cityName
+        localTimeZone
+        countryCode
+        iconUrl
+    }
+  }`,
+      }),
+    });
+
+    const data = await response.json();
+    setCurrencyCode(data.data.city.countryCode);
+  };
+
   const currency = () => {
     let currencyIcon;
-    mapCityData.forEach((cityData) => {
-      if (cityData.city === eventId && cityData.currency === 'INR') {
-        currencyIcon = <CurrencyRupeeSharp className={styles.currencyIcon} />;
-      } else if (cityData.city === eventId && cityData.currency === 'USD') {
-        currencyIcon = <AttachMoneyIcon className={styles.currencyIcon} />;
-      }
-    });
+    if (currencyCode === 'INR') {
+      currencyIcon = <CurrencyRupeeSharp className={styles.currencyIcon} />;
+    } else {
+      currencyIcon = <AttachMoneyIcon className={styles.currencyIcon} />;
+    }
+
     return currencyIcon;
   };
 
@@ -108,17 +137,16 @@ export const EventsCard: FC<EventDetails> = ({
 
   const timeFrame = () => {
     let timeZone;
-    mapCityData.forEach((cityData) => {
-      if (cityData.city === eventId && cityData.currency === 'INR') {
-        timeZone = (
-          <span>
-            {dummyData ? futureDate : date} {'    '} {time}
-          </span>
-        );
-      } else if (cityData.city === eventId && cityData.currency === 'USD') {
-        timeZone = <span>{usTime}</span>;
-      }
-    });
+
+    if (currencyCode === 'INR') {
+      timeZone = (
+        <span>
+          {dummyData ? futureDate : date} {'    '} {time}
+        </span>
+      );
+    } else {
+      timeZone = <span>{usTime}</span>;
+    }
 
     return timeZone;
   };
