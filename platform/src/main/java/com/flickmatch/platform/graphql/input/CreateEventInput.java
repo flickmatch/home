@@ -13,4 +13,5 @@ public class CreateEventInput {
     String sportsVenueId;
     Integer reservedPlayersCount;
     Integer waitListPlayersCount;
+    Double credits;
 }

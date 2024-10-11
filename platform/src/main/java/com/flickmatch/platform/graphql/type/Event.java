@@ -27,4 +27,5 @@ public class Event {
     private List<Player> reservedPlayersList;
     private List<Player> waitListPlayers;
     private String stripePaymentUrl;
+    private Double credits;
 }

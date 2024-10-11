@@ -267,6 +267,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
     }
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
+//        System.out.println(input.getCredits());
         List<SportsVenue> sportsVenueList = sportsVenueBuilder.getSportsVenues(input.getCityId());
         String currency = getCurrencyForCity(input.getCityId());
         Optional<SportsVenue> sportsVenue = sportsVenueList.stream()
@@ -287,6 +288,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
                 .playerDetailsList(new ArrayList<>())
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
+                .credits(input.getCredits())
                 .build();
         return eventDetails;
     }
@@ -342,6 +344,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .waitListPlayers(waitListPlayers)
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
                 .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
+                .credits(eventDetails.getCredits())
                 .build();
     }
 
