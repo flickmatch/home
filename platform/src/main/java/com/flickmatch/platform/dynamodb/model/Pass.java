@@ -44,7 +44,7 @@ public class Pass {
 
     private Integer totalGames;
 
-    private Integer payForGames;
+//    private Integer payForGames;
 
     private Integer totalDays;
 
@@ -80,13 +80,13 @@ public class Pass {
         this.description = description;
     }
 
-    public Integer getPayForGames() {
-        return payForGames;
-    }
-
-    public void setPayForGames(Integer payForGames) {
-        this.payForGames = payForGames;
-    }
+//    public Integer getPayForGames() {
+//        return payForGames;
+//    }
+//
+//    public void setPayForGames(Integer payForGames) {
+//        this.payForGames = payForGames;
+//    }
 
     public Integer getTotalGames() {
         return totalGames;

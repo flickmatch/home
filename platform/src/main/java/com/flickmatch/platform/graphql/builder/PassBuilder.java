@@ -54,7 +54,7 @@ public class PassBuilder {
                 .price(ddbPass.getPrice())
                 .description(ddbPass.getDescription())
                 .features(ddbPass.getFeatures())
-                .payForGames(ddbPass.getPayForGames())
+//                .payForGames(ddbPass.getPayForGames())
                 .build();
     }
 

@@ -18,7 +18,6 @@ public class Pass {
     private String title;
     private Double price;
     private String status;
-    private Integer payForGames;
     private List<String> features;
     private String description;
 
