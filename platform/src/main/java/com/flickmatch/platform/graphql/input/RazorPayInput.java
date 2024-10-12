@@ -14,6 +14,7 @@ public class RazorPayInput {
     String currency;
     String email;
     String phoneNumber;
+    String redirectUrl;
 
     public String getPhoneNumber() {
         return phoneNumber;

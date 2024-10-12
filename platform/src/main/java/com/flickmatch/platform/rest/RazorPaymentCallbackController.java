@@ -62,7 +62,7 @@ public class RazorPaymentCallbackController {
 
         String sanitizedOrderId = sanitizeForLog(orderId);
         log.info("Processing callback for order {}", sanitizedOrderId);
-        String uniqueEventId;
+        String uniqueEventId,redirectUrl;
         int flag=0;
         try {
             RazorpayClient razorpay = razorPayProxy.getRazorPayClient();
@@ -75,7 +75,7 @@ public class RazorPaymentCallbackController {
             log.info("Processing callback for email " + paymentRequest.getEmail() + " and uniqueEventId " + paymentRequest.getUniqueEventId());
 
             uniqueEventId = paymentRequest.getUniqueEventId();
-
+            redirectUrl = paymentRequest.getRedirectUrl();
             String[] parts =uniqueEventId.split("-");
             String dateStr =  parts[1] + "-" + parts[2] + "-" + parts[3];
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -99,7 +99,7 @@ public class RazorPaymentCallbackController {
                 }
                 else {
                     eventBuilder.joinEventRazorPayment(paymentRequest);
-                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
+                    paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest,paymentId, true);
                     log.info("Player joined event successfully.");
                 }
             }
@@ -139,10 +139,18 @@ public class RazorPaymentCallbackController {
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
-            headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
+            if (redirectUrl != null && redirectUrl.contains("play")) {
+                headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
+            }
+            else
+                headers.add("Location", "https://flickmatch.in/event/" + sanitizedOrderId);
         }
         else {
-            headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
+            if (redirectUrl != null && redirectUrl.contains("play")) {
+                headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
+            }
+            else
+                headers.add("Location", "https://flickmatch.in/match-queues#" + sanitizedOrderId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
