@@ -3,6 +3,7 @@ package com.flickmatch.platform.graphql.controller;
 import com.flickmatch.platform.dynamodb.model.Subscription;
 import com.flickmatch.platform.graphql.builder.SubscriptionBuilder;
 import com.flickmatch.platform.graphql.input.CreateSubscriptionInput;
+import com.flickmatch.platform.graphql.input.UpdateSubscriptionInput;
 import com.flickmatch.platform.graphql.type.MutationResult;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class SubscriptionController {
         return subscriptionBuilder.createSubscription(email, passId);
     }
     @MutationMapping
-    public MutationResult updateSubscription(@Argument String subscriptionId) {
-        return subscriptionBuilder.updateSubscription(subscriptionId);
+    public MutationResult updateSubscription(@Argument UpdateSubscriptionInput input) {
+        return subscriptionBuilder.updateSubscription(input.getSubscriptionId(),input.getCredits());
     }
 
     @QueryMapping

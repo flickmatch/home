@@ -121,7 +121,6 @@ public class SubscriptionBuilder {
                 throw new Exception("The user with the given email does not exist");
             }
             User user = userOpt.get();
-//            System.out.println(userOpt.get().getName());
             if (!user.getHasActiveSubscription()) {
                 throw new Exception("The user does not have an active subscription");
             }
@@ -161,7 +160,7 @@ public class SubscriptionBuilder {
                 .build();
     }
 
-    public MutationResult updateSubscription(String subscriptionId) {
+    public MutationResult updateSubscription(String subscriptionId,Double credits) {
         try {
             Subscription subs = subscriptionRepository.findBySubscriptionId(subscriptionId).get();
             String passId = subs.getPassId();
@@ -186,7 +185,7 @@ public class SubscriptionBuilder {
                 }
             }
             else if(type.equals("LimitedGames")) {
-                Integer totalGamesLeft = subs.getGamesLeft()-1;
+                Integer totalGamesLeft = (int) (subs.getGamesLeft()-credits);
 //                System.out.println("TotalGamesLeft: "+totalGamesLeft);
                 subs.setGamesLeft(totalGamesLeft);
                 if(totalGamesLeft==0) {
