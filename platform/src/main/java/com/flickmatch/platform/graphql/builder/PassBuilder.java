@@ -40,7 +40,8 @@ public class PassBuilder {
     }
 
     Pass mapEventToGQLType(com.flickmatch.platform.dynamodb.model.Pass ddbPass) {
-        System.out.println(ddbPass.toString());
+//        System.out.println(ddbPass.toString());
+//        System.out.println(ddbPass.getPayForGames());
 
         return Pass.builder()
                 .passId(ddbPass.getPassId())
@@ -51,6 +52,9 @@ public class PassBuilder {
                 .totalDays(ddbPass.getTotalDays())
                 .title(ddbPass.getTitle())
                 .price(ddbPass.getPrice())
+                .description(ddbPass.getDescription())
+                .features(ddbPass.getFeatures())
+//                .payForGames(ddbPass.getPayForGames())
                 .build();
     }
 
