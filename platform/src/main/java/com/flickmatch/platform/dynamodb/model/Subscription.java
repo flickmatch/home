@@ -40,7 +40,7 @@ public class Subscription {
 
     private String passId;
 
-    private Integer gamesLeft;
+    private Double gamesLeft;
 
     private String expiryDate;
     private String cityId;
@@ -61,11 +61,11 @@ public class Subscription {
         this.passId = passId;
     }
 
-    public Integer getGamesLeft() {
+    public Double getGamesLeft() {
         return gamesLeft;
     }
 
-    public void setGamesLeft(Integer gamesLeft) {
+    public void setGamesLeft(Double gamesLeft) {
         this.gamesLeft = gamesLeft;
     }
 

@@ -11,7 +11,7 @@ public class Pass {
     private String passId;
     private String cityId;
     private String passType;
-    private Integer totalGames;
+    private Double totalGames;
     private Integer totalDays;
     private String title;
     private Double price;

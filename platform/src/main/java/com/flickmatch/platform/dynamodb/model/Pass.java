@@ -40,7 +40,7 @@ public class Pass {
 
     private String passType;
 
-    private Integer totalGames;
+    private Double totalGames;
 
     private Integer totalDays;
 
@@ -58,11 +58,11 @@ public class Pass {
         this.passType = passType;
     }
 
-    public Integer getTotalGames() {
+    public Double getTotalGames() {
         return totalGames;
     }
 
-    public void setTotalGames(Integer totalGames) {
+    public void setTotalGames(Double totalGames) {
         this.totalGames = totalGames;
     }
 
