@@ -48,7 +48,7 @@ public class SubscriptionBuilderTest {
         // Sample DynamoDB Pass object
         testPass = new Pass();
         testPass.setPassId("pass-id");
-        testPass.setTotalGames(10);
+        testPass.setTotalGames(10.0);
         testPass.setTotalDays(30);
 
         // Sample DynamoDB User object
@@ -63,7 +63,7 @@ public class SubscriptionBuilderTest {
         testSubscription.setSubscriptionId("subscription-id");
         testSubscription.setPassId("pass-id");
         testSubscription.setUserId("user-id");
-        testSubscription.setGamesLeft(10);
+        testSubscription.setGamesLeft(10.0);
         testSubscription.setStatus("Active");
         testSubscription.setExpiryDate(LocalDate.now().plusDays(30).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
