@@ -140,17 +140,17 @@ public class RazorPaymentCallbackController {
         HttpHeaders headers = new HttpHeaders();
         if (flag==1) {
             if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/event/" + sanitizedOrderId);
+                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
             }
             else
-                headers.add("Location", "https://flickmatch.in/event/" + sanitizedOrderId);
+                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
         }
         else {
             if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/match-queues#" + sanitizedOrderId);
+                headers.add("Location", "https://play.flickmatch.in/match-queues#" +uniqueEventId);
             }
             else
-                headers.add("Location", "https://flickmatch.in/match-queues#" + sanitizedOrderId);
+                headers.add("Location", "https://flickmatch.in/match-queues#" +uniqueEventId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
