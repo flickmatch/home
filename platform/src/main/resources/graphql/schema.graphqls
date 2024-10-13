@@ -80,6 +80,7 @@ input RazorPayInput {
   currency: String!
   email: String!
   phoneNumber: String!
+  redirectUrl: String!
 }
 
 input UpdateSubscriptionInput {
@@ -123,6 +124,9 @@ type Pass {
   price: Int!
   title: String!
   status: String!
+  features: [String]
+  description: String
+#  payForGames: Int
 }
 
 type User {

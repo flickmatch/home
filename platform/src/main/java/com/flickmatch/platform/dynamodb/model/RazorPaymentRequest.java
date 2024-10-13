@@ -26,9 +26,27 @@ public class RazorPaymentRequest {
     private String location;
     private String gameNumber;
     private String email;
-
+    private String paymentId;
     private String phoneNumber;
+    private String redirectUrl;
 
+    @DynamoDBAttribute(attributeName="redirectUrl")
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    @DynamoDBAttribute(attributeName="paymentId")
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
 
     @DynamoDBHashKey(attributeName="orderId")
     public String getOrderId() {

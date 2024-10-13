@@ -138,7 +138,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 City city = cityBuilder.getCity(event.getCityId());
                 String localTimeZone = city.getLocalTimeZone();
                 com.flickmatch.platform.graphql.type.Event gqlEvent = mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, parsedUniqueEventId.cityId());
-                log.info("Event found: " + gqlEvent.toString());
+//                log.info("Event found: " + gqlEvent.toString());
                 return gqlEvent;
             } else {
                 log.info("Index out of bounds for event details list. Index: " + parsedUniqueEventId.index() + ", List size: " + eventDetailsList.size());

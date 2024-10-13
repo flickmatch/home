@@ -182,6 +182,7 @@ public class SubscriptionBuilder {
                     subs.setStatus("Expired");
                     subs.setGamesLeft(0.0);
                     user.setHasActiveSubscription(false);
+                    throw new Exception("The subscription has already expired! Please try again refreshing the page.");
                 }
             }
             else if(type.equals("LimitedGames")) {

@@ -6,6 +6,8 @@ import com.flickmatch.platform.dynamodb.model.Event.EventId;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 
 @DynamoDBTable(tableName = "Pass")
 @Builder
@@ -42,6 +44,8 @@ public class Pass {
 
     private Double totalGames;
 
+//    private Integer payForGames;
+
     private Integer totalDays;
 
     private String title;
@@ -49,6 +53,16 @@ public class Pass {
     private Double price;
 
     private String status;
+    private List<String> features;
+    private String description;
+
+    public List<String> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(List<String> features) {
+        this.features = features;
+    }
 
     public String getPassType() {
         return passType;
@@ -73,6 +87,7 @@ public class Pass {
     public void setTotalDays(Integer totalDays) {
         this.totalDays = totalDays;
     }
+
 
     public String getTitle() {
         return title;

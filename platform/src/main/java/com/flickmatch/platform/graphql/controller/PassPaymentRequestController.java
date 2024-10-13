@@ -17,6 +17,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.text.html.Option;
+import java.math.BigDecimal;
 
 @Controller
 @Log4j2
@@ -37,7 +38,8 @@ public class PassPaymentRequestController {
     public RazorPayOutput initiatePassPayment(@Argument PassPaymentInput input) {
         try {
             RazorpayClient client = razorPayProxy.getRazorPayClient();
-            Double amount = passBuilder.getAmountForPass(input.getPassId());
+            //   *100 to convert to paisa
+            Double amount = passBuilder.getAmountForPass(input.getPassId())*100;
             String location = input.getLocation();
             String currency = input.getCurrency();
             String orderId = passPaymentRequestBuilder.createOrderRequest(client,currency, amount);
