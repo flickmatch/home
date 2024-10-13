@@ -192,7 +192,7 @@ public class SubscriptionBuilder {
                 Double totalGamesLeft = subs.getGamesLeft()-credits;
 //                System.out.println("TotalGamesLeft: "+totalGamesLeft);
                 subs.setGamesLeft(totalGamesLeft);
-                if(totalGamesLeft<=.5) {
+                if(totalGamesLeft<=1.0) {
                     subs.setStatus("Expired");
                     subs.setExpiryDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                     user.setHasActiveSubscription(false);
