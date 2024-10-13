@@ -56,6 +56,7 @@ public class Pass {
     private List<String> features;
     private String description;
 
+
     public List<String> getFeatures() {
         return features;
     }
@@ -79,6 +80,15 @@ public class Pass {
     public void setTotalGames(Double totalGames) {
         this.totalGames = totalGames;
     }
+
+    public String getDescription() {
+        return passType;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     public Integer getTotalDays() {
         return totalDays;
