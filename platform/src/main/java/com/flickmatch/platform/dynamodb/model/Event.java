@@ -76,9 +76,20 @@ public class Event {
         String venueLocationLink;
         List<PlayerDetails> playerDetailsList;
         String stripePaymentUrl;
+        Double credits;
 
         String currency;
         //TODO:Add status attribute
+
+
+        @DynamoDBAttribute(attributeName = "credits")
+        public Double getCredits() {
+            return credits;
+        }
+
+        public void setCredits(Double credits) {
+            this.credits = credits;
+        }
 
         @DynamoDBAttribute(attributeName = "currency")
         public String getCurrency() {

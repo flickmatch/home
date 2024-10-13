@@ -42,7 +42,7 @@ public class Pass {
 
     private String passType;
 
-    private Integer totalGames;
+    private Double totalGames;
 
 //    private Integer payForGames;
 
@@ -55,6 +55,7 @@ public class Pass {
     private String status;
     private List<String> features;
     private String description;
+
 
     public List<String> getFeatures() {
         return features;
@@ -72,6 +73,14 @@ public class Pass {
         this.passType = passType;
     }
 
+    public Double getTotalGames() {
+        return totalGames;
+    }
+
+    public void setTotalGames(Double totalGames) {
+        this.totalGames = totalGames;
+    }
+
     public String getDescription() {
         return passType;
     }
@@ -80,21 +89,6 @@ public class Pass {
         this.description = description;
     }
 
-//    public Integer getPayForGames() {
-//        return payForGames;
-//    }
-//
-//    public void setPayForGames(Integer payForGames) {
-//        this.payForGames = payForGames;
-//    }
-
-    public Integer getTotalGames() {
-        return totalGames;
-    }
-
-    public void setTotalGames(Integer totalGames) {
-        this.totalGames = totalGames;
-    }
 
     public Integer getTotalDays() {
         return totalDays;

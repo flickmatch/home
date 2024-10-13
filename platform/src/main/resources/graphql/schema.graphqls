@@ -18,7 +18,7 @@ type Mutation {
   initiateRazorPayment(input: RazorPayInput!): RazorPayOutput!
   initiatePassPayment(input: PassPaymentInput!): PassPaymentOutput!
   createSubscription(input: CreateSubscriptionInput!): MutationResult!
-  updateSubscription(subscriptionId: String!): MutationResult!
+  updateSubscription(input: UpdateSubscriptionInput!): MutationResult!
   """
   This is not implemented yet, will be required for P1
   """
@@ -41,6 +41,7 @@ input CreateEventInput {
   sportsVenueId: ID!
   reservedPlayersCount: Int!
   waitListPlayersCount: Int!
+  credits: Float
   """
   Not required for P0, will be defaulted to FOOTBALL
   """
@@ -82,6 +83,11 @@ input RazorPayInput {
   redirectUrl: String!
 }
 
+input UpdateSubscriptionInput {
+  subscriptionId: String!
+  credits: Float!
+}
+
 input PassPaymentInput {
   passId: ID!
   email: String!
@@ -104,7 +110,7 @@ type Subscription {
   passId: String!
   userId: String!
   expiryDate: String!
-  gamesLeft: Int!
+  gamesLeft: Float!
   status: String!
   cityId: String!
 }
@@ -233,6 +239,7 @@ type EVENT {
   We need to make this mandatory in future
   """
   stripePaymentUrl: String
+  credits: Float
 }
 
 type Player {

@@ -37,7 +37,7 @@ public class PassBuilderTest {
         ddbPass1.setPassId("1");
         ddbPass1.setCityId("1");
         ddbPass1.setPassType("LimitedGames");
-        ddbPass1.setTotalGames(10);
+        ddbPass1.setTotalGames(10.0);
         ddbPass1.setTotalDays(3000);
         ddbPass1.setPrice(1000.0);
         ddbPass1.setTitle("10 games pass");
@@ -47,7 +47,7 @@ public class PassBuilderTest {
         ddbPass2.setPassId("2");
         ddbPass2.setCityId("2");
         ddbPass2.setPassType("LimitedDays");
-        ddbPass2.setTotalGames(1000);
+        ddbPass2.setTotalGames(1000.0);
         ddbPass2.setTotalDays(30);
         ddbPass2.setPrice(1000.0);
         ddbPass2.setTitle("30 days pass");
@@ -57,7 +57,7 @@ public class PassBuilderTest {
         ddbPass2.setPassId("2");
         ddbPass2.setCityId("2");
         ddbPass2.setPassType("LimitedDays");
-        ddbPass2.setTotalGames(10000);
+        ddbPass2.setTotalGames(10000.0);
         ddbPass2.setTotalDays(30);
         ddbPass2.setPrice(100.0);
         ddbPass2.setTitle("30 days pass");

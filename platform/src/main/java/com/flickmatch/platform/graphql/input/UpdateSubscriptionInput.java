@@ -8,10 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UpdateSubscriptionInput {
-    private String status;
     private String subscriptionId;
-    private String passId;
-    private String userId;
-    private Integer gamesLeft;
-    private String expiryDate;
+    private Double credits;
 }
