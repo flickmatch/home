@@ -95,6 +95,7 @@ const EventPage: React.FC = () => {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [cityNameId, setCityNameId] = useState('');
 
   useEffect(() => {
     if (!id) {
@@ -107,6 +108,8 @@ const EventPage: React.FC = () => {
       try {
         setLoading(true);
         const eventData = await getEventById(id);
+
+        setCityNameId(id.substring(0, 1));
         setEvent(eventData);
       } catch (err: any) {
         setError(err.message);
@@ -163,7 +166,7 @@ const EventPage: React.FC = () => {
   }
 
   const renderPlayer = (player: PlayerDetail | null | undefined, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : '(Empty)'} index={i} key={i} />
+    <PlayerDetails displayName={player ? player.displayName : 'Add Name'} index={i} key={i} />
   );
 
   if (loading) {
@@ -230,6 +233,7 @@ const EventPage: React.FC = () => {
                   team2_color={''}
                   dummyData={false}
                   singleEvent={true}
+                  cityId={cityNameId}
                 />
               )}
             </FlexBox>
@@ -250,6 +254,7 @@ const EventPage: React.FC = () => {
               team1_color={''}
               team2_color={''}
               dummyData={false}
+              cityId={cityNameId}
             />
           </FlexBox>
         </AccordionSummary>
