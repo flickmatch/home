@@ -48,6 +48,7 @@ const query = JSON.stringify({
             displayName
           }
           stripePaymentUrl
+          credits
         }
       }
     }`,

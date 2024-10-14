@@ -26,6 +26,7 @@ type EventDetails = {
   singleEvent?: boolean;
   cityId?: string;
   handlePassName?: (name: string) => void;
+  credits?: number;
 };
 
 type CityDetails = {

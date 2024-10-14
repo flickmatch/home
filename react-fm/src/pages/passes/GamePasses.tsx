@@ -102,7 +102,7 @@ function GamePasses() {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
             // eslint-disable-next-line no-console
-            console.log(error);
+            alert(error);
           }
         }
       }
@@ -141,12 +141,11 @@ function GamePasses() {
             if (result.errors) {
               // Handle GraphQL errors
 
-              throw new Error(result.errors[0].message);
+              alert(result.errors[0].message);
             }
           })
           .catch((error) => {
-            // eslint-disable-next-line no-console
-            console.log(error);
+            alert(error);
           });
       };
 
@@ -157,8 +156,7 @@ function GamePasses() {
           setOrderId(orderId);
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
+          alert(error);
         });
     }
   };

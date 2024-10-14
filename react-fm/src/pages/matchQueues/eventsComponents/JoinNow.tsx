@@ -52,6 +52,7 @@ export const JoinNow: FC<EventDetails> = ({
   eventId,
   handlePassName,
   cityId,
+  credits,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -265,7 +266,7 @@ export const JoinNow: FC<EventDetails> = ({
           },
           body: JSON.stringify({
             query: `mutation UpdateSubscription {
-          updateSubscription(subscriptionId: "${activeSubscriptonData.subscriptionId}") {
+          updateSubscription(subscriptionId: "${activeSubscriptonData.subscriptionId}", credits: "${credits}") {
               isSuccessful
               errorMessage
           }
@@ -294,6 +295,15 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login');
     }
   };
+
+  //   mutation UpdateSubscription {
+  //     updateSubscription(
+  //         input: { subscriptionId: "c6e1139c-b280-4d58-b072-cd53440c9da8", credits: 1.0 }
+  //     ) {
+  //         isSuccessful
+  //         errorMessage
+  //     }
+  // }
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();

@@ -143,6 +143,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                   handlePassName={passName}
                   cityId={cityNameId}
+                  credits={playingEvent.credits ? playingEvent.credits : 0}
                 />
               )}
             </FlexBox>

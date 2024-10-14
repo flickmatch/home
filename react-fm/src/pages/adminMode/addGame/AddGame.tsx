@@ -51,6 +51,7 @@ function AddGame() {
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [credits, setCredits] = useState('');
 
   const userState = useSelector((state: RootState) => state);
 
@@ -215,7 +216,23 @@ function AddGame() {
     },
   };
 
-  const addTurf = () => {
+  //   mutation CreateEvent {
+  //     createEvent(input: {
+  //             cityId: "2"
+  //             startTime: "2024-10-14T23:30+0530"
+  //             endTime: "2024-10-14T23:40+0530"
+  //             charges: 200
+  //             sportsVenueId: 1682693424596
+  //             reservedPlayersCount: 12
+  //             waitListPlayersCount: 5
+  //             credits: 1.5
+  //         }) {
+  //         isSuccessful
+  //         errorMessage
+  //     }
+  // }
+
+  const addGame = () => {
     if (cityName === '' || turfName === '' || charges === '' || playersCount === '') {
       showInfoNotification();
     } else {
@@ -235,6 +252,7 @@ function AddGame() {
                       endTime: "${endTime + '+0530'}",
                       reservedPlayersCount: ${parseInt(playersCount)},
                       waitListPlayersCount: ${parseInt(playersCount) / 2},
+                      credits: ${parseInt(credits)}
                   }
               ) {
                 isSuccessful
@@ -409,7 +427,7 @@ function AddGame() {
 
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
-      <Button variant="contained" color="success" className={styles.createButton} onClick={addTurf}>
+      <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
         Add Game
       </Button>
     </Box>
@@ -441,6 +459,21 @@ function AddGame() {
                 {sectionThird()}
                 {sectionDatetime()}
                 {sectionChargesPlayers()}
+
+                <FlexBox className={styles.startEndPicker}>
+                  <Box>
+                    <Typography className={styles.fieldTitle}>Game Credits</Typography>
+                  </Box>
+                  <TextField
+                    fullWidth
+                    value={credits}
+                    onChange={(e) => setCredits(e.target.value)}
+                    placeholder="Credits"
+                    id="fullWidth"
+                    type="number"
+                  />
+                </FlexBox>
+                <br />
                 {sectionFourth()}
               </FlexBox>
             </FlexBox>
