@@ -261,3 +261,25 @@ body {
 .citiesImg {
   height: 44px;
 }
+
+.testingPurposeTag {
+  height: 26px;
+  border: 0.5px solid #4ce95a;
+  color: #cc1313;
+  position: absolute;
+  left: 35px;
+  font-weight: 600;
+  animation: blinkAnimation 2s infinite;
+}
+
+@keyframes blinkAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -216,22 +216,6 @@ function AddGame() {
     },
   };
 
-  //   mutation CreateEvent {
-  //     createEvent(input: {
-  //             cityId: "2"
-  //             startTime: "2024-10-14T23:30+0530"
-  //             endTime: "2024-10-14T23:40+0530"
-  //             charges: 200
-  //             sportsVenueId: 1682693424596
-  //             reservedPlayersCount: 12
-  //             waitListPlayersCount: 5
-  //             credits: 1.5
-  //         }) {
-  //         isSuccessful
-  //         errorMessage
-  //     }
-  // }
-
   const addGame = () => {
     if (cityName === '' || turfName === '' || charges === '' || playersCount === '') {
       showInfoNotification();
