@@ -444,14 +444,16 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
-              <Button
-                className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
-                startIcon={<LocalOfferIcon />}
-                variant="contained"
-                onClick={() => navigate(`/game-passes/${cityId}`)}
-              >
-                Get Pass
-              </Button>
+              {!hasSubscription ? (
+                <Button
+                  className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                  startIcon={<LocalOfferIcon />}
+                  variant="contained"
+                  onClick={() => navigate(`/game-passes/${cityId}`)}
+                >
+                  Get Pass
+                </Button>
+              ) : null}
               <Button variant="contained" onClick={paymentOptions}>
                 Join {stripePaymentUrl && openSpots > 0 ? 'Game' : 'Waitlist'}
               </Button>
