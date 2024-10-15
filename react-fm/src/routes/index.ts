@@ -17,7 +17,7 @@ const routes: Routes = {
   },
   [Pages.GamePasses]: {
     component: asyncComponentLoader(() => import('@/pages/passes')),
-    path: '/game-passes',
+    path: '/game-passes/:cityId',
   },
   [Pages.Welcome]: {
     component: asyncComponentLoader(() => import('@/pages/welcome')),

@@ -46,6 +46,7 @@ const Header = () => {
     name: '',
     picture: '',
   });
+  const [hasActiveSubscription, setActiveSubscription] = useState(false);
 
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
   const userState = useSelector((state: RootState) => state);
@@ -58,6 +59,8 @@ const Header = () => {
       if (storedData) {
         const parseData = JSON.parse(storedData);
         setUserData(parseData);
+
+        fetchData(parseData.email);
 
         if (parseData.email === 'admin@flickmatch.in') {
           dispatch(settingAdmin(true));
@@ -79,6 +82,35 @@ const Header = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, userState.login.isLoggedIn]);
+
+  const fetchData = async (email: string) => {
+    //const emailFormat = email.replace(/^'|'$/g, '');
+    try {
+      const response = await fetch(
+        'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `query HasActiveSubscription {
+          hasActiveSubscription(email: "${email}")
+            }`,
+          }),
+        },
+      );
+      const data = await response.json();
+      setActiveSubscription(data.data.hasActiveSubscription);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'TypeError') {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -158,6 +190,14 @@ const Header = () => {
             <Typography component={Link} to="/home">
               <img src={appLogo} alt="logo" className={styles.logo} height="52px" width="54.23px" />
             </Typography>
+            {hasActiveSubscription ? (
+              <Chip
+                label="prime"
+                color="primary"
+                variant="outlined"
+                className={styles.adminModeTag}
+              />
+            ) : null}
             {userState.login.isAdmin ? (
               <Chip
                 label="admin mode"
