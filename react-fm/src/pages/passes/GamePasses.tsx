@@ -121,15 +121,16 @@ function GamePasses() {
   }, [cityId]);
 
   const buyPass = (matchPassId: string, cityName: string, currencyType: string) => {
-    if (!razorPay) {
-      const generateUrl = () => {
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `mutation InitiatePassPayment {
+    if (userState.login.isLoggedIn) {
+      if (!razorPay) {
+        const generateUrl = () => {
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `mutation InitiatePassPayment {
             initiatePassPayment(
                 input: {
                     passId: "${matchPassId}"
@@ -143,30 +144,34 @@ function GamePasses() {
                 amount
             }
         }`,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
+            }),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.errors) {
+                // Handle GraphQL errors
 
-              alert(result.errors[0].message);
-            }
+                alert(result.errors[0].message);
+              }
+            })
+            .catch((error) => {
+              alert(error);
+            });
+        };
+
+        generateUrl();
+      } else {
+        createOrder(matchPassId, userData.email, setAmount, cityName, currencyType) // to be changed after local testing
+          .then((orderId) => {
+            setOrderId(orderId);
           })
           .catch((error) => {
             alert(error);
           });
-      };
-
-      generateUrl();
+      }
     } else {
-      createOrder(matchPassId, userData.email, setAmount, cityName, currencyType) // to be changed after local testing
-        .then((orderId) => {
-          setOrderId(orderId);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      alert('Please login to proceed with the purchase.');
+      navigate('/login');
     }
   };
 
@@ -185,147 +190,139 @@ function GamePasses() {
   return (
     <>
       <Meta title="Game Passes" />
-      {userState.login.isLoggedIn ? (
-        <Zoom in={true} style={{ transitionDelay: '300ms' }}>
-          <Box className={styles.pageContainer}>
-            <Typography variant="h3" className={styles.heading}>
-              Flickmatch Pass
-            </Typography>
-            {passCity != null ? (
-              <div className={styles.cityNameContainer}>
-                <Typography className={styles.citiesName} key={passCity.cityId}>
-                  {passCity.city}
-                </Typography>
-                <img
-                  className={styles.citiesImg}
-                  src={passCity.iconUrl}
-                  alt={passCity.city}
-                  height="40px"
-                />
-              </div>
-            ) : null}
-            <Box className={styles.container}>
-              <>
-                {matchPasses.length > 0 && passCity != null
-                  ? matchPasses.map((matchPass: PassDetails, i: number) => (
-                      <Box
-                        className={isPortrait ? styles.portraitPassCard : styles.passCard}
-                        key={i}
-                      >
-                        <img src={appLogo} alt="logo" className={styles.logo} />
-                        <Typography variant="h3" className={styles.title}>
-                          {matchPass.title ? matchPass.title : dummyPassData.data.pass[0].title}
-                        </Typography>
-                        <Typography className={styles.subtitle}>
-                          {matchPass.description
-                            ? matchPass.description
-                            : dummyPassData.data.pass[0].description}
-                        </Typography>
-                        <Typography className={styles.price}>
-                          <CurrencyRupeeIcon className={styles.currency} />
-                          {matchPass.price ? matchPass.price : dummyPassData.data.pass[0].price}
-                        </Typography>
-                        <Typography className={styles.status}>
-                          {matchPass.status ? matchPass.status : dummyPassData.data.pass[0].status}
-                        </Typography>
 
-                        <ul className={isPortrait ? styles.portraitDetails : styles.details}>
-                          {matchPass.features
-                            ? matchPass.features.map((feature, i) => (
-                                <li key={i}>
-                                  <SportsSoccerIcon className={styles.footballIcon} />
-                                  {feature}
-                                </li>
-                              ))
-                            : dummyPassData.data.pass[0].features.map((feature, i) => (
-                                <li key={i}>
-                                  <SportsSoccerIcon className={styles.footballIcon} />
-                                  {feature}
-                                </li>
-                              ))}
-                        </ul>
-                        <Box className={styles.ribbon}>
-                          {matchPass.title === 'Unlimited game pass' ? (
-                            <span style={{ fontWeight: 600 }}>Best Deal</span>
-                          ) : (
-                            <span>
-                              For{' '}
-                              {matchPass.totalDays
-                                ? matchPass.totalDays
-                                : dummyPassData.data.pass[0].totalDays}{' '}
-                              Days
-                            </span>
-                          )}
-                        </Box>
-                        <Button
-                          className={styles.buyNow}
-                          onClick={() =>
-                            buyPass(matchPass.passId, passCity.city, passCity.currency)
-                          }
-                        >
-                          Buy Now
-                        </Button>
+      <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+        <Box className={styles.pageContainer}>
+          <Typography variant="h3" className={styles.heading}>
+            Flickmatch Pass
+          </Typography>
+          {passCity != null ? (
+            <div className={styles.cityNameContainer}>
+              <Typography className={styles.citiesName} key={passCity.cityId}>
+                {passCity.city}
+              </Typography>
+              <img
+                className={styles.citiesImg}
+                src={passCity.iconUrl}
+                alt={passCity.city}
+                height="40px"
+              />
+            </div>
+          ) : null}
+          <Box className={styles.container}>
+            <>
+              {matchPasses.length > 0 && passCity != null
+                ? matchPasses.map((matchPass: PassDetails, i: number) => (
+                    <Box className={isPortrait ? styles.portraitPassCard : styles.passCard} key={i}>
+                      <img src={appLogo} alt="logo" className={styles.logo} />
+                      <Typography variant="h3" className={styles.title}>
+                        {matchPass.title ? matchPass.title : dummyPassData.data.pass[0].title}
+                      </Typography>
+                      <Typography className={styles.subtitle}>
+                        {matchPass.description
+                          ? matchPass.description
+                          : dummyPassData.data.pass[0].description}
+                      </Typography>
+                      <Typography className={styles.price}>
+                        <CurrencyRupeeIcon className={styles.currency} />
+                        {matchPass.price ? matchPass.price : dummyPassData.data.pass[0].price}
+                      </Typography>
+                      <Typography className={styles.status}>
+                        {matchPass.status ? matchPass.status : dummyPassData.data.pass[0].status}
+                      </Typography>
+
+                      <ul className={isPortrait ? styles.portraitDetails : styles.details}>
+                        {matchPass.features
+                          ? matchPass.features.map((feature, i) => (
+                              <li key={i}>
+                                <SportsSoccerIcon className={styles.footballIcon} />
+                                {feature}
+                              </li>
+                            ))
+                          : dummyPassData.data.pass[0].features.map((feature, i) => (
+                              <li key={i}>
+                                <SportsSoccerIcon className={styles.footballIcon} />
+                                {feature}
+                              </li>
+                            ))}
+                      </ul>
+                      <Box className={styles.ribbon}>
+                        {matchPass.title === 'Unlimited game pass' ? (
+                          <span style={{ fontWeight: 600 }}>Best Deal</span>
+                        ) : (
+                          <span>
+                            For{' '}
+                            {matchPass.totalDays
+                              ? matchPass.totalDays
+                              : dummyPassData.data.pass[0].totalDays}{' '}
+                            Days
+                          </span>
+                        )}
                       </Box>
-                    ))
-                  : null}
-
-                {userState.login.isAdmin && userState.login.isLoggedIn && passCity != null ? (
-                  <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
-                    <Chip
-                      label="for testing"
-                      color="primary"
-                      variant="outlined"
-                      className={styles.testingPurposeTag}
-                    />
-                    <img src={appLogo} alt="logo" className={styles.logo} />
-                    <Typography variant="h3" className={styles.title}>
-                      {dummyPassData.data.pass[0].title}
-                    </Typography>
-                    <Typography className={styles.subtitle}>
-                      {dummyPassData.data.pass[0].description}
-                    </Typography>
-                    <Typography className={styles.price}>
-                      <CurrencyRupeeIcon className={styles.currency} />
-                      {dummyPassData.data.pass[0].price}
-                    </Typography>
-                    <Typography className={styles.status}>
-                      {dummyPassData.data.pass[0].status}
-                    </Typography>
-
-                    <ul className={isPortrait ? styles.portraitDetails : styles.details}>
-                      {dummyPassData.data.pass[0].features
-                        ? dummyPassData.data.pass[0].features.map((feature, i) => (
-                            <li key={i}>
-                              <SportsSoccerIcon className={styles.footballIcon} />
-                              {feature}
-                            </li>
-                          ))
-                        : null}
-                    </ul>
-                    <Box className={styles.ribbon}>
-                      {dummyPassData.data.pass[0].status === 'Unlimited game pass' ? (
-                        <span style={{ fontWeight: 600 }}>Best Deal</span>
-                      ) : (
-                        <span>For {dummyPassData.data.pass[0].totalDays} Days</span>
-                      )}
+                      <Button
+                        className={styles.buyNow}
+                        onClick={() => buyPass(matchPass.passId, passCity.city, passCity.currency)}
+                      >
+                        Buy Now
+                      </Button>
                     </Box>
-                    <Button
-                      className={styles.buyNow}
-                      onClick={() =>
-                        buyPass(dummyPassData.data.pass[0].passId, passCity.city, passCity.currency)
-                      }
-                    >
-                      Buy Now
-                    </Button>
+                  ))
+                : null}
+
+              {userState.login.isAdmin && userState.login.isLoggedIn && passCity != null ? (
+                <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
+                  <Chip
+                    label="for testing"
+                    color="primary"
+                    variant="outlined"
+                    className={styles.testingPurposeTag}
+                  />
+                  <img src={appLogo} alt="logo" className={styles.logo} />
+                  <Typography variant="h3" className={styles.title}>
+                    {dummyPassData.data.pass[0].title}
+                  </Typography>
+                  <Typography className={styles.subtitle}>
+                    {dummyPassData.data.pass[0].description}
+                  </Typography>
+                  <Typography className={styles.price}>
+                    <CurrencyRupeeIcon className={styles.currency} />
+                    {dummyPassData.data.pass[0].price}
+                  </Typography>
+                  <Typography className={styles.status}>
+                    {dummyPassData.data.pass[0].status}
+                  </Typography>
+
+                  <ul className={isPortrait ? styles.portraitDetails : styles.details}>
+                    {dummyPassData.data.pass[0].features
+                      ? dummyPassData.data.pass[0].features.map((feature, i) => (
+                          <li key={i}>
+                            <SportsSoccerIcon className={styles.footballIcon} />
+                            {feature}
+                          </li>
+                        ))
+                      : null}
+                  </ul>
+                  <Box className={styles.ribbon}>
+                    {dummyPassData.data.pass[0].status === 'Unlimited game pass' ? (
+                      <span style={{ fontWeight: 600 }}>Best Deal</span>
+                    ) : (
+                      <span>For {dummyPassData.data.pass[0].totalDays} Days</span>
+                    )}
                   </Box>
-                ) : (
-                  <span>no pass to display</span>
-                )}
-              </>
-            </Box>
+                  <Button
+                    className={styles.buyNow}
+                    onClick={() =>
+                      buyPass(dummyPassData.data.pass[0].passId, passCity.city, passCity.currency)
+                    }
+                  >
+                    Buy Now
+                  </Button>
+                </Box>
+              ) : null}
+            </>
           </Box>
-        </Zoom>
-      ) : null}
+        </Box>
+      </Zoom>
     </>
   );
 }
