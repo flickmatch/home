@@ -190,7 +190,7 @@ const Header = () => {
             <Typography component={Link} to="/home">
               <img src={appLogo} alt="logo" className={styles.logo} height="52px" width="54.23px" />
             </Typography>
-            {hasActiveSubscription ? (
+            {hasActiveSubscription && userState.login.isLoggedIn ? (
               <Chip
                 label="prime"
                 color="primary"

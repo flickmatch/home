@@ -185,7 +185,7 @@ function GamePasses() {
   return (
     <>
       <Meta title="Game Passes" />
-      {userState.login.isAdmin && userState.login.isLoggedIn ? (
+      {userState.login.isLoggedIn ? (
         <Zoom in={true} style={{ transitionDelay: '300ms' }}>
           <Box className={styles.pageContainer}>
             <Typography variant="h3" className={styles.heading}>
