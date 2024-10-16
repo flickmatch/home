@@ -156,4 +156,11 @@ public class RazorPaymentCallbackController {
 
 
     }
+
+    @PostMapping("/razorpay-webhook")
+    public ResponseEntity<Void> razorpayWebhook(@RequestBody(required = false) String payload) {
+        log.info("Razorpay Webhook received: {}", payload);
+        return ResponseEntity.ok().build();
+    }
+
 }
