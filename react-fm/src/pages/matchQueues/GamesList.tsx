@@ -167,6 +167,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               team2_color={playingEvent.team2_color ? playingEvent.team2_color : ''}
               dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
               handlePassName={passName}
+              cityId={cityNameId}
             />
           </FlexBox>
         </AccordionSummary>
