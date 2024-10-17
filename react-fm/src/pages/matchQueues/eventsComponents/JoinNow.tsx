@@ -277,12 +277,18 @@ export const JoinNow: FC<EventDetails> = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            query: `mutation UpdateSubscription {
-          updateSubscription(subscriptionId: "${activeSubscriptonData.subscriptionId}", credits: "${credits}") {
+            query: `mutation UpdateSubscription($input: UpdateSubscriptionInput!) {
+          updateSubscription(input: $input) {
               isSuccessful
               errorMessage
           }
       }`,
+            variables: {
+              input: {
+                subscriptionId: activeSubscriptonData.subscriptionId,
+                credits: credits,
+              },
+            },
           }),
         })
           .then((response) => response.json())
@@ -294,6 +300,7 @@ export const JoinNow: FC<EventDetails> = ({
             }
             // eslint-disable-next-line no-console
             console.log(result.data);
+            alert(result.data.updateSubscription.errorMessage);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -307,15 +314,6 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login');
     }
   };
-
-  //   mutation UpdateSubscription {
-  //     updateSubscription(
-  //         input: { subscriptionId: "c6e1139c-b280-4d58-b072-cd53440c9da8", credits: 1.0 }
-  //     ) {
-  //         isSuccessful
-  //         errorMessage
-  //     }
-  // }
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
