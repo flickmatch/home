@@ -90,7 +90,6 @@ function GamePasses() {
           }),
         });
         const data = await response.json();
-
         const passes = data.data.passesForCity;
 
         mapCityData.forEach((cityData) => {
@@ -232,7 +231,7 @@ function GamePasses() {
                       </Typography>
 
                       <ul className={isPortrait ? styles.portraitDetails : styles.details}>
-                        {matchPass.features
+                        {matchPass.features !== null && matchPass.features.length > 0
                           ? matchPass.features.map((feature, i) => (
                               <li key={i}>
                                 <SportsSoccerIcon className={styles.footballIcon} />
