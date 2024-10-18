@@ -77,10 +77,19 @@ public class Event {
         List<PlayerDetails> playerDetailsList;
         String stripePaymentUrl;
         Double credits;
+        Boolean testGame;
 
         String currency;
         //TODO:Add status attribute
 
+        @DynamoDBAttribute(attributeName = "testGame")
+        public Boolean getTestGame() {
+            return testGame;
+        }
+
+        public void setTestGame(Boolean testGame) {
+            this.testGame = testGame;
+        }
 
         @DynamoDBAttribute(attributeName = "credits")
         public Double getCredits() {

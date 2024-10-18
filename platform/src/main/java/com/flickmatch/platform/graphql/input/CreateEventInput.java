@@ -14,4 +14,5 @@ public class CreateEventInput {
     Integer reservedPlayersCount;
     Integer waitListPlayersCount;
     Double credits;
+    Boolean testGame;
 }
