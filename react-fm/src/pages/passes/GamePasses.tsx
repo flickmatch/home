@@ -90,7 +90,6 @@ function GamePasses() {
           }),
         });
         const data = await response.json();
-
         const passes = data.data.passesForCity;
 
         mapCityData.forEach((cityData) => {
@@ -121,15 +120,16 @@ function GamePasses() {
   }, [cityId]);
 
   const buyPass = (matchPassId: string, cityName: string, currencyType: string) => {
-    if (!razorPay) {
-      const generateUrl = () => {
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `mutation InitiatePassPayment {
+    if (userState.login.isLoggedIn) {
+      if (!razorPay) {
+        const generateUrl = () => {
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `mutation InitiatePassPayment {
             initiatePassPayment(
                 input: {
                     passId: "${matchPassId}"
@@ -143,30 +143,34 @@ function GamePasses() {
                 amount
             }
         }`,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
+            }),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.errors) {
+                // Handle GraphQL errors
 
-              alert(result.errors[0].message);
-            }
+                alert(result.errors[0].message);
+              }
+            })
+            .catch((error) => {
+              alert(error);
+            });
+        };
+
+        generateUrl();
+      } else {
+        createOrder(matchPassId, userData.email, setAmount, cityName, currencyType) // to be changed after local testing
+          .then((orderId) => {
+            setOrderId(orderId);
           })
           .catch((error) => {
             alert(error);
           });
-      };
-
-      generateUrl();
+      }
     } else {
-      createOrder(matchPassId, userData.email, setAmount, cityName, currencyType) // to be changed after local testing
-        .then((orderId) => {
-          setOrderId(orderId);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      alert('Please login to proceed with the purchase.');
+      navigate('/login');
     }
   };
 
@@ -230,7 +234,7 @@ function GamePasses() {
                         </Typography>
 
                         <ul className={isPortrait ? styles.portraitDetails : styles.details}>
-                          {matchPass.features
+                          {matchPass.features !== null && matchPass.features.length > 0
                             ? matchPass.features.map((feature, i) => (
                                 <li key={i}>
                                   <SportsSoccerIcon className={styles.footballIcon} />
@@ -318,14 +322,14 @@ function GamePasses() {
                       Buy Now
                     </Button>
                   </Box>
-                ) : (
-                  <span>no pass to display</span>
-                )}
+                ) : null}
               </>
             </Box>
           </Box>
         </Zoom>
-      ) : null}
+      ) : (
+        navigate('/match-queues')
+      )}
     </>
   );
 }
