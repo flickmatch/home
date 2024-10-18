@@ -298,9 +298,10 @@ export const JoinNow: FC<EventDetails> = ({
               alert(result.errors[0].message);
               throw new Error(result.errors[0].message);
             }
-            // eslint-disable-next-line no-console
-            console.log(result.data);
-            alert(result.data.updateSubscription.errorMessage);
+
+            if (result.data.updateSubscription.errorMessage) {
+              alert(result.data.updateSubscription.errorMessage);
+            }
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
