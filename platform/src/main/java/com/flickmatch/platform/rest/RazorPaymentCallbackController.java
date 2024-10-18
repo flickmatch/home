@@ -165,7 +165,7 @@ public class RazorPaymentCallbackController {
     public ResponseEntity<?> razorpayWebhook(@RequestBody(required = false) String payload) {
         log.info("Razorpay Webhook received: {}", sanitizeForLog(payload));
         String uniqueEventId, redirectUrl;
-        int flag = 0;
+        int isEventBeforeToday = 0;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(payload);
@@ -201,7 +201,7 @@ public class RazorPaymentCallbackController {
 
                     // Check if the event date is before today
                     if (eventDate.isBefore(LocalDate.now())) {
-                        flag=1;
+                        isEventBeforeToday=1;
                     }
 
                 } catch (Exception e) {
@@ -220,7 +220,7 @@ public class RazorPaymentCallbackController {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        if (flag==1) {
+        if (isEventBeforeToday==1) {
             if (redirectUrl != null && redirectUrl.contains("play")) {
                 headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
             }
