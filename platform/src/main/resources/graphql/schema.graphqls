@@ -42,6 +42,8 @@ input CreateEventInput {
   reservedPlayersCount: Int!
   waitListPlayersCount: Int!
   credits: Float
+  testGame: Boolean
+
   """
   Not required for P0, will be defaulted to FOOTBALL
   """
@@ -240,6 +242,7 @@ type EVENT {
   """
   stripePaymentUrl: String
   credits: Float
+  testGame: Boolean
 }
 
 type Player {

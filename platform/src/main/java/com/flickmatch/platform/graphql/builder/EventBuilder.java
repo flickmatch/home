@@ -289,6 +289,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .playerDetailsList(new ArrayList<>())
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .credits(input.getCredits())
+                .testGame(input.getTestGame())
                 .build();
         return eventDetails;
     }
@@ -345,6 +346,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
                 .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
                 .credits(eventDetails.getCredits())
+                .testGame(eventDetails.getTestGame())
                 .build();
     }
 

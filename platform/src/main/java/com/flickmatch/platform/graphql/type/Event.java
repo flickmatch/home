@@ -28,4 +28,5 @@ public class Event {
     private List<Player> waitListPlayers;
     private String stripePaymentUrl;
     private Double credits;
+    private Boolean testGame;
 }
