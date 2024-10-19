@@ -454,19 +454,30 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
-              {!hasSubscription ? (
+              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? (
+                <Button
+                  className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                  startIcon={<LocalOfferIcon />}
+                  variant="contained"
+                  onClick={paymentOptions}
+                >
+                  Join with pass
+                </Button>
+              ) : (
                 <Button
                   className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
                   startIcon={<LocalOfferIcon />}
                   variant="contained"
                   onClick={() => navigate(`/game-passes/${cityId}`)}
                 >
-                  Join with pass
+                  Get pass
                 </Button>
-              ) : null}
-              <Button variant="contained" onClick={paymentOptions}>
-                Pay to Join
-              </Button>
+              )}
+              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? null : (
+                <Button variant="contained" onClick={paymentOptions}>
+                  Pay to Join
+                </Button>
+              )}
             </Box>
           ) : null}
 
