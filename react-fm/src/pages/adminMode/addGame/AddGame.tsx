@@ -8,7 +8,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
-import { InputAdornment } from '@mui/material';
+import { InputAdornment, Switch } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
@@ -51,6 +51,9 @@ function AddGame() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [credits, setCredits] = useState('');
+  const [testGame, setTestGame] = useState(false);
+
+  // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
 
@@ -238,6 +241,7 @@ function AddGame() {
       showInfoNotification();
     } else {
       fetch(apiUrl, {
+        // fetch('http://localhost:8080/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -254,6 +258,7 @@ function AddGame() {
                       reservedPlayersCount: ${parseInt(playersCount)},
                       waitListPlayersCount: ${parseInt(playersCount) / 2},
                       credits: ${Number(credits)}
+                      testGame: ${testGame}
                   }
               ) {
                 isSuccessful
@@ -461,19 +466,46 @@ function AddGame() {
                 {sectionDatetime()}
                 {sectionChargesPlayers()}
 
-                <FlexBox className={styles.startEndPicker}>
-                  <Box>
-                    <Typography className={styles.fieldTitle}>Game Credits</Typography>
+                <FlexBox className={styles.sectionThird}>
+                  <Box className={styles.dateTimePicker}>
+                    <FlexBox className={styles.startTimePicker}>
+                      <Box>
+                        <Typography className={styles.fieldTitle}>Game Credits</Typography>
+                      </Box>
+                      <TextField
+                        fullWidth
+                        value={credits}
+                        onChange={(e) => setCredits(e.target.value)}
+                        placeholder="Credits"
+                        id="fullWidth"
+                        type="number"
+                      />
+                    </FlexBox>
                   </Box>
-                  <TextField
-                    fullWidth
-                    value={credits}
-                    onChange={(e) => setCredits(e.target.value)}
-                    placeholder="Credits"
-                    id="fullWidth"
-                    type="number"
-                  />
+
+                  <Box className={styles.dateTimePicker}>
+                    <FlexBox className={styles.startEndPicker}>
+                      <Box>
+                        <Typography className={styles.fieldTitle}>Test Game</Typography>
+                      </Box>
+                      <Switch
+                        className={styles.switchBtn}
+                        checked={testGame}
+                        onChange={() => setTestGame(!testGame)}
+                        color="default"
+                        sx={{
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#4ce95a',
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                            backgroundColor: '#4ce95a',
+                          },
+                        }}
+                      />
+                    </FlexBox>
+                  </Box>
                 </FlexBox>
+
                 <br />
                 {sectionFourth()}
               </FlexBox>
