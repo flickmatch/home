@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 
 import { Icon } from '@iconify/react';
+import Swal from 'sweetalert2';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -250,6 +251,13 @@ export const JoinNow: FC<EventDetails> = ({
         } else {
           if (handlePassName) {
             handlePassName(userData.name);
+            Swal.fire({
+              title: 'Game Joined Successfully',
+              text: 'Your name is successfully added to the event.',
+              icon: 'success',
+            }).then(() => {
+              navigate(`/match-queues/${uniqueEventId}`);
+            });
           }
         }
       })
@@ -268,9 +276,6 @@ export const JoinNow: FC<EventDetails> = ({
         activeSubscriptonData.gamesLeft > 0 &&
         Number(activeSubscriptonData.cityId) === Number(cityId)
       ) {
-        // eslint-disable-next-line no-console
-        console.log('Event Joined');
-
         fetch(apiUrl, {
           method: 'POST',
           headers: {
@@ -293,12 +298,6 @@ export const JoinNow: FC<EventDetails> = ({
         })
           .then((response) => response.json())
           .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
-              alert(result.errors[0].message);
-              throw new Error(result.errors[0].message);
-            }
-
             if (result.data.updateSubscription.errorMessage) {
               alert(result.data.updateSubscription.errorMessage);
             }
@@ -416,6 +415,13 @@ export const JoinNow: FC<EventDetails> = ({
             setShowPaymentOptions(false);
             setValue(1);
             setNames(['']);
+            Swal.fire({
+              title: 'Game Joined Successfully',
+              text: 'Your name is successfully added to the event.',
+              icon: 'success',
+            }).then(() => {
+              navigate(`/match-queues/${uniqueEventId}`);
+            });
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -462,11 +468,11 @@ export const JoinNow: FC<EventDetails> = ({
                   variant="contained"
                   onClick={() => navigate(`/game-passes/${cityId}`)}
                 >
-                  Get Pass
+                  Join with pass
                 </Button>
               ) : null}
               <Button variant="contained" onClick={paymentOptions}>
-                Join {stripePaymentUrl && openSpots > 0 ? 'Game' : 'Waitlist'}
+                Pay to Join
               </Button>
             </Box>
           ) : null}
