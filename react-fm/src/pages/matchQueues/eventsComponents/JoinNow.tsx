@@ -256,7 +256,7 @@ export const JoinNow: FC<EventDetails> = ({
               text: 'Your name is successfully added to the event.',
               icon: 'success',
             }).then(() => {
-              navigate(`/match-queues/${uniqueEventId}`);
+              navigate(`/match-queues#${uniqueEventId}`);
             });
           }
         }
@@ -415,13 +415,6 @@ export const JoinNow: FC<EventDetails> = ({
             setShowPaymentOptions(false);
             setValue(1);
             setNames(['']);
-            Swal.fire({
-              title: 'Game Joined Successfully',
-              text: 'Your name is successfully added to the event.',
-              icon: 'success',
-            }).then(() => {
-              navigate(`/match-queues/${uniqueEventId}`);
-            });
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
