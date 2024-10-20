@@ -257,7 +257,7 @@ function AddGame() {
                       endTime: "${endTime + '+0530'}",
                       reservedPlayersCount: ${parseInt(playersCount)},
                       waitListPlayersCount: ${parseInt(playersCount) / 2},
-                      credits: ${parseInt(credits)}
+                      credits: ${Number(credits)}
                       testGame: ${testGame}
                   }
               ) {

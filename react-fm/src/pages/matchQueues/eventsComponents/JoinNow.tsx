@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 
 import { Icon } from '@iconify/react';
+import Swal from 'sweetalert2';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -250,6 +251,13 @@ export const JoinNow: FC<EventDetails> = ({
         } else {
           if (handlePassName) {
             handlePassName(userData.name);
+            Swal.fire({
+              title: 'Game Joined Successfully',
+              text: 'Your name is successfully added to the event.',
+              icon: 'success',
+            }).then(() => {
+              navigate(`/match-queues#${uniqueEventId}`);
+            });
           }
         }
       })
@@ -268,32 +276,31 @@ export const JoinNow: FC<EventDetails> = ({
         activeSubscriptonData.gamesLeft > 0 &&
         Number(activeSubscriptonData.cityId) === Number(cityId)
       ) {
-        // eslint-disable-next-line no-console
-        console.log('Event Joined');
-
         fetch(apiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            query: `mutation UpdateSubscription {
-          updateSubscription(subscriptionId: "${activeSubscriptonData.subscriptionId}", credits: "${credits}") {
+            query: `mutation UpdateSubscription($input: UpdateSubscriptionInput!) {
+          updateSubscription(input: $input) {
               isSuccessful
               errorMessage
           }
       }`,
+            variables: {
+              input: {
+                subscriptionId: activeSubscriptonData.subscriptionId,
+                credits: credits,
+              },
+            },
           }),
         })
           .then((response) => response.json())
           .then((result) => {
-            if (result.errors) {
-              // Handle GraphQL errors
-              alert(result.errors[0].message);
-              throw new Error(result.errors[0].message);
+            if (result.data.updateSubscription.errorMessage) {
+              alert(result.data.updateSubscription.errorMessage);
             }
-            // eslint-disable-next-line no-console
-            console.log(result.data);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
@@ -307,15 +314,6 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login');
     }
   };
-
-  //   mutation UpdateSubscription {
-  //     updateSubscription(
-  //         input: { subscriptionId: "c6e1139c-b280-4d58-b072-cd53440c9da8", credits: 1.0 }
-  //     ) {
-  //         isSuccessful
-  //         errorMessage
-  //     }
-  // }
 
   const handleClickOpen = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
@@ -456,19 +454,30 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
-              {!hasSubscription ? (
+              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? (
+                <Button
+                  className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                  startIcon={<LocalOfferIcon />}
+                  variant="contained"
+                  onClick={paymentOptions}
+                >
+                  Join with pass
+                </Button>
+              ) : (
                 <Button
                   className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
                   startIcon={<LocalOfferIcon />}
                   variant="contained"
                   onClick={() => navigate(`/game-passes/${cityId}`)}
                 >
-                  Get Pass
+                  Get pass
                 </Button>
-              ) : null}
-              <Button variant="contained" onClick={paymentOptions}>
-                Join {stripePaymentUrl && openSpots > 0 ? 'Game' : 'Waitlist'}
-              </Button>
+              )}
+              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? null : (
+                <Button variant="contained" onClick={paymentOptions}>
+                  Pay to Join
+                </Button>
+              )}
             </Box>
           ) : null}
 
