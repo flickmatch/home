@@ -2,6 +2,8 @@ package com.flickmatch.platform.rest;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
 import com.flickmatch.platform.dynamodb.repository.RazorPaymentRequestRepository;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
@@ -160,9 +162,80 @@ public class RazorPaymentCallbackController {
 
 
     @PostMapping("/razorpay-webhook")
-    public ResponseEntity<Void> razorpayWebhook(@RequestBody(required = false) String payload) {
+    public ResponseEntity<?> razorpayWebhook(@RequestBody(required = false) String payload) {
         log.info("Razorpay Webhook received: {}", sanitizeForLog(payload));
-        return ResponseEntity.ok().build();
+        String uniqueEventId, redirectUrl;
+        int isEventBeforeToday = 0;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = objectMapper.readTree(payload);
+
+            JsonNode paymentEntity = root.path("payload").path("payment").path("entity");
+            String paymentId = paymentEntity.path("id").asText();
+            String status = paymentEntity.path("status").asText();
+            String orderId = paymentEntity.path("order_id").asText();
+            if(status.equals("captured")) {
+
+                try {
+                    RazorPaymentRequest paymentRequest = paymentRequestBuilder.getPaymentRequest(orderId);
+                    uniqueEventId = paymentRequest.getUniqueEventId();
+                    redirectUrl = paymentRequest.getRedirectUrl();
+                    String[] parts =uniqueEventId.split("-");
+                    String dateStr =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate eventDate;
+                    if(PAID_STATUS.equals(paymentRequest.getStatus())) {
+                        log.info("Ignoring duplicate payments.");
+                    }
+                    else {
+                        eventBuilder.joinEventRazorPayment(paymentRequest);
+                        paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, paymentId, true);
+                        log.info("Player joined event successfully.");
+                    }
+                    try {
+                        eventDate = LocalDate.parse(dateStr, formatter);
+                    } catch (DateTimeParseException e) {
+                        log.error("Invalid date format in uniqueEventId: {}", dateStr);
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid event date");
+                    }
+
+                    // Check if the event date is before today
+                    if (eventDate.isBefore(LocalDate.now())) {
+                        isEventBeforeToday=1;
+                    }
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                log.error("Payment not captured for payment_id: {}", paymentId);
+                return ResponseEntity.badRequest().build();
+            }
+
+
+        } catch (Exception e) {
+            log.error("Error parsing Razorpay Webhook payload", e);
+            return ResponseEntity.badRequest().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        if (isEventBeforeToday==1) {
+            if (redirectUrl != null && redirectUrl.contains("play")) {
+                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
+            }
+            else
+                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
+        }
+        else {
+            if (redirectUrl != null && redirectUrl.contains("play")) {
+                headers.add("Location", "https://play.flickmatch.in/match-queues#" +uniqueEventId);
+            }
+            else
+                headers.add("Location", "https://flickmatch.in/match-queues#" +uniqueEventId);
+        }
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+
     }
 
 }
