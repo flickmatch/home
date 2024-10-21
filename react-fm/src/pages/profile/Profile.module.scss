@@ -16,7 +16,7 @@
 .portraitProfileInfoArea {
   width: 30%;
   margin-left: 75px;
-  margin-top: 125px;
+  margin-top: 110px;
   animation: slideIn 0.8s ease-out;
 }
 
@@ -173,4 +173,15 @@
 .profileIcon {
   font-size: 45px;
   font-weight: 600;
+}
+
+.offerIcon {
+  font-size: 24px;
+}
+
+.creditSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
