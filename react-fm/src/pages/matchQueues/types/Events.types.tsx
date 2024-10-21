@@ -10,6 +10,7 @@ type EventDetails = {
   charges: number;
   date: string;
   eventId: string;
+  testGame?: boolean;
   uniqueEventId: string;
   reservedPlayersCount: number;
   reservedPlayersList: ReservedPlayerDetails[];

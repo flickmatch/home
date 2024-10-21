@@ -266,50 +266,42 @@ export const JoinNow: FC<EventDetails> = ({
       });
   };
 
-  const paymentOptions = (event: { stopPropagation: () => void }) => {
+  const joinWithPass = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     history.replaceState(null, '', `#${uniqueEventId}`);
 
     if (userData.name) {
-      if (
-        hasSubscription &&
-        activeSubscriptonData.gamesLeft > 0 &&
-        Number(activeSubscriptonData.cityId) === Number(cityId)
-      ) {
-        fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `mutation UpdateSubscription($input: UpdateSubscriptionInput!) {
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `mutation UpdateSubscription($input: UpdateSubscriptionInput!) {
           updateSubscription(input: $input) {
               isSuccessful
               errorMessage
           }
       }`,
-            variables: {
-              input: {
-                subscriptionId: activeSubscriptonData.subscriptionId,
-                credits: credits,
-              },
+          variables: {
+            input: {
+              subscriptionId: activeSubscriptonData.subscriptionId,
+              credits: credits,
             },
-          }),
+          },
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.data.updateSubscription.errorMessage) {
+            return alert(result.data.updateSubscription.errorMessage);
+          }
+          joinGameViaSubscription();
         })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.data.updateSubscription.errorMessage) {
-              alert(result.data.updateSubscription.errorMessage);
-            }
-          })
-          .catch((error) => {
-            // eslint-disable-next-line no-console
-            console.log(error);
-          });
-        joinGameViaSubscription();
-      } else {
-        setShowPaymentOptions(true);
-      }
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        });
     } else {
       navigate('/login');
     }
@@ -454,12 +446,14 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
-              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? (
+              {hasSubscription &&
+              Number(activeSubscriptonData.cityId) === Number(cityId) &&
+              Number(activeSubscriptonData.gamesLeft) > Number(credits) ? (
                 <Button
                   className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
                   startIcon={<LocalOfferIcon />}
                   variant="contained"
-                  onClick={paymentOptions}
+                  onClick={joinWithPass}
                 >
                   Join with pass
                 </Button>
@@ -473,8 +467,10 @@ export const JoinNow: FC<EventDetails> = ({
                   Get pass
                 </Button>
               )}
-              {hasSubscription && Number(activeSubscriptonData.cityId) === Number(cityId) ? null : (
-                <Button variant="contained" onClick={paymentOptions}>
+              {!hasSubscription &&
+              Number(activeSubscriptonData.cityId) === Number(cityId) &&
+              Number(activeSubscriptonData.gamesLeft) < Number(credits) ? null : (
+                <Button variant="contained" onClick={() => setShowPaymentOptions(true)}>
                   Pay to Join
                 </Button>
               )}

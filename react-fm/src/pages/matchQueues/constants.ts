@@ -32,6 +32,7 @@ const query = JSON.stringify({
         cityId
         cityName
         events {
+          testGame
           uniqueEventId
           eventId
           date

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AdjustSharpIcon from '@mui/icons-material/AdjustSharp';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
@@ -29,6 +30,7 @@ import type { RootState } from '@/store/types';
 
 import styles from './Profile.module.scss';
 
+const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
 interface UserDetails {
   email: string;
   family_name: string;
@@ -37,6 +39,16 @@ interface UserDetails {
   name: string;
   picture: string;
 }
+
+type subscriptionType = {
+  subscriptionId: string;
+  passId: string;
+  userId: string;
+  expiryDate: number;
+  gamesLeft: number;
+  status: string;
+  cityId: number;
+};
 
 function Profile() {
   const isPortrait = useOrientation();
@@ -50,6 +62,16 @@ function Profile() {
     name: '',
     picture: '',
   });
+  const [activeSubscriptonData, setActiveSubscriptionData] = useState<subscriptionType>({
+    subscriptionId: '',
+    passId: '',
+    userId: '',
+    expiryDate: 0,
+    gamesLeft: 0,
+    status: '',
+    cityId: 0,
+  });
+  const [hasSubscription, setHasSubscription] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -69,6 +91,82 @@ function Profile() {
       setUserData(parseData);
     }
   }, []);
+
+  useEffect(() => {
+    if (userData.email) {
+      const fetchData = async () => {
+        const query = JSON.stringify({
+          query: `query HasActiveSubscription {
+        hasActiveSubscription(email: "${userData.email}")
+          }`,
+        });
+
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: query,
+          });
+          const data = await response.json();
+
+          setHasSubscription(data.data.hasActiveSubscription);
+        } catch (error) {
+          if (error instanceof Error) {
+            if (error.name === 'TypeError') {
+              // eslint-disable-next-line no-console
+              console.log(error);
+            }
+          }
+        }
+      };
+
+      fetchData();
+    }
+  }, [userData.email]);
+
+  useEffect(() => {
+    const getAcitveSubscription = async () => {
+      const getSubscription = JSON.stringify({
+        query: `query GetActiveSubscription {
+        getActiveSubscription(email: "${userData.email}") {
+        subscriptionId
+        passId
+        userId
+        expiryDate
+        gamesLeft
+        status
+        cityId
+    }}`,
+      });
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: getSubscription,
+        });
+        const subscriptions = await response.json();
+
+        setActiveSubscriptionData(subscriptions.data.getActiveSubscription);
+      } catch (error) {
+        if (error instanceof Error) {
+          if (error.name === 'TypeError') {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          }
+        }
+      }
+    };
+
+    if (hasSubscription) {
+      getAcitveSubscription();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasSubscription]);
 
   //"https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png"
 
@@ -94,10 +192,25 @@ function Profile() {
                   <Typography className={styles.name}>{userData.name}</Typography>
                 </Box>
               ) : null}
+
               {userData ? (
                 <Box className={styles.emailSection}>
                   <MailIcon className={styles.mailIcon} />
                   <Typography className={styles.emailId}>{userData.email}</Typography>
+                </Box>
+              ) : null}
+              {userData && userState.login.isAdmin ? (
+                <Box className={styles.nameSection}>
+                  <Typography className={styles.creditSection}>
+                    <AccountBalanceWalletIcon className={styles.offerIcon} />
+                    <span style={{ fontWeight: 600, marginLeft: 10, fontSize: 18 }}>
+                      (Credits Left)
+                    </span>
+                  </Typography>
+
+                  <Typography className={styles.name} style={{ textAlign: 'center' }}>
+                    {activeSubscriptonData.gamesLeft}
+                  </Typography>
                 </Box>
               ) : null}
               <Box className={styles.signOutSection}>
