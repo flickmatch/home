@@ -78,6 +78,7 @@ export const Cities: FC<CityDetails> = ({ cityName, cityId, countryCode }) => {
       </div>
     );
   };
+
   return (
     <div className={isPortrait ? styles.mobileContainer : styles.citiesContainer}>
       <div>
