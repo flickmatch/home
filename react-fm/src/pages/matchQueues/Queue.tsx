@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -9,6 +10,7 @@ import * as _ from 'lodash';
 
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
+import type { RootState } from '@/store/types';
 
 import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
@@ -21,6 +23,7 @@ function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [players, setPlayers] = useState<string[]>([]);
+  const userState = useSelector((state: RootState) => state);
 
   const isPortrait = useOrientation();
 
@@ -131,25 +134,33 @@ function MatchQueue() {
   const events = () => {
     citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
 
-    const gameQueues = citiesData.map((city: CityDetails) => (
-      <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
-        <div className={isPortrait ? styles.mobileContainer : styles.container}>
-          <Cities
-            cityName={city.cityName}
-            cityId={city.cityId}
-            events={city.events}
-            dummyData={city.dummyData}
-            countryCode={city.countryCode}
-          />
-          <GamesList
-            gameEvent={city.events}
-            cityName={city.cityName}
-            cityNameId={city.cityId}
-            addPlayerInQueue={addPlayerInQueue}
-          />
-        </div>
-      </Zoom>
-    ));
+    const gameQueues = citiesData.map((city: CityDetails) => {
+      const count = city?.events?.filter((event) => event.testGame !== true)?.length;
+
+      if (count === 0 && !userState.login.isAdmin) {
+        // console.log(city.cityName, count);
+        return null;
+      }
+      return (
+        <Zoom in={true} key={city.cityId} style={{ transitionDelay: '300ms' }}>
+          <div className={isPortrait ? styles.mobileContainer : styles.container}>
+            <Cities
+              cityName={city.cityName}
+              cityId={city.cityId}
+              events={city.events}
+              dummyData={city.dummyData}
+              countryCode={city.countryCode}
+            />
+            <GamesList
+              gameEvent={city.events}
+              cityName={city.cityName}
+              cityNameId={city.cityId}
+              addPlayerInQueue={addPlayerInQueue}
+            />
+          </div>
+        </Zoom>
+      );
+    });
     return gameQueues;
   };
 
