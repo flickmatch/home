@@ -115,6 +115,8 @@ type Subscription {
   gamesLeft: Float!
   status: String!
   cityId: String!
+  title: String!
+  subtitle: String!
 }
 
 type Pass {

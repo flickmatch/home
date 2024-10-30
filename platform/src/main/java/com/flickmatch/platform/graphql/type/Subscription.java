@@ -15,4 +15,6 @@ public class Subscription {
     private Double gamesLeft;
     private String cityId;
     private String expiryDate;
+    private String title;
+    private String subtitle;
 }
