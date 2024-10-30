@@ -74,7 +74,7 @@ public class SubscriptionBuilder {
                     .expiryDate(expiryDate)
                     .cityId(pass.getCityId())
                     .title(pass.getTitle())
-                    .subtitle(pass.getDescription())
+                    .description(pass.getDescription())
                     .build();
 
             log.error(subscription.toString());
@@ -160,7 +160,7 @@ public class SubscriptionBuilder {
                 .status(subs.getStatus())
                 .cityId(subs.getCityId())
                 .title(subs.getTitle())
-                .subtitle(subs.getSubtitle())
+                .description(subs.getDescription())
                 .build();
     }
 

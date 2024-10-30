@@ -16,5 +16,5 @@ public class Subscription {
     private String cityId;
     private String expiryDate;
     private String title;
-    private String subtitle;
+    private String description;
 }

@@ -45,7 +45,7 @@ public class Subscription {
     private String expiryDate;
     private String cityId;
     private String title;
-    private String subtitle;
+    private String description;
 
     public String getTitle() {
         return title;
@@ -54,12 +54,12 @@ public class Subscription {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getSubtitle() {
-        return subtitle;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getStatus() {

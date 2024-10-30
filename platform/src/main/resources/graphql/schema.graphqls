@@ -116,7 +116,7 @@ type Subscription {
   status: String!
   cityId: String!
   title: String!
-  subtitle: String!
+  description: String!
 }
 
 type Pass {
