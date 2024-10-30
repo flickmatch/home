@@ -9,7 +9,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AdjustSharpIcon from '@mui/icons-material/AdjustSharp';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+//import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import Diversity1SharpIcon from '@mui/icons-material/Diversity1Sharp';
 import Diversity2SharpIcon from '@mui/icons-material/Diversity2Sharp';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
@@ -53,6 +53,8 @@ type subscriptionType = {
   gamesLeft: number;
   status: string;
   cityId: number;
+  title: string;
+  description: string;
 };
 
 type CitiesData = {
@@ -82,6 +84,8 @@ function Profile() {
     gamesLeft: 0,
     status: '',
     cityId: 0,
+    title: '',
+    description: '',
   });
   const [passCity, setPassCity] = useState<CitiesData | null>(null);
   const [expiryDate, setExpiryDate] = useState('');
@@ -180,6 +184,8 @@ function Profile() {
         gamesLeft
         status
         cityId
+        title
+        description
     }}`,
       });
 
@@ -399,27 +405,30 @@ function Profile() {
                 <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
                   <img src={appLogo} alt="logo" className={styles.logo} />
                   <Typography variant="h3" className={styles.title}>
-                    10 game pass
+                    {activeSubscriptonData.title}
+                  </Typography>
+                  <Typography className={styles.subtitle}>
+                    {activeSubscriptonData.description}
                   </Typography>
                   <Typography className={styles.subtitle}>Expiring on :- {expiryDate}</Typography>
 
                   <Typography className={styles.price}>
-                    Amount Paid :-
-                    <CurrencyRupeeIcon className={styles.currency} />
-                    234
+                    Credits Balance :- {activeSubscriptonData.gamesLeft}
                   </Typography>
                   <Typography className={styles.status}>active</Typography>
 
-                  <Box className={styles.ribbon}>
+                  {/* <Box className={styles.ribbon}>
                     <span>For 30 Days</span>
-                  </Box>
+                  </Box> */}
                   <Button className={styles.buyNow} onClick={() => navigate('/match-queues')}>
                     Match Queues
                   </Button>
                 </Box>
               </Box>
             ) : (
-              <Typography>No Passes are found or pass is expired.</Typography>
+              <Typography style={{ textAlign: 'center' }}>
+                No Passes are found or pass is expired.
+              </Typography>
             )}
           </Carousel>
         </FlexBox>
