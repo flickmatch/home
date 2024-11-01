@@ -208,13 +208,13 @@ aws dynamodb create-table \
 
 aws dynamodb put-item \
    --table-name Subscription \
-   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass1\"}, \"gamesLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
+   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass1\"}, \"creditsLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
    --return-consumed-capacity TOTAL \
    --endpoint-url http://localhost:8000
 
 aws dynamodb put-item \
    --table-name Subscription \
-   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass2\"}, \"gamesLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
+   --item "{\"userId\": {\"S\": \"user123\"}, \"subscriptionId\": {\"S\": \"sub123\"}, \"status\": {\"S\": \"Active\"}, \"passId\": {\"S\": \"pass2\"}, \"creditsLeft\": {\"N\": \"10\"}, \"expiryDate\": {\"S\": \"2024-12-31\"}}" \
    --return-consumed-capacity TOTAL \
    --endpoint-url http://localhost:8000
 

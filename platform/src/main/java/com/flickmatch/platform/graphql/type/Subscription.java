@@ -12,7 +12,7 @@ public class Subscription {
     private String subscriptionId;
     private String passId;
     private String userId;
-    private Double gamesLeft;
+    private Double creditsLeft;
     private String cityId;
     private String expiryDate;
     private String title;
