@@ -63,7 +63,7 @@ public class SubscriptionBuilderTest {
         testSubscription.setSubscriptionId("subscription-id");
         testSubscription.setPassId("pass-id");
         testSubscription.setUserId("user-id");
-        testSubscription.setGamesLeft(10.0);
+        testSubscription.setCreditsLeft(10.0);
         testSubscription.setStatus("Active");
         testSubscription.setExpiryDate(LocalDate.now().plusDays(30).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }

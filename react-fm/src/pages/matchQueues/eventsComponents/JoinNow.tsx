@@ -36,7 +36,7 @@ type subscriptionType = {
   passId: string;
   userId: string;
   expiryDate: number;
-  gamesLeft: number;
+  creditsLeft: number;
   status: string;
   cityId: number;
 };
@@ -72,7 +72,7 @@ export const JoinNow: FC<EventDetails> = ({
     passId: '',
     userId: '',
     expiryDate: 0,
-    gamesLeft: 0,
+    creditsLeft: 0,
     status: '',
     cityId: 0,
   });
@@ -157,7 +157,7 @@ export const JoinNow: FC<EventDetails> = ({
         passId
         userId
         expiryDate
-        gamesLeft
+        creditsLeft
         status
         cityId
     }}`,
@@ -448,7 +448,7 @@ export const JoinNow: FC<EventDetails> = ({
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
               {hasSubscription &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
-              Number(activeSubscriptonData.gamesLeft) > Number(credits) ? (
+              Number(activeSubscriptonData.creditsLeft) > Number(credits) ? (
                 <Button
                   className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
                   startIcon={<LocalOfferIcon />}
@@ -469,7 +469,7 @@ export const JoinNow: FC<EventDetails> = ({
               )}
               {!hasSubscription &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
-              Number(activeSubscriptonData.gamesLeft) < Number(credits) ? null : (
+              Number(activeSubscriptonData.creditsLeft) < Number(credits) ? null : (
                 <Button variant="contained" onClick={() => setShowPaymentOptions(true)}>
                   Pay to Join
                 </Button>

@@ -112,7 +112,7 @@ type Subscription {
   passId: String!
   userId: String!
   expiryDate: String!
-  gamesLeft: Float!
+  creditsLeft: Float!
   status: String!
   cityId: String!
   title: String!

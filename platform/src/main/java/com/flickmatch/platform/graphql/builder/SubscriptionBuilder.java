@@ -40,7 +40,7 @@ public class SubscriptionBuilder {
                 throw new Exception("The pass with the given passId has either been expired or does not exist");
             }
             Pass pass = passOpt.get();
-            Double gamesLeft=pass.getTotalGames();
+            Double creditsLeft=pass.getTotalGames();
             Integer totalDays=pass.getTotalDays();
             LocalDate today = LocalDate.now();
             LocalDate expiry = today.plusDays(totalDays);
@@ -69,7 +69,7 @@ public class SubscriptionBuilder {
                             .userId(user.getUserId())
                             .subscriptionId(null)
                             .build())
-                    .gamesLeft(gamesLeft)
+                    .creditsLeft(creditsLeft)
                     .status("Active")
                     .expiryDate(expiryDate)
                     .cityId(pass.getCityId())
@@ -156,7 +156,7 @@ public class SubscriptionBuilder {
                 .passId(subs.getPassId())
                 .userId(subs.getUserId())
                 .expiryDate(subs.getExpiryDate())
-                .gamesLeft(subs.getGamesLeft())
+                .creditsLeft(subs.getCreditsLeft())
                 .status(subs.getStatus())
                 .cityId(subs.getCityId())
                 .title(subs.getTitle())
@@ -184,18 +184,18 @@ public class SubscriptionBuilder {
                 LocalDate expiryDate = LocalDate.parse(expiryDateString, formatter);
                 if (today.isAfter(expiryDate)) {
                     subs.setStatus("Expired");
-                    subs.setGamesLeft(0.0);
+                    subs.setCreditsLeft(0.0);
                     user.setHasActiveSubscription(false);
                     throw new Exception("The subscription has already expired! Please try again refreshing the page.");
                 }
             }
             else if(type.equals("LimitedGames")) {
-                if(credits>subs.getGamesLeft()) {
+                if(credits>subs.getCreditsLeft()) {
                     throw new Exception("Game credits are less than the balance. Please pay and book your spot.");
                 }
-                Double totalGamesLeft = subs.getGamesLeft()-credits;
+                Double totalGamesLeft = subs.getCreditsLeft()-credits;
 //                System.out.println("TotalGamesLeft: "+totalGamesLeft);
-                subs.setGamesLeft(totalGamesLeft);
+                subs.setCreditsLeft(totalGamesLeft);
                 if(totalGamesLeft<=1.0) {
                     subs.setStatus("Expired");
                     subs.setExpiryDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
