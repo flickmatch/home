@@ -82,7 +82,7 @@ public class Pass {
     }
 
     public String getDescription() {
-        return passType;
+        return description;
     }
 
     public void setDescription(String description) {
