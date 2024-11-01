@@ -10,6 +10,7 @@ type EventDetails = {
   charges: number;
   date: string;
   eventId: string;
+  testGame?: boolean;
   uniqueEventId: string;
   reservedPlayersCount: number;
   reservedPlayersList: ReservedPlayerDetails[];
@@ -27,7 +28,6 @@ type EventDetails = {
   cityId?: string;
   handlePassName?: (name: string) => void;
   credits?: number;
-  testGame?: boolean;
 };
 
 type CityDetails = {
