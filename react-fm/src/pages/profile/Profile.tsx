@@ -50,7 +50,7 @@ type subscriptionType = {
   passId: string;
   userId: string;
   expiryDate: number;
-  gamesLeft: number;
+  creditsLeft: number;
   status: string;
   cityId: number;
   title: string;
@@ -81,7 +81,7 @@ function Profile() {
     passId: '',
     userId: '',
     expiryDate: 0,
-    gamesLeft: 0,
+    creditsLeft: 0,
     status: '',
     cityId: 0,
     title: '',
@@ -181,7 +181,7 @@ function Profile() {
         passId
         userId
         expiryDate
-        gamesLeft
+        creditsLeft
         status
         cityId
         title
@@ -268,7 +268,7 @@ function Profile() {
                   </Typography>
 
                   <Typography className={styles.name} style={{ textAlign: 'center' }}>
-                    {activeSubscriptonData.gamesLeft}
+                    {activeSubscriptonData.creditsLeft}
                   </Typography>
                 </Box>
               ) : null}
@@ -413,7 +413,7 @@ function Profile() {
                   <Typography className={styles.subtitle}>Expiring on :- {expiryDate}</Typography>
 
                   <Typography className={styles.price}>
-                    Credits Balance :- {activeSubscriptonData.gamesLeft}
+                    Credits Balance :- {activeSubscriptonData.creditsLeft}
                   </Typography>
                   <Typography className={styles.status}>active</Typography>
 
