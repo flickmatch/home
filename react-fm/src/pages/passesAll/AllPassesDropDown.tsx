@@ -6,8 +6,8 @@ import { Avatar, Box, CircularProgress, MenuItem, Select, Typography } from '@mu
 import Zoom from '@mui/material/Zoom';
 
 import Meta from '@/components/Meta';
-import useOrientation from '@/hooks/useOrientation';
 
+// import useOrientation from '@/hooks/useOrientation';
 import styles from './AllPassesDropDown.module.scss';
 
 interface City {
@@ -31,7 +31,7 @@ function AllPassesDropDown() {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
-  const isPortrait = useOrientation();
+  // const isPortrait = useOrientation();
 
   useEffect(() => {
     const fetchCities = async () => {
