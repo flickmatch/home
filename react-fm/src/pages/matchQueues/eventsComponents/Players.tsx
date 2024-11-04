@@ -22,7 +22,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
     md={3}
     className={displayName === 'Add Name' ? styles.addName : styles.grid}
     key={index}
-    spacing={5}
   >
     {displayName === 'Add Name' ? (
       <AddCircleIcon className={styles.personAvatar} />

@@ -247,6 +247,7 @@ export const EventsCard: FC<EventDetails> = ({
             team2_color={''}
             dummyData={dummyData}
             handlePassName={handlePassName}
+            cityId={cityId}
           />
         </FlexBox>
       </Grid>

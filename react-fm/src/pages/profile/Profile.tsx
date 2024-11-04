@@ -292,6 +292,48 @@ function Profile() {
             NextIcon={<NavigateNextIcon />}
             PrevIcon={<NavigateBeforeIcon />}
           >
+            {/* Pass detials */}
+            {hasSubscription ? (
+              <Box className={isPortrait ? styles.portraitPassContainer : styles.passContainer}>
+                <Typography variant="h3" className={styles.heading}>
+                  My Pass
+                </Typography>
+                {passCity != null ? (
+                  <div className={styles.cityNameContainer}>
+                    <Typography className={styles.citiesName}>{passCity.city}</Typography>
+                    <img
+                      className={styles.citiesImg}
+                      src={passCity.iconUrl}
+                      alt={passCity.city}
+                      height="40px"
+                    />
+                  </div>
+                ) : null}
+                <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
+                  <img src={appLogo} alt="logo" className={styles.logo} />
+                  <Typography variant="h3" className={styles.title}>
+                    {activeSubscriptonData.title}
+                  </Typography>
+                  <Typography className={styles.subtitle}>
+                    {activeSubscriptonData.description}
+                  </Typography>
+                  <Typography className={styles.subtitle}>Expiring on :- {expiryDate}</Typography>
+
+                  <Typography className={styles.price}>
+                    Credits Balance :- {activeSubscriptonData.creditsLeft}
+                  </Typography>
+                  <Typography className={styles.status}>active</Typography>
+
+                  {/* <Box className={styles.ribbon}>
+                    <span>For 30 Days</span>
+                  </Box> */}
+                  <Button className={styles.buyNow} onClick={() => navigate('/match-queues')}>
+                    Match Queues
+                  </Button>
+                </Box>
+              </Box>
+            ) : null}
+
             <Box className={isPortrait ? styles.portraitSkillSection : styles.skillsSection}>
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={2} sm={4} md={4}>
@@ -385,51 +427,6 @@ function Profile() {
                 </Grid>
               </Grid>
             </Box>
-            {/* Pass detials */}
-            {hasSubscription ? (
-              <Box className={isPortrait ? styles.portraitPassContainer : styles.passContainer}>
-                <Typography variant="h3" className={styles.heading}>
-                  My Pass
-                </Typography>
-                {passCity != null ? (
-                  <div className={styles.cityNameContainer}>
-                    <Typography className={styles.citiesName}>{passCity.city}</Typography>
-                    <img
-                      className={styles.citiesImg}
-                      src={passCity.iconUrl}
-                      alt={passCity.city}
-                      height="40px"
-                    />
-                  </div>
-                ) : null}
-                <Box className={isPortrait ? styles.portraitPassCard : styles.passCard}>
-                  <img src={appLogo} alt="logo" className={styles.logo} />
-                  <Typography variant="h3" className={styles.title}>
-                    {activeSubscriptonData.title}
-                  </Typography>
-                  <Typography className={styles.subtitle}>
-                    {activeSubscriptonData.description}
-                  </Typography>
-                  <Typography className={styles.subtitle}>Expiring on :- {expiryDate}</Typography>
-
-                  <Typography className={styles.price}>
-                    Credits Balance :- {activeSubscriptonData.creditsLeft}
-                  </Typography>
-                  <Typography className={styles.status}>active</Typography>
-
-                  {/* <Box className={styles.ribbon}>
-                    <span>For 30 Days</span>
-                  </Box> */}
-                  <Button className={styles.buyNow} onClick={() => navigate('/match-queues')}>
-                    Match Queues
-                  </Button>
-                </Box>
-              </Box>
-            ) : (
-              <Typography style={{ textAlign: 'center' }}>
-                No Passes are found or pass is expired.
-              </Typography>
-            )}
           </Carousel>
         </FlexBox>
       ) : (
