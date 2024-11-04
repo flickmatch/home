@@ -2,6 +2,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
+import PaymentsIcon from '@mui/icons-material/Payments';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 
@@ -14,6 +15,12 @@ const routes: Routes = {
   [Pages.Home]: {
     component: asyncComponentLoader(() => import('@/pages/welcome')),
     path: '/home',
+  },
+  [Pages.Flickpass]: {
+    component: asyncComponentLoader(() => import('@/pages/passesAll')),
+    path: '/game-passes',
+    icon: PaymentsIcon,
+    title: 'Flickpass',
   },
   [Pages.GamePasses]: {
     component: asyncComponentLoader(() => import('@/pages/passes')),
