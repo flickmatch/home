@@ -440,6 +440,8 @@ export const JoinNow: FC<EventDetails> = ({
     );
   }
 
+  //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
+
   return (
     <>
       {openWaitList > 0 ? (
@@ -447,6 +449,7 @@ export const JoinNow: FC<EventDetails> = ({
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
               {hasSubscription &&
+              activeSubscriptonData &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
               Number(activeSubscriptonData.creditsLeft) > Number(credits) ? (
                 <Button
