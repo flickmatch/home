@@ -144,6 +144,10 @@ const Header = () => {
           Match Queues
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
+        <Typography className={styles.menuItem} component={Link} to="/game-passes">
+          Flickpass
+        </Typography>
+        <Divider className={styles.divider} orientation="vertical" flexItem />
         <Typography className={styles.menuItem} component={Link} to="/rewards">
           Rewards
         </Typography>

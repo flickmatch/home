@@ -25,6 +25,7 @@ enum Pages {
   Rewards,
   GamePasses,
   Event,
+  Flickpass,
 }
 
 type PathRouteCustomProps = {
