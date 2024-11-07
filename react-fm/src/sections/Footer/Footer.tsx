@@ -134,7 +134,7 @@ function Footer() {
       <FlexBox className={isPortrait ? styles.mobileContactus : styles.appBar}>
         <FlexBox className={isPortrait ? styles.mobileMailId : styles.mailId}>
           <TelegramIcon className={styles.emailIcon} />
-          <Typography className={styles.email}>&nbsp; flickmatch@gmail.com</Typography>
+          <Typography className={styles.email}>flickmatch@gmail.com</Typography>
         </FlexBox>
 
         <FlexBox className={isPortrait ? styles.mobileSocialMediaIcons : styles.socialMediaIcons}>

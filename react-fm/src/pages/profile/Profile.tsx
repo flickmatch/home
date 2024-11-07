@@ -317,10 +317,10 @@ function Profile() {
                   <Typography className={styles.subtitle}>
                     {activeSubscriptonData.description}
                   </Typography>
-                  <Typography className={styles.subtitle}>Expiring on :- {expiryDate}</Typography>
+                  <Typography className={styles.subtitle}>Expiring on : {expiryDate}</Typography>
 
                   <Typography className={styles.price}>
-                    Credits Balance :- {activeSubscriptonData.creditsLeft}
+                    Credits Balance : {activeSubscriptonData.creditsLeft}
                   </Typography>
                   <Typography className={styles.status}>active</Typography>
 
