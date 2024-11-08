@@ -14,6 +14,7 @@ import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
 
+import useExpireCookies from './hooks/useExpireCookies';
 import Footer from './sections/Footer';
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
     ReactGA.initialize('G-12MG3SRC9K'); //tracking ID
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
+  useExpireCookies(['ACCOUNT_CHOOSER', 'SESSION_ID', 'user_auth_token', 'AEC']);
+  useExpireCookies([]);
 
   return (
     <StyledEngineProvider injectFirst>
