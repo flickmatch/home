@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import Draggable from 'react-draggable';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from '@mui/material/Avatar';
@@ -15,25 +16,39 @@ interface PlayerDetailProps {
 }
 
 export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => (
-  <Grid
-    item
-    xs={2}
-    sm={4}
-    md={3}
-    className={displayName === 'Add Name' ? styles.addName : styles.grid}
-    key={index}
+  <Draggable
+    axis="both"
+    handle=".handle"
+    defaultPosition={{ x: 0, y: 0 }}
+    scale={1}
+    // eslint-disable-next-line no-console
+    onStart={() => console.log('drag start')}
+    // eslint-disable-next-line no-console
+    onDrag={() => console.log('drag start 2')}
+    // eslint-disable-next-line no-console
+    onStop={() => console.log('drag start 3')}
+    allowAnyClick={true}
   >
-    {displayName === 'Add Name' ? (
-      <AddCircleIcon className={styles.personAvatar} />
-    ) : (
-      <Box className={styles.profilePic}>
-        <Avatar
-          className={displayName === 'Add Name' ? styles.addIcon : styles.avatar}
-          alt="profile"
-          src={avatars[index]}
-        />
-      </Box>
-    )}
-    <Typography className={styles.playerNames}>{displayName}</Typography>
-  </Grid>
+    <Grid
+      item
+      xs={2}
+      sm={4}
+      md={3}
+      className={displayName === 'Add Name' ? styles.addName : styles.grid}
+      key={index}
+    >
+      {displayName === 'Add Name' ? (
+        <AddCircleIcon className={styles.personAvatar} />
+      ) : (
+        <Box className={styles.profilePic}>
+          <Avatar
+            className={displayName === 'Add Name' ? styles.addIcon : styles.avatar}
+            alt="profile"
+            src={avatars[index]}
+          />
+        </Box>
+      )}
+      <Typography className={`${styles.playerNames} handle`}>{displayName}</Typography>
+    </Grid>
+  </Draggable>
 );
