@@ -192,7 +192,14 @@ const Header = () => {
           <FlexBox sx={{ alignItems: 'center' }}>
             {navIcon()}
             <Typography component={Link} to="/home">
-              <img src={appLogo} alt="logo" className={styles.logo} height="52px" width="54.23px" />
+              <img
+                src={appLogo}
+                alt="logo"
+                className={styles.logo}
+                height="52px"
+                width="54.23px"
+                referrerPolicy="no-referrer"
+              />
             </Typography>
             {hasActiveSubscription && userState.login.isLoggedIn ? (
               <Chip
@@ -224,6 +231,8 @@ const Header = () => {
                       alt="Profile Pic"
                       className={styles.profilePic}
                       referrerPolicy="no-referrer"
+                      height={32}
+                      width={32}
                     />
                   ) : (
                     <Box className={styles.letterProfile}>

@@ -119,7 +119,13 @@ function Welcome() {
     <FlexBox className={`${isPortrait ? styles.portraitSecondSection : styles.secondSection}`}>
       <Box className={isPortrait ? styles.portraitPhoneSection : styles.phoneSection}>
         <Box>
-          <img className={styles.Iphone1} src="./Iphone1.webp" alt="iphone" height="523px" />
+          <img
+            className={styles.Iphone1}
+            src="./Iphone1.webp"
+            alt="iphone"
+            height="523px"
+            width="304px"
+          />
         </Box>
       </Box>
       <Box className={isPortrait ? styles.portraitInfoSection : styles.infoSection}>
