@@ -64,6 +64,7 @@ public class RazorPaymentRequestBuilder {
         CreateUserInput createUserInput = CreateUserInput.builder()
                 .email(email) // Assuming you have the email from the payment request
                 .phoneNumber(phoneNumber)
+                .location(location)
                 .build();
         userBuilder.createUser(createUserInput);
         } catch (Exception e) {

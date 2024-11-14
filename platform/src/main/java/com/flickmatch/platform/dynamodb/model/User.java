@@ -19,6 +19,16 @@ public class User {
     private String userId;
     private List<String> subscriptionHistory = new ArrayList<>();
     private Boolean hasActiveSubscription;
+    private List<String> citiesHistory=new ArrayList<>();
+
+    @DynamoDBAttribute(attributeName="subscriptionHistory")
+    public List<String> getCitiesHistory() {
+        return citiesHistory;
+    }
+
+    public void setCitiesHistory(List<String> citiesHistory) {
+        this.citiesHistory = citiesHistory;
+    }
 
 
     @DynamoDBHashKey(attributeName="userId")
