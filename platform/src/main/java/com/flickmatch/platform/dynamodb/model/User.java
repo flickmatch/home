@@ -21,7 +21,7 @@ public class User {
     private Boolean hasActiveSubscription;
     private List<String> citiesHistory=new ArrayList<>();
 
-    @DynamoDBAttribute(attributeName="subscriptionHistory")
+    @DynamoDBAttribute(attributeName="citiesHistory")
     public List<String> getCitiesHistory() {
         return citiesHistory;
     }
