@@ -221,7 +221,7 @@ function GoogleLogin() {
             {!emailLogin ? (
               <Box className={styles.loginSignupButton}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }

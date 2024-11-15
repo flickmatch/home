@@ -117,11 +117,7 @@ function Footer() {
     <AppBar color="transparent" elevation={1} position="static" className={styles.container}>
       <FlexBox className={isPortrait ? styles.mobileAppBar : styles.appBar}>
         <FlexBox className={isPortrait ? styles.mobileCompanyDetails : styles.companyDetails}>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314"
-            alt="logo"
-            className={styles.logo}
-          />
+          <img src="/fm_rainbow.webp" alt="logo" className={styles.logo} width={38} height={36} />
           <Typography className={styles.companyName}>Flickmatch Private Limited</Typography>
         </FlexBox>
         <FlexBox className={isPortrait ? styles.mobileMenuDetails : styles.menuDetails}>

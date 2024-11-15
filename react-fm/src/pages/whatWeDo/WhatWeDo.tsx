@@ -13,7 +13,6 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 
 import styles from './WhatWeDo.module.scss';
-import { assessmentUrl, comingSoonUrl, statsUrl } from './constants';
 
 function WhatWeDo() {
   const isPortrait = useOrientation();
@@ -68,6 +67,7 @@ function WhatWeDo() {
           <Typography variant="h3" className={styles.heading}>
             What We Do
           </Typography>
+
           <Typography className={styles.job}>
             Flickmatch finds or organises football games near you.
           </Typography>
@@ -104,13 +104,17 @@ function WhatWeDo() {
               generator.
             </Typography>
             <img
-              src={assessmentUrl}
+              src="/stats.webp"
               alt="match assessments"
+              height={isPortrait ? 260 : 572}
+              width={isPortrait ? 390 : 953}
               className={isPortrait ? styles.mobileStats : styles.stats}
             />
             <img
-              src={statsUrl}
+              src="/assess.webp"
               alt="stats"
+              height={isPortrait ? 260 : 572}
+              width={isPortrait ? 390 : 953}
               className={isPortrait ? styles.mobileStats : styles.stats}
             />
           </FlexBox>
@@ -118,7 +122,13 @@ function WhatWeDo() {
             <Typography variant="h3" className={styles.heading}>
               Players History
             </Typography>
-            <img src={comingSoonUrl} alt="coming soon" className={styles.comingSoonImg} />
+            <img
+              src="/coming.gif"
+              alt="coming soon"
+              width={154}
+              height={160}
+              className={styles.comingSoonImg}
+            />
             <Typography className={styles.comingSoonText}>Coming soon....</Typography>
           </Box>
         </Box>

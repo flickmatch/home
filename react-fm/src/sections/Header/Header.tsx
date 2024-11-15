@@ -24,8 +24,6 @@ import styles from './Header.module.scss';
 
 //import { appLogo } from './constants';
 
-const appLogo = `${window.location.origin}/fm_rainbow.webp`;
-
 interface UserDetails {
   email: string;
   family_name: string;
@@ -193,7 +191,7 @@ const Header = () => {
             {navIcon()}
             <Typography component={Link} to="/home">
               <img
-                src={appLogo}
+                src="/fm_rainbow.webp"
                 alt="logo"
                 className={styles.logo}
                 height="52px"

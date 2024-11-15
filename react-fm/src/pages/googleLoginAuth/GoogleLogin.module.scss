@@ -111,10 +111,9 @@
 .emailLoginButton,
 .portraitEmailLoginButton,
 .portraitGoogleLoginButton {
-  background-color: transparent;
+  background: transparent;
   color: #4ce95a;
   border: 1px solid #4ce95a;
-  padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
@@ -131,9 +130,8 @@
 
 .googleLoginButton:hover,
 .portraitGoogleLoginButton:hover {
-  background: #4ce95a;
-  color: black;
-  transition: all 0.4s ease;
+  background: transparent;
+  border: 1px solid #4ce95a;
 }
 
 .loginDivider {
