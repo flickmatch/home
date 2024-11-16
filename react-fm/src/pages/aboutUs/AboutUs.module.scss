@@ -2,12 +2,6 @@
   display: none;
 }
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
-  font-display: swap;
-}
-
 .box {
   flex-flow: column;
   height: 95vh;
@@ -19,7 +13,7 @@
   font-weight: 600;
   color: #fff;
   margin-top: 30px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .journey {
@@ -27,7 +21,7 @@
   font-weight: 600;
   margin-top: 20px;
   letter-spacing: 0.5px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .motto,
@@ -63,6 +57,6 @@
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   margin-left: 7.5%;
 }

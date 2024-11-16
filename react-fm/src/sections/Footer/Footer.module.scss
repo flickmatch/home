@@ -2,12 +2,6 @@
   margin-top: 50px;
 }
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
-  font-display: swap;
-}
-
 .appBar {
   margin-bottom: 20px;
   margin-top: 20px;
@@ -34,8 +28,7 @@
   font-weight: 600;
   font-size: 20px;
   margin-left: 9px;
-  font-family: 'CustomFont', Arial, sans-serif;
-  margin-top: 2px;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .companyDetails {
