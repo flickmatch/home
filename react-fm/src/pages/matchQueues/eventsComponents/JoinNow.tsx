@@ -416,6 +416,14 @@ export const JoinNow: FC<EventDetails> = ({
     }
   };
 
+  const isUserLoggedIn = () => {
+    if (userData.name) {
+      setShowPaymentOptions(true);
+    } else {
+      navigate('/login');
+    }
+  };
+
   const handleClose = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     setOpen(false);
@@ -473,7 +481,7 @@ export const JoinNow: FC<EventDetails> = ({
               {!hasSubscription &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
               Number(activeSubscriptonData.creditsLeft) < Number(credits) ? null : (
-                <Button variant="contained" onClick={() => setShowPaymentOptions(true)}>
+                <Button variant="contained" onClick={isUserLoggedIn}>
                   Pay to Join
                 </Button>
               )}
