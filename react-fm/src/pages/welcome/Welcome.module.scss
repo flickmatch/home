@@ -2,6 +2,12 @@
   display: none;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+  font-display: swap;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -25,7 +31,7 @@ body {
   font-size: 58px;
   color: #4ce95a;
   letter-spacing: 2px;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .tagLine {
