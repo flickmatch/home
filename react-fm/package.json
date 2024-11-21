@@ -46,7 +46,7 @@
     "react-router-dom": "^6.4.1",
     "react-youtube": "^10.1.0",
     "recoil": "^0.7.5",
-    "sweetalert2": "^11.12.2"
+    "sweetalert2": "^11.6.13"
   },
   "devDependencies": {
     "@iconify/react": "^4.1.1",

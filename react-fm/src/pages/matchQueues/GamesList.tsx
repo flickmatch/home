@@ -217,10 +217,12 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       return renderPlayer(player, i);
                     })}
                   </Grid>
+                  <br />
+                  <br />
                   <Typography className={styles.versus}>v/s</Typography>
                   {teamB(playingEvent.team2_color)}
 
-                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                  <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
                       const player =
                         i < playingEvent.reservedPlayersList.length
@@ -234,6 +236,13 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 </Box>
               ) : (
                 <Box>
+                  {/* <img
+                    src="/ground-3d.jpeg"
+                    alt="ground"
+                    height={750}
+                    width={1200}
+                    className={styles.groundImage}
+                  /> */}
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                       const player =
