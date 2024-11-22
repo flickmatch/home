@@ -23,7 +23,7 @@ body {
 }
 
 .mobileContainer {
-  width: 90%;
+  width: 99%;
   margin: auto;
   margin-top: 30px;
 }
@@ -192,7 +192,59 @@ body {
   }
 }
 
-.groundImage {
+// .playersNameComponent {
+//   position: absolute;
+//   z-index: 9999;
+//   width: 100%;
+// }
+
+// .groundImageContainer {
+//   perspective: 800px;
+//   //position: absolute;
+//   z-index: 999;
+//   overflow: hidden;
+//   height: 450px;
+//   display: flex;
+//   align-items: flex-end;
+//   justify-content: center;
+// }
+
+// .groundImage {
+//   height: auto;
+//   width: 100%;
+//   display: block;
+//   background-size: cover;
+//   transform-style: preserve-3d;
+//   transform: rotateX(60deg);
+//   transform-origin: center bottom;
+// }
+
+////////////// for mobile
+
+.portraitPlayersNameComponent {
   position: absolute;
-  opacity: 0.7;
+  z-index: 9999;
+  width: 100%;
+}
+
+.portraitGroundImageContainer {
+  transform: rotate(90deg);
+  perspective: 800px;
+  z-index: 999;
+  overflow-x: hidden;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.portraitGroundImage {
+  height: 350px;
+  width: 450px;
+  display: block;
+  background-size: cover;
+  transform-style: preserve-3d;
+  transform: rotateY(-56deg);
+  transform-origin: center bottom;
 }
