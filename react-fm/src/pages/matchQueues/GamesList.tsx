@@ -256,7 +256,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     }
                   >
                     <img
-                      src="/ground-3d-cropped.jpeg"
+                      src="/ground.jpg"
                       alt="ground"
                       height={750}
                       width={1200}

@@ -81,6 +81,7 @@ body {
 .box {
   margin-top: 20px;
   margin-left: 25px;
+  position: relative;
 }
 
 .reservedPlayersContainer {
@@ -192,32 +193,32 @@ body {
   }
 }
 
-// .playersNameComponent {
-//   position: absolute;
-//   z-index: 9999;
-//   width: 100%;
-// }
+.playersNameComponent {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+}
 
-// .groundImageContainer {
-//   perspective: 800px;
-//   //position: absolute;
-//   z-index: 999;
-//   overflow: hidden;
-//   height: 450px;
-//   display: flex;
-//   align-items: flex-end;
-//   justify-content: center;
-// }
+.groundImageContainer {
+  perspective: 800px;
+  //position: absolute;
+  z-index: 999;
+  overflow: hidden;
+  height: 450px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
 
-// .groundImage {
-//   height: auto;
-//   width: 100%;
-//   display: block;
-//   background-size: cover;
-//   transform-style: preserve-3d;
-//   transform: rotateX(60deg);
-//   transform-origin: center bottom;
-// }
+.groundImage {
+  height: auto;
+  width: 100%;
+  display: block;
+  background-size: cover;
+  transform-style: preserve-3d;
+  transform: rotateX(60deg);
+  transform-origin: center bottom;
+}
 
 ////////////// for mobile
 
@@ -245,6 +246,6 @@ body {
   display: block;
   background-size: cover;
   transform-style: preserve-3d;
-  transform: rotateY(-56deg);
+  transform: scale(1.3) rotateY(-56deg);
   transform-origin: center bottom;
 }
