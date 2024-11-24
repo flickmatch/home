@@ -216,7 +216,7 @@ body {
   display: block;
   background-size: cover;
   transform-style: preserve-3d;
-  transform: rotateX(60deg);
+  transform: rotateX(70deg);
   transform-origin: center bottom;
 }
 
@@ -238,9 +238,8 @@ body {
 .portraitGroundImage {
   height: 100%;
   width: 100%;
-  //display: block;
-  margin-top: -125px;
+  margin-top: -150px;
   transform-style: preserve-3d;
-  transform: scale(1.5) rotateX(56deg);
+  transform: scale(1.5) rotateX(65deg);
   transform-origin: center bottom;
 }
