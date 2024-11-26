@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
 import { avatars } from '../constants';
@@ -26,6 +27,7 @@ interface Position {
 }
 
 export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => {
+  const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
   const [controlledPosition, setControlledPosition] = useState<Position>({ x: -40, y: 5 });
   const userState = useSelector((state: RootState) => state);
@@ -87,8 +89,9 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
         xs={2}
         sm={4}
         md={3}
-        className={displayName === 'Add Name' ? styles.addName : styles.grid}
+        className={isPortrait ? styles.portraitGrid : styles.grid}
         key={index}
+        style={{ borderRadius: displayName === 'Add Name' ? 15 : '' }}
       >
         {playerContent}
       </Grid>
