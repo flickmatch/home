@@ -235,34 +235,54 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 </Box>
               ) : (
                 <>
-                  <Box
-                    className={
-                      isPortrait ? styles.portraitPlayersNameComponent : styles.playersNameComponent
-                    }
-                  >
-                    <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                        const player =
-                          i < playingEvent.reservedPlayersList.length
-                            ? playingEvent.reservedPlayersList[i]
-                            : null;
-                        return renderPlayer(player, i);
-                      })}
-                    </Grid>
-                  </Box>
-                  <Box
-                    className={
-                      isPortrait ? styles.portraitGroundImageContainer : styles.groundImageContainer
-                    }
-                  >
-                    <img
-                      src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
-                      alt="ground"
-                      height={750}
-                      width={1200}
-                      className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
-                    />
-                  </Box>
+                  {userState.login.isAdmin ? (
+                    <Box
+                      className={
+                        isPortrait
+                          ? styles.portraitPlayersNameComponent
+                          : styles.playersNameComponent
+                      }
+                    >
+                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i);
+                        })}
+                      </Grid>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i);
+                        })}
+                      </Grid>
+                    </Box>
+                  )}
+                  {userState.login.isAdmin ? (
+                    <Box
+                      className={
+                        isPortrait
+                          ? styles.portraitGroundImageContainer
+                          : styles.groundImageContainer
+                      }
+                    >
+                      <img
+                        src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
+                        alt="ground"
+                        height={750}
+                        width={1200}
+                        className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
+                      />
+                    </Box>
+                  ) : null}
                 </>
               )}
             </Box>

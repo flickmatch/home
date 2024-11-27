@@ -1,16 +1,67 @@
-.avatar {
-  height: 30px;
-  width: 30px;
-}
+// .avatar {
+//   margin-right: 15px;
+// }
 
 .personAvatar {
-  height: 26px;
-  width: 26px;
+  height: 43px;
+  width: 43px;
   margin-right: 9px;
   margin-left: -3px;
 }
 
-.portraitGrid {
+.grid {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 6px !important;
+  margin-top: 30px;
+  height: 80px;
+}
+
+.playerNames {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.addName {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 6px !important;
+  margin-top: 30px;
+  height: 80px;
+  //background: #333;
+  border-radius: 15px;
+  margin-top: 40px;
+}
+
+.profilePic {
+  border: 1.5px solid #4ce95a;
+  border-radius: 50%;
+
+  padding: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/////////////for players formation
+
+.formationAvatar {
+  height: 21px;
+  width: 21px;
+}
+
+.formationPersonAvatar {
+  height: 24px;
+  width: 22px;
+  margin-right: 9px;
+  margin-left: -3px;
+}
+
+.formationPortraitGrid {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -20,7 +71,7 @@
   height: 80px;
 }
 
-.grid {
+.formationGrid {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -30,21 +81,14 @@
   height: 80px;
 }
 
-.playerNames {
+.formationPlayerNames {
   color: #fff;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
+  margin-top: 1px;
 }
 
-.addIcon {
-  height: 40px;
-  width: 40px;
-  margin-right: 9px;
-  margin-left: -3px;
-}
-
-.profilePic {
-  //border: 1.5px solid #4ce95a;
+.formationProfilePic {
   border-radius: 50%;
   padding: 4px;
   display: flex;

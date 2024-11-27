@@ -56,25 +56,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
     [onControlledDrag, onStop],
   );
 
-  const playerContent = (
-    <>
-      {displayName === 'Add Name' ? (
-        <AddCircleIcon className={styles.personAvatar} />
-      ) : (
-        <Box className={styles.profilePic}>
-          <Avatar
-            className={displayName === 'Add Name' ? styles.addIcon : styles.avatar}
-            alt="profile"
-            src={avatars[index]}
-          />
-        </Box>
-      )}
-      <Typography className={`${styles.playerNames} ${userState.login.isAdmin ? 'handle' : ''}`}>
-        {displayName}
-      </Typography>
-    </>
-  );
-
   return userState.login.isAdmin ? (
     <Draggable
       axis="both"
@@ -89,11 +70,22 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
         xs={2}
         sm={4}
         md={3}
-        className={isPortrait ? styles.portraitGrid : styles.grid}
+        className={isPortrait ? styles.formationPortraitGrid : styles.formationGrid}
         key={index}
         style={{ borderRadius: displayName === 'Add Name' ? 15 : '' }}
       >
-        {playerContent}
+        {displayName === 'Add Name' ? (
+          <AddCircleIcon className={styles.formationPersonAvatar} />
+        ) : (
+          <Box className={styles.formationProfilePic}>
+            <Avatar className={styles.formationAvatar} alt="profile" src={avatars[index]} />
+          </Box>
+        )}
+        <Typography
+          className={`${styles.formationPlayerNames} ${userState.login.isAdmin ? 'handle' : ''}`}
+        >
+          {displayName}
+        </Typography>
       </Grid>
     </Draggable>
   ) : (
@@ -105,7 +97,14 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
       className={displayName === 'Add Name' ? styles.addName : styles.grid}
       key={index}
     >
-      {playerContent}
+      {displayName === 'Add Name' ? (
+        <AddCircleIcon className={styles.personAvatar} />
+      ) : (
+        <Box className={styles.profilePic}>
+          <Avatar className={styles.avatar} alt="profile" src={avatars[index]} />
+        </Box>
+      )}
+      <Typography className={styles.playerNames}>{displayName}</Typography>
     </Grid>
   );
 };
