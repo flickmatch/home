@@ -290,6 +290,9 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .credits(input.getCredits())
                 .testGame(input.getTestGame())
+                .team1Color(input.getTeam1Color())
+                .team2Color(input.getTeam2Color())
+                .teamDivision(input.getTeamDivision())
                 .build();
         return eventDetails;
     }

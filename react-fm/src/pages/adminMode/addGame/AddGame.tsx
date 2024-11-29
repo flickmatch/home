@@ -52,6 +52,9 @@ function AddGame() {
   const [endTime, setEndTime] = useState('');
   const [credits, setCredits] = useState('');
   const [testGame, setTestGame] = useState(false);
+  const [teamDivision, setTeamDivision] = useState(false);
+  const [team1Color, setTeam1Color] = useState('');
+  const [team2Color, setTeam2Color] = useState('');
 
   // console.log(testGame);
 
@@ -252,13 +255,16 @@ function AddGame() {
                   input: {
                       cityId: "${cityName}"
                       charges: ${parseInt(charges)},
-                      sportsVenueId: "${turfName}",
+                      sportsVenueId: "1685185599715",
                       startTime: "${startTime + '+0530'}",
                       endTime: "${endTime + '+0530'}",
                       reservedPlayersCount: ${parseInt(playersCount)},
                       waitListPlayersCount: ${parseInt(playersCount) / 2},
                       credits: ${Number(credits)}
                       testGame: ${testGame}
+                      teamDivision: ${teamDivision}
+                      team1Color: "${team1Color}"
+                      team2Color: "${team2Color}"
                   }
               ) {
                 isSuccessful
@@ -431,6 +437,70 @@ function AddGame() {
     </FlexBox>
   );
 
+  const sectionSwitch = (usecase: 'testGame' | 'teamDivision') => (
+    <Box>
+      <FlexBox className={styles.startEndPicker}>
+        <Box>
+          <Typography className={styles.fieldTitle}>
+            {usecase === 'testGame' ? 'Test Game' : 'Team Division'}
+          </Typography>
+        </Box>
+        <Switch
+          className={styles.switchBtn}
+          checked={usecase === 'testGame' ? testGame : teamDivision}
+          onChange={() => {
+            usecase === 'testGame' ? setTestGame(!testGame) : setTeamDivision(!teamDivision);
+          }}
+          color="default"
+          sx={{
+            '& .MuiSwitch-switchBase.Mui-checked': {
+              color: '#4ce95a',
+            },
+            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+              backgroundColor: '#4ce95a',
+            },
+          }}
+        />
+      </FlexBox>
+    </Box>
+  );
+
+  const sectionTeamColors = () => (
+    <FlexBox className={styles.sectionThird}>
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startTimePicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 1</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team1Color}
+            onChange={(e) => setTeam1Color(e.target.value)}
+            placeholder="Team 1"
+            id="fullWidth"
+            type="text"
+          />
+        </FlexBox>
+      </Box>
+
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startEndPicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 2</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team2Color}
+            onChange={(e) => setTeam2Color(e.target.value)}
+            placeholder="Team 2"
+            id="fullWidth"
+            type="text"
+          />
+        </FlexBox>
+      </Box>
+    </FlexBox>
+  );
+
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
@@ -483,28 +553,10 @@ function AddGame() {
                     </FlexBox>
                   </Box>
 
-                  <Box className={styles.dateTimePicker}>
-                    <FlexBox className={styles.startEndPicker}>
-                      <Box>
-                        <Typography className={styles.fieldTitle}>Test Game</Typography>
-                      </Box>
-                      <Switch
-                        className={styles.switchBtn}
-                        checked={testGame}
-                        onChange={() => setTestGame(!testGame)}
-                        color="default"
-                        sx={{
-                          '& .MuiSwitch-switchBase.Mui-checked': {
-                            color: '#4ce95a',
-                          },
-                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#4ce95a',
-                          },
-                        }}
-                      />
-                    </FlexBox>
-                  </Box>
+                  {sectionSwitch('testGame')}
+                  {sectionSwitch('teamDivision')}
                 </FlexBox>
+                {teamDivision && sectionTeamColors()}
 
                 <br />
                 {sectionFourth()}
