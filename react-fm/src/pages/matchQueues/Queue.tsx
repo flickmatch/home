@@ -16,8 +16,70 @@ import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
 import { apiUrl, query } from './constants';
 import dummyData from './data';
+import gamesData from './data2';
 import { Cities } from './eventsComponents/Cities';
 import type { CityDetails } from './types/Events.types';
+
+// Type definition for a player
+type Player = {
+  name: string;
+  totalGameCount: number;
+};
+
+// Type definition for the parsed event details
+type EventDetail = {
+  M: {
+    playerDetailsList: {
+      L: Array<{
+        M: {
+          name: {
+            S: string;
+          };
+          waNumber?: {
+            S: string;
+          };
+        };
+      }>;
+    };
+    venueName: {
+      S: string;
+    };
+    charges: {
+      N: string;
+    };
+    venueLocationLink: {
+      S: string;
+    };
+    index: {
+      N: string;
+    };
+    currency: {
+      S: string;
+    };
+    startTime: {
+      S: string;
+    };
+    sportName: {
+      S: string;
+    };
+    endTime: {
+      S: string;
+    };
+    reservedPlayersCount: {
+      N: string;
+    };
+    waitListPlayersCount: {
+      N: string;
+    };
+  };
+};
+
+// Type definition for the main event data entry
+type EventData = {
+  cityId: number;
+  date: string;
+  eventDetailsList: string; // Stringified JSON array
+};
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
@@ -33,6 +95,46 @@ function MatchQueue() {
 
   // Function to convert date strings to a comparable Date object
   const parseDate = (event: { date: string }) => new Date(event.date);
+
+  function countPlayerOccurrences(dataArray: EventData[]): Player[] {
+    // Explicitly define the type of playerCountMap
+    const playerCountMap: { [key: string]: number } = {};
+
+    dataArray.forEach((event) => {
+      // Convert the stringified eventDetailsList to a JSON object
+      const eventDetails: EventDetail[] = JSON.parse(event.eventDetailsList);
+
+      // Extract player names from the JSON object
+      eventDetails.forEach((detail) => {
+        detail.M.playerDetailsList.L.forEach((playerDetail) => {
+          const playerName = playerDetail.M.name.S;
+          if (playerCountMap[playerName]) {
+            playerCountMap[playerName]++;
+          } else {
+            playerCountMap[playerName] = 1;
+          }
+        });
+      });
+    });
+
+    // Convert the map into an array of objects in the desired format
+    const playerCountArray: Player[] = Object.keys(playerCountMap).map((player) => ({
+      name: player,
+      totalGameCount: playerCountMap[player],
+    }));
+
+    return playerCountArray;
+  }
+
+  useEffect(() => {
+    // console.log(JSON.parse(gamesdummyData.games[0].eventDetailsList), gamesdummyData.games);
+
+    // Call the function with the data array
+    const playerOccurrences: Player[] = countPlayerOccurrences(gamesData.games);
+
+    // eslint-disable-next-line no-console
+    console.log(playerOccurrences);
+  }, []);
 
   useEffect(() => {
     setCitiesData([]);
