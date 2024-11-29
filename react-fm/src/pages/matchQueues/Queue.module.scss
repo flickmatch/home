@@ -223,14 +223,13 @@ body {
 ////////////// for mobile
 
 .portraitPlayersNameComponent {
-  position: absolute;
+  //position: absolute;
   z-index: 9999;
   width: 100%;
 }
 
 .portraitGroundImageContainer {
-  perspective: 800px;
-
+  perspective: 700px;
   height: 100%;
   width: 100%;
 }
