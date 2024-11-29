@@ -254,12 +254,12 @@ function AddGame() {
             createEvent(
                   input: {
                       cityId: "${cityName}"
-                      charges: ${parseInt(charges)},
-                      sportsVenueId: "${turfName}",
-                      startTime: "${startTime + '+0530'}",
-                      endTime: "${endTime + '+0530'}",
-                      reservedPlayersCount: ${parseInt(playersCount)},
-                      waitListPlayersCount: ${parseInt(playersCount) / 2},
+                      charges: ${parseInt(charges)}
+                      sportsVenueId: "${turfName}"
+                      startTime: "${startTime + '+0530'}"
+                      endTime: "${endTime + '+0530'}"
+                      reservedPlayersCount: ${parseInt(playersCount)}
+                      waitListPlayersCount: ${parseInt(playersCount) / 2}
                       credits: ${Number(credits)}
                       testGame: ${testGame}
                       teamDivision: ${teamDivision}
