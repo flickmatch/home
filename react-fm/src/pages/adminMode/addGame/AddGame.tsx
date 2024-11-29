@@ -255,7 +255,7 @@ function AddGame() {
                   input: {
                       cityId: "${cityName}"
                       charges: ${parseInt(charges)},
-                      sportsVenueId: "1685185599715",
+                      sportsVenueId: "${turfName}",
                       startTime: "${startTime + '+0530'}",
                       endTime: "${endTime + '+0530'}",
                       reservedPlayersCount: ${parseInt(playersCount)},
