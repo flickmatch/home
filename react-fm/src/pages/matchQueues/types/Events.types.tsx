@@ -27,7 +27,7 @@ type EventDetails = {
   singleEvent?: boolean;
   cityId?: string;
   handlePassName?: (name: string) => void;
-  // credits?: number;
+  credits?: number;
   // team1Color?: string;
   // team2Color?: string;
 };
