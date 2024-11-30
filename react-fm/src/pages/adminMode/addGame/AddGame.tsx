@@ -410,7 +410,7 @@ function AddGame() {
             value={charges}
             onChange={(e) => {
               setCharges(e.target.value);
-              setCredits(e.target.value);
+              if (!credits) setCredits(e.target.value);
             }}
             placeholder="Amount"
             id="fullWidth"
