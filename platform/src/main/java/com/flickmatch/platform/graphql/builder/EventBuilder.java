@@ -350,9 +350,9 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
                 .credits(eventDetails.getCredits())
                 .testGame(eventDetails.getTestGame())
-                .team1Color(eventDetails.getTeam1Color())
-                .team2Color(eventDetails.getTeam2Color())
-                .teamDivision(eventDetails.getTeamDivision())
+//                .team1Color(eventDetails.getTeam1Color())
+//                .team2Color(eventDetails.getTeam2Color())
+//                .teamDivision(eventDetails.getTeamDivision())
                 .build();
     }
 
