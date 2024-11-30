@@ -28,6 +28,8 @@ type EventDetails = {
   cityId?: string;
   handlePassName?: (name: string) => void;
   credits?: number;
+  // team1Color?: string;
+  // team2Color?: string;
 };
 
 type CityDetails = {
