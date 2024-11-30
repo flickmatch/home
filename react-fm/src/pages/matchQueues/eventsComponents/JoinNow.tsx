@@ -423,15 +423,6 @@ export const JoinNow: FC<EventDetails> = ({
   }
 
   //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
-  // if (Number(activeSubscriptonData.cityId) === Number(cityId))
-  //   console.log(
-  //     hasSubscription,
-  //     activeSubscriptonData,
-  //     Number(activeSubscriptonData.cityId) === Number(cityId),
-  //     Number(activeSubscriptonData.creditsLeft) > Number(credits),
-  //     Number(activeSubscriptonData.cityId),
-  //     credits,
-  //   );
 
   return (
     <>
