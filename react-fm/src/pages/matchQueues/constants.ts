@@ -51,6 +51,7 @@ const query = JSON.stringify({
           stripePaymentUrl
           credits
           testGame
+          
         }
       }
     }`,
