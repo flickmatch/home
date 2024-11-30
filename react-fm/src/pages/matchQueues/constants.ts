@@ -51,9 +51,6 @@ const query = JSON.stringify({
           stripePaymentUrl
           credits
           testGame
-          team_division
-          team1Color
-          team2Color
         }
       }
     }`,
