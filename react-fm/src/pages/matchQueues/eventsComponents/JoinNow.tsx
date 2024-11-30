@@ -114,81 +114,55 @@ export const JoinNow: FC<EventDetails> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const checkActiveSubscription = async (email: string) => {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `query HasActiveSubscription { hasActiveSubscription(email: "${email}") }`,
+        }),
+      });
+      const data = await response.json();
+      setHasSubscription(data.data.hasActiveSubscription);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error checking active subscription:', error);
+    }
+  };
+
+  const fetchActiveSubscriptionData = async (email: string) => {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `query GetActiveSubscription {
+            getActiveSubscription(email: "${email}") {
+              subscriptionId passId userId expiryDate creditsLeft status cityId
+            }
+          }`,
+        }),
+      });
+      const data = await response.json();
+      setActiveSubscriptionData(data.data.getActiveSubscription);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching subscription data:', error);
+    }
+  };
+
   useEffect(() => {
     if (userData.email) {
-      const fetchData = async () => {
-        const query = JSON.stringify({
-          query: `query HasActiveSubscription {
-        hasActiveSubscription(email: "${userData.email}")
-          }`,
-        });
-
-        try {
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: query,
-          });
-          const data = await response.json();
-
-          setHasSubscription(data.data.hasActiveSubscription);
-        } catch (error) {
-          if (error instanceof Error) {
-            if (error.name === 'TypeError') {
-              // eslint-disable-next-line no-console
-              console.log(error);
-            }
-          }
-        }
-      };
-
-      fetchData();
+      checkActiveSubscription(userData.email);
     }
   }, [userData.email]);
 
   useEffect(() => {
-    const getAcitveSubscription = async () => {
-      const getSubscription = JSON.stringify({
-        query: `query GetActiveSubscription {
-        getActiveSubscription(email: "${userData.email}") {
-        subscriptionId
-        passId
-        userId
-        expiryDate
-        creditsLeft
-        status
-        cityId
-    }}`,
-      });
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: getSubscription,
-        });
-        const subscriptions = await response.json();
-
-        setActiveSubscriptionData(subscriptions.data.getActiveSubscription);
-      } catch (error) {
-        if (error instanceof Error) {
-          if (error.name === 'TypeError') {
-            // eslint-disable-next-line no-console
-            console.log(error);
-          }
-        }
-      }
-    };
-
-    if (hasSubscription) {
-      getAcitveSubscription();
+    if (hasSubscription && userData.email) {
+      fetchActiveSubscriptionData(userData.email);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasSubscription]);
+  }, [hasSubscription, userData.email]);
 
   const openInNewTab = (url: string): void => {
     ReactGA.event({
