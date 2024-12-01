@@ -180,7 +180,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             className={
               highLighted && window.location.hash.substring(1) === playingEvent.uniqueEventId
                 ? styles.blink
-                : ''
+                : styles.accordionDetailsContainer
             }
           >
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
@@ -218,10 +218,11 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       return renderPlayer(player, i);
                     })}
                   </Grid>
+
                   <Typography className={styles.versus}>v/s</Typography>
                   {teamB(playingEvent.team2_color)}
 
-                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                  <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
                       const player =
                         i < playingEvent.reservedPlayersList.length
@@ -234,17 +235,56 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   </Grid>
                 </Box>
               ) : (
-                <Box>
-                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                      const player =
-                        i < playingEvent.reservedPlayersList.length
-                          ? playingEvent.reservedPlayersList[i]
-                          : null;
-                      return renderPlayer(player, i);
-                    })}
-                  </Grid>
-                </Box>
+                <>
+                  {userState.login.isAdmin ? (
+                    <Box
+                      className={
+                        isPortrait
+                          ? styles.portraitPlayersNameComponent
+                          : styles.playersNameComponent
+                      }
+                    >
+                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i);
+                        })}
+                      </Grid>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i);
+                        })}
+                      </Grid>
+                    </Box>
+                  )}
+                  {userState.login.isAdmin ? (
+                    <Box
+                      className={
+                        isPortrait
+                          ? styles.portraitGroundImageContainer
+                          : styles.groundImageContainer
+                      }
+                    >
+                      <img
+                        src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
+                        alt="ground"
+                        height={750}
+                        width={1200}
+                        className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
+                      />
+                    </Box>
+                  ) : null}
+                </>
               )}
             </Box>
           </AccordionDetails>

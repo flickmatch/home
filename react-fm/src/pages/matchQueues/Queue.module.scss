@@ -17,13 +17,13 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: auto;
   margin-top: 30px;
 }
 
 .mobileContainer {
-  width: 90%;
+  width: 100%;
   margin: auto;
   margin-top: 30px;
 }
@@ -78,9 +78,14 @@ body {
   color: #4ce95a;
 }
 
+.accordionDetailsContainer {
+  padding: 0px;
+}
+
 .box {
   margin-top: 20px;
-  margin-left: 25px;
+  //margin-left: 25px;
+  position: relative;
 }
 
 .reservedPlayersContainer {
@@ -104,9 +109,10 @@ body {
 .reservedPlayers,
 .waitListPlayers {
   color: #4ce95a;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   font-size: 20px;
   font-weight: 600;
+  margin-left: 35px;
 }
 
 .skeletonContainer {
@@ -190,4 +196,56 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+.playersNameComponent {
+  // position: absolute;
+  // z-index: 9999;
+  width: 100%;
+}
+
+.groundImageContainer {
+  perspective: 800px;
+  //position: absolute;
+  z-index: 999;
+  overflow: hidden;
+  //height: 450px;
+  height: 250px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.groundImage {
+  height: auto;
+  width: 100%;
+  display: block;
+  background-size: cover;
+  transform-style: preserve-3d;
+  transform: rotateX(70deg);
+  transform-origin: center bottom;
+}
+
+////////////// for mobile
+
+.portraitPlayersNameComponent {
+  //position: absolute;
+  z-index: 9999;
+  width: 100%;
+}
+
+.portraitGroundImageContainer {
+  perspective: 600px;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.portraitGroundImage {
+  height: 100%;
+  width: 100%;
+  margin-top: -150px;
+  transform-style: preserve-3d;
+  transform: scale(1.5) rotateX(65deg);
+  transform-origin: center bottom;
 }

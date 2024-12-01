@@ -338,7 +338,7 @@ const dummyData = {
             time: '7:00PM-8:00PM',
             dummyData: true,
             venueName: 'Vista Montana Park',
-            reservedPlayersCount: 18,
+            reservedPlayersCount: 22,
             waitListPlayersCount: 9,
             venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
             team_division: false,
@@ -399,6 +399,18 @@ const dummyData = {
               },
               {
                 displayName: 'Bianca',
+              },
+              {
+                displayName: 'Sharan',
+              },
+              {
+                displayName: 'Ferruro',
+              },
+              {
+                displayName: 'Sahil',
+              },
+              {
+                displayName: 'Hitesh',
               },
             ],
             waitListPlayers: [
