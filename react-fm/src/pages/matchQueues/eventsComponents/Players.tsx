@@ -92,7 +92,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
         <Typography
           className={`${
             isPortrait ? styles.portraitFormationPlayerName : styles.formationPlayerNames
-          } ${userState.login.isAdmin ? 'handle' : ''}`}
+          } ${'handle'}`}
         >
           {displayName}
         </Typography>

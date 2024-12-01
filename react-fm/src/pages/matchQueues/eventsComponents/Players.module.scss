@@ -81,7 +81,8 @@
   //margin-bottom: 20px;
   height: 80px;
   justify-content: center;
-  transform: unset !important;
+  z-index: 9999;
+  //transform: unset !important;
 }
 
 .formationGrid {
@@ -93,7 +94,8 @@
   margin-bottom: 20px;
   height: 80px;
   justify-content: center;
-  transform: unset !important;
+  z-index: 9999;
+  //transform: unset !important;
 }
 
 .formationPlayerNames {
