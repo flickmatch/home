@@ -179,7 +179,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             className={
               highLighted && window.location.hash.substring(1) === playingEvent.uniqueEventId
                 ? styles.blink
-                : ''
+                : styles.accordionDetailsContainer
             }
           >
             <Box className={styles.box} sx={{ flexGrow: 1 }}>

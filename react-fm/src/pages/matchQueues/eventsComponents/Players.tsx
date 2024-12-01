@@ -75,14 +75,24 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
         style={{ borderRadius: displayName === 'Add Name' ? 15 : '' }}
       >
         {displayName === 'Add Name' ? (
-          <AddCircleIcon className={styles.formationPersonAvatar} />
+          <AddCircleIcon
+            className={
+              isPortrait ? styles.portraitFormationPersonAvatar : styles.formationPersonAvatar
+            }
+          />
         ) : (
           <Box className={styles.formationProfilePic}>
-            <Avatar className={styles.formationAvatar} alt="profile" src={avatars[index]} />
+            <Avatar
+              className={isPortrait ? styles.portraitFormationAvatar : styles.formationAvatar}
+              alt="profile"
+              src={avatars[index]}
+            />
           </Box>
         )}
         <Typography
-          className={`${styles.formationPlayerNames} ${userState.login.isAdmin ? 'handle' : ''}`}
+          className={`${
+            isPortrait ? styles.portraitFormationPlayerName : styles.formationPlayerNames
+          } ${userState.login.isAdmin ? 'handle' : ''}`}
         >
           {displayName}
         </Typography>

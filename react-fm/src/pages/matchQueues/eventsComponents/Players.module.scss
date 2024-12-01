@@ -50,15 +50,26 @@
 /////////////for players formation
 
 .formationAvatar {
+  height: 32px;
+  width: 32px;
+}
+
+.portraitFormationAvatar {
   height: 21px;
   width: 21px;
 }
 
 .formationPersonAvatar {
+  height: 30px;
+  width: 28px;
+  margin-right: 9px;
+}
+
+.portraitFormationPersonAvatar {
   height: 24px;
   width: 22px;
   margin-right: 9px;
-  margin-left: -3px;
+  margin-top: 7px;
 }
 
 .formationPortraitGrid {
@@ -67,8 +78,10 @@
   flex-direction: row;
   padding: 6px !important;
   margin-top: 20px;
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
   height: 80px;
+  justify-content: center;
+  transform: unset !important;
 }
 
 .formationGrid {
@@ -79,9 +92,18 @@
   margin-top: 20px;
   margin-bottom: 20px;
   height: 80px;
+  justify-content: center;
+  transform: unset !important;
 }
 
 .formationPlayerNames {
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 1px;
+}
+
+.portraitFormationPlayerName {
   color: #fff;
   font-size: 12px;
   font-weight: bold;
