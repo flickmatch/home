@@ -348,69 +348,91 @@ const dummyData = {
             reservedPlayersList: [
               {
                 displayName: 'Chen',
+                points: { x: 249, y: 85 },
               },
               {
                 displayName: 'Pablo',
+                points: { x: 438, y: 52 },
               },
               {
                 displayName: 'Feng',
+                points: { x: 403, y: 100 },
               },
               {
                 displayName: 'Leo',
+                points: { x: 367, y: 148 },
               },
               {
                 displayName: 'Himesh',
+                points: { x: 307, y: 190 },
               },
               {
                 displayName: 'Arturito',
+                points: { x: 509, y: 49 },
               },
               {
                 displayName: 'Diego',
+                points: { x: 479, y: 97 },
               },
               {
                 displayName: 'Mateo',
+                points: { x: 444, y: 146 },
               },
               {
                 displayName: 'Rafael',
+                points: { x: 409, y: 194 },
               },
               {
                 displayName: 'Shahin',
+                points: { x: 574, y: 55 },
               },
               {
                 displayName: 'Eva',
+                points: { x: 565, y: 164 },
               },
               {
                 displayName: 'Astva',
+                points: { x: 1017, y: 93 },
               },
               {
                 displayName: 'Rishi',
+                points: { x: 830, y: 54 },
               },
               {
                 displayName: 'Frank',
+                points: { x: 862, y: 100 },
               },
               {
                 displayName: 'Ahmad',
+                points: { x: 893, y: 150 },
               },
               {
                 displayName: 'Luca',
+                points: { x: 944, y: 192 },
               },
               {
                 displayName: 'Dario',
+                points: { x: 748, y: 50 },
               },
               {
                 displayName: 'Bianca',
+                points: { x: 771, y: 100 },
               },
               {
                 displayName: 'Sharan',
+                points: { x: 801, y: 152 },
               },
               {
                 displayName: 'Ferruro',
+                points: { x: 843, y: 192 },
               },
               {
                 displayName: 'Sahil',
+                points: { x: 674, y: 60 },
               },
               {
                 displayName: 'Hitesh',
+                points: { x: 691, y: 162 },
               },
             ],
             waitListPlayers: [

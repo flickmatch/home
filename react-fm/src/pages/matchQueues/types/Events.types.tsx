@@ -1,5 +1,6 @@
 type ReservedPlayerDetails = {
   displayName: string;
+  points?: { x: number; y: number };
 };
 
 type waitListPlayerDetails = {

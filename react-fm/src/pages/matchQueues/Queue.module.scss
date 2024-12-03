@@ -222,7 +222,7 @@ body {
   display: block;
   background-size: cover;
   transform-style: preserve-3d;
-  transform: rotateX(70deg);
+  transform: rotateX(75deg);
   transform-origin: center bottom;
 }
 
@@ -235,7 +235,7 @@ body {
 }
 
 .portraitGroundImageContainer {
-  perspective: 600px;
+  perspective: 400px;
   height: 100%;
   width: 100%;
   overflow: hidden;

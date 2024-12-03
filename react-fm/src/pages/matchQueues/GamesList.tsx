@@ -81,8 +81,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     }
   }, []);
 
-  const renderPlayer = (player: ReservedPlayerDetails | null, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : 'Add Name'} index={i} key={i} />
+  const renderPlayer = (player: ReservedPlayerDetails | null, i: number, dummyData: boolean) => (
+    <PlayerDetails
+      displayName={player ? player.displayName : 'Add Name'}
+      index={i}
+      key={i}
+      points={player?.points}
+      dummyData={dummyData}
+    />
   );
 
   const teamA = (teamAColor: string) => (
@@ -214,7 +220,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                         i < playingEvent.reservedPlayersList.length
                           ? playingEvent.reservedPlayersList[i]
                           : null;
-                      return renderPlayer(player, i);
+                      return renderPlayer(player, i, playingEvent.dummyData);
                     })}
                   </Grid>
 
@@ -229,44 +235,59 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                               i + playingEvent.reservedPlayersCount / 2
                             ]
                           : null;
-                      return renderPlayer(player, i + playingEvent.reservedPlayersCount / 2);
+                      return renderPlayer(
+                        player,
+                        i + playingEvent.reservedPlayersCount / 2,
+                        playingEvent.dummyData,
+                      );
                     })}
                   </Grid>
                 </Box>
               ) : (
                 <>
-                  {userState.login.isAdmin ? (
-                    <Box
-                      className={
-                        isPortrait
-                          ? styles.portraitPlayersNameComponent
-                          : styles.playersNameComponent
-                      }
-                    >
-                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                  {userState.login.isAdmin && playingEvent.dummyData ? (
+                    // <Box
+                    //   className={
+                    //     isPortrait
+                    //       ? styles.portraitPlayersNameComponent
+                    //       : styles.playersNameComponent
+                    //   }
+                    // >
+                    //   <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    //     {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                    //       const player =
+                    //         i < playingEvent.reservedPlayersList.length
+                    //           ? playingEvent.reservedPlayersList[i]
+                    //           : null;
+                    //       return renderPlayer(player, i);
+                    //     })}
+                    //   </Grid>
+                    // </Box>
+                    <Box style={{ width: 100 }}>
+                      <Box style={{ display: isPortrait ? 'none' : 'flex' }}>
                         {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
                               ? playingEvent.reservedPlayersList[i]
                               : null;
-                          return renderPlayer(player, i);
+                          return renderPlayer(player, i, playingEvent.dummyData);
                         })}
-                      </Grid>
+                      </Box>
                     </Box>
                   ) : (
                     <Box>
-                      <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
                               ? playingEvent.reservedPlayersList[i]
                               : null;
-                          return renderPlayer(player, i);
+                          return renderPlayer(player, i, playingEvent.dummyData);
                         })}
                       </Grid>
                     </Box>
                   )}
-                  {userState.login.isAdmin ? (
+                  {userState.login.isAdmin && playingEvent.dummyData ? (
                     <Box
                       className={
                         isPortrait

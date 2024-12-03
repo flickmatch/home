@@ -1,5 +1,6 @@
 type PlayerDetail = {
   displayName: string;
+  points?: { x: number; y: number };
 };
 
 type Event = {
@@ -20,6 +21,7 @@ type Event = {
   date: string;
   time: string;
   waitListPlayers: WaitListPlayerList[];
+  dummyData: boolean;
 };
 
 type WaitListPlayerList = {

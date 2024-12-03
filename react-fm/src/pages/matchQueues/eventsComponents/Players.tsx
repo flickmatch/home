@@ -19,6 +19,8 @@ import styles from './Players.module.scss';
 interface PlayerDetailProps {
   displayName: string;
   index: number;
+  points?: { x: number; y: number };
+  dummyData: boolean;
 }
 
 interface Position {
@@ -26,46 +28,64 @@ interface Position {
   y: number;
 }
 
-export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => {
+export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index, points, dummyData }) => {
   const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
-  const [controlledPosition, setControlledPosition] = useState<Position>({ x: -40, y: 5 });
+
+  const [deltaPosition, setDeltaPosition] = useState<Position>(points ? points : { x: 0, y: 0 });
+  //const [controlledPosition, setControlledPosition] = useState<Position>({ x: 0, y: 0 });
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
   console.log(activeDrags);
 
-  const onStart = useCallback(() => setActiveDrags((prev) => prev + 1), []);
-  const onStop = useCallback(() => setActiveDrags((prev) => prev - 1), []);
-
-  const onControlledDrag = useCallback((e: DraggableEvent, position: DraggableData) => {
-    setControlledPosition({ x: position.x, y: position.y });
-    localStorage.setItem(
-      'currentPlayerPosition',
-      JSON.stringify({ [displayName]: [{ x: position.x, y: position.y }] }),
-    );
+  const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
+    setDeltaPosition((prevPosition) => ({
+      x: prevPosition.x + ui.deltaX,
+      y: prevPosition.y + ui.deltaY,
+    }));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onControlledDragStop = useCallback(
-    (e: DraggableEvent, position: DraggableData) => {
-      onControlledDrag(e, position);
-      onStop();
-    },
-    [onControlledDrag, onStop],
-  );
+  const onStart = useCallback(() => setActiveDrags((prev) => prev + 1), []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
+  const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin ? (
+  return userState.login.isAdmin && dummyData ? (
     <Draggable
-      axis="both"
       handle=".handle"
-      position={controlledPosition}
+      // position={controlledPosition}
       onStart={onStart}
-      onDrag={onControlledDrag}
-      onStop={onControlledDragStop}
+      onStop={onStop}
+      defaultPosition={deltaPosition}
+      onDrag={handleDrag}
     >
-      <Grid
+      <Box style={{ position: 'absolute', zIndex: 9999 }}>
+        {displayName === 'Add Name' ? (
+          <AddCircleIcon
+            className={
+              isPortrait ? styles.portraitFormationPersonAvatar : styles.formationPersonAvatar
+            }
+          />
+        ) : (
+          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+            <Avatar
+              alt="profile"
+              src={avatars[index]}
+              style={{ height: 30, width: 30, borderRadius: '50%' }}
+            />
+          </Box>
+        )}
+        <Typography
+          className={`${
+            isPortrait ? styles.portraitFormationPlayerName : styles.formationPlayerNames
+          } ${'handle'}`}
+        >
+          {displayName}
+        </Typography>
+      </Box>
+      {/* <Grid
         item
         xs={2}
         sm={4}
@@ -96,7 +116,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index }) => 
         >
           {displayName}
         </Typography>
-      </Grid>
+      </Grid> */}
     </Draggable>
   ) : (
     <Grid
