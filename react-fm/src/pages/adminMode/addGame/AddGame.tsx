@@ -51,6 +51,7 @@ function AddGame() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [credits, setCredits] = useState('');
+  const [touched, setTouched] = useState(false);
   const [testGame, setTestGame] = useState(false);
   const [teamDivision, setTeamDivision] = useState(false);
   const [team1Color, setTeam1Color] = useState('');
@@ -262,6 +263,9 @@ function AddGame() {
                       waitListPlayersCount: ${parseInt(playersCount) / 2}
                       credits: ${Number(credits)}
                       testGame: ${testGame}
+                      teamDivision: ${teamDivision}
+                      team1Color: "${team1Color}"
+                      team2Color: "${team2Color}"
                   }
               ) {
                 isSuccessful
@@ -410,7 +414,7 @@ function AddGame() {
             value={charges}
             onChange={(e) => {
               setCharges(e.target.value);
-              if (!credits) setCredits(e.target.value);
+              if (!touched) setCredits(e.target.value);
             }}
             placeholder="Amount"
             id="fullWidth"
@@ -545,7 +549,10 @@ function AddGame() {
                       <TextField
                         fullWidth
                         value={credits}
-                        onChange={(e) => setCredits(e.target.value)}
+                        onChange={(e) => {
+                          setCredits(e.target.value);
+                          setTouched(true);
+                        }}
                         placeholder="Credits"
                         id="fullWidth"
                         type="number"
