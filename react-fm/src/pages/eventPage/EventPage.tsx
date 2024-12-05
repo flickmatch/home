@@ -165,8 +165,14 @@ const EventPage: React.FC = () => {
     return cityData?.city;
   }
 
-  const renderPlayer = (player: PlayerDetail | null | undefined, i: number) => (
-    <PlayerDetails displayName={player ? player.displayName : 'Add Name'} index={i} key={i} />
+  const renderPlayer = (player: PlayerDetail | null | undefined, i: number, dummyData: boolean) => (
+    <PlayerDetails
+      displayName={player ? player.displayName : 'Add Name'}
+      index={i}
+      key={i}
+      points={player?.points}
+      dummyData={dummyData}
+    />
   );
 
   if (loading) {
@@ -275,7 +281,7 @@ const EventPage: React.FC = () => {
                 {Array.from({ length: event?.reservedPlayersCount || 0 }, (_, i) => {
                   const player =
                     i < reservedPlayersCount(event) || 0 ? event?.reservedPlayersList[i] : null;
-                  return renderPlayer(player, i);
+                  return renderPlayer(player, i, event.dummyData);
                 })}
               </Grid>
             </Box>
