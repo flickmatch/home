@@ -79,8 +79,39 @@ public class Event {
         Double credits;
         Boolean testGame;
 
+        Boolean teamDivision;
+        String team1Color;
+        String team2Color;
+
         String currency;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName = "teamDivision")
+        public Boolean getTeamDivision() {
+            return teamDivision;
+        }
+
+        public void setTeamDivision(Boolean teamDivision) {
+            this.teamDivision = teamDivision;
+        }
+
+        @DynamoDBAttribute(attributeName = "team1Color")
+        public String getTeam1Color() {
+            return team1Color;
+        }
+        public void setTeam1Color(String team1Color) {
+            this.team1Color = team1Color;
+        }
+
+        @DynamoDBAttribute(attributeName = "team2Color")
+        public String getTeam2Color() {
+            return team2Color;
+        }
+        public void setTeam2Color(String team2Color) {
+            this.team2Color = team2Color;
+        }
+
+
 
         @DynamoDBAttribute(attributeName = "testGame")
         public Boolean getTestGame() {
@@ -216,7 +247,16 @@ public class Event {
     public static class PlayerDetails {
         String name;
         String waNumber;
+        String teamColor;
 
+        @DynamoDBAttribute(attributeName = "teamColor")
+        public String getTeamColor() {
+            return teamColor;
+        }
+
+        public void setTeamColor(String teamColor) {
+            this.teamColor = teamColor;
+        }
         @DynamoDBAttribute(attributeName = "name")
         public String getName() {
             return name;

@@ -290,6 +290,9 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .credits(input.getCredits())
                 .testGame(input.getTestGame())
+                .team1Color(input.getTeam1Color())
+                .team2Color(input.getTeam2Color())
+                .teamDivision(input.getTeamDivision())
                 .build();
         return eventDetails;
     }
@@ -347,6 +350,9 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
                 .credits(eventDetails.getCredits())
                 .testGame(eventDetails.getTestGame())
+//                .team1Color(eventDetails.getTeam1Color())
+//                .team2Color(eventDetails.getTeam2Color())
+//                .teamDivision(eventDetails.getTeamDivision())
                 .build();
     }
 

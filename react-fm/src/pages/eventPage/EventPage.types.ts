@@ -22,6 +22,7 @@ type Event = {
   time: string;
   waitListPlayers: WaitListPlayerList[];
   dummyData: boolean;
+  credits?: number;
 };
 
 type WaitListPlayerList = {

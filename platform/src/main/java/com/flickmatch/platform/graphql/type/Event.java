@@ -29,4 +29,7 @@ public class Event {
     private String stripePaymentUrl;
     private Double credits;
     private Boolean testGame;
+    Boolean teamDivision;
+    String team1Color;
+    String team2Color;
 }
