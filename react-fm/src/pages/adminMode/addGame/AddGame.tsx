@@ -262,6 +262,9 @@ function AddGame() {
                       waitListPlayersCount: ${parseInt(playersCount) / 2}
                       credits: ${Number(credits)}
                       testGame: ${testGame}
+                      teamDivision: ${teamDivision}
+                      team1Color: "${team1Color}"
+                      team2Color: "${team2Color}"
                   }
               ) {
                 isSuccessful
@@ -410,7 +413,7 @@ function AddGame() {
             value={charges}
             onChange={(e) => {
               setCharges(e.target.value);
-              if (!credits) setCredits(e.target.value);
+              setCredits(e.target.value);
             }}
             placeholder="Amount"
             id="fullWidth"
@@ -545,7 +548,7 @@ function AddGame() {
                       <TextField
                         fullWidth
                         value={credits}
-                        onChange={(e) => setCredits(e.target.value)}
+                        disabled={true}
                         placeholder="Credits"
                         id="fullWidth"
                         type="number"
