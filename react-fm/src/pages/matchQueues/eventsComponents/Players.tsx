@@ -20,6 +20,7 @@ interface PlayerDetailProps {
   displayName: string;
   index: number;
   points?: { x: number; y: number };
+  mobilePoints?: { x: number; y: number };
   dummyData: boolean;
 }
 
@@ -28,11 +29,20 @@ interface Position {
   y: number;
 }
 
-export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index, points, dummyData }) => {
+export const PlayerDetails: FC<PlayerDetailProps> = ({
+  displayName,
+  index,
+  points,
+  dummyData,
+  mobilePoints,
+}) => {
   const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
 
   const [deltaPosition, setDeltaPosition] = useState<Position>(points ? points : { x: 0, y: 0 });
+  const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
+    mobilePoints ? mobilePoints : { x: 0, y: 0 },
+  );
   //const [controlledPosition, setControlledPosition] = useState<Position>({ x: 0, y: 0 });
   const userState = useSelector((state: RootState) => state);
 
@@ -41,6 +51,15 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index, point
 
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
     setDeltaPosition((prevPosition) => ({
+      x: prevPosition.x + ui.deltaX,
+      y: prevPosition.y + ui.deltaY,
+    }));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handlePortraitDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
+    setPortraitDeltaPosition((prevPosition) => ({
       x: prevPosition.x + ui.deltaX,
       y: prevPosition.y + ui.deltaY,
     }));
@@ -58,8 +77,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({ displayName, index, point
       // position={controlledPosition}
       onStart={onStart}
       onStop={onStop}
-      defaultPosition={deltaPosition}
-      onDrag={handleDrag}
+      defaultPosition={isPortrait ? portraitDeltaPosition : deltaPosition}
+      onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
       <Box style={{ position: 'absolute', zIndex: 9999 }}>
         {displayName === 'Add Name' ? (

@@ -87,6 +87,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       index={i}
       key={i}
       points={player?.points}
+      mobilePoints={player?.mobilePoints}
       dummyData={dummyData}
     />
   );
@@ -264,7 +265,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     //   </Grid>
                     // </Box>
                     <Box style={{ width: 100 }}>
-                      <Box style={{ display: isPortrait ? 'none' : 'flex' }}>
+                      {/* <Box style={{ display: isPortrait ? 'none' : 'flex' }}>
                         {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
@@ -272,7 +273,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                               : null;
                           return renderPlayer(player, i, playingEvent.dummyData);
                         })}
-                      </Box>
+                      </Box> */}
                     </Box>
                   ) : (
                     <Box>
@@ -295,6 +296,23 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                           : styles.groundImageContainer
                       }
                     >
+                      <Box
+                        style={{
+                          //display: isPortrait ? 'none' : 'flex',
+                          position: 'absolute',
+                          zIndex: 9999,
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      >
+                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i, playingEvent.dummyData);
+                        })}
+                      </Box>
                       <img
                         src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
                         alt="ground"
