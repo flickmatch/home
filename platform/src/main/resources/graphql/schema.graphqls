@@ -248,9 +248,9 @@ type EVENT {
   stripePaymentUrl: String
   credits: Float
   testGame: Boolean
-#  teamDivision: Boolean
-#  team1Color:String
-#  team2Color:String
+  teamDivision: Boolean
+  team1Color:String
+  team2Color:String
 }
 
 type Player {
