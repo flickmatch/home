@@ -287,6 +287,7 @@ function AddGame() {
         });
     }
   };
+  //
 
   const sectionFirst = () => (
     <Box className={styles.sectionFirst}>
