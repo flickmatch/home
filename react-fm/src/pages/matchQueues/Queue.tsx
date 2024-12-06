@@ -114,6 +114,7 @@ function MatchQueue() {
           return aIndex - bIndex;
         });
 
+        // console.log(reorderedCities);
         setCitiesData(reorderedCities);
       } catch (error) {
         if (error instanceof Error) {

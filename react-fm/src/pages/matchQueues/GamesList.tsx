@@ -31,6 +31,7 @@ interface event {
 }
 
 export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
+  // console.log(gameEvent);
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
 
