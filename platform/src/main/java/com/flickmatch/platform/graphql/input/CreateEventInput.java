@@ -15,4 +15,7 @@ public class CreateEventInput {
     Integer waitListPlayersCount;
     Double credits;
     Boolean testGame;
+    Boolean teamDivision;
+    String team1Color;
+    String team2Color;
 }

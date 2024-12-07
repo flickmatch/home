@@ -33,7 +33,7 @@ function MatchQueue() {
 
   // Function to convert date strings to a comparable Date object
   const parseDate = (event: { date: string }) => new Date(event.date);
-
+  //
   useEffect(() => {
     setCitiesData([]);
     const controller = new AbortController();
@@ -114,6 +114,7 @@ function MatchQueue() {
           return aIndex - bIndex;
         });
 
+        // console.log(reorderedCities);
         setCitiesData(reorderedCities);
       } catch (error) {
         if (error instanceof Error) {

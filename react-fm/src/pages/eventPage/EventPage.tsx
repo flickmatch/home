@@ -62,6 +62,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
             reservedPlayersCount
             waitListPlayersCount
             stripePaymentUrl
+            credits
             reservedPlayersList {
               displayName
             }
@@ -234,6 +235,7 @@ const EventPage: React.FC = () => {
                   dummyData={false}
                   singleEvent={true}
                   cityId={cityNameId}
+                  credits={event?.credits}
                 />
               )}
             </FlexBox>
@@ -255,6 +257,7 @@ const EventPage: React.FC = () => {
               team2_color={''}
               dummyData={false}
               cityId={cityNameId}
+              credits={event?.credits}
             />
           </FlexBox>
         </AccordionSummary>

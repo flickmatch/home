@@ -31,6 +31,7 @@ interface event {
 }
 
 export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
+  // console.log(gameEvent);
   const isPortrait = useOrientation();
   //const navigate = useNavigate();
 
@@ -170,6 +171,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 team2_color={playingEvent.team2_color ? playingEvent.team2_color : ''}
                 dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 handlePassName={passName}
+                credits={playingEvent.credits ? playingEvent.credits : 0}
               />
             </FlexBox>
           </AccordionSummary>

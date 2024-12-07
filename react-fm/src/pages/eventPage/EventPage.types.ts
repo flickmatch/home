@@ -20,6 +20,7 @@ type Event = {
   date: string;
   time: string;
   waitListPlayers: WaitListPlayerList[];
+  credits?: number;
 };
 
 type WaitListPlayerList = {

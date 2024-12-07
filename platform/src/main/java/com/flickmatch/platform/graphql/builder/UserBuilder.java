@@ -22,7 +22,7 @@ public class UserBuilder {
 
     public User createUser(CreateUserInput input) {
 //        Checking if the user already exists
-
+        String location = input.getLocation();
         Optional<User> existingUserOptional = userRepository.findByEmail(input.getEmail());
         User user;
 
@@ -30,16 +30,28 @@ public class UserBuilder {
             // User already exists, update the phone number
             user = existingUserOptional.get();
             user.setPhoneNumber(input.getPhoneNumber());
+            List<String> citiesHistory = user.getCitiesHistory();
+            if(citiesHistory!=null) {
+                if (!citiesHistory.contains(location)) {
+                    citiesHistory.add(location);
+                }
+            } else {
+                citiesHistory = new ArrayList<>();
+                citiesHistory.add(location);
+            }
+            user.setCitiesHistory(citiesHistory);
             log.info("User already exists, updating phone number for user: {}", user);
             return userRepository.save(user);
         } else {
-            // Create a new User object
+            List<String>citiesHistory = new ArrayList<>();
+            citiesHistory.add(location);
             user = new User();
             user.setEmail(input.getEmail());
             user.setName(input.getName());
             user.setPhoneNumber(input.getPhoneNumber());
             user.setHasActiveSubscription(false);
             user.setSubscriptionHistory(new ArrayList<>());
+            user.setCitiesHistory(citiesHistory);
             log.info("Creating a new user: {}", user);
         }
 
