@@ -10,10 +10,16 @@
   // margin: 4rem;
 }
 
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+  font-display: swap;
+}
+
 .pageTitle {
   font-weight: 600;
   margin-top: 2rem;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .Container {
@@ -38,19 +44,19 @@
 .primaryHeading {
   font-weight: 600;
   margin: 1rem;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .secondaryHeading {
   font-weight: 500;
   margin: 1rem;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .pageTitleVertical {
   font-weight: 600;
   // margin-top: 10rem;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'CustomFont', Arial, sans-serif;
 }
 
 .portraitContainer {
