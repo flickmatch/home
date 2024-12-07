@@ -56,6 +56,7 @@ public class RazorPaymentRequestBuilder {
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
+                        .teamColor(playerInput.getTeamColor())
                         .build())
                 .collect(Collectors.toList());
 

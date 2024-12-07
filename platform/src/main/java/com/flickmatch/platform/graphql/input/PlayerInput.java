@@ -8,4 +8,5 @@ import lombok.Getter;
 public class PlayerInput {
     String name;
     String waNumber;
+    String teamColor;
 }
