@@ -196,10 +196,7 @@ function GoogleLogin() {
 
       <Box className={styles.container}>
         <Box className={isPortrait ? styles.portraitLeftSide : styles.leftSide}>
-          <img
-            src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vdGJhbGwlMjBwbGF5ZXJ8ZW58MHx8MHx8fDA%3D"
-            alt="Football Image"
-          />
+          <img src="/football-1.avif" alt="Football Image" referrerPolicy="no-referrer" srcSet="" />
         </Box>
 
         <Box className={isPortrait ? styles.portraitRightSide : styles.rightSide}>
@@ -224,7 +221,7 @@ function GoogleLogin() {
             {!emailLogin ? (
               <Box className={styles.loginSignupButton}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   className={
                     isPortrait ? styles.portraitGoogleLoginButton : styles.googleLoginButton
                   }

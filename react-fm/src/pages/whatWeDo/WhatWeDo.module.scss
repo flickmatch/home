@@ -2,12 +2,6 @@
   display: none;
 }
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
-  font-display: swap;
-}
-
 .container {
   display: flex;
   flex-flow: column;
@@ -66,9 +60,9 @@
 }
 
 .mobileStats {
-  width: 390px;
+  margin: auto;
   margin-top: 35px;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 .yout,
@@ -76,7 +70,7 @@
   font-weight: 400;
   text-decoration: none;
   color: #4ce95a;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .heading {
@@ -84,7 +78,7 @@
   font-weight: 600;
   text-align: center;
   letter-spacing: 1.2px;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .assessment {
@@ -109,5 +103,5 @@
   font-size: 20px;
   color: #4ce95a;
   text-align: center;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
 }

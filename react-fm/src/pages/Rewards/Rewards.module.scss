@@ -2,18 +2,18 @@
   display: none;
 }
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
-  font-display: swap;
-}
-
 .parent {
   color: #4ce95a;
   text-align: center;
   letter-spacing: 1.2px;
   height: 100vh;
   // margin: 4rem;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../../../otf/MontserratAlt1-Medium.otf') format('opentype');
+  font-display: swap;
 }
 
 .pageTitle {
@@ -79,7 +79,7 @@
   font-weight: 600;
   margin-top: 3rem;
   margin-bottom: 3rem;
-  font-family: 'CustomFont', Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   // margin-right: -10px;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ExtensionIcon from '@mui/icons-material/Extension';
@@ -21,16 +21,6 @@ import styles from './Welcome.module.scss';
 function Welcome() {
   const [activeImage, setActiveImage] = useState<number | null>(1);
   const isPortrait = useOrientation();
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // Check if the video element is available
-    if (videoRef.current) {
-      // Load the video and start playing
-      videoRef.current.load();
-      videoRef.current.play();
-    }
-  }, []);
 
   const whatsApp = () => (
     <a href="https://wa.me/message/YM7GOPO75EHPG1" target="_blank" rel="noreferrer">
@@ -42,15 +32,7 @@ function Welcome() {
 
   const videoContainer = () => (
     <Box className={`${styles.videoContainer}`}>
-      <video
-        ref={videoRef}
-        className={styles.fullscreenVideo}
-        preload="auto"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
+      <video className={styles.fullscreenVideo} preload="auto" autoPlay loop muted playsInline>
         <source
           src="https://firebasestorage.googleapis.com/v0/b/first-d160b.appspot.com/o/football.mp4?alt=media&token=954eceb5-f109-492c-86b5-8587bf2ce7fd"
           type="video/mp4"
@@ -119,7 +101,13 @@ function Welcome() {
     <FlexBox className={`${isPortrait ? styles.portraitSecondSection : styles.secondSection}`}>
       <Box className={isPortrait ? styles.portraitPhoneSection : styles.phoneSection}>
         <Box>
-          <img className={styles.Iphone1} src="./Iphone1.webp" alt="iphone" height="523px" />
+          <img
+            className={styles.Iphone1}
+            src="./Iphone1.webp"
+            alt="iphone"
+            height="523px"
+            width="304px"
+          />
         </Box>
       </Box>
       <Box className={isPortrait ? styles.portraitInfoSection : styles.infoSection}>
