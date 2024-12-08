@@ -5,6 +5,7 @@ const createOrder = (
   currency: string,
   email: string,
   phoneNumber: string,
+  teamColor: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
   fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -18,7 +19,10 @@ const createOrder = (
             input: {
               uniqueEventId: "${uniqueEventId}"
               playerInputList: [${objectArray
-                .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
+                .map(
+                  (obj) =>
+                    `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}" }`,
+                )
                 .join(',')}],
                 currency : "${currency}"
                 email : "${email}"

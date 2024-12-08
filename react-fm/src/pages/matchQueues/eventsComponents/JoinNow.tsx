@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -23,6 +24,7 @@ import Swal from 'sweetalert2';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
+import type { RootState } from '@/store/types';
 
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
@@ -52,6 +54,9 @@ export const JoinNow: FC<EventDetails> = ({
   handlePassName,
   cityId,
   credits,
+  team_division,
+  team1_color,
+  team2_color,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -79,6 +84,13 @@ export const JoinNow: FC<EventDetails> = ({
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
+  const [teamColor, setTeamColor] = useState('');
+  const userState = useSelector((state: RootState) => state);
+  // console.log(userState.login.isAdmin);
+
+  const handleColorChange = (event: { target: { value: string } }) => {
+    setTeamColor(event.target.value);
+  };
 
   const currencyFromCity = async () => {
     const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -322,6 +334,8 @@ export const JoinNow: FC<EventDetails> = ({
       alert('Please fill all the details');
     } else if (namesArray.length > openSpots) {
       alert(`Names are more than openspots. Only ${openSpots} players are required`);
+    } else if (team_division && teamColor == '') {
+      alert('Please select a team color.');
     } else {
       setOpen(false);
 
@@ -338,7 +352,10 @@ export const JoinNow: FC<EventDetails> = ({
                     input: {
                         uniqueEventId: "${uniqueEventId}"
                         playerInputList: [${objectArray
-                          .map((obj) => `{ waNumber: "${obj.waNumber}", name: "${obj.name}" }`)
+                          .map(
+                            (obj) =>
+                              `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}" }`,
+                          )
                           .join(',')}] 
                     }
                 ) {
@@ -368,12 +385,14 @@ export const JoinNow: FC<EventDetails> = ({
       } else {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
         createOrder(
+          // '2-2024-12-12-1',
           uniqueEventId,
           objectArray,
           setAmount,
           currency || 'INR',
           email,
           userData.phoneNumber,
+          teamColor,
         ) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
@@ -423,6 +442,7 @@ export const JoinNow: FC<EventDetails> = ({
   }
 
   //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
+  // console.log(team1_color, team2_color, team_division);
 
   return (
     <>
@@ -585,6 +605,24 @@ export const JoinNow: FC<EventDetails> = ({
                   onChange={handleNumber}
                   onClick={onModalClick}
                 />
+
+                {team_division && userState.login.isAdmin && (
+                  <Box mt={2}>
+                    <div className={styles.playersNumber}>
+                      <InputLabel id="team-color-select-label">Select Team Color</InputLabel>
+                      <Select
+                        labelId="team-color-select-label"
+                        id="team-color-select"
+                        value={teamColor}
+                        onChange={handleColorChange}
+                        variant="standard"
+                      >
+                        <MenuItem value={team1_color}>{team1_color}</MenuItem>
+                        <MenuItem value={team2_color}>{team2_color}</MenuItem>
+                      </Select>
+                    </div>
+                  </Box>
+                )}
               </DialogContent>
               <DialogActions>
                 <Button className={styles.cancel} onClick={handleClose}>

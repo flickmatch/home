@@ -201,6 +201,7 @@ input RegisterModeratorInput {
 input PlayerInput {
   waNumber: String
   name: String!
+  teamColor: String
 }
 
 type PassPaymentOutput {
