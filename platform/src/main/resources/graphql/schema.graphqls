@@ -256,6 +256,7 @@ type EVENT {
 
 type Player {
   displayName: String!
+  teamColor: String
 }
 
 type SportsVenue {
