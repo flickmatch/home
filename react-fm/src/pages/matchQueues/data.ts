@@ -338,7 +338,7 @@ const dummyData = {
             time: '7:00PM-8:00PM',
             dummyData: true,
             venueName: 'Vista Montana Park',
-            reservedPlayersCount: 18,
+            reservedPlayersCount: 22,
             waitListPlayersCount: 9,
             venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
             team_division: false,
@@ -348,57 +348,113 @@ const dummyData = {
             reservedPlayersList: [
               {
                 displayName: 'Chen',
+                points: { x: 249, y: 85 },
+                mobilePoints: { x: 194, y: 157 },
               },
               {
                 displayName: 'Pablo',
+                points: { x: 438, y: 52 },
+                mobilePoints: { x: 86, y: 175 },
               },
               {
                 displayName: 'Feng',
+                points: { x: 403, y: 100 },
+                mobilePoints: { x: 145, y: 172 },
               },
               {
                 displayName: 'Leo',
+                points: { x: 367, y: 148 },
+                mobilePoints: { x: 261, y: 171 },
               },
               {
                 displayName: 'Himesh',
+                points: { x: 307, y: 190 },
+                mobilePoints: { x: 307, y: 173 },
               },
               {
                 displayName: 'Arturito',
+                points: { x: 509, y: 49 },
+                mobilePoints: { x: 64, y: 224 },
               },
               {
                 displayName: 'Diego',
+                points: { x: 479, y: 97 },
+                mobilePoints: { x: 186, y: 207 },
               },
               {
                 displayName: 'Mateo',
+                points: { x: 444, y: 146 },
+                mobilePoints: { x: 228, y: 207 },
               },
               {
                 displayName: 'Rafael',
+                points: { x: 409, y: 194 },
+                mobilePoints: { x: 325, y: 222 },
               },
               {
                 displayName: 'Shahin',
+                points: { x: 574, y: 55 },
+                mobilePoints: { x: 120, y: 227 },
               },
               {
                 displayName: 'Eva',
+                points: { x: 565, y: 164 },
+                mobilePoints: { x: 279, y: 224 },
               },
               {
                 displayName: 'Astva',
+                points: { x: 1017, y: 93 },
+                mobilePoints: { x: 194, y: 436 },
               },
               {
                 displayName: 'Rishi',
+                points: { x: 830, y: 54 },
+                mobilePoints: { x: 11, y: 371 },
               },
               {
                 displayName: 'Frank',
+                points: { x: 862, y: 100 },
+                mobilePoints: { x: 94, y: 376 },
               },
               {
                 displayName: 'Ahmad',
+                points: { x: 893, y: 150 },
+                mobilePoints: { x: 278, y: 373 },
               },
               {
                 displayName: 'Luca',
+                points: { x: 944, y: 192 },
+                mobilePoints: { x: 382, y: 375 },
               },
               {
                 displayName: 'Dario',
+                points: { x: 748, y: 50 },
+                mobilePoints: { x: 20, y: 314 },
               },
               {
                 displayName: 'Bianca',
+                points: { x: 771, y: 100 },
+                mobilePoints: { x: 115, y: 320 },
+              },
+              {
+                displayName: 'Sharan',
+                points: { x: 801, y: 152 },
+                mobilePoints: { x: 256, y: 323 },
+              },
+              {
+                displayName: 'Ferruro',
+                points: { x: 843, y: 192 },
+                mobilePoints: { x: 356, y: 322 },
+              },
+              {
+                displayName: 'Sahil',
+                points: { x: 674, y: 60 },
+                mobilePoints: { x: 302, y: 281 },
+              },
+              {
+                displayName: 'Hitesh',
+                points: { x: 691, y: 162 },
+                mobilePoints: { x: 68, y: 279 },
               },
             ],
             waitListPlayers: [
