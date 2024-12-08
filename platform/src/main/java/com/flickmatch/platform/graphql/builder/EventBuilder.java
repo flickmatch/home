@@ -363,6 +363,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         eventDetails.getPlayerDetailsList().forEach(playerDetails -> {
             Player player = Player.builder()
                     .displayName(playerDetails.getName())
+                    .teamColor(playerDetails.getTeamColor())
                     .build();
             if (counter.get() < eventDetails.getReservedPlayersCount()) {
                 reservedPlayers.add(player);
