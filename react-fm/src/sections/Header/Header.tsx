@@ -149,7 +149,7 @@ const Header = () => {
         </Typography>
         <Divider className={styles.divider} orientation="vertical" flexItem />
         <Typography className={styles.menuItem} component={Link} to="/rewards">
-          Rewards
+          Gift Pass
         </Typography>
 
         {userState.login.isAdmin && userState.login.isLoggedIn ? (
