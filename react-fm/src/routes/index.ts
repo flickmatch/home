@@ -64,7 +64,7 @@ const routes: Routes = {
   [Pages.Rewards]: {
     component: asyncComponentLoader(() => import('@/pages/Rewards')),
     path: '/rewards',
-    title: 'Rewards',
+    title: 'Gift Pass',
     icon: AttachMoneyIcon,
   },
   [Pages.AddTurfPage]: {
