@@ -40,6 +40,9 @@ export const EventsCard: FC<EventDetails> = ({
   dummyData,
   handlePassName,
   credits,
+  team_division,
+  team1_color,
+  team2_color,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
@@ -49,6 +52,7 @@ export const EventsCard: FC<EventDetails> = ({
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
+  // console.log(team1_color, team2_color, team_division);
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -142,7 +146,7 @@ export const EventsCard: FC<EventDetails> = ({
     if (currencyCode === 'INR') {
       timeZone = (
         <span>
-          {dummyData ? futureDate : date} {'    '} {time}
+          {dummyData ? futureDate : date} {'    '} {`time`}
         </span>
       );
     } else {
@@ -243,9 +247,9 @@ export const EventsCard: FC<EventDetails> = ({
             venueName={venueName}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
-            team_division={false}
-            team1_color={''}
-            team2_color={''}
+            team_division={team_division}
+            team1_color={team1_color}
+            team2_color={team2_color}
             dummyData={dummyData}
             handlePassName={handlePassName}
             cityId={cityId}
