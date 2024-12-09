@@ -299,7 +299,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     >
                       <Box
                         style={{
-                          display: 'none',
+                          //display: 'none',
                           position: 'absolute',
                           zIndex: 9999,
                           width: '100%',
@@ -317,7 +317,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       <img
                         src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
                         alt="ground"
-                        height={750}
+                        height={650}
                         width={1200}
                         className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                       />
