@@ -65,9 +65,11 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
             credits
             reservedPlayersList {
               displayName
+              teamColor
             }
             waitListPlayers{
                 displayName
+                teamColor
             }
           }
         }
