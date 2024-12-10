@@ -89,14 +89,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const teamA = (teamAColor: string) => (
     <Box className={styles.teamDivision}>
       <span className={styles.colorTeamA} style={{ background: teamAColor }} />
-      {teamAColor ? teamAColor : 'White'} (Team A)
+      {teamAColor ? teamAColor : 'Red'} (Team A)
     </Box>
   );
 
   const teamB = (teamBColor: string) => (
     <Box className={styles.teamDivisionSecond}>
       <span className={styles.colorTeamB} style={{ background: teamBColor }} />
-      {teamBColor ? teamBColor : 'Blue'} (Team B)
+      {teamBColor ? teamBColor : 'Black'} (Team B)
     </Box>
   );
 
@@ -166,9 +166,9 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 venueName={playingEvent.venueName}
                 waitListPlayers={playingEvent.waitListPlayers}
                 stripePaymentUrl={playingEvent.stripePaymentUrl}
-                team_division={false}
-                team1_color={playingEvent.team1_color ? playingEvent.team1_color : ''}
-                team2_color={playingEvent.team2_color ? playingEvent.team2_color : ''}
+                team_division={playingEvent.teamDivision ? playingEvent.teamDivision : false}
+                team1_color={playingEvent.team1Color ? playingEvent.team1Color : ''}
+                team2_color={playingEvent.team2Color ? playingEvent.team2Color : ''}
                 dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 handlePassName={passName}
                 credits={playingEvent.credits ? playingEvent.credits : 0}
@@ -207,9 +207,9 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 />
               ) : null}
 
-              {playingEvent.team_division ? (
+              {playingEvent?.teamDivision ? (
                 <Box>
-                  {teamA(playingEvent.team1_color)}
+                  {teamA(playingEvent?.team1Color || 'Red')}
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
                       const player =
@@ -220,7 +220,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                     })}
                   </Grid>
                   <Typography className={styles.versus}>v/s</Typography>
-                  {teamB(playingEvent.team2_color)}
+                  {teamB(playingEvent?.team2Color || 'Black')}
 
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
