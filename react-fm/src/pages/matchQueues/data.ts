@@ -404,57 +404,57 @@ const dummyData = {
               {
                 displayName: 'Astva',
                 points: { x: 47, y: 21 },
-                mobilePoints: { x: 30, y: 46 },
+                mobilePoints: { x: 30, y: 47 },
               },
               {
                 displayName: 'Rishi',
                 points: { x: 47, y: 67 },
-                mobilePoints: { x: 63, y: 46 },
+                mobilePoints: { x: 63, y: 47 },
               },
               {
                 displayName: 'Frank',
                 points: { x: 56, y: 10 },
-                mobilePoints: { x: 6, y: 54 },
+                mobilePoints: { x: 6, y: 55 },
               },
               {
                 displayName: 'Ahmad',
                 points: { x: 56, y: 30 },
-                mobilePoints: { x: 30, y: 54 },
+                mobilePoints: { x: 30, y: 55 },
               },
               {
                 displayName: 'Luca',
                 points: { x: 56, y: 60 },
-                mobilePoints: { x: 63, y: 54 },
+                mobilePoints: { x: 63, y: 55 },
               },
               {
                 displayName: 'Dario',
                 points: { x: 56, y: 80 },
-                mobilePoints: { x: 84, y: 54 },
+                mobilePoints: { x: 84, y: 55 },
               },
               {
                 displayName: 'Bianca',
                 points: { x: 63, y: 10 },
-                mobilePoints: { x: 6, y: 62 },
+                mobilePoints: { x: 6, y: 63 },
               },
               {
                 displayName: 'Sharan',
                 points: { x: 63, y: 30 },
-                mobilePoints: { x: 30, y: 62 },
+                mobilePoints: { x: 30, y: 63 },
               },
               {
                 displayName: 'Ferruro',
                 points: { x: 63, y: 60 },
-                mobilePoints: { x: 63, y: 62 },
+                mobilePoints: { x: 63, y: 63 },
               },
               {
                 displayName: 'Sahil',
                 points: { x: 63, y: 80 },
-                mobilePoints: { x: 84, y: 62 },
+                mobilePoints: { x: 84, y: 63 },
               },
               {
                 displayName: 'Hitesh',
                 points: { x: 79, y: 46 },
-                mobilePoints: { x: 46, y: 71 },
+                mobilePoints: { x: 46, y: 72 },
               },
             ],
             waitListPlayers: [

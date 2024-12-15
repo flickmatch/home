@@ -104,7 +104,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             <Avatar
               alt="profile"
               src={avatars[index]}
-              style={{ height: 32, width: 32, borderRadius: '50%' }}
+              style={{ height: 31, width: 31, borderRadius: '50%' }}
             />
           </Box>
         )}
