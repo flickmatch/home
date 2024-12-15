@@ -199,53 +199,34 @@ body {
 }
 
 .playersNameComponent {
-  // position: absolute;
-  // z-index: 9999;
   width: 100%;
 }
 
-// .groundImageContainer {
-//   perspective: 800px;
-//   //position: absolute;
-//   z-index: 999;
-//   overflow: hidden;
-//   //height: 450px;
-//   height: 250px;
-//   display: flex;
-//   align-items: flex-end;
-//   justify-content: center;
-// }
-
 .groundImage {
-  //height: auto;
+  height: auto;
   width: 100%;
-  // display: block;
-  // background-size: cover;
-  // transform-style: preserve-3d;
-  // transform: rotateX(75deg);
-  // transform-origin: center bottom;
+}
+
+.dragContainer {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
 }
 
 ////////////// for mobile
 
 .portraitPlayersNameComponent {
-  //position: absolute;
   z-index: 9999;
   width: 100%;
 }
 
 .portraitGroundImageContainer {
-  //perspective: 400px;
   height: 100%;
   width: 100%;
-  //overflow: hidden;
 }
 
 .portraitGroundImage {
   height: 100%;
   width: 100%;
-  // margin-top: -150px;
-  // transform-style: preserve-3d;
-  // transform: scale(1.5) rotateX(62deg);
-  // transform-origin: center bottom;
 }

@@ -297,15 +297,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                           : styles.groundImageContainer
                       }
                     >
-                      <Box
-                        style={{
-                          //display: 'none',
-                          position: 'absolute',
-                          zIndex: 9999,
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      >
+                      <Box className={styles.dragContainer}>
                         {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
@@ -317,8 +309,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       <img
                         src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
                         alt="ground"
-                        height={650}
-                        width={1200}
+                        height={750}
                         className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                       />
                     </Box>

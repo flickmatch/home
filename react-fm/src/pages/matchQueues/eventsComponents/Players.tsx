@@ -43,12 +43,13 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
     mobilePoints ? mobilePoints : { x: 0, y: 0 },
   );
-  //const [controlledPosition, setControlledPosition] = useState<Position>({ x: 0, y: 0 });
+
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
   console.log(activeDrags);
 
+  //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
     setDeltaPosition((prevPosition) => ({
       x: prevPosition.x + ui.deltaX,
@@ -58,6 +59,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //track position of the player in mobile/small screen while dragging {x, y} coordinates
   const handlePortraitDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
     setPortraitDeltaPosition((prevPosition) => ({
       x: prevPosition.x + ui.deltaX,
@@ -77,7 +79,17 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       // position={controlledPosition}
       onStart={onStart}
       onStop={onStop}
-      defaultPosition={isPortrait ? portraitDeltaPosition : deltaPosition}
+      defaultPosition={
+        isPortrait
+          ? {
+              x: (portraitDeltaPosition.x / 100) * window.innerWidth,
+              y: (portraitDeltaPosition.y / 100) * window.innerHeight,
+            }
+          : {
+              x: (deltaPosition.x / 100) * window.innerWidth,
+              y: (deltaPosition.y / 100) * window.innerHeight,
+            }
+      }
       onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
       <Box style={{ position: 'absolute', zIndex: 9999 }}>
@@ -88,11 +100,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             }
           />
         ) : (
-          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+          <Box style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
             <Avatar
               alt="profile"
               src={avatars[index]}
-              style={{ height: 30, width: 30, borderRadius: '50%' }}
+              style={{ height: 32, width: 32, borderRadius: '50%' }}
             />
           </Box>
         )}
@@ -104,38 +116,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           {displayName}
         </Typography>
       </Box>
-      {/* <Grid
-        item
-        xs={2}
-        sm={4}
-        md={3}
-        className={isPortrait ? styles.formationPortraitGrid : styles.formationGrid}
-        key={index}
-        style={{ borderRadius: displayName === 'Add Name' ? 15 : '' }}
-      >
-        {displayName === 'Add Name' ? (
-          <AddCircleIcon
-            className={
-              isPortrait ? styles.portraitFormationPersonAvatar : styles.formationPersonAvatar
-            }
-          />
-        ) : (
-          <Box className={styles.formationProfilePic}>
-            <Avatar
-              className={isPortrait ? styles.portraitFormationAvatar : styles.formationAvatar}
-              alt="profile"
-              src={avatars[index]}
-            />
-          </Box>
-        )}
-        <Typography
-          className={`${
-            isPortrait ? styles.portraitFormationPlayerName : styles.formationPlayerNames
-          } ${'handle'}`}
-        >
-          {displayName}
-        </Typography>
-      </Grid> */}
     </Draggable>
   ) : (
     <Grid
