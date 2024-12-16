@@ -247,7 +247,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 </Box>
               ) : (
                 <>
-                  {userState.login.isAdmin && playingEvent.dummyData ? (
+                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
                     // <Box
                     //   className={
                     //     isPortrait
@@ -289,7 +289,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       </Grid>
                     </Box>
                   )}
-                  {userState.login.isAdmin && playingEvent.dummyData ? (
+                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
                     <Box
                       className={
                         isPortrait

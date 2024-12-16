@@ -73,7 +73,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
   const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin && dummyData ? (
+  return userState.login.isAdmin && dummyData && isPortrait ? (
     <Draggable
       handle=".handle"
       // position={controlledPosition}
@@ -104,7 +104,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             <Avatar
               alt="profile"
               src={avatars[index]}
-              style={{ height: 31, width: 31, borderRadius: '50%' }}
+              style={{
+                height: isPortrait ? 30 : 33,
+                width: isPortrait ? 30 : 33,
+                borderRadius: '50%',
+              }}
             />
           </Box>
         )}
