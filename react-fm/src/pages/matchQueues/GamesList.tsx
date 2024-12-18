@@ -102,7 +102,49 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
-      if (playingEvent?.testGame && !userState.login.isAdmin) return null;
+      // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
+      let teamAPlayers: ReservedPlayerDetails[] = [];
+      let teamBPlayers: ReservedPlayerDetails[] = [];
+
+      if (playingEvent?.teamDivision) {
+        teamAPlayers = playingEvent.reservedPlayersList.filter(
+          (player) => player.teamColor === 'Purple',
+        );
+        teamBPlayers = playingEvent.reservedPlayersList.filter(
+          (player) => player.teamColor === 'Green',
+        );
+
+        // Calculate open spots and create placeholders
+        const openSpots =
+          playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
+        const emptySlots = Array.from({ length: openSpots }, () => ({
+          displayName: 'Add Name',
+          teamColor: '',
+        }));
+
+        // Merge unassigned players with empty slots
+        const unassignedPlayers = playingEvent.reservedPlayersList
+          .filter((player) => player.teamColor === null)
+          .concat(emptySlots);
+
+        // Assign unassigned players to the smaller team
+        unassignedPlayers.forEach((player) => {
+          if (teamAPlayers.length <= teamBPlayers.length) {
+            teamAPlayers.push(
+              player
+                ? { ...player, teamColor: 'Purple' }
+                : { displayName: 'Add Name', teamColor: 'Purple' },
+            );
+          } else {
+            teamBPlayers.push(
+              player
+                ? { ...player, teamColor: 'Green' }
+                : { displayName: 'Add Name', teamColor: 'Green' },
+            );
+          }
+        });
+      }
+
       return (
         <Accordion
           className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -211,27 +253,31 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 <Box>
                   {teamA(playingEvent?.team1Color || 'Red')}
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
-                      const player =
-                        i < playingEvent.reservedPlayersList.length
-                          ? playingEvent.reservedPlayersList[i]
-                          : null;
-                      return renderPlayer(player, i);
-                    })}
+                    {playingEvent?.teamDivision
+                      ? teamAPlayers.map((player, index) => renderPlayer(player, index))
+                      : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[i]
+                              : null;
+                          return renderPlayer(player, i);
+                        })}
                   </Grid>
                   <Typography className={styles.versus}>v/s</Typography>
                   {teamB(playingEvent?.team2Color || 'Black')}
 
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
-                      const player =
-                        i < playingEvent.reservedPlayersList.length
-                          ? playingEvent.reservedPlayersList[
-                              i + playingEvent.reservedPlayersCount / 2
-                            ]
-                          : null;
-                      return renderPlayer(player, i + playingEvent.reservedPlayersCount / 2);
-                    })}
+                    {playingEvent?.teamDivision
+                      ? teamBPlayers.map((player, index) => renderPlayer(player, index))
+                      : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
+                          const player =
+                            i < playingEvent.reservedPlayersList.length
+                              ? playingEvent.reservedPlayersList[
+                                  i + playingEvent.reservedPlayersCount / 2
+                                ]
+                              : null;
+                          return renderPlayer(player, i + playingEvent.reservedPlayersCount / 2);
+                        })}
                   </Grid>
                 </Box>
               ) : (

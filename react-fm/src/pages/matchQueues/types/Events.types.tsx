@@ -1,4 +1,5 @@
 type ReservedPlayerDetails = {
+  teamColor: string;
   displayName: string;
 };
 
