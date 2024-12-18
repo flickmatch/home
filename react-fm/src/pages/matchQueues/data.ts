@@ -338,7 +338,7 @@ const dummyData = {
             time: '7:00PM-8:00PM',
             dummyData: true,
             venueName: 'Vista Montana Park',
-            reservedPlayersCount: 18,
+            reservedPlayersCount: 22,
             waitListPlayersCount: 9,
             venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
             team_division: false,
@@ -348,57 +348,113 @@ const dummyData = {
             reservedPlayersList: [
               {
                 displayName: 'Chen',
+                points: { x: 3, y: 46 },
+                mobilePoints: { x: 46, y: 3 },
               },
               {
                 displayName: 'Pablo',
+                points: { x: 20, y: 10 },
+                mobilePoints: { x: 6, y: 12 },
               },
               {
                 displayName: 'Feng',
+                points: { x: 20, y: 30 },
+                mobilePoints: { x: 30, y: 12 },
               },
               {
                 displayName: 'Leo',
+                points: { x: 20, y: 60 },
+                mobilePoints: { x: 63, y: 12 },
               },
               {
                 displayName: 'Himesh',
+                points: { x: 20, y: 80 },
+                mobilePoints: { x: 84, y: 12 },
               },
               {
                 displayName: 'Arturito',
+                points: { x: 27, y: 10 },
+                mobilePoints: { x: 6, y: 20 },
               },
               {
                 displayName: 'Diego',
+                points: { x: 27, y: 30 },
+                mobilePoints: { x: 30, y: 20 },
               },
               {
                 displayName: 'Mateo',
+                points: { x: 27, y: 60 },
+                mobilePoints: { x: 63, y: 20 },
               },
               {
                 displayName: 'Rafael',
+                points: { x: 27, y: 80 },
+                mobilePoints: { x: 84, y: 20 },
               },
               {
                 displayName: 'Shahin',
+                points: { x: 35, y: 21 },
+                mobilePoints: { x: 30, y: 28 },
               },
               {
                 displayName: 'Eva',
+                points: { x: 35, y: 67 },
+                mobilePoints: { x: 63, y: 28 },
               },
               {
                 displayName: 'Astva',
+                points: { x: 47, y: 21 },
+                mobilePoints: { x: 30, y: 52 },
               },
               {
                 displayName: 'Rishi',
+                points: { x: 47, y: 67 },
+                mobilePoints: { x: 63, y: 52 },
               },
               {
                 displayName: 'Frank',
+                points: { x: 56, y: 10 },
+                mobilePoints: { x: 6, y: 60 },
               },
               {
                 displayName: 'Ahmad',
+                points: { x: 56, y: 30 },
+                mobilePoints: { x: 30, y: 60 },
               },
               {
                 displayName: 'Luca',
+                points: { x: 56, y: 60 },
+                mobilePoints: { x: 63, y: 60 },
               },
               {
                 displayName: 'Dario',
+                points: { x: 56, y: 80 },
+                mobilePoints: { x: 84, y: 60 },
               },
               {
                 displayName: 'Bianca',
+                points: { x: 63, y: 10 },
+                mobilePoints: { x: 6, y: 68 },
+              },
+              {
+                displayName: 'Sharan',
+                points: { x: 63, y: 30 },
+                mobilePoints: { x: 30, y: 68 },
+              },
+              {
+                displayName: 'Ferruro',
+                points: { x: 63, y: 60 },
+                mobilePoints: { x: 63, y: 68 },
+              },
+              {
+                displayName: 'Sahil',
+                points: { x: 63, y: 80 },
+                mobilePoints: { x: 84, y: 68 },
+              },
+              {
+                displayName: 'Hitesh',
+                points: { x: 79, y: 46 },
+                mobilePoints: { x: 46, y: 78 },
               },
             ],
             waitListPlayers: [
