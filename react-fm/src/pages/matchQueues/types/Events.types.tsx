@@ -1,5 +1,5 @@
 type ReservedPlayerDetails = {
-  teamColor: string;
+  teamColor?: string;
   displayName: string;
   points?: { x: number; y: number };
   mobilePoints?: { x: number; y: number };
