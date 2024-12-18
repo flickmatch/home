@@ -115,12 +115,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
       if (playingEvent?.teamDivision) {
         teamAPlayers = playingEvent.reservedPlayersList.filter(
-          (player) => player.teamColor === 'Purple',
+          (player) => player.teamColor === playingEvent?.team1Color,
         );
         teamBPlayers = playingEvent.reservedPlayersList.filter(
-          (player) => player.teamColor === 'Green',
+          (player) => player.teamColor === playingEvent?.team2Color,
         );
 
+        // console.log(teamAPlayers);
+        // console.log(teamBPlayers);
         // Calculate open spots and create placeholders
         const openSpots =
           playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
@@ -262,14 +264,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {playingEvent?.teamDivision
                       ? teamAPlayers.map((player, index) =>
-                          renderPlayer(player, index, playingEvent.dummyData),
+                          renderPlayer(player, index, playingEvent?.dummyData),
                         )
                       : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
                               ? playingEvent.reservedPlayersList[i]
                               : null;
-                          return renderPlayer(player, i, playingEvent.dummyData);
+                          return renderPlayer(player, i, playingEvent?.dummyData);
                         })}
                   </Grid>
 
@@ -279,7 +281,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {playingEvent?.teamDivision
                       ? teamBPlayers.map((player, index) =>
-                          renderPlayer(player, index, playingEvent.dummyData),
+                          renderPlayer(player, index, playingEvent?.dummyData),
                         )
                       : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
                           const player =
@@ -291,7 +293,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                           return renderPlayer(
                             player,
                             i + playingEvent.reservedPlayersCount / 2,
-                            playingEvent.dummyData,
+                            playingEvent?.dummyData,
                           );
                         })}
                   </Grid>
