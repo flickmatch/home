@@ -31,6 +31,7 @@ type WaitListPlayerList = {
 
 type ReservedPlayerDetails = {
   displayName: string;
+  teamColor?: string;
 };
 
 export type { Event, PlayerDetail, ReservedPlayerDetails };

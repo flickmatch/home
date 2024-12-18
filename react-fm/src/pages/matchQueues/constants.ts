@@ -44,6 +44,7 @@ const query = JSON.stringify({
           charges
           reservedPlayersList {
             displayName
+            teamColor
           }
           waitListPlayers {
             displayName
