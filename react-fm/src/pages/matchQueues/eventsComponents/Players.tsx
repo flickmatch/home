@@ -14,6 +14,7 @@ import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
 import { avatars } from '../constants';
+import Jersey from './Jersey';
 import styles from './Players.module.scss';
 
 interface PlayerDetailProps {
@@ -101,7 +102,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           />
         ) : (
           <Box style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
-            <Avatar
+            {/* <Avatar
               alt="profile"
               src={avatars[index]}
               style={{
@@ -109,7 +110,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
                 width: isPortrait ? 30 : 33,
                 borderRadius: '50%',
               }}
-            />
+            /> */}
+            <Jersey size={45} color="#fff" />
           </Box>
         )}
         <Typography
@@ -134,6 +136,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
         <AddCircleIcon className={styles.personAvatar} />
       ) : (
         <Box className={styles.profilePic}>
+          {/* <Jersey size={60} /> */}
           <Avatar className={styles.avatar} alt="profile" src={avatars[index]} />
         </Box>
       )}
