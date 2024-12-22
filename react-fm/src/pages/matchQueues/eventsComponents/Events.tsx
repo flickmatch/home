@@ -146,7 +146,7 @@ export const EventsCard: FC<EventDetails> = ({
     if (currencyCode === 'INR') {
       timeZone = (
         <span>
-          {dummyData ? futureDate : date} {'    '} {`time`}
+          {dummyData ? futureDate : date} {'    '} {time}
         </span>
       );
     } else {
