@@ -90,6 +90,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       points={player?.points}
       mobilePoints={player?.mobilePoints}
       dummyData={dummyData}
+      id={player?.id}
+      role={player?.role}
     />
   );
 
@@ -382,7 +384,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       <img
                         src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
                         alt="ground"
-                        height={750}
+                        height={670}
                         className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                       />
                     </Box>
