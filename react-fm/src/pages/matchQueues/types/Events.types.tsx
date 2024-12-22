@@ -2,6 +2,8 @@ type ReservedPlayerDetails = {
   displayName: string;
   points?: { x: number; y: number };
   mobilePoints?: { x: number; y: number };
+  id?: number;
+  role?: string;
 };
 
 type waitListPlayerDetails = {

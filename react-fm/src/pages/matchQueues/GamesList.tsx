@@ -38,6 +38,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
+  const element = document.querySelector('#drag-container');
+  const rect = element?.getBoundingClientRect();
+
+  useEffect(() => {
+    if (element) {
+      // eslint-disable-next-line no-console
+      console.log(rect?.width, rect?.height);
+    }
+  }, [element, rect]);
+
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -89,6 +99,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       points={player?.points}
       mobilePoints={player?.mobilePoints}
       dummyData={dummyData}
+      id={player?.id}
+      role={player?.role}
     />
   );
 
@@ -247,7 +259,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 </Box>
               ) : (
                 <>
-                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
+                  {userState.login.isAdmin && playingEvent.dummyData ? (
                     // <Box
                     //   className={
                     //     isPortrait
@@ -289,7 +301,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       </Grid>
                     </Box>
                   )}
-                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
+                  {userState.login.isAdmin && playingEvent.dummyData ? (
                     <Box
                       className={
                         isPortrait
@@ -297,7 +309,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                           : styles.groundImageContainer
                       }
                     >
-                      <Box className={styles.dragContainer}>
+                      <Box className={styles.dragContainer} id="drag-container">
                         {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
                           const player =
                             i < playingEvent.reservedPlayersList.length
@@ -309,7 +321,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       <img
                         src={isPortrait ? 'ground-portrait.jpeg' : '/ground-3d-cropped.jpeg'}
                         alt="ground"
-                        height={750}
+                        height={670}
                         className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                       />
                     </Box>

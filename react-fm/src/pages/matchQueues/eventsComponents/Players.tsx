@@ -22,6 +22,8 @@ interface PlayerDetailProps {
   points?: { x: number; y: number };
   mobilePoints?: { x: number; y: number };
   dummyData: boolean;
+  id?: number;
+  role?: string;
 }
 
 interface Position {
@@ -35,6 +37,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   points,
   dummyData,
   mobilePoints,
+  id,
+  role,
 }) => {
   const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
@@ -47,7 +51,21 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags);
+  console.log(activeDrags, id, role, document.documentElement.clientWidth);
+
+  const normalizePosition = (value: number, isWidth: boolean) => {
+    const baseDimension = isWidth
+      ? document.documentElement.clientWidth
+      : document.documentElement.clientHeight;
+
+    return (value / 100) * baseDimension;
+  };
+
+  const bigScreen = (value: number) => {
+    const baseDimension = isPortrait ? 882 : document.documentElement.clientHeight;
+
+    return (value / 100) * baseDimension;
+  };
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -73,23 +91,16 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
   const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin && dummyData && isPortrait ? (
+  return userState.login.isAdmin && dummyData ? (
     <Draggable
       handle=".handle"
       // position={controlledPosition}
       onStart={onStart}
       onStop={onStop}
-      defaultPosition={
-        isPortrait
-          ? {
-              x: (portraitDeltaPosition.x / 100) * window.innerWidth,
-              y: (portraitDeltaPosition.y / 100) * window.innerHeight,
-            }
-          : {
-              x: (deltaPosition.x / 100) * window.innerWidth,
-              y: (deltaPosition.y / 100) * window.innerHeight,
-            }
-      }
+      defaultPosition={{
+        x: normalizePosition(isPortrait ? portraitDeltaPosition.x : deltaPosition.x, true),
+        y: bigScreen(isPortrait ? portraitDeltaPosition.y : deltaPosition.y),
+      }}
       onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
       <Box style={{ position: 'absolute', zIndex: 9999 }}>
