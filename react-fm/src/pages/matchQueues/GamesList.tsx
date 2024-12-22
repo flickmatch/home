@@ -93,19 +93,39 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     />
   );
 
-  const teamA = (teamAColor: string) => (
-    <Box className={styles.teamDivision}>
-      <span className={styles.colorTeamA} style={{ background: teamAColor }} />
-      {teamAColor ? teamAColor : 'Red'} (Team A)
-    </Box>
-  );
+  const teamA = (teamAColor: string) => {
+    // Determine the display color for Team A
+    const displayColor =
+      teamAColor.toLowerCase() === 'bibs'
+        ? 'Orange'
+        : teamAColor.toLowerCase() === 'no bibs' || !teamAColor
+        ? 'White'
+        : teamAColor;
 
-  const teamB = (teamBColor: string) => (
-    <Box className={styles.teamDivisionSecond}>
-      <span className={styles.colorTeamB} style={{ background: teamBColor }} />
-      {teamBColor ? teamBColor : 'Black'} (Team B)
-    </Box>
-  );
+    return (
+      <Box className={styles.teamDivision}>
+        <span className={styles.colorTeamA} style={{ background: displayColor }} />
+        {teamAColor} (Team A)
+      </Box>
+    );
+  };
+
+  const teamB = (teamBColor: string) => {
+    // Determine the display color for Team B
+    const displayColor =
+      teamBColor.toLowerCase() === 'bibs'
+        ? 'White'
+        : teamBColor.toLowerCase() === 'no bibs' || !teamBColor
+        ? 'White'
+        : teamBColor;
+
+    return (
+      <Box className={styles.teamDivisionSecond}>
+        <span className={styles.colorTeamB} style={{ background: displayColor }} />
+        {teamBColor} (Team B)
+      </Box>
+    );
+  };
 
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
@@ -141,14 +161,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
           if (teamAPlayers.length <= teamBPlayers.length) {
             teamAPlayers.push(
               player
-                ? { ...player, teamColor: 'Purple' }
-                : { displayName: 'Add Name', teamColor: 'Purple' },
+                ? { ...player, teamColor: playingEvent.team1Color }
+                : { displayName: 'Add Name', teamColor: playingEvent.team1Color },
             );
           } else {
             teamBPlayers.push(
               player
-                ? { ...player, teamColor: 'Green' }
-                : { displayName: 'Add Name', teamColor: 'Green' },
+                ? { ...player, teamColor: playingEvent.team2Color }
+                : { displayName: 'Add Name', teamColor: playingEvent.team2Color },
             );
           }
         });
@@ -260,7 +280,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
               {playingEvent?.teamDivision ? (
                 <Box>
-                  {teamA(playingEvent?.team1Color || 'Red')}
+                  {teamA(playingEvent?.team1Color || 'Orange')}
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {playingEvent?.teamDivision
                       ? teamAPlayers.map((player, index) =>
@@ -276,7 +296,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   </Grid>
 
                   <Typography className={styles.versus}>v/s</Typography>
-                  {teamB(playingEvent?.team2Color || 'Black')}
+                  {teamB(playingEvent?.team2Color || 'White')}
 
                   <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {playingEvent?.teamDivision

@@ -242,6 +242,12 @@ function AddGame() {
   const addGame = () => {
     if (cityName === '' || turfName === '' || charges === '' || playersCount === '') {
       showInfoNotification();
+    } else if (teamDivision && (team1Color === '' || team2Color === '')) {
+      Swal.fire({
+        title: 'Invalid Selection',
+        text: 'Please select team colors for both teams!',
+        icon: 'warning',
+      });
     } else {
       fetch(apiUrl, {
         // fetch('http://localhost:8080/graphql', {
@@ -468,41 +474,100 @@ function AddGame() {
     </Box>
   );
 
-  const sectionTeamColors = () => (
-    <FlexBox className={styles.sectionThird}>
-      <Box className={styles.dateTimePicker}>
-        <FlexBox className={styles.startTimePicker}>
-          <Box>
-            <Typography className={styles.fieldTitle}>Team 1</Typography>
-          </Box>
-          <TextField
-            fullWidth
-            value={team1Color}
-            onChange={(e) => setTeam1Color(e.target.value)}
-            placeholder="Team 1"
-            id="fullWidth"
-            type="text"
-          />
-        </FlexBox>
-      </Box>
+  const sectionTeamColors = () => {
+    const teamColors = [
+      'Black',
+      'White',
+      'Red',
+      'Blue',
+      'Yellow',
+      'Orange',
+      'Green',
+      'Purple',
+      'Bibs',
+      'No Bibs',
+    ];
 
-      <Box className={styles.dateTimePicker}>
-        <FlexBox className={styles.startEndPicker}>
-          <Box>
-            <Typography className={styles.fieldTitle}>Team 2</Typography>
-          </Box>
-          <TextField
-            fullWidth
-            value={team2Color}
-            onChange={(e) => setTeam2Color(e.target.value)}
-            placeholder="Team 2"
-            id="fullWidth"
-            type="text"
-          />
-        </FlexBox>
-      </Box>
-    </FlexBox>
-  );
+    const handleTeam1ColorChange = (e: SelectChangeEvent<string>) => {
+      const selectedColor = e.target.value as string;
+      if (selectedColor === team2Color) {
+        Swal.fire({
+          title: 'Invalid Selection',
+          text: 'Team 1 and Team 2 colors cannot be the same!',
+          icon: 'warning',
+        });
+      } else {
+        setTeam1Color(selectedColor);
+      }
+    };
+
+    const handleTeam2ColorChange = (e: SelectChangeEvent<string>) => {
+      const selectedColor = e.target.value as string;
+      if (selectedColor === team1Color) {
+        Swal.fire({
+          title: 'Invalid Selection',
+          text: 'Team 1 and Team 2 colors cannot be the same!',
+          icon: 'warning',
+        });
+      } else {
+        setTeam2Color(selectedColor);
+      }
+    };
+
+    return (
+      <FlexBox className={styles.sectionThird}>
+        <Box className={styles.dateTimePicker}>
+          <FlexBox className={styles.startTimePicker}>
+            <Box>
+              <Typography className={styles.fieldTitle}>Team 1</Typography>
+            </Box>
+            <FormControl fullWidth>
+              <Select
+                value={team1Color}
+                onChange={handleTeam1ColorChange}
+                displayEmpty
+                inputProps={{ 'aria-label': 'Team 1 Color' }}
+              >
+                <MenuItem value="" disabled>
+                  Select Team 1 Color
+                </MenuItem>
+                {teamColors.map((color) => (
+                  <MenuItem key={color} value={color}>
+                    {color}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </FlexBox>
+        </Box>
+
+        <Box className={styles.dateTimePicker}>
+          <FlexBox className={styles.startEndPicker}>
+            <Box>
+              <Typography className={styles.fieldTitle}>Team 2</Typography>
+            </Box>
+            <FormControl fullWidth>
+              <Select
+                value={team2Color}
+                onChange={handleTeam2ColorChange}
+                displayEmpty
+                inputProps={{ 'aria-label': 'Team 2 Color' }}
+              >
+                <MenuItem value="" disabled>
+                  Select Team 2 Color
+                </MenuItem>
+                {teamColors.map((color) => (
+                  <MenuItem key={color} value={color}>
+                    {color}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </FlexBox>
+        </Box>
+      </FlexBox>
+    );
+  };
 
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
