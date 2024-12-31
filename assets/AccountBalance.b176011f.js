@@ -1,1 +1,0 @@
-import{W as r}from"./loginSlice.5d27ec86.js";import{r as a,a as t}from"./App.8795cef7.js";var e={},u=r.exports;Object.defineProperty(e,"__esModule",{value:!0});var o=e.default=void 0,v=u(a()),i=t;o=e.default=(0,v.default)((0,i.jsx)("path",{d:"M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"}),"AccountBalance");export{o as d};
