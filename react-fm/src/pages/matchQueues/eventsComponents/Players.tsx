@@ -106,7 +106,10 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             }
           />
         ) : (
-          <Box style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
+          <Box
+            style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
+            className="handle"
+          >
             {/* <Avatar
               alt="profile"
               src={avatars[index]}
