@@ -13,4 +13,6 @@ public class JoinEventInput {
     String cityId;
     String uniqueEventId;
     PlayerInput player;
+    String email;
+    Integer index;
 }
