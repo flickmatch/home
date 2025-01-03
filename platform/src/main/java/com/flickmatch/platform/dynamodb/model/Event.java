@@ -248,6 +248,25 @@ public class Event {
         String name;
         String waNumber;
         String teamColor;
+        Integer index;
+        String email;
+
+        @DynamoDBAttribute(attributeName = "index")
+        public Integer getIndex() {
+            return index;
+        }
+
+        public void setIndex(Integer index) {
+            this.index = index;
+        }
+        @DynamoDBAttribute(attributeName = "email")
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
 
         @DynamoDBAttribute(attributeName = "teamColor")
         public String getTeamColor() {
