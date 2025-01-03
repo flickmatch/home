@@ -44,6 +44,15 @@ public class SportsVenues {
         private String googleMapsLink;
         private List<String> availableSportsIds;
         private List<StripePaymentLink> stripePaymentLinks;
+        private String pinCode;
+
+        @DynamoDBAttribute(attributeName="pinCode")
+        public String getPinCode() {
+            return pinCode;
+        }
+        public void setPinCode(String pinCode) {
+            this.pinCode = pinCode;
+        }
 
         public List<StripePaymentLink> getStripePaymentLinks() {
             return stripePaymentLinks;
