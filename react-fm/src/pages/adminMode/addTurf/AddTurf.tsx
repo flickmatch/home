@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
@@ -42,6 +43,7 @@ function AddTurfPage() {
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
+  const [pinCode, setPinCode] = useState('');
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [sportsVenues, setSportsVenues] = useState<SportsVenues[]>([]);
 
@@ -182,6 +184,17 @@ function AddTurfPage() {
   const handleMapLink = (e: { target: { value: string } }) => {
     setMapLink(e.target.value);
   };
+  const handlePinCode = (e: { target: { value: string } }) => {
+    const value = e.target.value;
+
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      setPinCode(value);
+    } else {
+      showErrorNotification('Pin code should only contain numbers!');
+    }
+  };
 
   const userInput = {
     input: {
@@ -212,6 +225,7 @@ function AddTurfPage() {
                         displayName: "${turfName}"
                         googleMapsLink: "${mapLink}"
                         stripePaymentLinks: []
+                        pinCode: "${pinCode}"
                     }
                 ) {
                   isSuccessful
@@ -279,17 +293,30 @@ function AddTurfPage() {
   );
 
   const sectionThird = () => (
-    <Box className={styles.sectionThird}>
-      <Typography className={styles.fieldTitle}>Google Map Link</Typography>
-      <CrisisAlertOutlinedIcon className={styles.fieldTitleIcon} />
-      <TextField
-        fullWidth
-        value={mapLink}
-        onChange={handleMapLink}
-        placeholder="G-Map Link"
-        id="fullWidth"
-      />
-    </Box>
+    <>
+      <Box className={styles.sectionThird}>
+        <Typography className={styles.fieldTitle}>Google Map Link</Typography>
+        <CrisisAlertOutlinedIcon className={styles.fieldTitleIcon} />
+        <TextField
+          fullWidth
+          value={mapLink}
+          onChange={handleMapLink}
+          placeholder="G-Map Link"
+          id="fullWidth"
+        />
+      </Box>
+      <Box className={styles.sectionThird}>
+        <Typography className={styles.fieldTitle}>Pin Code</Typography>
+        <MyLocationIcon className={styles.fieldTitleIcon} />
+        <TextField
+          fullWidth
+          value={pinCode}
+          onChange={handlePinCode}
+          placeholder="Pin Code"
+          id="fullWidth"
+        />
+      </Box>
+    </>
   );
 
   const sectionFourth = () => (

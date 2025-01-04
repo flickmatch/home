@@ -27,6 +27,7 @@ public class SportsVenueBuilder {
         Optional<SportsVenues> sportsVenues = sportsVenueRepository.findById(input.getCityId());
         if (sportsVenues.isPresent()) {
             List<SportsVenues.SportsVenue> sportsVenuesInCity = sportsVenues.get().getSportsVenuesInCity();
+//            System.out.println(input.getPinCode());
             sportsVenuesInCity.add(createSportsVenueInCity(input));
             sportsVenueRepository.save(sportsVenues.get());
         } else {
@@ -68,6 +69,7 @@ public class SportsVenueBuilder {
                 .availableSportsIds(List.of("1"))
                 .sportsVenueId(String.valueOf(System.currentTimeMillis()))
                 .stripePaymentLinks(stripePaymentLinks)
+                .pinCode(input.getPinCode())
                 .build();
         return sportsVenue;
     }

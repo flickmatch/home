@@ -15,4 +15,5 @@ public class CreateSportsVenueInput {
     String displayName;
     String googleMapsLink;
     List<StripePaymentLinkInput> stripePaymentLinks;
+    String pinCode;
 }
