@@ -77,7 +77,6 @@ public class PaymentController {
     }
     @MutationMapping
     public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
-//        System.out.println(input.getPlayerInputList().get(0).getTeamColor());
         try {
             RazorpayClient razorpayClient = razorPayProxy.getRazorPayClient();
             long eventAmount = eventBuilder.getAmountForEvent(input.getUniqueEventId());
