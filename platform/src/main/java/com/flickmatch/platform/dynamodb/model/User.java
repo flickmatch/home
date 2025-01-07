@@ -20,6 +20,16 @@ public class User {
     private List<String> subscriptionHistory = new ArrayList<>();
     private Boolean hasActiveSubscription;
     private List<String> citiesHistory=new ArrayList<>();
+    private List<String> userPinCodes = new ArrayList<>();
+
+    @DynamoDBAttribute(attributeName="userPinCodes")
+    public List<String> getUserPinCodes() {
+        return userPinCodes;
+    }
+
+    public void setUserPinCodes(List<String> userPinCodes) {
+        this.userPinCodes = userPinCodes;
+    }
 
     @DynamoDBAttribute(attributeName="citiesHistory")
     public List<String> getCitiesHistory() {

@@ -237,6 +237,7 @@ type EVENT {
   uniqueEventId: String!
   displayTitle: String!
   venueLocationLink: String!
+  venuePinCode: String
   charges: Float!
   date: String!
   time: String!
@@ -266,6 +267,7 @@ type SportsVenue {
   displayName: String!
   googleMapsLink: String!
   availableSportsIds: [ID!]
+  pinCode: String!
   """
   We need to make this mandatory in future
   """

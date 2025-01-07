@@ -40,8 +40,10 @@ public class EventBuilder {
     EventRepository eventRepository;
     CityRepository cityRepository;
 
-    @Autowired SportsVenueBuilder sportsVenueBuilder;
-    @Autowired CityBuilder cityBuilder;
+    @Autowired
+    SportsVenueBuilder sportsVenueBuilder;
+    @Autowired
+    CityBuilder cityBuilder;
 
     public EventBuilder(EventRepository eventRepository, CityRepository cityRepository) {
         this.eventRepository = eventRepository;
@@ -53,11 +55,10 @@ public class EventBuilder {
             isStartTimeInPast(DateUtil.parseDateFromString(input.getStartTime()));
         }
         String date = DateUtil.extractDateFromISOFormatString(input.getStartTime());
-        Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(input.getCityId(),date));
+        Optional<Event> eventsInCity = eventRepository.findById(new Event.EventId(input.getCityId(), date));
         if (eventsInCity.isPresent()) {
             List<Event.EventDetails> eventDetailsList = eventsInCity.get().getEventDetailsList();
-            eventDetailsList.add(buildEventDetails(input, eventDetailsList.size()+1));
+            eventDetailsList.add(buildEventDetails(input, eventDetailsList.size() + 1));
             return eventRepository.save(eventsInCity.get());
         } else {
             Event newEvent = new Event();
@@ -105,16 +106,19 @@ public class EventBuilder {
         String startFormattedDate = DateUtil.extractDateFromISOFormatDate(startDate, localTimeZone);
         String endFormattedDate = DateUtil.extractDateFromISOFormatDate(endDate, localTimeZone);
 
-//        log.info(String.format("Fetching events for cityId %s from %s to %s", cityId, startFormattedDate, endFormattedDate));
+        // log.info(String.format("Fetching events for cityId %s from %s to %s", cityId,
+        // startFormattedDate, endFormattedDate));
 
         // Fetch all events within the date range
-        List<Event> eventsInRange = eventRepository.findByEventIdCityIdAndEventIdDateBetween(cityId, startFormattedDate, endFormattedDate);
-//        System.out.println("total events retrieved= " + eventsInRange.size());
+        List<Event> eventsInRange = eventRepository.findByEventIdCityIdAndEventIdDateBetween(cityId, startFormattedDate,
+                endFormattedDate);
+        // System.out.println("total events retrieved= " + eventsInRange.size());
 
         for (Event event : eventsInRange) {
             String eventDate = event.getDate();
             List<com.flickmatch.platform.graphql.type.Event> dailyEventList = event.getEventDetailsList().stream()
-                    .filter(eventDetails -> eventDetails.getStartTime().after(startDate) && eventDetails.getEndTime().before(endDate))
+                    .filter(eventDetails -> eventDetails.getStartTime().after(startDate)
+                            && eventDetails.getEndTime().before(endDate))
                     .map(eventDetails -> mapEventToGQLType(eventDetails, eventDate, localTimeZone, cityId))
                     .toList();
             eventList.addAll(dailyEventList);
@@ -122,54 +126,55 @@ public class EventBuilder {
         return eventList;
     }
 
-//    uniqueEventId is of the form cityId-date-index , e.g.: 7-2024-07-21-1.
-public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEventId) {
-    ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
-    try {
-        Optional<Event> eventInCity =
-                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
-        if (eventInCity.isPresent()) {
-            Event event = eventInCity.get();
-            List<Event.EventDetails> eventDetailsList = event.getEventDetailsList();
-            int index = parsedUniqueEventId.index() - 1; // convert to zero-based index
+    // uniqueEventId is of the form cityId-date-index , e.g.: 7-2024-07-21-1.
+    public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEventId) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
+        try {
+            Optional<Event> eventInCity = eventRepository
+                    .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+            if (eventInCity.isPresent()) {
+                Event event = eventInCity.get();
+                List<Event.EventDetails> eventDetailsList = event.getEventDetailsList();
+                int index = parsedUniqueEventId.index() - 1; // convert to zero-based index
 
-            if (index >= 0 && index < eventDetailsList.size()) {
-                Event.EventDetails eventDetails = eventDetailsList.get(index);
-                City city = cityBuilder.getCity(event.getCityId());
-                String localTimeZone = city.getLocalTimeZone();
-                com.flickmatch.platform.graphql.type.Event gqlEvent = mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, parsedUniqueEventId.cityId());
-//                log.info("Event found: " + gqlEvent.toString());
-                return gqlEvent;
+                if (index >= 0 && index < eventDetailsList.size()) {
+                    Event.EventDetails eventDetails = eventDetailsList.get(index);
+                    City city = cityBuilder.getCity(event.getCityId());
+                    String localTimeZone = city.getLocalTimeZone();
+                    com.flickmatch.platform.graphql.type.Event gqlEvent = mapEventToGQLType(eventDetails,
+                            event.getDate(), localTimeZone, parsedUniqueEventId.cityId());
+                    // log.info("Event found: " + gqlEvent.toString());
+                    return gqlEvent;
+                } else {
+                    log.info("Index out of bounds for event details list. Index: " + parsedUniqueEventId.index()
+                            + ", List size: " + eventDetailsList.size());
+                    return null;
+                }
             } else {
-                log.info("Index out of bounds for event details list. Index: " + parsedUniqueEventId.index() + ", List size: " + eventDetailsList.size());
+                log.info("No event found for the given ID: " + uniqueEventId);
                 return null;
             }
-        } else {
-            log.info("No event found for the given ID: " + uniqueEventId);
+        } catch (Exception e) {
+            log.error("Error fetching event by ID: " + uniqueEventId, e);
             return null;
         }
-    } catch (Exception e) {
-        log.error("Error fetching event by ID: " + uniqueEventId, e);
-        return null;
     }
-}
 
-    public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays, String localTimeZone) {
+    public List<com.flickmatch.platform.graphql.type.Event> getPastEvents(String cityId, Integer inDays,
+            String localTimeZone) {
         List<com.flickmatch.platform.graphql.type.Event> pastEventList = new ArrayList<>();
         Date currentTime = new Date(System.currentTimeMillis());
         // Calculate the date before inDays
         Date dateBeforeInDays = Date.from(currentTime.toInstant().minus(inDays, ChronoUnit.DAYS));
-//        log.info(format("Fetching events for cityId %s in the last %d days.", cityId, inDays));
+        // log.info(format("Fetching events for cityId %s in the last %d days.", cityId,
+        // inDays));
         eventRepository.findAll().forEach(event -> {
             if (event.getCityId().equals(cityId)) {
-                List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity =
-                        event.getEventDetailsList().stream()
-                                .filter(eventDetails ->
-                                        eventDetails.getStartTime().before(currentTime) &&
-                                                eventDetails.getStartTime().after(dateBeforeInDays)
-                                ).map(eventDetails ->
-                                        mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, cityId)
-                                ).toList();
+                List<com.flickmatch.platform.graphql.type.Event> pastEventsInCity = event.getEventDetailsList().stream()
+                        .filter(eventDetails -> eventDetails.getStartTime().before(currentTime) &&
+                                eventDetails.getStartTime().after(dateBeforeInDays))
+                        .map(eventDetails -> mapEventToGQLType(eventDetails, event.getDate(), localTimeZone, cityId))
+                        .toList();
                 pastEventList.addAll(pastEventsInCity);
             }
         });
@@ -193,13 +198,14 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
     public WhatsAppNotification getEventDataForNotification(final String uniqueEventId) {
         Event.EventDetails selectedEvent = getSelectedEvent(uniqueEventId);
         ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
-        Optional<com.flickmatch.platform.dynamodb.model.City> city = cityRepository.findById(parsedUniqueEventId.cityId());
+        Optional<com.flickmatch.platform.dynamodb.model.City> city = cityRepository
+                .findById(parsedUniqueEventId.cityId());
         String localTimeZone = null;
         String currency = getCurrencyForCity(parsedUniqueEventId.cityId());
         if (city.isPresent()) {
             localTimeZone = city.get().getLocalTimeZone();
         }
-        List<String> playerNameList =  selectedEvent.getPlayerDetailsList().stream()
+        List<String> playerNameList = selectedEvent.getPlayerDetailsList().stream()
                 .map(playerDetails -> playerDetails.getName())
                 .toList();
         return new WhatsAppNotification(selectedEvent.getStartTime(),
@@ -216,11 +222,12 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
 
     private Event.EventDetails getSelectedEvent(final String uniqueEventId) {
         ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(uniqueEventId);
-        Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+        Optional<Event> eventsInCity = eventRepository
+                .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
         if (eventsInCity.isPresent()) {
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
-                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index())).findFirst();
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index()))
+                    .findFirst();
             return selectedEvent.orElseThrow(() -> new IllegalArgumentException("Invalid Event selected"));
         } else {
             throw new IllegalArgumentException("Invalid Event selected");
@@ -228,12 +235,13 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
     }
 
     private Event addPlayersInEvent(final ParsedUniqueEventId parsedUniqueEventId,
-                                    final List<Event.PlayerDetails> playerDetailsList) {
-        Optional<Event> eventsInCity =
-                eventRepository.findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+            final List<Event.PlayerDetails> playerDetailsList) {
+        Optional<Event> eventsInCity = eventRepository
+                .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
         if (eventsInCity.isPresent()) {
             Optional<Event.EventDetails> selectedEvent = eventsInCity.get().getEventDetailsList()
-                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index())).findFirst();
+                    .stream().filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index()))
+                    .findFirst();
             if (selectedEvent.isPresent()) {
                 selectedEvent.get().getPlayerDetailsList().addAll(playerDetailsList);
                 return eventRepository.save(eventsInCity.get());
@@ -251,9 +259,9 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         String cityId = null;
         if (StringUtils.hasText(uniqueEventId)) {
             String[] parts = uniqueEventId.split("-");
-            try{
+            try {
                 cityId = parts[0];
-                date =  parts[1] + "-" + parts[2] + "-" + parts[3];
+                date = parts[1] + "-" + parts[2] + "-" + parts[3];
                 index = Integer.parseInt(parts[4]);
             } catch (NumberFormatException e) {
                 log.error(uniqueEventId);
@@ -267,7 +275,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
     }
 
     private Event.EventDetails buildEventDetails(CreateEventInput input, int index) throws ParseException {
-//        System.out.println(input.getCredits());
+        // System.out.println(input.getCredits());
         List<SportsVenue> sportsVenueList = sportsVenueBuilder.getSportsVenues(input.getCityId());
         String currency = getCurrencyForCity(input.getCityId());
         Optional<SportsVenue> sportsVenue = sportsVenueList.stream()
@@ -275,7 +283,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         if (sportsVenue.isEmpty()) {
             throw new IllegalArgumentException("Incorrect sports venue");
         }
-        Event.EventDetails eventDetails =  Event.EventDetails.builder()
+        Event.EventDetails eventDetails = Event.EventDetails.builder()
                 .index(index)
                 .currency(currency)
                 .startTime(DateUtil.parseDateFromString(input.getStartTime()))
@@ -286,6 +294,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .sportName("Football")
                 .venueName(sportsVenue.get().getDisplayName())
                 .venueLocationLink(sportsVenue.get().getGoogleMapsLink())
+                .venuePinCode(sportsVenue.get().getPinCode())
                 .playerDetailsList(new ArrayList<>())
                 .stripePaymentUrl(getPaymentUrlForEvent(sportsVenue.get(), input.getCharges()))
                 .credits(input.getCredits())
@@ -305,6 +314,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         cityToCurrencyMap.put("4", "USD");
         cityToCurrencyMap.put("5", "USD");
     }
+
     public String getCurrencyForCity(String cityId) {
         return cityToCurrencyMap.getOrDefault(cityId, "IN");
     }
@@ -314,19 +324,21 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .filter(stripePaymentLink -> stripePaymentLink.getAmount().equals(amount))
                 .findFirst();
         if (stripePaymentLinkForAmount.isEmpty()) {
-            //Todo: For now keeping it soft dependency, we need to throw exception in future
+            // Todo: For now keeping it soft dependency, we need to throw exception in
+            // future
             log.error("Can't find stripe payment link in venue");
             return null;
         }
         return stripePaymentLinkForAmount.get().getUrl();
     }
 
-    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date, String localTimeZone, String cityId) {
+    private com.flickmatch.platform.graphql.type.Event mapEventToGQLType(Event.EventDetails eventDetails, String date,
+            String localTimeZone, String cityId) {
         String eventId = date + "-" + eventDetails.getIndex();
         String uniqueEventId = cityId + "-" + date + "-" + eventDetails.getIndex();
         int players = eventDetails.getReservedPlayersCount() / 2;
         String eventType = players + "v" + players;
-        //Todo: clean up this field from schema
+        // Todo: clean up this field from schema
         String title = "";
         List<Player> reservedPlayers = new ArrayList<>();
         List<Player> waitListPlayers = new ArrayList<>();
@@ -348,6 +360,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
                 .waitListPlayers(waitListPlayers)
                 .waitListPlayersCount(eventDetails.getWaitListPlayersCount())
                 .stripePaymentUrl(eventDetails.getStripePaymentUrl() + CLIENT_REFERENCE_ID + eventId)
+                .venuePinCode(eventDetails.getVenuePinCode())
                 .credits(eventDetails.getCredits())
                 .testGame(eventDetails.getTestGame())
                 .team1Color(eventDetails.getTeam1Color())
@@ -357,8 +370,8 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
     }
 
     private void createPlayerQueue(Event.EventDetails eventDetails,
-                                   List<Player> reservedPlayers,
-                                   List<Player> waitListPlayers) {
+            List<Player> reservedPlayers,
+            List<Player> waitListPlayers) {
         AtomicInteger counter = new AtomicInteger();
         eventDetails.getPlayerDetailsList().forEach(playerDetails -> {
             Player player = Player.builder()
@@ -373,6 +386,7 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
             counter.getAndIncrement();
         });
     }
+
     private String getFormattedEventDate(Date startTime, String localTimeZone) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d");
         dateFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
@@ -386,7 +400,8 @@ public com.flickmatch.platform.graphql.type.Event getEventById(String uniqueEven
         return timeFormatter.format(startTime) + "-"
                 + timeFormatter.format(endTime) + " " + timeZone.getID();
     }
-        private void isStartTimeInPast(Date startTime) {
+
+    private void isStartTimeInPast(Date startTime) {
         Date currentTime = new Date(System.currentTimeMillis());
         if (currentTime.after(startTime)) {
             throw new IllegalArgumentException("Selected past event/Time");

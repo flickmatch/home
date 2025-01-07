@@ -74,6 +74,7 @@ public class Event {
         String sportName;
         String venueName;
         String venueLocationLink;
+        String venuePinCode;
         List<PlayerDetails> playerDetailsList;
         String stripePaymentUrl;
         Double credits;
@@ -93,6 +94,15 @@ public class Event {
 
         public void setTeamDivision(Boolean teamDivision) {
             this.teamDivision = teamDivision;
+        }
+
+        @DynamoDBAttribute(attributeName = "venuePinCode")
+        public String getVenuePinCode() {
+            return venuePinCode;
+        }
+
+        public void setVenuePinCode(String venuePinCode) {
+            this.venuePinCode = venuePinCode;
         }
 
         @DynamoDBAttribute(attributeName = "team1Color")
