@@ -341,7 +341,7 @@ const dummyData = {
             reservedPlayersCount: 22,
             waitListPlayersCount: 9,
             venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
-            team_division: false,
+            teamDivision: true,
             team1_color: '',
             team2_color: '',
             charges: 8.99,

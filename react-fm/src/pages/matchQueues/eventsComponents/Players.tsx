@@ -17,6 +17,12 @@ import { avatars } from '../constants';
 import Jersey from './Jersey';
 import styles from './Players.module.scss';
 
+type mobileCoordinates = {
+  mobilePoints?: { x: number; y: number };
+  id?: number;
+  role?: string;
+};
+
 interface PlayerDetailProps {
   displayName: string;
   index: number;
@@ -25,20 +31,24 @@ interface PlayerDetailProps {
   dummyData: boolean;
   id?: number;
   role?: string;
+  teamColor?: string;
+  coordinates: mobileCoordinates;
+  teamDivision: boolean;
 }
 
-interface Position {
+type Position = {
   x: number;
   y: number;
-}
+};
 
 export const PlayerDetails: FC<PlayerDetailProps> = ({
   displayName,
   index,
   points,
-  dummyData,
-  mobilePoints,
+  coordinates,
   id,
+  teamColor,
+  teamDivision,
   role,
 }) => {
   const isPortrait = useOrientation();
@@ -46,13 +56,13 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
 
   const [deltaPosition, setDeltaPosition] = useState<Position>(points ? points : { x: 0, y: 0 });
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
-    mobilePoints ? mobilePoints : { x: 0, y: 0 },
+    coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
   );
 
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role);
+  console.log(activeDrags, id, role, teamColor);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -86,7 +96,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
   const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin && dummyData && isPortrait ? (
+  return userState.login.isAdmin && isPortrait && teamDivision ? (
     <Draggable
       handle=".handle"
       // position={controlledPosition}
@@ -100,11 +110,9 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
     >
       <Box style={{ position: 'absolute', zIndex: 9999 }}>
         {displayName === 'Add Name' ? (
-          <AddCircleIcon
-            className={
-              isPortrait ? styles.portraitFormationPersonAvatar : styles.formationPersonAvatar
-            }
-          />
+          <>
+            <Jersey size={45} color="#fff" number="0" />
+          </>
         ) : (
           <Box
             style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
@@ -119,7 +127,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
                 borderRadius: '50%',
               }}
             /> */}
-            <Jersey size={45} color="#fff" />
+            <Jersey size={45} color={teamColor} number={index.toString()} />
           </Box>
         )}
         <Typography

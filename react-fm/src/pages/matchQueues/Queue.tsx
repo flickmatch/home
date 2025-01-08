@@ -51,7 +51,7 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         const citiesOrder = ['San Francisco', 'San Jose', 'Mountain View'];
         const reorderedCities: CityDetails[] = [];
 

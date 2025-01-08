@@ -21,6 +21,13 @@ import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
+import { teamACoordinates5, teamBCoordinates5 } from './playerCoordinates5v5';
+import { teamACoordinates6, teamBCoordinates6 } from './playerCoordinates6v6';
+import { teamACoordinates7, teamBCoordinates7 } from './playerCoordinates7v7';
+import { teamACoordinates8, teamBCoordinates8 } from './playerCoordinates8v8';
+import { teamACoordinates9, teamBCoordinates9 } from './playerCoordinates9v9';
+import { teamACoordinates10, teamBCoordinates10 } from './playerCoordinates10v10';
+import { teamACoordinates11, teamBCoordinates11 } from './playerCoordinates11v11';
 import type { EventDetails, ReservedPlayerDetails } from './types/Events.types';
 
 interface event {
@@ -82,16 +89,25 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
     }
   }, []);
 
-  const renderPlayer = (player: ReservedPlayerDetails | null, i: number, dummyData: boolean) => (
+  const renderPlayer = (
+    player: ReservedPlayerDetails | null,
+    i: number,
+
+    coordinates:
+      | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
+      | undefined[],
+    teamDivision: boolean,
+  ) => (
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
-      index={i}
+      index={i + 1}
       key={i}
       points={player?.points}
-      mobilePoints={player?.mobilePoints}
-      dummyData={dummyData}
       id={player?.id}
       role={player?.role}
+      teamColor={player?.teamColor}
+      coordinates={coordinates}
+      teamDivision={teamDivision}
     />
   );
 
@@ -134,6 +150,29 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
+      let teamCoordinates:
+        | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
+        | undefined[];
+      if (playingEvent.teamDivision) {
+        if (playingEvent.reservedPlayersCount / 2 === 5) {
+          teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
+        } else if (playingEvent.reservedPlayersCount / 2 === 6) {
+          teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
+        } else if (playingEvent.reservedPlayersCount / 2 === 7) {
+          teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
+        } else if (playingEvent.reservedPlayersCount / 2 === 8) {
+          teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
+        } else if (playingEvent.reservedPlayersCount / 2 === 9) {
+          teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
+        } else if (playingEvent.reservedPlayersCount / 2 === 10) {
+          teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
+        } else if (playingEvent.reservedPlayersCount / 2 === 11) {
+          teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
+        }
+        // console.log(teamCoordinates, playingEvent.venueName);
+      }
+      // console.log(teamCoordinates, playingEvent.venueName);
+      let fullTeamPlayers: ReservedPlayerDetails[] = [];
 
       if (playingEvent?.teamDivision) {
         teamAPlayers = playingEvent.reservedPlayersList.filter(
@@ -143,8 +182,6 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
           (player) => player.teamColor === playingEvent?.team2Color,
         );
 
-        // console.log(teamAPlayers);
-        // console.log(teamBPlayers);
         // Calculate open spots and create placeholders
         const openSpots =
           playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
@@ -174,6 +211,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             );
           }
         });
+        fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
       }
 
       return (
@@ -281,114 +319,71 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               ) : null}
 
               {playingEvent?.teamDivision ? (
-                <Box>
-                  {teamA(playingEvent?.team1Color || 'Orange')}
-                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {playingEvent?.teamDivision
-                      ? teamAPlayers.map((player, index) =>
-                          renderPlayer(player, index, playingEvent?.dummyData),
-                        )
-                      : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
-                          const player =
-                            i < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[i]
-                              : null;
-                          return renderPlayer(player, i, playingEvent?.dummyData);
-                        })}
-                  </Grid>
+                isPortrait ? (
+                  <Box className={styles.portraitGroundImageContainer}>
+                    <Box className={styles.dragContainer}>
+                      {fullTeamPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          index,
+                          teamCoordinates[index],
+                          playingEvent.teamDivision,
+                        ),
+                      )}
+                    </Box>
+                    <img
+                      src={isPortrait ? 'ground.jpeg' : ''}
+                      alt="ground"
+                      height={670}
+                      className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
+                    />
+                  </Box>
+                ) : (
+                  <Box>
+                    {teamA(playingEvent?.team1Color || 'Orange')}
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                      {teamAPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          index,
+                          teamCoordinates[index],
+                          playingEvent.teamDivision,
+                        ),
+                      )}
+                    </Grid>
 
-                  <Typography className={styles.versus}>v/s</Typography>
-                  {teamB(playingEvent?.team2Color || 'White')}
+                    <Typography className={styles.versus}>v/s</Typography>
+                    {teamB(playingEvent?.team2Color || 'White')}
 
-                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {playingEvent?.teamDivision
-                      ? teamBPlayers.map((player, index) =>
-                          renderPlayer(player, index, playingEvent?.dummyData),
-                        )
-                      : Array.from({ length: playingEvent.reservedPlayersCount / 2 }, (_, i) => {
-                          const player =
-                            i < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[
-                                  i + playingEvent.reservedPlayersCount / 2
-                                ]
-                              : null;
-                          return renderPlayer(
-                            player,
-                            i + playingEvent.reservedPlayersCount / 2,
-                            playingEvent?.dummyData,
-                          );
-                        })}
-                  </Grid>
-                </Box>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                      {teamBPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          index,
+                          teamCoordinates[index],
+                          playingEvent.teamDivision,
+                        ),
+                      )}
+                    </Grid>
+                  </Box>
+                )
               ) : (
                 <>
-                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
-                    // <Box
-                    //   className={
-                    //     isPortrait
-                    //       ? styles.portraitPlayersNameComponent
-                    //       : styles.playersNameComponent
-                    //   }
-                    // >
-                    //   <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    //     {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                    //       const player =
-                    //         i < playingEvent.reservedPlayersList.length
-                    //           ? playingEvent.reservedPlayersList[i]
-                    //           : null;
-                    //       return renderPlayer(player, i);
-                    //     })}
-                    //   </Grid>
-                    // </Box>
-                    <Box style={{ width: 100 }}>
-                      {/* <Box style={{ display: isPortrait ? 'none' : 'flex' }}>
-                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                          const player =
-                            i < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[i]
-                              : null;
-                          return renderPlayer(player, i, playingEvent.dummyData);
-                        })}
-                      </Box> */}
-                    </Box>
-                  ) : (
-                    <Box>
-                      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                          const player =
-                            i < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[i]
-                              : null;
-                          return renderPlayer(player, i, playingEvent.dummyData);
-                        })}
-                      </Grid>
-                    </Box>
-                  )}
-                  {userState.login.isAdmin && playingEvent.dummyData && isPortrait ? (
-                    <Box
-                      className={
-                        isPortrait
-                          ? styles.portraitGroundImageContainer
-                          : styles.groundImageContainer
-                      }
-                    >
-                      <Box className={styles.dragContainer}>
-                        {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
-                          const player =
-                            i < playingEvent.reservedPlayersList.length
-                              ? playingEvent.reservedPlayersList[i]
-                              : null;
-                          return renderPlayer(player, i, playingEvent.dummyData);
-                        })}
-                      </Box>
-                      <img
-                        src={isPortrait ? 'ground.jpeg' : '/ground-3d-cropped.jpeg'}
-                        alt="ground"
-                        height={670}
-                        className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
-                      />
-                    </Box>
-                  ) : null}
+                  <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {Array.from({ length: playingEvent.reservedPlayersCount }, (_, i) => {
+                      const player =
+                        i < playingEvent.reservedPlayersList.length
+                          ? playingEvent.reservedPlayersList[i]
+                          : null;
+                      return renderPlayer(
+                        player,
+                        i,
+                        playingEvent.dummyData,
+                        {},
+                        playingEvent.teamDivision,
+                      );
+                    })}
+                  </Grid>
                 </>
               )}
             </Box>
