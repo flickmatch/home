@@ -222,6 +222,7 @@ export const JoinNow: FC<EventDetails> = ({
               player: {
                 waNumber: "${userData.phoneNumber}"
                 name: "${userData.name}"
+                teamColor: "${teamColor}"
             }
         }) {
           isSuccessful
