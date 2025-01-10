@@ -18,46 +18,58 @@ const dummyData = {
             reservedPlayersCount: 12,
             waitListPlayersCount: 6,
             venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
-            team_division: true,
-            team1_color: 'White',
-            team2_color: 'Blue',
+            teamDivision: true,
+            team1Color: 'Grey',
+            team2Color: 'Yellow',
             charges: 200.0,
             reservedPlayersList: [
               {
                 displayName: 'Abhimanyu',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Sourabh',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Kamal',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Sahil',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Abhishek',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Harsh',
+                teamColor: 'Grey',
               },
               {
                 displayName: 'Jasprit',
+                teamColor: 'Yellow',
               },
               {
                 displayName: 'Naresh Kumar',
+                teamColor: 'Yellow',
               },
               {
                 displayName: 'Kaushal',
+                teamColor: 'Yellow',
               },
               {
                 displayName: 'Nakul',
+                teamColor: 'Yellow',
               },
               {
                 displayName: 'Parth',
+                teamColor: 'Yellow',
               },
               {
                 displayName: 'Himanshu',
+                teamColor: 'Yellow',
               },
             ],
             waitListPlayers: [
@@ -92,9 +104,9 @@ const dummyData = {
             reservedPlayersCount: 10,
             waitListPlayersCount: 5,
             venueLocationLink: 'https://maps.app.goo.gl/axDbAHPjP648u7FZA',
-            team_division: false,
-            team1_color: '',
-            team2_color: '',
+            teamDivision: false,
+            team1Color: '',
+            team2Color: '',
             charges: 250.0,
             reservedPlayersList: [
               {
@@ -166,9 +178,9 @@ const dummyData = {
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
-            team_division: false,
-            team1_color: '',
-            team2_color: '',
+            teamDivision: false,
+            team1Color: '',
+            team2Color: '',
             charges: 400.0,
             reservedPlayersList: [
               {
@@ -249,9 +261,9 @@ const dummyData = {
             reservedPlayersCount: 14,
             waitListPlayersCount: 7,
             venueLocationLink: 'https://maps.app.goo.gl/ebEXAjXrsUvBanyY9',
-            team_division: false,
-            team1_color: '',
-            team2_color: '',
+            teamDivision: false,
+            team1Color: '',
+            team2Color: '',
             charges: 400.0,
             reservedPlayersList: [
               {
@@ -342,8 +354,8 @@ const dummyData = {
             waitListPlayersCount: 9,
             venueLocationLink: 'https://goo.gl/maps/ivkhHaXWM3RBTJ5r9',
             teamDivision: true,
-            team1_color: '',
-            team2_color: '',
+            team1Color: 'Blue',
+            team2Color: 'Orange',
             charges: 8.99,
             reservedPlayersList: [
               {
@@ -352,6 +364,7 @@ const dummyData = {
                 mobilePoints: { x: 45, y: 26 },
                 id: 1,
                 role: 'WK',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Pablo',
@@ -359,6 +372,7 @@ const dummyData = {
                 mobilePoints: { x: 6, y: 100 },
                 id: 2,
                 role: 'MF',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Feng',
@@ -366,6 +380,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 100 },
                 id: 3,
                 role: 'MF',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Leo',
@@ -373,6 +388,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 100 },
                 id: 4,
                 role: 'MF',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Himesh',
@@ -380,6 +396,7 @@ const dummyData = {
                 mobilePoints: { x: 83, y: 100 },
                 id: 5,
                 role: 'MF',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Arturito',
@@ -387,6 +404,7 @@ const dummyData = {
                 mobilePoints: { x: 6, y: 170 },
                 id: 6,
                 role: 'MD',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Diego',
@@ -394,6 +412,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 170 },
                 id: 7,
                 role: 'MD',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Mateo',
@@ -401,6 +420,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 170 },
                 id: 8,
                 role: 'MD',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Rafael',
@@ -408,6 +428,7 @@ const dummyData = {
                 mobilePoints: { x: 83, y: 170 },
                 id: 9,
                 role: 'MD',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Shahin',
@@ -415,6 +436,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 240 },
                 id: 10,
                 role: 'A',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Eva',
@@ -422,6 +444,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 240 },
                 id: 11,
                 role: 'A',
+                teamColor: 'Blue',
               },
               {
                 displayName: 'Astva',
@@ -429,6 +452,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 370 },
                 id: 12,
                 role: 'A',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Rishi',
@@ -436,6 +460,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 370 },
                 id: 13,
                 role: 'A',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Frank',
@@ -443,6 +468,7 @@ const dummyData = {
                 mobilePoints: { x: 6, y: 440 },
                 id: 14,
                 role: 'MD',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Ahmad',
@@ -450,6 +476,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 440 },
                 id: 15,
                 role: 'MD',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Luca',
@@ -457,6 +484,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 440 },
                 id: 16,
                 role: 'MD',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Dario',
@@ -464,6 +492,7 @@ const dummyData = {
                 mobilePoints: { x: 83, y: 440 },
                 id: 17,
                 role: 'MD',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Bianca',
@@ -471,6 +500,7 @@ const dummyData = {
                 mobilePoints: { x: 6, y: 520 },
                 id: 18,
                 role: 'MF',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Sharan',
@@ -478,6 +508,7 @@ const dummyData = {
                 mobilePoints: { x: 29, y: 520 },
                 id: 19,
                 role: 'MF',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Ferruro',
@@ -485,6 +516,7 @@ const dummyData = {
                 mobilePoints: { x: 60, y: 520 },
                 id: 20,
                 role: 'MF',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Sahil',
@@ -492,6 +524,7 @@ const dummyData = {
                 mobilePoints: { x: 83, y: 520 },
                 id: 21,
                 role: 'MF',
+                teamColor: 'Orange',
               },
               {
                 displayName: 'Hitesh',
@@ -499,6 +532,7 @@ const dummyData = {
                 mobilePoints: { x: 45, y: 581 },
                 id: 22,
                 role: 'WK',
+                teamColor: 'Orange',
               },
             ],
             waitListPlayers: [

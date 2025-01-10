@@ -92,10 +92,9 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const renderPlayer = (
     player: ReservedPlayerDetails | null,
     i: number,
-
     coordinates:
-      | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
-      | undefined[],
+      | { mobilePoints?: { x: number; y: number }; id?: number; role?: string }
+      | undefined,
     teamDivision: boolean,
   ) => (
     <PlayerDetails
@@ -148,11 +147,12 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
       // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
+      let fullTeamPlayers: ReservedPlayerDetails[] = [];
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
-        | undefined[];
+        | null = null;
       if (playingEvent.teamDivision) {
         if (playingEvent.reservedPlayersCount / 2 === 5) {
           teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
@@ -169,10 +169,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         } else if (playingEvent.reservedPlayersCount / 2 === 11) {
           teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
         }
-        // console.log(teamCoordinates, playingEvent.venueName);
       }
-      // console.log(teamCoordinates, playingEvent.venueName);
-      let fullTeamPlayers: ReservedPlayerDetails[] = [];
 
       if (playingEvent?.teamDivision) {
         teamAPlayers = playingEvent.reservedPlayersList.filter(
@@ -211,6 +208,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             );
           }
         });
+
         fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
       }
 
@@ -318,7 +316,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 />
               ) : null}
 
-              {playingEvent?.teamDivision ? (
+              {playingEvent.teamDivision ? (
                 isPortrait ? (
                   <Box className={styles.portraitGroundImageContainer}>
                     <Box className={styles.dragContainer}>
@@ -326,8 +324,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                         renderPlayer(
                           player,
                           index,
-                          teamCoordinates[index],
-                          playingEvent.teamDivision,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
                         ),
                       )}
                     </Box>
@@ -346,8 +344,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                         renderPlayer(
                           player,
                           index,
-                          teamCoordinates[index],
-                          playingEvent.teamDivision,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
                         ),
                       )}
                     </Grid>
@@ -360,8 +358,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                         renderPlayer(
                           player,
                           index,
-                          teamCoordinates[index],
-                          playingEvent.teamDivision,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
                         ),
                       )}
                     </Grid>
@@ -375,13 +373,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                         i < playingEvent.reservedPlayersList.length
                           ? playingEvent.reservedPlayersList[i]
                           : null;
-                      return renderPlayer(
-                        player,
-                        i,
-                        playingEvent.dummyData,
-                        {},
-                        playingEvent.teamDivision,
-                      );
+                      return renderPlayer(player, i, {}, playingEvent.teamDivision || false);
                     })}
                   </Grid>
                 </>

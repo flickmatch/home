@@ -17,24 +17,17 @@ import { avatars } from '../constants';
 import Jersey from './Jersey';
 import styles from './Players.module.scss';
 
-type mobileCoordinates = {
-  mobilePoints?: { x: number; y: number };
-  id?: number;
-  role?: string;
-};
-
-interface PlayerDetailProps {
+type PlayerDetailProps = {
   displayName: string;
   index: number;
   points?: { x: number; y: number };
   mobilePoints?: { x: number; y: number };
-  dummyData: boolean;
   id?: number;
   role?: string;
   teamColor?: string;
-  coordinates: mobileCoordinates;
+  coordinates?: { mobilePoints?: { x: number; y: number }; id?: number; role?: string };
   teamDivision: boolean;
-}
+};
 
 type Position = {
   x: number;
@@ -62,7 +55,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role, teamColor);
+  console.log(activeDrags, id, role, teamColor, coordinates, index);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -118,16 +111,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
             className="handle"
           >
-            {/* <Avatar
-              alt="profile"
-              src={avatars[index]}
-              style={{
-                height: isPortrait ? 30 : 33,
-                width: isPortrait ? 30 : 33,
-                borderRadius: '50%',
-              }}
-            /> */}
-            <Jersey size={45} color={teamColor} number={index.toString()} />
+            <Jersey
+              size={45}
+              color={teamColor === 'Green' ? '#f97316' : teamColor}
+              number={index.toString()}
+            />
           </Box>
         )}
         <Typography

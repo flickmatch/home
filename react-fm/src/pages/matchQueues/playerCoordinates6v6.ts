@@ -38,7 +38,7 @@ const teamBCoordinates6 = [
     role: 'MD',
   },
   {
-    mobilePoints: { x: 25, y: 385 },
+    mobilePoints: { x: 20, y: 385 },
     id: 2,
     role: 'MD',
   },
