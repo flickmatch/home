@@ -488,16 +488,18 @@ export const JoinNow: FC<EventDetails> = ({
 
           {showPaymentOptions ? (
             <FlexBox className={isPortrait ? styles.paymentOptionsPortrait : styles.paymentOptions}>
-              <Button
-                variant="contained"
-                startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
-                className={isPortrait ? '' : styles.payViaUpi}
-                onClick={handleClickOpen}
-                style={{ display: 'none' }}
-              >
-                UPI
-              </Button>
-              {stripePaymentUrl.slice(0, 5) === 'https' ? (
+              {userState.login.isAdmin && (
+                <Button
+                  variant="contained"
+                  startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
+                  className={isPortrait ? '' : styles.payViaUpi}
+                  onClick={handleClickOpen}
+                  // style={{ display: 'none' }}
+                >
+                  UPI
+                </Button>
+              )}
+              {userState.login.isAdmin && stripePaymentUrl.slice(0, 5) === 'https' ? (
                 <Button
                   variant="contained"
                   startIcon={
