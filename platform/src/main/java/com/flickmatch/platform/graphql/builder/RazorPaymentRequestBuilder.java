@@ -2,12 +2,10 @@ package com.flickmatch.platform.graphql.builder;
 
 
 import com.flickmatch.platform.dynamodb.model.Event;
-import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
 import com.flickmatch.platform.dynamodb.repository.RazorPaymentRequestRepository;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.RazorPayInput;
-import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.graphql.input.CreateUserInput;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -17,9 +15,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +29,8 @@ public class RazorPaymentRequestBuilder {
 
     @Autowired
     private UserBuilder userBuilder; // Inject UserBuilder
+    @Autowired
+    private EventBuilder eventBuilder;
 
    public String createOrderRequest(RazorpayClient razorpayClient, RazorPayInput input, EventBuilder eventBuilder,long amount) throws RazorpayException {
            JSONObject orderRequest = new JSONObject();
@@ -51,12 +51,14 @@ public class RazorPaymentRequestBuilder {
                                                     final String email,
                                                     final String phoneNumber,
                                                     final String redirectUrl) {
-
+        AtomicInteger existingPlayerCount = new AtomicInteger(eventBuilder.countPlayersInQueue(uniqueEventId));
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
                         .teamColor(playerInput.getTeamColor())
+                        .email(playerInput.getEmail())
+                        .index(existingPlayerCount.getAndIncrement())
                         .build())
                 .collect(Collectors.toList());
 

@@ -9,4 +9,5 @@ public class PlayerInput {
     String name;
     String waNumber;
     String teamColor;
+    String email;
 }
