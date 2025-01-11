@@ -202,7 +202,7 @@ input PlayerInput {
   waNumber: String
   name: String!
   teamColor: String
-  email: String!
+  email: String
 }
 
 type PassPaymentOutput {
