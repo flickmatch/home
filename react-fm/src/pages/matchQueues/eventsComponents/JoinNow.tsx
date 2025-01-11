@@ -529,7 +529,7 @@ export const JoinNow: FC<EventDetails> = ({
             </FlexBox>
           ) : null}
 
-          <Dialog open={open} onClose={handleClose} style={{ zIndex: 99999 }}>
+          <Dialog open={open} onClose={handleClose}>
             <div
               onClick={(e) => {
                 e.stopPropagation();

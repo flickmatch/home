@@ -154,20 +154,33 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
         | null = null;
       if (playingEvent.teamDivision) {
-        if (playingEvent.reservedPlayersCount / 2 === 5) {
-          teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
-        } else if (playingEvent.reservedPlayersCount / 2 === 6) {
-          teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
-        } else if (playingEvent.reservedPlayersCount / 2 === 7) {
-          teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
-        } else if (playingEvent.reservedPlayersCount / 2 === 8) {
-          teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
-        } else if (playingEvent.reservedPlayersCount / 2 === 9) {
-          teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
-        } else if (playingEvent.reservedPlayersCount / 2 === 10) {
-          teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
-        } else if (playingEvent.reservedPlayersCount / 2 === 11) {
-          teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
+        const teamSize = playingEvent.reservedPlayersCount / 2;
+
+        switch (teamSize) {
+          case 5:
+            teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
+            break;
+          case 6:
+            teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
+            break;
+          case 7:
+            teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
+            break;
+          case 8:
+            teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
+            break;
+          case 9:
+            teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
+            break;
+          case 10:
+            teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
+            break;
+          case 11:
+            teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
+            break;
+          default:
+            teamCoordinates = null;
+            break;
         }
       }
 

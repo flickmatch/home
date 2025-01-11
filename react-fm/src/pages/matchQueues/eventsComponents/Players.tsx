@@ -101,7 +101,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       }}
       onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
-      <Box style={{ position: 'absolute', zIndex: 9999 }}>
+      <Box style={{ position: 'absolute', zIndex: 9 }}>
         {displayName === 'Add Name' ? (
           <>
             <Jersey size={45} color="#fff" number="0" />
