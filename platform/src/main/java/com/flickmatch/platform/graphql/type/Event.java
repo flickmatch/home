@@ -32,4 +32,5 @@ public class Event {
     Boolean teamDivision;
     String team1Color;
     String team2Color;
+    String venuePinCode;
 }

@@ -41,6 +41,7 @@ const query = JSON.stringify({
           reservedPlayersCount
           waitListPlayersCount
           venueLocationLink
+          venuePinCode
           charges
           reservedPlayersList {
             displayName

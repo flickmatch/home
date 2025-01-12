@@ -59,6 +59,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
             uniqueEventId
             displayTitle
             venueLocationLink
+            venuePinCode
             charges
             date
             time
