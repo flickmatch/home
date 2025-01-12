@@ -326,7 +326,11 @@ export const JoinNow: FC<EventDetails> = ({
 
     //setting names into array for multiple slots payment.
     const namesArray = names;
-    const objectArray = namesArray.map((name) => ({ waNumber: phoneNumber, name: name }));
+    const objectArray = namesArray.map((name) => ({
+      waNumber: phoneNumber,
+      name: name,
+      email: email,
+    }));
 
     const emptyName = namesArray.filter((item) => item.trim() == '');
 
@@ -385,7 +389,7 @@ export const JoinNow: FC<EventDetails> = ({
       } else {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
         createOrder(
-          // '2-2024-12-12-1',
+          // '2-2025-01-03-1',
           uniqueEventId,
           objectArray,
           setAmount,

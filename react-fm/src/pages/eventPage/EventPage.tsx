@@ -175,7 +175,7 @@ const EventPage: React.FC = () => {
       index={i}
       key={i}
       points={player?.points}
-      dummyData={dummyData}
+      teamDivision={false}
     />
   );
 

@@ -392,6 +392,10 @@ public class EventBuilder {
         dateFormatter.setTimeZone(TimeZone.getTimeZone(localTimeZone));
         return dateFormatter.format(startTime);
     }
+    int countPlayersInQueue(String uniqueEventId) {
+        com.flickmatch.platform.graphql.type.Event event = getEventById(uniqueEventId);
+        return event.getReservedPlayersCount() + event.getWaitListPlayersCount();
+    }
 
     private String getFormattedEventTime(Date startTime, Date endTime, String localTimeZone) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mma");

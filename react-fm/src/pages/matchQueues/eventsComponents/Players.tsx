@@ -17,28 +17,31 @@ import { avatars } from '../constants';
 import Jersey from './Jersey';
 import styles from './Players.module.scss';
 
-interface PlayerDetailProps {
+type PlayerDetailProps = {
   displayName: string;
   index: number;
   points?: { x: number; y: number };
   mobilePoints?: { x: number; y: number };
-  dummyData: boolean;
   id?: number;
   role?: string;
-}
+  teamColor?: string;
+  coordinates?: { mobilePoints?: { x: number; y: number }; id?: number; role?: string };
+  teamDivision: boolean;
+};
 
-interface Position {
+type Position = {
   x: number;
   y: number;
-}
+};
 
 export const PlayerDetails: FC<PlayerDetailProps> = ({
   displayName,
   index,
   points,
-  dummyData,
-  mobilePoints,
+  coordinates,
   id,
+  teamColor,
+  teamDivision,
   role,
 }) => {
   const isPortrait = useOrientation();
@@ -46,7 +49,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
 
   const [deltaPosition, setDeltaPosition] = useState<Position>(points ? points : { x: 0, y: 0 });
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
-    mobilePoints ? mobilePoints : { x: 0, y: 0 },
+    coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
   );
 
   const userState = useSelector((state: RootState) => state);
@@ -86,7 +89,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
   const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin && dummyData && isPortrait ? (
+  return userState.login.isAdmin && isPortrait && teamDivision ? (
     <Draggable
       handle=".handle"
       // position={controlledPosition}
@@ -98,28 +101,21 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       }}
       onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
-      <Box style={{ position: 'absolute', zIndex: 9999 }}>
+      <Box style={{ position: 'absolute', zIndex: 9 }}>
         {displayName === 'Add Name' ? (
-          <AddCircleIcon
-            className={
-              isPortrait ? styles.portraitFormationPersonAvatar : styles.formationPersonAvatar
-            }
-          />
+          <>
+            <Jersey size={45} color="#fff" number="0" />
+          </>
         ) : (
           <Box
             style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
             className="handle"
           >
-            {/* <Avatar
-              alt="profile"
-              src={avatars[index]}
-              style={{
-                height: isPortrait ? 30 : 33,
-                width: isPortrait ? 30 : 33,
-                borderRadius: '50%',
-              }}
-            /> */}
-            <Jersey size={45} color="#fff" />
+            <Jersey
+              size={45}
+              color={teamColor === 'Green' ? '#f97316' : teamColor}
+              number={index.toString()}
+            />
           </Box>
         )}
         <Typography
