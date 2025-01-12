@@ -7,6 +7,12 @@ type ReservedPlayerDetails = {
   role?: string;
 };
 
+type Coordinates = {
+  mobilePoints?: { x: number; y: number };
+  id?: number;
+  role?: string;
+};
+
 type waitListPlayerDetails = {
   displayName: string;
 };
@@ -21,9 +27,9 @@ type EventDetails = {
   reservedPlayersList: ReservedPlayerDetails[];
   time: string;
   venueLocationLink: string;
-  team_division: boolean;
-  team1_color: string;
-  team2_color: string;
+  team_division?: boolean;
+  team1_color?: string;
+  team2_color?: string;
   venueName: string;
   waitListPlayers: waitListPlayerDetails[];
   waitListPlayersCount: number;
@@ -77,4 +83,5 @@ export type {
   SportsVenues,
   Weather,
   WeatherIcon,
+  Coordinates,
 };
