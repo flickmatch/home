@@ -527,7 +527,7 @@ export const JoinNow: FC<EventDetails> = ({
                   setOpen(true);
                 }}
               >
-                Pay via UPI
+                Pay Now
               </Button>
             </FlexBox>
           ) : null}
