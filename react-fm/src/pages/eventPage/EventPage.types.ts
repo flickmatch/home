@@ -14,6 +14,7 @@ type Event = {
   sportName: string;
   venueName: string;
   venueLocationLink: string;
+  // venuePinCode: string;
   stripePaymentUrl: string;
   currency: string;
   eventId: string;

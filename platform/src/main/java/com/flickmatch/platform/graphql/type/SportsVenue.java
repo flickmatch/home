@@ -13,4 +13,5 @@ public class SportsVenue {
     private String sportsVenueId;
     private List<String> availableSportsIds;
     private List<StripePaymentLink> stripePaymentLinks;
+    private String pinCode;
 }

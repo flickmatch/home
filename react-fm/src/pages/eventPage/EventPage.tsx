@@ -59,6 +59,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
             uniqueEventId
             displayTitle
             venueLocationLink
+            venuePinCode
             charges
             date
             time
@@ -174,7 +175,7 @@ const EventPage: React.FC = () => {
       index={i}
       key={i}
       points={player?.points}
-      dummyData={dummyData}
+      teamDivision={false}
     />
   );
 
