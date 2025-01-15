@@ -99,8 +99,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   ) => (
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
-      index={i + 1}
-      key={i}
+      index={i}
       points={player?.points}
       id={player?.id}
       role={player?.role}
@@ -150,12 +149,11 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
       let fullTeamPlayers: ReservedPlayerDetails[] = [];
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
+      const teamSize = playingEvent.reservedPlayersCount / 2;
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
         | null = null;
       if (playingEvent.teamDivision) {
-        const teamSize = playingEvent.reservedPlayersCount / 2;
-
         switch (teamSize) {
           case 5:
             teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
@@ -336,7 +334,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       {fullTeamPlayers.map((player, index) =>
                         renderPlayer(
                           player,
-                          index,
+                          (index % teamSize) + 1,
                           teamCoordinates?.[index],
                           playingEvent.teamDivision || false,
                         ),

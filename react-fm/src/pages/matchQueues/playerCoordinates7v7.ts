@@ -2,35 +2,35 @@ const teamACoordinates7 = [
   {
     mobilePoints: { x: 45, y: 26 },
     id: 1,
-    role: 'WK',
+    role: 'GK',
   },
   {
-    mobilePoints: { x: 27, y: 95 },
+    mobilePoints: { x: 23, y: 95 },
     id: 2,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 62, y: 95 },
+    mobilePoints: { x: 65, y: 95 },
     id: 3,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 12, y: 165 },
+    mobilePoints: { x: 8, y: 165 },
     id: 4,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 44, y: 165 },
+    mobilePoints: { x: 45, y: 165 },
     id: 5,
     role: 'MD',
   },
   {
-    mobilePoints: { x: 76, y: 165 },
+    mobilePoints: { x: 80, y: 165 },
     id: 6,
     role: 'MD',
   },
   {
-    mobilePoints: { x: 44, y: 240 },
+    mobilePoints: { x: 45, y: 247 },
     id: 7,
     role: 'MD',
   },
@@ -38,37 +38,37 @@ const teamACoordinates7 = [
 
 const teamBCoordinates7 = [
   {
-    mobilePoints: { x: 44, y: 360 },
+    mobilePoints: { x: 45, y: 357 },
     id: 1,
     role: 'MD',
   },
   {
-    mobilePoints: { x: 12, y: 440 },
+    mobilePoints: { x: 8, y: 439 },
     id: 2,
     role: 'MD',
   },
   {
-    mobilePoints: { x: 44, y: 440 },
+    mobilePoints: { x: 45, y: 439 },
     id: 3,
     role: 'MD',
   },
   {
-    mobilePoints: { x: 76, y: 440 },
+    mobilePoints: { x: 80, y: 439 },
     id: 4,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 27, y: 520 },
+    mobilePoints: { x: 23, y: 509 },
     id: 5,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 62, y: 520 },
+    mobilePoints: { x: 65, y: 509 },
     id: 6,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 45, y: 581 },
+    mobilePoints: { x: 45, y: 578 },
     id: 7,
     role: ' GK',
   },

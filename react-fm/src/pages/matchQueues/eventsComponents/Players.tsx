@@ -101,11 +101,23 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       }}
       onDrag={isPortrait ? handlePortraitDrag : handleDrag}
     >
-      <Box style={{ position: 'absolute', zIndex: 9 }}>
+      <Box
+        style={{
+          position: 'absolute',
+          zIndex: 9,
+          display: 'flex',
+          flexFlow: 'column',
+          alignItems: 'center',
+        }}
+      >
         {displayName === 'Add Name' ? (
-          <>
-            <Jersey size={45} color="#fff" number="0" />
-          </>
+          <Box className="handle">
+            <Jersey
+              size={45}
+              color={teamColor === 'Green' || teamColor === 'Black' ? '#f97316' : teamColor}
+              number={index.toString()}
+            />
+          </Box>
         ) : (
           <Box
             style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
@@ -113,7 +125,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           >
             <Jersey
               size={45}
-              color={teamColor === 'Green' ? '#f97316' : teamColor}
+              color={teamColor === 'Green' || teamColor === 'Black' ? '#f97316' : teamColor}
               number={index.toString()}
             />
           </Box>
@@ -123,7 +135,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             isPortrait ? styles.portraitFormationPlayerName : styles.formationPlayerNames
           } ${'handle'}`}
         >
-          {displayName}
+          {displayName === 'Add Name' ? 'Available' : displayName}
         </Typography>
       </Box>
     </Draggable>

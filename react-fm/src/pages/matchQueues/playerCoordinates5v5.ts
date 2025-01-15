@@ -5,7 +5,7 @@ const teamACoordinates5 = [
     role: 'GK',
   },
   {
-    mobilePoints: { x: 25, y: 130 },
+    mobilePoints: { x: 23, y: 130 },
     id: 2,
     role: 'MF',
   },
@@ -15,7 +15,7 @@ const teamACoordinates5 = [
     role: 'MF',
   },
   {
-    mobilePoints: { x: 25, y: 220 },
+    mobilePoints: { x: 23, y: 220 },
     id: 4,
     role: 'MD',
   },
@@ -28,7 +28,7 @@ const teamACoordinates5 = [
 
 const teamBCoordinates5 = [
   {
-    mobilePoints: { x: 25, y: 385 },
+    mobilePoints: { x: 23, y: 385 },
     id: 1,
     role: 'MD',
   },
@@ -38,17 +38,17 @@ const teamBCoordinates5 = [
     role: 'MD',
   },
   {
-    mobilePoints: { x: 25, y: 475 },
+    mobilePoints: { x: 23, y: 473 },
     id: 3,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 65, y: 475 },
+    mobilePoints: { x: 65, y: 473 },
     id: 4,
     role: 'MF',
   },
   {
-    mobilePoints: { x: 45, y: 581 },
+    mobilePoints: { x: 45, y: 576 },
     id: 5,
     role: 'GK',
   },
