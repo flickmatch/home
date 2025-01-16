@@ -112,22 +112,14 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
       >
         {displayName === 'Add Name' ? (
           <Box className="handle">
-            <Jersey
-              size={45}
-              color={teamColor === 'Green' || teamColor === 'Black' ? '#f97316' : teamColor}
-              number={index.toString()}
-            />
+            <Jersey size={45} color={teamColor} number={index.toString()} />
           </Box>
         ) : (
           <Box
             style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
             className="handle"
           >
-            <Jersey
-              size={45}
-              color={teamColor === 'Green' || teamColor === 'Black' ? '#f97316' : teamColor}
-              number={index.toString()}
-            />
+            <Jersey size={45} color={teamColor} number={index.toString()} />
           </Box>
         )}
         <Typography
