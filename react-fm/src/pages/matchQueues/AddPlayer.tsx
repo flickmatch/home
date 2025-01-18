@@ -6,7 +6,12 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Modal from '@mui/material/Modal';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
@@ -20,6 +25,8 @@ interface ChildProps {
   uniqueEventId: string;
   cityId: string;
   handlePassName: (name: string) => void;
+  team2_color?: string;
+  team1_color?: string;
 }
 
 const style = {
@@ -40,10 +47,13 @@ export const AddPlayer: FC<ChildProps> = ({
   uniqueEventId,
   cityId,
   handlePassName,
+  team1_color,
+  team2_color,
 }) => {
   const handleClose = () => onToggle();
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [teamColor, setTeamColor] = useState('');
   const [, notificationsActions] = useNotifications();
 
   function showSuccessNotification() {
@@ -75,6 +85,7 @@ export const AddPlayer: FC<ChildProps> = ({
                 player: {
                   waNumber: "${phoneNumber}"
                   name: "${name}"
+                  teamColor: "${teamColor}"
               }
           }) {
             isSuccessful
@@ -98,6 +109,10 @@ export const AddPlayer: FC<ChildProps> = ({
           alert(error.message);
         });
     }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamColor((event.target as HTMLInputElement).value);
   };
 
   return (
@@ -140,6 +155,25 @@ export const AddPlayer: FC<ChildProps> = ({
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </Box>
+          {team1_color ? (
+            <Box style={{ marginTop: 20 }}>
+              <FormControl>
+                <FormLabel id="demo-radio-buttons-group-label" style={{ marginBottom: 10 }}>
+                  Team Color
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  value={teamColor}
+                  onChange={handleChange}
+                  name="radio-buttons-group"
+                  style={{ display: 'flex', flexFlow: 'row' }}
+                >
+                  <FormControlLabel value={team1_color} control={<Radio />} label={team1_color} />
+                  <FormControlLabel value={team2_color} control={<Radio />} label={team2_color} />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+          ) : null}
           <Button
             variant="contained"
             endIcon={<AddCircleIcon />}
