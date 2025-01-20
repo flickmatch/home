@@ -3,13 +3,18 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import DownloadIcon from '@mui/icons-material/Download';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+
+import downloadjs from 'downloadjs';
+import html2canvas from 'html2canvas';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
@@ -45,6 +50,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+
+  const handleCaptureClick = async () => {
+    const groundElement = document.querySelector<HTMLElement>('.ground-container-id');
+    // console.log(groundElement);
+    if (!groundElement) return;
+
+    const canvas = await html2canvas(groundElement);
+    const dataURL = canvas.toDataURL('image/png');
+    downloadjs(dataURL, 'download.png', 'image/png');
+  };
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
@@ -315,6 +330,16 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 ) : null}
               </Box>
 
+              <Button
+                variant="contained"
+                color="success"
+                startIcon={<DownloadIcon />}
+                onClick={handleCaptureClick}
+                className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
+              >
+                Formation
+              </Button>
+
               {userState.login.isAdmin &&
               userState.login.isLoggedIn &&
               selectedEventId === playingEvent.uniqueEventId ? (
@@ -329,7 +354,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
               {playingEvent.teamDivision ? (
                 isPortrait ? (
-                  <Box className={styles.portraitGroundImageContainer}>
+                  <Box className={`${styles.portraitGroundImageContainer} ground-container-id`}>
                     <Box className={styles.dragContainer}>
                       {fullTeamPlayers.map((player, index) =>
                         renderPlayer(

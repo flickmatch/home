@@ -229,3 +229,18 @@ body {
 .portraitGroundImage {
   width: 100%;
 }
+
+.downloadButton {
+  // width: 100%;
+  background: #4ce95a;
+  color: #000;
+  font-weight: 600;
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #4ce95a;
+  font-family: 'CustomFont', Arial, sans-serif;
+}
+
+.downloadButtonLandscape {
+  display: none;
+}
