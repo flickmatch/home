@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable no-useless-catch */
-// /* eslint-disable @typescript-eslint/no-unused-vars */
-// /* eslint-disable no-useless-catch */
-// // /* eslint-disable no-useless-catch */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Zoom from '@mui/material/Zoom';
@@ -43,67 +36,63 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   if (!validateUniqueEventId(uniqueEventId)) {
     throw new Error('Invalid uniqueEventId');
   }
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `query event {
-          event(uniqueEventId: "${uniqueEventId}") {
-            currency
-            startTime
-            endTime
-            eventId
-            uniqueEventId
-            displayTitle
-            venueLocationLink
-            venuePinCode
-            charges
-            date
-            time
-            venueName
-            reservedPlayersCount
-            waitListPlayersCount
-            stripePaymentUrl
-            credits
-            reservedPlayersList {
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `query event {
+        event(uniqueEventId: "${uniqueEventId}") {
+          currency
+          startTime
+          endTime
+          eventId
+          uniqueEventId
+          displayTitle
+          venueLocationLink
+          venuePinCode
+          charges
+          date
+          time
+          venueName
+          reservedPlayersCount
+          waitListPlayersCount
+          stripePaymentUrl
+          credits
+          reservedPlayersList {
+            displayName
+            teamColor
+          }
+          waitListPlayers{
               displayName
               teamColor
-            }
-            waitListPlayers{
-                displayName
-                teamColor
-            }
           }
         }
-      `,
-      }),
-    });
+      }
+    `,
+    }),
+  });
 
-    const result = await response.json();
+  const result = await response.json();
 
-    // console.log(result);
-    if (result.errors) {
-      throw new Error(result.errors[0].message);
-    }
-    return result.data.event;
-  } catch (error) {
-    throw error;
+  // console.log(result);
+  if (result.errors) {
+    throw new Error(result.errors[0].message);
   }
+  return result.data.event;
 };
 
 const EventPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const isPortrait = useOrientation();
-  const location = useLocation();
-  const highLighted = false;
-  const userState = useSelector((state: RootState) => state);
+  const { id } = useParams<{ id: string }>(); //
+  const isPortrait = useOrientation(); //
+  const location = useLocation(); //
+  const highLighted = false; //
+  const userState = useSelector((state: RootState) => state); //
 
-  const [event, setEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [event, setEvent] = useState<Event | null>(null); //
+  const [loading, setLoading] = useState<boolean>(true); //
+  const [error, setError] = useState<string | null>(null); //
   const [cityNameId, setCityNameId] = useState('');
 
   const [open, setOpen] = useState(false);
@@ -169,7 +158,7 @@ const EventPage: React.FC = () => {
     return cityData?.city;
   }
 
-  const renderPlayer = (player: PlayerDetail | null | undefined, i: number, dummyData: boolean) => (
+  const renderPlayer = (player: PlayerDetail | null | undefined, i: number) => (
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
       index={i}
@@ -300,7 +289,7 @@ const EventPage: React.FC = () => {
                   {Array.from({ length: event?.reservedPlayersCount || 0 }, (_, i) => {
                     const player =
                       i < reservedPlayersCount(event) || 0 ? event?.reservedPlayersList[i] : null;
-                    return renderPlayer(player, i, event.dummyData);
+                    return renderPlayer(player, i);
                   })}
                 </Grid>
               </Box>

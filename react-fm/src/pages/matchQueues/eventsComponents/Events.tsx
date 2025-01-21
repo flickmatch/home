@@ -46,7 +46,7 @@ export const EventsCard: FC<EventDetails> = ({
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
-  const [currencyCode, setCurrencyCode] = useState('');
+  const [currencyCode, setCurrencyCode] = useState('INR');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;

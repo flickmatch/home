@@ -1,3 +1,5 @@
+import type { EventDetails } from './types/Events.types';
+
 const avatars = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gptEOLWU_ZFZQGMwF_EzTYAvGmeerm5aqZJG9hnWAA&s',
   'https://pbs.twimg.com/media/FoUoGo3XsAMEPFr?format=jpg&name=4096x4096',
@@ -61,17 +63,83 @@ const query = JSON.stringify({
     }`,
 });
 
+function validateUniqueEventId(id: string) {
+  // Regular expression for the pattern: Digit-Date-Digit
+  const regex = /^[0-9]-\d{4}-\d{2}-\d{2}-[0-9]$/;
+  return regex.test(id);
+}
+
+const getEventById = async (
+  uniqueEventId: string,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+): Promise<EventDetails | null> => {
+  if (!validateUniqueEventId(uniqueEventId)) {
+    setError('Invalid uniqueEventId');
+    throw new Error('Invalid uniqueEventId');
+  }
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `query event {
+        event(uniqueEventId: "${uniqueEventId}") {
+          currency
+          startTime
+          endTime
+          eventId
+          uniqueEventId
+          displayTitle
+          venueLocationLink
+          venuePinCode
+          charges
+          date
+          time
+          venueName
+          reservedPlayersCount
+          waitListPlayersCount
+          stripePaymentUrl
+          credits
+          teamDivision
+          team1Color
+          team2Color
+          reservedPlayersList {
+            displayName
+            teamColor
+          }
+          waitListPlayers{
+              displayName
+              teamColor
+          }
+        }
+      }
+    `,
+    }),
+  });
+
+  const result = await response.json();
+
+  // console.log(result);
+  if (result.errors) {
+    setError(result.errors[0].message);
+    throw new Error(result.errors[0].message);
+  }
+  return result.data.event;
+};
+
 const apiUrl = `${import.meta.env.VITE_API_URL}`;
 
 const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
 const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';
 const flickMatchLink = 'https://wa.me/message/YM7GOPO75EHPG1';
 
-export { avatars, query, apiUrl, gurugramGroupLink, hyderabadGroupLink, flickMatchLink };
-
-//fields to be add in the query inside events object
-// team_division,
-// team1_color,
-// team2_color,
-// team1_name=team1_color
-// team2_name=team2_color
+export {
+  avatars,
+  query,
+  apiUrl,
+  gurugramGroupLink,
+  hyderabadGroupLink,
+  flickMatchLink,
+  getEventById,
+};

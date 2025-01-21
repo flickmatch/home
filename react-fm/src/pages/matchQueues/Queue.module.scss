@@ -229,3 +229,23 @@ body {
 .portraitGroundImage {
   width: 100%;
 }
+
+
+.parentContainer {
+  position: relative;
+  margin: 1rem;
+}
+
+.portraitContainer {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  position: relative;
+  height: 100vh;
+}
+
+.parent,
+.portraitParent {
+  margin: 0px auto;
+  width: 80%;
+  height: 100vh;
+}
