@@ -51,8 +51,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
-  const handleCaptureClick = async () => {
-    const groundElement = document.querySelector<HTMLElement>('.ground-container-id');
+  const handleCaptureClick = async (eventId: string) => {
+    const groundElement = document.querySelector<HTMLElement>('.ground-container-id' + eventId);
     // console.log(groundElement);
     if (!groundElement) return;
 
@@ -330,15 +330,14 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                 ) : null}
               </Box>
 
-              <Button
-                variant="contained"
-                color="success"
-                startIcon={<DownloadIcon />}
-                onClick={handleCaptureClick}
-                className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
-              >
-                Formation
-              </Button>
+              {playingEvent?.teamDivision && (
+                <Button
+                  onClick={() => handleCaptureClick(playingEvent.uniqueEventId)}
+                  className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
+                >
+                  <DownloadIcon />
+                </Button>
+              )}
 
               {userState.login.isAdmin &&
               userState.login.isLoggedIn &&
@@ -354,7 +353,9 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
               {playingEvent.teamDivision ? (
                 isPortrait ? (
-                  <Box className={`${styles.portraitGroundImageContainer} ground-container-id`}>
+                  <Box
+                    className={`${styles.portraitGroundImageContainer} ground-container-id${playingEvent.uniqueEventId}`}
+                  >
                     <Box className={styles.dragContainer}>
                       {fullTeamPlayers.map((player, index) =>
                         renderPlayer(
