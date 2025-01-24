@@ -83,38 +83,42 @@ const getEventById = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      query: `query event {
-        event(uniqueEventId: "${uniqueEventId}") {
-          currency
-          startTime
-          endTime
-          eventId
-          uniqueEventId
-          displayTitle
-          venueLocationLink
-          venuePinCode
-          charges
-          date
-          time
-          venueName
-          reservedPlayersCount
-          waitListPlayersCount
-          stripePaymentUrl
-          credits
-          teamDivision
-          team1Color
-          team2Color
-          reservedPlayersList {
-            displayName
-            teamColor
-          }
-          waitListPlayers{
+      query: `
+        query event($uniqueEventId: String!) {
+          event(uniqueEventId: $uniqueEventId) {
+            currency
+            startTime
+            endTime
+            eventId
+            uniqueEventId
+            displayTitle
+            venueLocationLink
+            venuePinCode
+            charges
+            date
+            time
+            venueName
+            reservedPlayersCount
+            waitListPlayersCount
+            stripePaymentUrl
+            credits
+            teamDivision
+            team1Color
+            team2Color
+            reservedPlayersList {
               displayName
               teamColor
+            }
+            waitListPlayers {
+              displayName
+              teamColor
+            }
           }
         }
-      }
-    `,
+      `,
+      variables: {
+        uniqueEventId,
+      },
     }),
   });
 
