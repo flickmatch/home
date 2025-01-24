@@ -84,7 +84,7 @@ const getEventById = async (
     },
     body: JSON.stringify({
       query: `
-        query event($uniqueEventId: String!) {
+        query event($uniqueEventId: ID!) {
           event(uniqueEventId: $uniqueEventId) {
             currency
             startTime

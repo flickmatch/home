@@ -89,7 +89,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
 };
 
 const EventPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); //
+  const { id } = useParams<{ id?: string }>(); //
   const isPortrait = useOrientation(); //
   const location = useLocation(); //
   const highLighted = false; //
@@ -123,9 +123,12 @@ const EventPage: React.FC = () => {
       try {
         setLoading(true);
         const sanitizedId = sanitizeInput(id);
+        if (!validateUniqueEventId(sanitizedId)) {
+          throw new Error('Invalid Event ID');
+        }
         const eventData = await getEventById(sanitizedId);
 
-        setCityNameId(id.substring(0, 1));
+        setCityNameId(sanitizedId.substring(0, 1));
         setEvent(eventData);
       } catch (err: any) {
         setError(err.message);
