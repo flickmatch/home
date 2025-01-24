@@ -348,6 +348,8 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                   uniqueEventId={selectedEventId}
                   cityId={cityNameId}
                   handlePassName={passName}
+                  team1_color={playingEvent?.team1Color ? playingEvent?.team1Color : ''}
+                  team2_color={playingEvent?.team2Color ? playingEvent?.team2Color : ''}
                 />
               ) : null}
 
