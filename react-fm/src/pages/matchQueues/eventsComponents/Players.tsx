@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import type { DraggableData, DraggableEvent } from 'react-draggable';
 import Draggable from 'react-draggable';
-import { useSelector } from 'react-redux';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from '@mui/material/Avatar';
@@ -11,7 +10,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import useOrientation from '@/hooks/useOrientation';
-import type { RootState } from '@/store/types';
 
 import { avatars } from '../constants';
 import Jersey from './Jersey';
@@ -52,8 +50,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
     coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
   );
 
-  const userState = useSelector((state: RootState) => state);
-
   // eslint-disable-next-line no-console
   console.log(activeDrags, id, role);
 
@@ -89,7 +85,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
   const onStop = useCallback(() => console.log(deltaPosition), []);
 
-  return userState.login.isAdmin && isPortrait && teamDivision ? (
+  return isPortrait && teamDivision ? (
     <Draggable
       handle=".handle"
       // position={controlledPosition}
