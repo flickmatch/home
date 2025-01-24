@@ -40,12 +40,17 @@ interface event {
   cityName: string;
   cityNameId: string;
   addPlayerInQueue: (name: string) => void;
+  eventPage?: boolean;
 }
 
-export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlayerInQueue }) => {
-  // console.log(gameEvent);
+export const GamesList: FC<event> = ({
+  gameEvent,
+  cityName,
+  cityNameId,
+  addPlayerInQueue,
+  eventPage,
+}) => {
   const isPortrait = useOrientation();
-  //const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
@@ -98,7 +103,9 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
   useEffect(() => {
     // Passing current hash value to target particular accordion
+    // console.log(window.location);
     const hashValue = window.location.hash.substring(1);
+    // console.log(hashValue);
     if (hashValue) {
       handleClick(hashValue);
     }
@@ -248,9 +255,10 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               display: 'none',
             },
           }}
+          {...(eventPage ? { expanded: true } : {})}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={eventPage ? null : <ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
@@ -322,7 +330,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
               <Box className={styles.reservedPlayersContainer}>
                 <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-                {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                {userState.login.isAdmin && !eventPage && userState.login.isLoggedIn ? (
                   <BorderColorIcon
                     className={styles.editIcon}
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
@@ -340,6 +348,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
               )}
 
               {userState.login.isAdmin &&
+              !eventPage &&
               userState.login.isLoggedIn &&
               selectedEventId === playingEvent.uniqueEventId ? (
                 <AddPlayer
@@ -369,7 +378,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
                       )}
                     </Box>
                     <img
-                      src={isPortrait ? 'ground.jpeg' : ''}
+                      src={isPortrait ? '/ground.jpeg' : ''}
                       alt="ground"
                       height={670}
                       className={isPortrait ? styles.portraitGroundImage : styles.groundImage}

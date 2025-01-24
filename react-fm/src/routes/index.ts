@@ -50,6 +50,12 @@ const routes: Routes = {
     title: 'Match Queues',
     icon: SportsSoccerIcon,
   },
+  [Pages.MatchQueueWithId]: {
+    component: asyncComponentLoader(() => import('@/pages/matchQueues')),
+    path: '/match-queues/:id',
+    title: 'Match Queues',
+    icon: SportsSoccerIcon,
+  },
   [Pages.GoogleLogin]: {
     component: asyncComponentLoader(() => import('@/pages/googleLoginAuth')),
     path: '/login',

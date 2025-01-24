@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import type { DraggableData, DraggableEvent } from 'react-draggable';
@@ -51,7 +52,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   );
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role);
+  // console.log(activeDrags, id, role);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {

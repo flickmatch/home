@@ -46,12 +46,12 @@ export const EventsCard: FC<EventDetails> = ({
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
-  const [currencyCode, setCurrencyCode] = useState('');
+  const [currencyCode, setCurrencyCode] = useState('INR');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
-  const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
+  const fullEventLink = `${currentUrl}/match-queues/${uniqueEventId}`;
   // console.log(team1_color, team2_color, team_division);
 
   let whatsappGroupLink: string | undefined;
@@ -90,15 +90,20 @@ export const EventsCard: FC<EventDetails> = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: `query City {
-        city(cityId: ${cityId}) {
-        cityId
-        cityName
-        localTimeZone
-        countryCode
-        iconUrl
-    }
-  }`,
+        query: `
+          query City($id: Int!) {
+            city(cityId: $id) {
+              cityId
+              cityName
+              localTimeZone
+              countryCode
+              iconUrl
+            }
+          }
+        `,
+        variables: {
+          id: cityId, // Passing `cityId` as a parameter
+        },
       }),
     });
 
