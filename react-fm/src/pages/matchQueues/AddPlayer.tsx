@@ -78,19 +78,26 @@ export const AddPlayer: FC<ChildProps> = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: `mutation {
-          joinEvent(input: {
-                uniqueEventId: "${uniqueEventId}"
-                cityId: "${cityId}"
-                player: {
-                  waNumber: "${phoneNumber}"
-                  name: "${name}"
-                  teamColor: "${teamColor}"
+          query: `mutation joinEvent($uniqueEventId: String!, $cityId: String!, $waNumber: String!, $name: String!, $teamColor: String) {
+            joinEvent(input: {
+              uniqueEventId: $uniqueEventId
+              cityId: $cityId
+              player: {
+                waNumber: $waNumber
+                name: $name
+                teamColor: $teamColor
               }
-          }) {
-            isSuccessful
-          }
-      }`,
+            }) {
+              isSuccessful
+            }
+          }`,
+          variables: {
+            uniqueEventId,
+            cityId,
+            waNumber: phoneNumber,
+            name,
+            teamColor,
+          },
         }),
       })
         .then((response) => response.json())
