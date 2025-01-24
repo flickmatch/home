@@ -36,44 +36,47 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   if (!validateUniqueEventId(uniqueEventId)) {
     throw new Error('Invalid uniqueEventId');
   }
+  const query = `
+  query event($uniqueEventId: String!) {
+    event(uniqueEventId: $uniqueEventId) {
+      currency
+      startTime
+      endTime
+      eventId
+      uniqueEventId
+      displayTitle
+      venueLocationLink
+      venuePinCode
+      charges
+      date
+      time
+      venueName
+      reservedPlayersCount
+      waitListPlayersCount
+      stripePaymentUrl
+      credits
+      reservedPlayersList {
+        displayName
+        teamColor
+      }
+      waitListPlayers {
+        displayName
+        teamColor
+      }
+    }
+  }
+`;
+
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      query: `query event {
-        event(uniqueEventId: "${uniqueEventId}") {
-          currency
-          startTime
-          endTime
-          eventId
-          uniqueEventId
-          displayTitle
-          venueLocationLink
-          venuePinCode
-          charges
-          date
-          time
-          venueName
-          reservedPlayersCount
-          waitListPlayersCount
-          stripePaymentUrl
-          credits
-          reservedPlayersList {
-            displayName
-            teamColor
-          }
-          waitListPlayers{
-              displayName
-              teamColor
-          }
-        }
-      }
-    `,
+      query,
+      variables: { uniqueEventId },
     }),
   });
-
   const result = await response.json();
 
   // console.log(result);
