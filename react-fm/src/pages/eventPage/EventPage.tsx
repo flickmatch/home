@@ -39,7 +39,7 @@ const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
     throw new Error('Invalid uniqueEventId');
   }
   const query = `
-  query event($uniqueEventId: String!) {
+  query event($uniqueEventId: ID!) {
     event(uniqueEventId: $uniqueEventId) {
       currency
       startTime
