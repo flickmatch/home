@@ -90,8 +90,8 @@ export const EventsCard: FC<EventDetails> = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: `query City {
-        city(cityId: ${cityId}) {
+        query: `query City($cityId: ID!) {
+        city(cityId: $cityId) {
         cityId
         cityName
         localTimeZone
@@ -99,6 +99,9 @@ export const EventsCard: FC<EventDetails> = ({
         iconUrl
     }
   }`,
+        variables: {
+          cityId: cityId,
+        },
       }),
     });
 
