@@ -31,7 +31,7 @@ function validateUniqueEventId(id: string) {
   return regex.test(id);
 }
 
-const sanitizeInput = (input: string): string => input.replace(/[^a-zA-Z0-9\-]/g, '');
+const sanitizeInput = (input: string): string => input.replace(/[^a-zA-Z0-9\\-]/g, '');
 
 const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   // Validate the uniqueEventId
