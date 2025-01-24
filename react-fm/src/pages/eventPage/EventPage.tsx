@@ -31,6 +31,8 @@ function validateUniqueEventId(id: string) {
   return regex.test(id);
 }
 
+const sanitizeInput = (input: string): string => input.replace(/[^a-zA-Z0-9\-]/g, '');
+
 const getEventById = async (uniqueEventId: string): Promise<Event | null> => {
   // Validate the uniqueEventId
   if (!validateUniqueEventId(uniqueEventId)) {
@@ -120,7 +122,8 @@ const EventPage: React.FC = () => {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const eventData = await getEventById(id);
+        const sanitizedId = sanitizeInput(id);
+        const eventData = await getEventById(sanitizedId);
 
         setCityNameId(id.substring(0, 1));
         setEvent(eventData);
