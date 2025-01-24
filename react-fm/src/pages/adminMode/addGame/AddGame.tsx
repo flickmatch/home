@@ -483,6 +483,7 @@ function AddGame() {
       'Yellow',
       'Orange',
       'Green',
+      'Light Purple',
       'Purple',
       'Bibs',
       'No Bibs',

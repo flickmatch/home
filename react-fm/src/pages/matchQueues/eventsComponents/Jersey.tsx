@@ -14,7 +14,8 @@ const colorMap: { [key: string]: { numberColor?: string; fillColor?: string } } 
   Yellow: { numberColor: '#000000', fillColor: '#FCDC00' },
   Orange: { numberColor: '#fff', fillColor: '#FE9200' },
   Green: { numberColor: '#008000', fillColor: '#CCFFCC' },
-  Purple: { numberColor: '#800080', fillColor: '#E6CCFF' },
+  'Light Purple': { numberColor: '#800080', fillColor: '#E6CCFF' },
+  Purple: { numberColor: '#fff', fillColor: '#800080' },
   Bibs: { numberColor: '#fff', fillColor: '#FE9200' },
   'No Bibs': { numberColor: '#CCCCCC', fillColor: '#000000' },
 };
