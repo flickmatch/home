@@ -90,15 +90,20 @@ export const EventsCard: FC<EventDetails> = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: `query City {
-        city(cityId: ${cityId}) {
-        cityId
-        cityName
-        localTimeZone
-        countryCode
-        iconUrl
-    }
-  }`,
+        query: `
+          query City($id: Int!) {
+            city(cityId: $id) {
+              cityId
+              cityName
+              localTimeZone
+              countryCode
+              iconUrl
+            }
+          }
+        `,
+        variables: {
+          id: cityId, // Passing `cityId` as a parameter
+        },
       }),
     });
 

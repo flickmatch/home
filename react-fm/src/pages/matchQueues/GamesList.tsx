@@ -378,7 +378,7 @@ export const GamesList: FC<event> = ({
                       )}
                     </Box>
                     <img
-                      src={isPortrait ? 'ground.jpeg' : ''}
+                      src={isPortrait ? '/ground.jpeg' : ''}
                       alt="ground"
                       height={670}
                       className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
