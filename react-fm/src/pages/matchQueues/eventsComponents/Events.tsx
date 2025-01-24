@@ -51,7 +51,7 @@ export const EventsCard: FC<EventDetails> = ({
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
-  const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
+  const fullEventLink = `${currentUrl}/match-queues/${uniqueEventId}`;
   // console.log(team1_color, team2_color, team_division);
 
   let whatsappGroupLink: string | undefined;
