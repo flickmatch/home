@@ -58,7 +58,7 @@ export const GamesList: FC<event> = ({ gameEvent, cityName, cityNameId, addPlaye
 
     const canvas = await html2canvas(groundElement);
     const dataURL = canvas.toDataURL('image/png');
-    downloadjs(dataURL, 'download.png', 'image/png');
+    downloadjs(dataURL, '(www.flickmatch.in).png', 'image/png');
   };
 
   const handleClick = (id: string) => {
