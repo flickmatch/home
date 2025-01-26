@@ -7,7 +7,7 @@ enum Pages {
   Welcome,
   AboutUs,
   MatchQueue,
-  MatchQueueWithId,
+  // MatchQueueWithId,
   ContactUs,
   WhatWeDo,
   Home,
