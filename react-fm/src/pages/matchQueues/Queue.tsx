@@ -14,19 +14,14 @@ import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
 import NotFound from '../notFound';
-import { GamesList } from './GamesList';
+import { EventComponent } from './EventComponent';
+// import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
 import { apiUrl, getEventById, query } from './constants';
 import dummyData from './data';
 import { Cities } from './eventsComponents/Cities';
 import mapCityData from './map';
 import type { CityDetails, EventDetails } from './types/Events.types';
-
-// function evetnIdtoString(event: EventDetails | null) {
-//   const eventId =
-//     event?.eventId !== undefined && event?.eventId !== null ? String(event.eventId) : 'undefined';
-//   return eventId;
-// }
 
 function cityId(event: EventDetails | null) {
   const dateString = event?.uniqueEventId || '';
@@ -192,10 +187,17 @@ function MatchQueue() {
               dummyData={false}
               events={[]}
             />
-            <GamesList
+            {/* <GamesList
               gameEvent={[event]}
               cityName={cityId(event) || ''}
               cityNameId={cityName(event) || ''}
+              addPlayerInQueue={addPlayerInQueue}
+              eventPage={true}
+            /> */}
+            <EventComponent
+              gameEvent={[event]}
+              cityName={cityName(event) || ''}
+              cityNameId={cityId(event) || ''}
               addPlayerInQueue={addPlayerInQueue}
               eventPage={true}
             />
@@ -222,7 +224,14 @@ function MatchQueue() {
               dummyData={city.dummyData}
               countryCode={city.countryCode}
             />
-            <GamesList
+            {/* <GamesList
+              gameEvent={city.events}
+              cityName={city.cityName}
+              cityNameId={city.cityId}
+              addPlayerInQueue={addPlayerInQueue}
+              eventPage={false}
+            /> */}
+            <EventComponent
               gameEvent={city.events}
               cityName={city.cityName}
               cityNameId={city.cityId}
