@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -12,18 +13,60 @@ import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
-import { GamesList } from './GamesList';
+import NotFound from '../notFound';
+import { EventComponent } from './EventComponent';
+// import { GamesList } from './GamesList';
 import styles from './Queue.module.scss';
-import { apiUrl, query } from './constants';
+import { apiUrl, getEventById, query } from './constants';
 import dummyData from './data';
 import { Cities } from './eventsComponents/Cities';
-import type { CityDetails } from './types/Events.types';
+import mapCityData from './map';
+import type { CityDetails, EventDetails } from './types/Events.types';
+
+function cityId(event: EventDetails | null) {
+  const dateString = event?.uniqueEventId || '';
+  const parts = dateString != '' ? dateString.split('-') : '';
+  let cityId = '99999';
+  cityId = parts.length > 0 ? parts[0] : '3';
+  return cityId;
+}
+
+function cityName(event: EventDetails | null) {
+  const cityIdd = cityId(event);
+  const cityData = mapCityData.find((city) => city.cityId.toString() === cityIdd);
+
+  // Return the city name if found, otherwise return undefined
+  return cityData?.city;
+}
 
 function MatchQueue() {
   const [citiesData, setCitiesData] = useState<CityDetails[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [players, setPlayers] = useState<string[]>([]);
   const userState = useSelector((state: RootState) => state);
+  const { id } = useParams<{ id: string }>();
+  const [event, setEvent] = useState<EventDetails | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (id) {
+      getEventById(id, setError)
+        .then((eventDetails) => {
+          if (eventDetails) {
+            setEvent(eventDetails);
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`No event found with ID: ${id}`);
+          }
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        });
+    }
+  }, [id]);
+
+  // console.log(event);
 
   const isPortrait = useOrientation();
 
@@ -133,6 +176,35 @@ function MatchQueue() {
   }, [players]);
 
   const events = () => {
+    if (event) {
+      return (
+        <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+          <div className={isPortrait ? styles.mobileContainer : styles.container}>
+            <Cities
+              cityId={cityId(event)}
+              cityName={cityName(event) || ''}
+              countryCode="IN"
+              dummyData={false}
+              events={[]}
+            />
+            {/* <GamesList
+              gameEvent={[event]}
+              cityName={cityId(event) || ''}
+              cityNameId={cityName(event) || ''}
+              addPlayerInQueue={addPlayerInQueue}
+              eventPage={true}
+            /> */}
+            <EventComponent
+              gameEvent={[event]}
+              cityName={cityName(event) || ''}
+              cityNameId={cityId(event) || ''}
+              addPlayerInQueue={addPlayerInQueue}
+              eventPage={true}
+            />
+          </div>
+        </Zoom>
+      );
+    }
     citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
 
     const gameQueues = citiesData.map((city: CityDetails) => {
@@ -152,11 +224,19 @@ function MatchQueue() {
               dummyData={city.dummyData}
               countryCode={city.countryCode}
             />
-            <GamesList
+            {/* <GamesList
               gameEvent={city.events}
               cityName={city.cityName}
               cityNameId={city.cityId}
               addPlayerInQueue={addPlayerInQueue}
+              eventPage={false}
+            /> */}
+            <EventComponent
+              gameEvent={city.events}
+              cityName={city.cityName}
+              cityNameId={city.cityId}
+              addPlayerInQueue={addPlayerInQueue}
+              eventPage={false}
             />
           </div>
         </Zoom>
@@ -186,6 +266,18 @@ function MatchQueue() {
         />
       </Stack>
     ) : null;
+
+  if (id && !event && error) {
+    return (
+      <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+        <div className={isPortrait ? styles.portraitContainer : styles.parentContainer}>
+          <div className={styles.parent}>
+            <NotFound />
+          </div>
+        </div>
+      </Zoom>
+    );
+  }
 
   return (
     <>

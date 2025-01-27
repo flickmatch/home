@@ -20,8 +20,8 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
+import styles from './../matchQueues/Queue.module.scss';
 import { AddPlayer } from './AddPlayer';
-import styles from './Queue.module.scss';
 import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
@@ -43,7 +43,7 @@ interface event {
   eventPage?: boolean;
 }
 
-export const GamesList: FC<event> = ({
+export const EventComponent: FC<event> = ({
   gameEvent,
   cityName,
   cityNameId,
@@ -51,6 +51,7 @@ export const GamesList: FC<event> = ({
   eventPage,
 }) => {
   const isPortrait = useOrientation();
+  // console.log(cityNameId, typeof cityNameId);
 
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
@@ -245,6 +246,14 @@ export const GamesList: FC<event> = ({
         fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
       }
 
+      function eventIdtoString(event: EventDetails | null) {
+        const eventId =
+          event?.eventId !== undefined && event?.eventId !== null
+            ? String(event.eventId)
+            : 'undefined';
+        return eventId;
+      }
+
       return (
         <Accordion
           className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -275,7 +284,7 @@ export const GamesList: FC<event> = ({
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
-                    eventId={playingEvent.eventId}
+                    eventId={eventPage ? eventIdtoString(playingEvent) : playingEvent.eventId}
                     reservedPlayersCount={playingEvent.reservedPlayersCount}
                     reservedPlayersList={playingEvent.reservedPlayersList}
                     time={''}
