@@ -613,7 +613,7 @@ export const JoinNow: FC<EventDetails> = ({
                   onClick={onModalClick}
                 />
 
-                {team_division && userState.login.isAdmin && (
+                {team_division && (
                   <Box mt={2}>
                     <div className={styles.playersNumber}>
                       <InputLabel id="team-color-select-label">Select Team Color</InputLabel>
