@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import type { DraggableData, DraggableEvent } from 'react-draggable';

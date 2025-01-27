@@ -20,8 +20,8 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
+import styles from './../matchQueues/Queue.module.scss';
 import { AddPlayer } from './AddPlayer';
-import styles from './Queue.module.scss';
 import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
 import { JoinNow } from './eventsComponents/JoinNow';
@@ -43,7 +43,7 @@ interface event {
   eventPage?: boolean;
 }
 
-export const GamesList: FC<event> = ({
+export const EventComponent: FC<event> = ({
   gameEvent,
   cityName,
   cityNameId,
@@ -51,6 +51,7 @@ export const GamesList: FC<event> = ({
   eventPage,
 }) => {
   const isPortrait = useOrientation();
+  // console.log(cityNameId, typeof cityNameId);
 
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
@@ -129,6 +130,40 @@ export const GamesList: FC<event> = ({
       teamDivision={teamDivision}
     />
   );
+
+  const teamA = (teamAColor: string) => {
+    // Determine the display color for Team A
+    const displayColor =
+      teamAColor.toLowerCase() === 'bibs'
+        ? 'Orange'
+        : teamAColor.toLowerCase() === 'no bibs' || !teamAColor
+        ? 'White'
+        : teamAColor;
+
+    return (
+      <Box className={styles.teamDivision}>
+        <span className={styles.colorTeamA} style={{ background: displayColor }} />
+        {teamAColor} (Team A)
+      </Box>
+    );
+  };
+
+  const teamB = (teamBColor: string) => {
+    // Determine the display color for Team B
+    const displayColor =
+      teamBColor.toLowerCase() === 'bibs'
+        ? 'White'
+        : teamBColor.toLowerCase() === 'no bibs' || !teamBColor
+        ? 'White'
+        : teamBColor;
+
+    return (
+      <Box className={styles.teamDivisionSecond}>
+        <span className={styles.colorTeamB} style={{ background: displayColor }} />
+        {teamBColor} (Team B)
+      </Box>
+    );
+  };
 
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
@@ -210,6 +245,14 @@ export const GamesList: FC<event> = ({
         fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
       }
 
+      function eventIdtoString(event: EventDetails | null) {
+        const eventId =
+          event?.eventId !== undefined && event?.eventId !== null
+            ? String(event.eventId)
+            : 'undefined';
+        return eventId;
+      }
+
       return (
         <Accordion
           className={isPortrait ? styles.mobileAccordion : styles.accordion}
@@ -240,7 +283,7 @@ export const GamesList: FC<event> = ({
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
-                    eventId={playingEvent.eventId}
+                    eventId={eventPage ? eventIdtoString(playingEvent) : playingEvent.eventId}
                     reservedPlayersCount={playingEvent.reservedPlayersCount}
                     reservedPlayersList={playingEvent.reservedPlayersList}
                     time={''}
@@ -343,11 +386,39 @@ export const GamesList: FC<event> = ({
                       )}
                     </Box>
                     <img
-                      src={'ground.jpeg'}
+                      src={isPortrait ? '/ground.jpeg' : ''}
                       alt="ground"
                       height={670}
-                      className={styles.portraitGroundImage}
+                      className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                     />
+                  </Box>
+                ) : !userState.login.isAdmin ? (
+                  <Box>
+                    {teamA(playingEvent?.team1Color || 'Orange')}
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                      {teamAPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          index,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
+                        ),
+                      )}
+                    </Grid>
+
+                    <Typography className={styles.versus}>v/s</Typography>
+                    {teamB(playingEvent?.team2Color || 'White')}
+
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                      {teamBPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          index,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
+                        ),
+                      )}
+                    </Grid>
                   </Box>
                 ) : (
                   <Box className={styles.groundImageContainer}>
