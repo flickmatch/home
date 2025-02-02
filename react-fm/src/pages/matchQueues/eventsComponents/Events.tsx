@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
 
@@ -46,6 +47,7 @@ export const EventsCard: FC<EventDetails> = ({
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currencyCode, setCurrencyCode] = useState('INR');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;

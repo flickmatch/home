@@ -65,6 +65,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [, notificationsActions] = useNotifications();
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currency, setCurrencyCode] = useState('');
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [open, setOpen] = useState(false);
