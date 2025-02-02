@@ -32,10 +32,12 @@ public class UserBuilder {
             user.setPhoneNumber(input.getPhoneNumber());
             List<String> citiesHistory = user.getCitiesHistory();
             if(citiesHistory!=null) {
+//                log.info("Location:",location);
                 if (!citiesHistory.contains(location)) {
                     citiesHistory.add(location);
                 }
             } else {
+//                log.info("Location:",location);
                 citiesHistory = new ArrayList<>();
                 citiesHistory.add(location);
             }
@@ -44,7 +46,8 @@ public class UserBuilder {
             return userRepository.save(user);
         } else {
             List<String>citiesHistory = new ArrayList<>();
-            citiesHistory.add(location);
+//            citiesHistory.add(location);
+//            log.info("Location:",location);
             user = new User();
             user.setEmail(input.getEmail());
             user.setName(input.getName());

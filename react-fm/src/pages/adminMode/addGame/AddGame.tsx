@@ -113,6 +113,7 @@ function AddGame() {
   const fetchSportsTurf = (cityId: string) => {
     const fetchData = async () => {
       try {
+        // console.log(gameQueuesApiUrl);
         const response = await fetch(gameQueuesApiUrl, {
           method: 'POST',
           headers: {
@@ -152,6 +153,7 @@ function AddGame() {
   const handleCityName = async (e: SelectChangeEvent) => {
     setCityName(e.target.value);
     setMapLink('');
+    // console.log(e.target.value);
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -309,7 +311,7 @@ function AddGame() {
           onChange={handleCityName}
           style={{ width: '100%' }}
         >
-          {citiesData.map((city, i) => (
+          {citiesData?.map((city, i) => (
             <MenuItem value={city.cityId} key={i} style={{ width: '100%' }}>
               {city.cityName}
             </MenuItem>
@@ -331,7 +333,7 @@ function AddGame() {
           onChange={handleTurfName}
           style={{ width: '100%' }}
         >
-          {sportsVenues.map((venue, i) => (
+          {sportsVenues?.map((venue, i) => (
             <MenuItem
               value={venue.sportsVenueId}
               key={i}
