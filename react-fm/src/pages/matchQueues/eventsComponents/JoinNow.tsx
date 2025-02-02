@@ -31,7 +31,10 @@ import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
-const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
+const url =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
 
 type subscriptionType = {
   subscriptionId: string;
@@ -92,28 +95,28 @@ export const JoinNow: FC<EventDetails> = ({
     setTeamColor(event.target.value);
   };
 
-  const currencyFromCity = async () => {
-    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `query City {
-        city(cityId: ${cityId}) {
-        cityId
-        cityName
-        localTimeZone
-        countryCode
-        iconUrl
-    }
-  }`,
-      }),
-    });
+  // const currencyFromCity = async () => {
+  //   const response = await fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       query: `query City {
+  //       city(cityId: ${cityId}) {
+  //       cityId
+  //       cityName
+  //       localTimeZone
+  //       countryCode
+  //       iconUrl
+  //   }
+  // }`,
+  //     }),
+  //   });
 
-    const data = await response.json();
-    setCurrencyCode(data.data.city.countryCode);
-  };
+  //   const data = await response.json();
+  //   setCurrencyCode(data.data.city.countryCode);
+  // };
 
   useEffect(() => {
     const googleUserInfo = localStorage.getItem('userData');
@@ -122,7 +125,7 @@ export const JoinNow: FC<EventDetails> = ({
       setUserData({ name: data.name, email: data.email, phoneNumber: '' });
     }
 
-    currencyFromCity();
+    // currencyFromCity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -209,7 +212,7 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const joinGameViaSubscription = () => {
-    fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -448,6 +451,7 @@ export const JoinNow: FC<EventDetails> = ({
 
   //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
   // console.log(team1_color, team2_color, team_division);
+  // console.log(process.env.NODE_ENV == 'development');
 
   return (
     <>
