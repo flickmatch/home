@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
 
@@ -43,9 +44,11 @@ export const EventsCard: FC<EventDetails> = ({
   team_division,
   team1_color,
   team2_color,
+  venuePinCode,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currencyCode, setCurrencyCode] = useState('INR');
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
@@ -78,38 +81,44 @@ export const EventsCard: FC<EventDetails> = ({
 
   time = time.split('GMT')[0].trim();
 
-  useEffect(() => {
-    currencyFromCity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   currencyFromCity();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  const currencyFromCity = async () => {
-    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `
-          query City($id: Int!) {
-            city(cityId: $id) {
-              cityId
-              cityName
-              localTimeZone
-              countryCode
-              iconUrl
-            }
-          }
-        `,
-        variables: {
-          id: cityId, // Passing `cityId` as a parameter
-        },
-      }),
-    });
+  // const url =
+  //   import.meta.env.MODE == 'development'
+  //     ? import.meta.env.VITE_API_LOCAL
+  //     : import.meta.env.VITE_API_URL;
+  // console.log(url);
 
-    const data = await response.json();
-    setCurrencyCode(data.data.city.countryCode);
-  };
+  // const currencyFromCity = async () => {
+  //   const response = await fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       query: `
+  //         query City($id: String!) {
+  //           city(cityId: $id) {
+  //             cityId
+  //             cityName
+  //             localTimeZone
+  //             countryCode
+  //             iconUrl
+  //           }
+  //         }
+  //       `,
+  //       variables: {
+  //         id: cityId, // Passing `cityId` as a parameter
+  //       },
+  //     }),
+  //   });
+
+  //   const data = await response.json();
+  //   setCurrencyCode(data.data.city.countryCode);
+  // };
 
   const currency = () => {
     let currencyIcon;
@@ -250,6 +259,7 @@ export const EventsCard: FC<EventDetails> = ({
             time={''}
             venueLocationLink={''}
             venueName={venueName}
+            venuePinCode={venuePinCode}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
             team_division={team_division}

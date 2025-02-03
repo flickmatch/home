@@ -1,3 +1,8 @@
+const apiUrl =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
+
 const createOrder = (
   uniqueEventId: string,
   objectArray: { waNumber: string; name: string; email: string }[],
@@ -6,9 +11,11 @@ const createOrder = (
   email: string,
   phoneNumber: string,
   teamColor: string,
+  venuePinCode: string,
 ): Promise<string> =>
+  // console.log(venuePinCode);
   // fetch('http://localhost:8080/graphql', {
-    fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+  fetch(apiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,6 +35,7 @@ const createOrder = (
                 email : "${email}"
                 phoneNumber: "${phoneNumber}"
                 redirectUrl: "${window.location.origin}"
+                venuePinCode: "${venuePinCode}"
             }
         ) {
             orderId
@@ -51,7 +59,6 @@ const createOrder = (
       // eslint-disable-next-line no-console
       console.log(error);
     });
-
 function loadRazorPay() {
   return new Promise((resolve) => {
     const script = document.createElement('script');
@@ -100,7 +107,10 @@ const displayRazorpay = (
       image:
         'https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314',
       order_id: orderId,
-      callback_url: 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/processRazorPayment',
+      callback_url:
+        import.meta.env.MODE == 'development'
+          ? import.meta.env.VITE_CALLBACK_LOCAL
+          : import.meta.env.VITE_CALLBACK_URL,
       // callback_url: 'http://localhost:5173',
       redirect: true,
       prefill: {

@@ -260,7 +260,16 @@ public class Event {
         String teamColor;
         Integer index;
         String email;
+        String pinCode;
 
+        @DynamoDBAttribute(attributeName = "pinCode")
+        public String getPinCode() {
+            return pinCode;
+        }
+
+        public void setPinCode(String pinCode) {
+            this.pinCode = pinCode;
+        }
         @DynamoDBAttribute(attributeName = "index")
         public Integer getIndex() {
             return index;

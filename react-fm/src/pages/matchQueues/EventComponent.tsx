@@ -56,6 +56,7 @@ export const EventComponent: FC<event> = ({
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  // console.log(gameEvent);
 
   const handleCaptureClick = async (eventId: string) => {
     const groundElement = document.querySelector<HTMLElement>('.ground-container-id' + eventId);
@@ -281,6 +282,7 @@ export const EventComponent: FC<event> = ({
                 {isPortrait ? null : (
                   <JoinNow
                     stripePaymentUrl={playingEvent.stripePaymentUrl}
+                    venuePinCode={playingEvent.venuePinCode}
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
@@ -309,6 +311,7 @@ export const EventComponent: FC<event> = ({
                 charges={playingEvent.charges}
                 date={playingEvent.date}
                 time={playingEvent.time}
+                venuePinCode={playingEvent.venuePinCode}
                 venueLocationLink={playingEvent.venueLocationLink}
                 reservedPlayersCount={playingEvent.reservedPlayersCount}
                 waitListPlayersCount={playingEvent.waitListPlayersCount}
