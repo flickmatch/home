@@ -60,6 +60,7 @@ export const JoinNow: FC<EventDetails> = ({
   team_division,
   team1_color,
   team2_color,
+  venuePinCode,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -91,6 +92,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [teamColor, setTeamColor] = useState('');
   const userState = useSelector((state: RootState) => state);
   // console.log(userState.login.isAdmin);
+  // console.log(venuePinCode);
 
   const handleColorChange = (event: { target: { value: string } }) => {
     setTeamColor(event.target.value);
@@ -402,6 +404,7 @@ export const JoinNow: FC<EventDetails> = ({
           email,
           userData.phoneNumber,
           teamColor,
+          venuePinCode,
         ) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);

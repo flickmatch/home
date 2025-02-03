@@ -86,6 +86,7 @@ input RazorPayInput {
   email: String!
   phoneNumber: String!
   redirectUrl: String!
+  venuePinCode: String!
 }
 
 input UpdateSubscriptionInput {
@@ -266,7 +267,7 @@ type SportsVenue {
   displayName: String!
   googleMapsLink: String!
   availableSportsIds: [ID!]
-  pinCode: String
+  pinCode: String!
   """
   We need to make this mandatory in future
   """

@@ -44,6 +44,7 @@ export const EventsCard: FC<EventDetails> = ({
   team_division,
   team1_color,
   team2_color,
+  venuePinCode,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
@@ -258,6 +259,7 @@ export const EventsCard: FC<EventDetails> = ({
             time={''}
             venueLocationLink={''}
             venueName={venueName}
+            venuePinCode={venuePinCode}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
             team_division={team_division}

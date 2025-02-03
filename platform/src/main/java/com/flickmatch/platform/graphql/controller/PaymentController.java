@@ -20,7 +20,6 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -59,7 +58,6 @@ public class PaymentController {
         }
     }
 
-
     @Autowired
     RazorPaymentRequestBuilder razorPaymentRequestBuilder;
 
@@ -67,14 +65,13 @@ public class PaymentController {
     RazorPayProxy razorPayProxy;
 
     public String sanitizeLog(String input) {
-        return input.replaceAll("[\r\n]", "");  // Remove line breaks to prevent log injection
+        return input.replaceAll("[\r\n]", ""); // Remove line breaks to prevent log injection
     }
-
-
 
     String formatDateToString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+
     @MutationMapping
     public RazorPayOutput initiateRazorPayment(@Argument RazorPayInput input) {
         try {
@@ -90,15 +87,17 @@ public class PaymentController {
             String email = input.getEmail();
             String phoneNumber = input.getPhoneNumber();
             String redirectUrl = input.getRedirectUrl();
+            String pinCode = input.getPinCode();
 
             // Log the phone number before creating the payment request
-//            log.info("Phone number to be saved: {}", phoneNumber);
-//            log.info("Razorpay OrderId Generated", orderId);
+            // log.info("Phone number to be saved: {}", phoneNumber);
+            // log.info("Razorpay OrderId Generated", orderId);
             log.info("Phone number to be saved: {}", sanitizeLog(phoneNumber));
             log.info("Razorpay OrderId Generated", sanitizeLog(orderId));
 
             razorPaymentRequestBuilder.createPaymentRequest(orderId,
-                    input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber,email, phoneNumber,redirectUrl);
+                    input.getUniqueEventId(), input.getPlayerInputList(), dateString, location, gameNumber, email,
+                    phoneNumber, redirectUrl, pinCode);
             return RazorPayOutput.builder().orderId(orderId).isInitiated(true).amount(amount).build();
         } catch (DynamoDBMappingException dbe) {
             log.error("DynamoDB mapping error: {}", dbe.getMessage(), dbe);
@@ -106,6 +105,6 @@ public class PaymentController {
             log.error("Error creating order: {}", e.getMessage(), e);
         }
         return RazorPayOutput.builder().isInitiated(false).build();
-}
+    }
 
 }

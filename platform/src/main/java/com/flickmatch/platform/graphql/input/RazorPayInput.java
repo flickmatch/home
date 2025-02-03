@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Builder
@@ -15,6 +16,7 @@ public class RazorPayInput {
     String email;
     String phoneNumber;
     String redirectUrl;
+    String pinCode;
 
     public String getPhoneNumber() {
         return phoneNumber;

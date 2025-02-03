@@ -23,6 +23,7 @@ public class UserBuilder {
     public User createUser(CreateUserInput input) {
 //        Checking if the user already exists
         String location = input.getLocation();
+        String pinCode = input.getPinCode();
         Optional<User> existingUserOptional = userRepository.findByEmail(input.getEmail());
         User user;
 
@@ -31,6 +32,7 @@ public class UserBuilder {
             user = existingUserOptional.get();
             user.setPhoneNumber(input.getPhoneNumber());
             List<String> citiesHistory = user.getCitiesHistory();
+            List<String> pinCodeHistory = user.getUserPinCodes();
             if(citiesHistory!=null) {
 //                log.info("Location:",location);
                 if (!citiesHistory.contains(location)) {
@@ -41,11 +43,23 @@ public class UserBuilder {
                 citiesHistory = new ArrayList<>();
                 citiesHistory.add(location);
             }
+            if(pinCodeHistory!=null) {
+//                log.info("Location:",location);
+                if (!pinCodeHistory.contains(location)) {
+                    pinCodeHistory.add(location);
+                }
+            } else {
+//                log.info("Location:",location);
+                pinCodeHistory = new ArrayList<>();
+                pinCodeHistory.add(location);
+            }
             user.setCitiesHistory(citiesHistory);
+            user.setUserPinCodes(pinCodeHistory);
             log.info("User already exists, updating phone number for user: {}", user);
             return userRepository.save(user);
         } else {
             List<String>citiesHistory = new ArrayList<>();
+            List<String>pinCodeHistory = new ArrayList<>();
 //            citiesHistory.add(location);
 //            log.info("Location:",location);
             user = new User();
@@ -55,6 +69,7 @@ public class UserBuilder {
             user.setHasActiveSubscription(false);
             user.setSubscriptionHistory(new ArrayList<>());
             user.setCitiesHistory(citiesHistory);
+            user.setUserPinCodes(pinCodeHistory);
             log.info("Creating a new user: {}", user);
         }
 
