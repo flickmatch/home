@@ -87,8 +87,9 @@ public class PaymentController {
             String email = input.getEmail();
             String phoneNumber = input.getPhoneNumber();
             String redirectUrl = input.getRedirectUrl();
-            String pinCode = input.getPinCode();
+            String pinCode = input.getVenuePinCode();
 
+            // log.info(input.toString());
             // Log the phone number before creating the payment request
             // log.info("Phone number to be saved: {}", phoneNumber);
             // log.info("Razorpay OrderId Generated", orderId);

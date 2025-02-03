@@ -56,6 +56,7 @@ export const EventComponent: FC<event> = ({
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  // console.log(gameEvent);
 
   const handleCaptureClick = async (eventId: string) => {
     const groundElement = document.querySelector<HTMLElement>('.ground-container-id' + eventId);

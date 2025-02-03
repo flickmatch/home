@@ -11,7 +11,9 @@ const createOrder = (
   email: string,
   phoneNumber: string,
   teamColor: string,
+  venuePinCode: string,
 ): Promise<string> =>
+  // console.log(venuePinCode);
   // fetch('http://localhost:8080/graphql', {
   fetch(apiUrl, {
     method: 'POST',
@@ -33,6 +35,7 @@ const createOrder = (
                 email : "${email}"
                 phoneNumber: "${phoneNumber}"
                 redirectUrl: "${window.location.origin}"
+                venuePinCode: "${venuePinCode}"
             }
         ) {
             orderId
@@ -56,7 +59,6 @@ const createOrder = (
       // eslint-disable-next-line no-console
       console.log(error);
     });
-
 function loadRazorPay() {
   return new Promise((resolve) => {
     const script = document.createElement('script');

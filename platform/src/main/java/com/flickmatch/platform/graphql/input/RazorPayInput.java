@@ -16,7 +16,7 @@ public class RazorPayInput {
     String email;
     String phoneNumber;
     String redirectUrl;
-    String pinCode;
+    String venuePinCode;
 
     public String getPhoneNumber() {
         return phoneNumber;

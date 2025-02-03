@@ -45,13 +45,13 @@ public class UserBuilder {
             }
             if(pinCodeHistory!=null) {
 //                log.info("Location:",location);
-                if (!pinCodeHistory.contains(location)) {
-                    pinCodeHistory.add(location);
+                if (!pinCodeHistory.contains(pinCode)) {
+                    pinCodeHistory.add(pinCode);
                 }
             } else {
 //                log.info("Location:",location);
                 pinCodeHistory = new ArrayList<>();
-                pinCodeHistory.add(location);
+                pinCodeHistory.add(pinCode);
             }
             user.setCitiesHistory(citiesHistory);
             user.setUserPinCodes(pinCodeHistory);
