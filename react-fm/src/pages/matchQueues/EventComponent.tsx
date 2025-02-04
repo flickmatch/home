@@ -433,7 +433,7 @@ export const EventComponent: FC<event> = ({
                       )}
                     </Box>
                     <img
-                      src={'landscape.jpeg'}
+                      src={'/landscape.jpeg'}
                       alt="ground"
                       height={698}
                       className={styles.groundImage}
