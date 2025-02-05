@@ -156,14 +156,14 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
         >
           {displayName === 'Add Name' ? (
             <Box className="handle" style={{ lineHeight: 0 }}>
-              <Jersey size={45} color={teamColor} number={index.toString()} />
+              <Jersey size={42} color={teamColor} number={index.toString()} />
             </Box>
           ) : (
             <Box
               style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
               className="handle"
             >
-              <Jersey size={45} color={teamColor} number={index.toString()} />
+              <Jersey size={42} color={teamColor} number={index.toString()} />
             </Box>
           )}
           <Typography className={`${styles.formationPlayerNames} ${'handle'}`}>
