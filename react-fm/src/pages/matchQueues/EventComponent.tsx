@@ -10,7 +10,11 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
+import Radio from '@mui/material/Radio';
+import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 
 import downloadjs from 'downloadjs';
@@ -56,6 +60,8 @@ export const EventComponent: FC<event> = ({
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [singleTeamView, setSingleTeamView] = useState(false);
+  const [showTeamA, setShowTeamA] = useState('true');
 
   const handleCaptureClick = async (eventId: string) => {
     const groundElement = document.querySelector<HTMLElement>('.ground-container-id' + eventId);
@@ -116,9 +122,15 @@ export const EventComponent: FC<event> = ({
     player: ReservedPlayerDetails | null,
     i: number,
     coordinates:
-      | { mobilePoints?: { x: number; y: number }; id?: number; role?: string }
+      | {
+          mobilePoints?: { x: number; y: number };
+          mobileSingleTeam?: { x: number; y: number };
+          id?: number;
+          role?: string;
+        }
       | undefined,
     teamDivision: boolean,
+    singleView: boolean,
   ) => (
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
@@ -129,6 +141,7 @@ export const EventComponent: FC<event> = ({
       teamColor={player?.teamColor}
       coordinates={coordinates}
       teamDivision={teamDivision}
+      singleTeamView={singleView}
     />
   );
 
@@ -166,6 +179,11 @@ export const EventComponent: FC<event> = ({
     );
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    setShowTeamA(event.target.value);
+  };
+
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
       // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
@@ -176,31 +194,53 @@ export const EventComponent: FC<event> = ({
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
         | null = null;
+      let singleTeamACoordinates:
+        | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
+        | null;
+      let singleTeamBCoordinates:
+        | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
+        | null;
       if (playingEvent.teamDivision) {
         switch (teamSize) {
           case 5:
             teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
+            singleTeamACoordinates = teamACoordinates5;
+            singleTeamBCoordinates = teamBCoordinates5;
             break;
           case 6:
             teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
+            singleTeamACoordinates = teamACoordinates6;
+            singleTeamBCoordinates = teamBCoordinates6;
             break;
           case 7:
             teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
+            singleTeamACoordinates = teamACoordinates7;
+            singleTeamBCoordinates = teamBCoordinates7;
             break;
           case 8:
             teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
+            singleTeamACoordinates = teamACoordinates8;
+            singleTeamBCoordinates = teamBCoordinates8;
             break;
           case 9:
             teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
+            singleTeamACoordinates = teamACoordinates9;
+            singleTeamBCoordinates = teamBCoordinates9;
             break;
           case 10:
             teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
+            singleTeamACoordinates = teamACoordinates10;
+            singleTeamBCoordinates = teamBCoordinates10;
             break;
           case 11:
             teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
+            singleTeamACoordinates = teamACoordinates11;
+            singleTeamBCoordinates = teamBCoordinates11;
             break;
           default:
             teamCoordinates = null;
+            singleTeamACoordinates = null;
+            singleTeamBCoordinates = null;
             break;
         }
       }
@@ -345,6 +385,17 @@ export const EventComponent: FC<event> = ({
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
                   />
                 ) : null}
+                <FormGroup style={{ marginLeft: 15 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={singleTeamView}
+                        onChange={() => setSingleTeamView(!singleTeamView)}
+                      />
+                    }
+                    label="Single Team"
+                  />
+                </FormGroup>
               </Box>
 
               {playingEvent?.teamDivision && (
@@ -376,16 +427,91 @@ export const EventComponent: FC<event> = ({
                   <Box
                     className={`${styles.portraitGroundImageContainer} ground-container-id${playingEvent.uniqueEventId}`}
                   >
-                    <Box className={styles.dragContainer}>
+                    {showTeamA === 'true' ? (
+                      <Box
+                        className={styles.dragContainer}
+                        style={{ display: singleTeamView ? 'block' : 'none' }}
+                      >
+                        {teamAPlayers.map((player, index) =>
+                          renderPlayer(
+                            player,
+                            (index % teamSize) + 1,
+                            singleTeamACoordinates?.[index],
+                            playingEvent.teamDivision || false,
+                            true,
+                          ),
+                        )}
+                      </Box>
+                    ) : (
+                      <Box
+                        className={styles.dragContainer}
+                        style={{ display: singleTeamView ? 'block' : 'none' }}
+                      >
+                        {teamBPlayers.map((player, index) =>
+                          renderPlayer(
+                            player,
+                            (index % teamSize) + 1,
+                            singleTeamBCoordinates?.[index],
+                            playingEvent.teamDivision || false,
+                            true,
+                          ),
+                        )}
+                      </Box>
+                    )}
+                    <Box
+                      className={styles.dragContainer}
+                      style={{ display: singleTeamView ? 'none' : 'block' }}
+                    >
                       {fullTeamPlayers.map((player, index) =>
                         renderPlayer(
                           player,
                           (index % teamSize) + 1,
                           teamCoordinates?.[index],
                           playingEvent.teamDivision || false,
+                          false,
                         ),
                       )}
                     </Box>
+                    {singleTeamView ? (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          zIndex: 9999,
+                          top: 75,
+                          left: 8,
+                        }}
+                      >
+                        <Radio
+                          checked={showTeamA === 'true'}
+                          onChange={handleChange}
+                          value={'true'}
+                          name="radio-buttons"
+                          inputProps={{ 'aria-label': 'A' }}
+                          sx={{
+                            color: playingEvent.team1Color,
+                            '&.Mui-checked': {
+                              color: playingEvent.team1Color,
+                            },
+                          }}
+                          size="small"
+                        />
+
+                        <Radio
+                          checked={showTeamA === 'false'}
+                          onChange={handleChange}
+                          value={'false'}
+                          name="radio-buttons"
+                          inputProps={{ 'aria-label': 'B' }}
+                          sx={{
+                            color: playingEvent.team2Color,
+                            '&.Mui-checked': {
+                              color: playingEvent.team2Color,
+                            },
+                          }}
+                          size="small"
+                        />
+                      </div>
+                    ) : null}
                     <img
                       src={isPortrait ? '/ground.jpeg' : ''}
                       alt="ground"
@@ -403,6 +529,7 @@ export const EventComponent: FC<event> = ({
                           index,
                           teamCoordinates?.[index],
                           playingEvent.teamDivision || false,
+                          false,
                         ),
                       )}
                     </Grid>
@@ -417,6 +544,7 @@ export const EventComponent: FC<event> = ({
                           index,
                           teamCoordinates?.[index],
                           playingEvent.teamDivision || false,
+                          false,
                         ),
                       )}
                     </Grid>
@@ -430,7 +558,7 @@ export const EventComponent: FC<event> = ({
                         i < playingEvent.reservedPlayersList.length
                           ? playingEvent.reservedPlayersList[i]
                           : null;
-                      return renderPlayer(player, i, {}, playingEvent.teamDivision || false);
+                      return renderPlayer(player, i, {}, playingEvent.teamDivision || false, false);
                     })}
                   </Grid>
                 </>
