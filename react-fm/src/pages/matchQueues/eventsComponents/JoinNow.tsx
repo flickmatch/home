@@ -31,7 +31,10 @@ import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
 
-const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
+const url =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
 
 type subscriptionType = {
   subscriptionId: string;
@@ -93,7 +96,7 @@ export const JoinNow: FC<EventDetails> = ({
   };
 
   const currencyFromCity = async () => {
-    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

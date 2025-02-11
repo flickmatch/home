@@ -132,7 +132,10 @@ const getEventById = async (
   return result.data.event;
 };
 
-const apiUrl = `${import.meta.env.VITE_API_URL}`;
+const apiUrl =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
 
 const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
 const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';
