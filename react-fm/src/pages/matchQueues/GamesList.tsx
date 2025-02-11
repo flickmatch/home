@@ -128,6 +128,7 @@ export const GamesList: FC<event> = ({
       teamColor={player?.teamColor}
       coordinates={coordinates}
       teamDivision={teamDivision}
+      singleTeamView={false}
     />
   );
 

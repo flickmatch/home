@@ -48,6 +48,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   teamColor,
   teamDivision,
   singleTeamView,
+
   role,
 }) => {
   const isPortrait = useOrientation();

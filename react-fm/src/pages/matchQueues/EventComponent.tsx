@@ -180,7 +180,6 @@ export const EventComponent: FC<event> = ({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setShowTeamA(event.target.value);
   };
 
