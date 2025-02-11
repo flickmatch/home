@@ -51,6 +51,10 @@ const Header = () => {
   const mailSheet = import.meta.env.VITE_GOOGLE_SHEET_API;
   const userState = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
+  const apiUrl =
+    import.meta.env.MODE == 'development'
+      ? import.meta.env.VITE_API_LOCAL
+      : import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -86,20 +90,17 @@ const Header = () => {
   const fetchData = async (email: string) => {
     //const emailFormat = email.replace(/^'|'$/g, '');
     try {
-      const response = await fetch(
-        'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: `query HasActiveSubscription {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `query HasActiveSubscription {
           hasActiveSubscription(email: "${email}")
             }`,
-          }),
-        },
-      );
+        }),
+      });
       const data = await response.json();
       setActiveSubscription(data.data.hasActiveSubscription);
     } catch (error) {
