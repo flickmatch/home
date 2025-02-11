@@ -123,7 +123,6 @@ export const EventComponent: FC<event> = ({
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
       index={i}
-      points={player?.points}
       id={player?.id}
       role={player?.role}
       teamColor={player?.teamColor}
@@ -393,7 +392,7 @@ export const EventComponent: FC<event> = ({
                       className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                     />
                   </Box>
-                ) : (
+                ) : !userState.login.isAdmin ? (
                   <Box>
                     {teamA(playingEvent?.team1Color || 'Orange')}
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -420,6 +419,25 @@ export const EventComponent: FC<event> = ({
                         ),
                       )}
                     </Grid>
+                  </Box>
+                ) : (
+                  <Box className={styles.groundImageContainer}>
+                    <Box className={styles.dragContainer}>
+                      {fullTeamPlayers.map((player, index) =>
+                        renderPlayer(
+                          player,
+                          (index % teamSize) + 1,
+                          teamCoordinates?.[index],
+                          playingEvent.teamDivision || false,
+                        ),
+                      )}
+                    </Box>
+                    <img
+                      src={'/landscape.jpeg'}
+                      alt="ground"
+                      height={698}
+                      className={styles.groundImage}
+                    />
                   </Box>
                 )
               ) : (
