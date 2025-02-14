@@ -377,24 +377,30 @@ export const EventComponent: FC<event> = ({
           >
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
               <Box className={styles.reservedPlayersContainer}>
-                <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
+                <Typography
+                  className={isPortrait ? styles.portraitReservedPlayers : styles.reservedPlayers}
+                >
+                  Reserved Players
+                </Typography>
                 {userState.login.isAdmin && !eventPage && userState.login.isLoggedIn ? (
                   <BorderColorIcon
                     className={styles.editIcon}
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
                   />
                 ) : null}
-                <FormGroup style={{ marginLeft: 15 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={singleTeamView}
-                        onChange={() => setSingleTeamView(!singleTeamView)}
-                      />
-                    }
-                    label="Single Team"
-                  />
-                </FormGroup>
+                {playingEvent?.teamDivision && isPortrait ? (
+                  <FormGroup style={{ marginLeft: 15 }}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={singleTeamView}
+                          onChange={() => setSingleTeamView(!singleTeamView)}
+                        />
+                      }
+                      label="Single Team"
+                    />
+                  </FormGroup>
+                ) : null}
               </Box>
 
               {playingEvent?.teamDivision && (
