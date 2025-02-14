@@ -122,7 +122,6 @@ export const GamesList: FC<event> = ({
     <PlayerDetails
       displayName={player ? player.displayName : 'Add Name'}
       index={i}
-      points={player?.points}
       id={player?.id}
       role={player?.role}
       teamColor={player?.teamColor}
@@ -131,40 +130,6 @@ export const GamesList: FC<event> = ({
       singleTeamView={false}
     />
   );
-
-  const teamA = (teamAColor: string) => {
-    // Determine the display color for Team A
-    const displayColor =
-      teamAColor.toLowerCase() === 'bibs'
-        ? 'Orange'
-        : teamAColor.toLowerCase() === 'no bibs' || !teamAColor
-        ? 'White'
-        : teamAColor;
-
-    return (
-      <Box className={styles.teamDivision}>
-        <span className={styles.colorTeamA} style={{ background: displayColor }} />
-        {teamAColor} (Team A)
-      </Box>
-    );
-  };
-
-  const teamB = (teamBColor: string) => {
-    // Determine the display color for Team B
-    const displayColor =
-      teamBColor.toLowerCase() === 'bibs'
-        ? 'White'
-        : teamBColor.toLowerCase() === 'no bibs' || !teamBColor
-        ? 'White'
-        : teamBColor;
-
-    return (
-      <Box className={styles.teamDivisionSecond}>
-        <span className={styles.colorTeamB} style={{ background: displayColor }} />
-        {teamBColor} (Team B)
-      </Box>
-    );
-  };
 
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
@@ -379,39 +344,30 @@ export const GamesList: FC<event> = ({
                       )}
                     </Box>
                     <img
-                      src={isPortrait ? '/ground.jpeg' : ''}
+                      src={'ground.jpeg'}
                       alt="ground"
                       height={670}
-                      className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
+                      className={styles.portraitGroundImage}
                     />
                   </Box>
                 ) : (
-                  <Box>
-                    {teamA(playingEvent?.team1Color || 'Orange')}
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamAPlayers.map((player, index) =>
+                  <Box className={styles.groundImageContainer}>
+                    <Box className={styles.dragContainer}>
+                      {fullTeamPlayers.map((player, index) =>
                         renderPlayer(
                           player,
-                          index,
+                          (index % teamSize) + 1,
                           teamCoordinates?.[index],
                           playingEvent.teamDivision || false,
                         ),
                       )}
-                    </Grid>
-
-                    <Typography className={styles.versus}>v/s</Typography>
-                    {teamB(playingEvent?.team2Color || 'White')}
-
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamBPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          index,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                        ),
-                      )}
-                    </Grid>
+                    </Box>
+                    <img
+                      src={'landscape.jpeg'}
+                      alt="ground"
+                      height={698}
+                      className={styles.groundImage}
+                    />
                   </Box>
                 )
               ) : (

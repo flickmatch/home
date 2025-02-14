@@ -91,7 +91,7 @@ export const EventsCard: FC<EventDetails> = ({
       },
       body: JSON.stringify({
         query: `
-          query City($id: Int!) {
+          query City($id: ID!) {
             city(cityId: $id) {
               cityId
               cityName
@@ -102,7 +102,7 @@ export const EventsCard: FC<EventDetails> = ({
           }
         `,
         variables: {
-          id: cityId, // Passing `cityId` as a parameter
+          id: String(cityId), // Passing `cityId` as a parameter
         },
       }),
     });

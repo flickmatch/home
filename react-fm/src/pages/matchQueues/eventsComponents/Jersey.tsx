@@ -20,7 +20,7 @@ const colorMap: { [key: string]: { numberColor?: string; fillColor?: string } } 
   'No Bibs': { numberColor: '#CCCCCC', fillColor: '#000000' },
 };
 
-const Jersey: React.FC<JerseyProps> = ({ color, size = 800, number = '00', ...props }) => (
+const Jersey: React.FC<JerseyProps> = ({ color, size = 42, number = '00', ...props }) => (
   <svg
     fill={colorMap[color || 'Bibs']?.fillColor}
     height={`${size}px`}
