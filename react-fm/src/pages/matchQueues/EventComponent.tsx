@@ -9,6 +9,7 @@ import { Button } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
@@ -388,15 +389,21 @@ export const EventComponent: FC<event> = ({
                   />
                 ) : null}
                 {playingEvent?.teamDivision && isPortrait ? (
-                  <FormGroup style={{ marginLeft: 15 }}>
+                  <FormGroup style={{ marginLeft: 25 }}>
                     <FormControlLabel
                       control={
-                        <Switch
-                          checked={singleTeamView}
-                          onChange={() => setSingleTeamView(!singleTeamView)}
-                        />
+                        <Badge
+                          badgeContent={'Single Team'}
+                          color="success"
+                          className={styles.teamSwitchBadge}
+                        >
+                          <Switch
+                            checked={singleTeamView}
+                            onChange={() => setSingleTeamView(!singleTeamView)}
+                          />
+                        </Badge>
                       }
-                      label="Single Team"
+                      label=""
                     />
                   </FormGroup>
                 ) : null}
