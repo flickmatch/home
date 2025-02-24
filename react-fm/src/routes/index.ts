@@ -124,12 +124,12 @@ const routes: Routes = {
   },
   [Pages.Championscup]: {
     component: () => {
-      window.location.href = 'https://form.typeform.com/to/HnoDqHKI';
+      window.location.href = 'https://a3a57esspj0.typeform.com/to/yxBt1nFS';
       return null;
     },
     title: 'Champions Us',
     icon: EmojiEventsIcon,
-    path: 'https://form.typeform.com/to/HnoDqHKI',
+    path: 'https://a3a57esspj0.typeform.com/to/yxBt1nFS',
   },
 };
 

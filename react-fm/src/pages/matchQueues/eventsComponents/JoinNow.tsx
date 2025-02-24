@@ -460,7 +460,7 @@ export const JoinNow: FC<EventDetails> = ({
                 variant="contained"
               >
                 <a
-                  href="https://form.typeform.com/to/HnoDqHKI"
+                  href="https://a3a57esspj0.typeform.com/to/yxBt1nFS"
                   target="_blank"
                   rel="noreferrer"
                   style={{ color: 'black' }}
