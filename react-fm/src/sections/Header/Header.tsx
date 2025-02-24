@@ -151,7 +151,10 @@ const Header = () => {
         <Typography className={styles.menuItem} component={Link} to="/rewards">
           Gift Pass
         </Typography>
-
+        <Divider className={styles.divider} orientation="vertical" flexItem />
+        <a href="https://a3a57esspj0.typeform.com/to/yxBt1nFS" target="_blank" rel="noreferrer">
+          <Typography className={styles.menuItem}>Champions Cup</Typography>
+        </a>
         {userState.login.isAdmin && userState.login.isLoggedIn ? (
           <>
             <Divider className={styles.divider} orientation="vertical" flexItem />

@@ -455,6 +455,20 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
+              <Button
+                className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                variant="contained"
+              >
+                <a
+                  href="https://a3a57esspj0.typeform.com/to/yxBt1nFS"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: 'black' }}
+                >
+                  Champions Cup
+                </a>
+              </Button>
+
               {hasSubscription &&
               activeSubscriptonData &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
