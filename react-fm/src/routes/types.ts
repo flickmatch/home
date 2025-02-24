@@ -27,6 +27,7 @@ enum Pages {
   GamePasses,
   Event,
   Flickpass,
+  Championscup,
 }
 
 type PathRouteCustomProps = {

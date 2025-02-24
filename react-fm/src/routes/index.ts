@@ -1,5 +1,6 @@
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import PaymentsIcon from '@mui/icons-material/Payments';
@@ -120,6 +121,15 @@ const routes: Routes = {
   [Pages.Event]: {
     component: asyncComponentLoader(() => import('@/pages/eventPage')),
     path: '/event/:id',
+  },
+  [Pages.Championscup]: {
+    component: () => {
+      window.location.href = 'https://form.typeform.com/to/HnoDqHKI';
+      return null;
+    },
+    title: 'Champions Us',
+    icon: EmojiEventsIcon,
+    path: 'https://form.typeform.com/to/HnoDqHKI',
   },
 };
 
