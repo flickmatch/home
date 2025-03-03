@@ -33,26 +33,27 @@ function AllPassesDropDown() {
   const navigate = useNavigate();
   // const isPortrait = useOrientation();
 
+  const url =
+    import.meta.env.MODE == 'development'
+      ? import.meta.env.VITE_API_LOCAL
+      : import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchCities = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              query: `query Passes {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `query Passes {
               passes {
                 cityId
               }
             }`,
-            }),
-          },
-        );
+          }),
+        });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -86,7 +87,7 @@ function AllPassesDropDown() {
     };
 
     fetchCities();
-  }, []);
+  }, [url]);
 
   const handleCityChange = (event: SelectChangeEvent<string>) => {
     const cityId = event.target.value as string;

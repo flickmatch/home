@@ -40,7 +40,10 @@ type PassDetails = {
   features: string[];
 };
 
-const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
+const url =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
 
 function GamePasses() {
   const isPortrait = useOrientation();
