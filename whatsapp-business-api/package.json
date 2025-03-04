@@ -1,0 +1,15 @@
+{
+    "name": "whatsapp-message-service",
+    "version": "1.0.0",
+    "description": "A service to send WhatsApp messages to a list of numbers read from a CSV file using WhatsApp official business API",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js"
+    },
+    "dependencies": {
+        "axios": "^0.24.0",
+        "csv-parser": "^3.0.0",
+        "dotenv": "^10.0.0"
+    }
+}
+
