@@ -6,6 +6,7 @@ type Query {
   passesForCity(cityId: ID!): [Pass!]
   hasActiveSubscription(email: String!): Boolean!
   getActiveSubscription(email: String!): Subscription
+  scores: [Score!]!
 }
 
 type Mutation {
@@ -23,6 +24,17 @@ type Mutation {
   This is not implemented yet, will be required for P1
   """
   registerModerator(input: RegisterModeratorInput!): MutationResult!
+  createScore(input: CreateScoreInput!): MutationResult!
+}
+
+input CreateScoreInput {
+  teamA: Int!
+  teamB: Int!
+}
+type Score {
+  teamA: Int!
+  teamB: Int!
+  scoreId: String!
 }
 
 input CreateEventInput {

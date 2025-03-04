@@ -22,6 +22,25 @@ aws dynamodb create-table \
     --endpoint-url http://localhost:8000
 
 aws dynamodb create-table \
+    --table-name Score \
+    --attribute-definitions \
+        AttributeName=scoreId,AttributeType=S \
+    --key-schema \
+        AttributeName=scoreId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --endpoint-url http://localhost:8000
+
+aws dynamodb put-item \
+    --table-name Score \
+    --item '{
+        "scoreId": {"S": "1"},
+        "teamA": {"N": "4"},
+        "teamB": {"N": "3"}
+         }' \
+    --return-consumed-capacity TOTAL \
+    --endpoint-url http://localhost:8000
+
+aws dynamodb create-table \
     --table-name SportsVenue \
     --attribute-definitions \
         AttributeName=cityId,AttributeType=S \
