@@ -35,7 +35,10 @@ import type { RootState } from '@/store/types';
 import { appLogo } from '../../sections/Header/constants';
 import styles from './Profile.module.scss';
 
-const url = 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql';
+const url =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
 interface UserDetails {
   email: string;
   family_name: string;
@@ -145,7 +148,7 @@ function Profile() {
   }, [userData.email]);
 
   const fetchCityData = async (passCityId: string) => {
-    const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

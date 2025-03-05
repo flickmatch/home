@@ -1,3 +1,8 @@
+const apiUrl =
+  import.meta.env.MODE == 'development'
+    ? import.meta.env.VITE_API_LOCAL
+    : import.meta.env.VITE_API_URL;
+
 const createOrder = (
   passId: string,
   email: string,
@@ -6,7 +11,7 @@ const createOrder = (
   currencyType: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
-  fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+  fetch(apiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +89,11 @@ const displayRazorpay = (
 
     const options = {
       // key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
-      key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
+      // key: 'rzp_live_ba3UQjRIBXdeXt', // to be fixed for production
+      key:
+        import.meta.env.MODE == 'development'
+          ? 'rzp_test_hpeD9rSq9zDwJN'
+          : 'rzp_live_ba3UQjRIBXdeXt',
       amount: amount,
       currency: 'INR',
       name: 'Flickmatch',
@@ -92,7 +101,11 @@ const displayRazorpay = (
       image:
         'https://firebasestorage.googleapis.com/v0/b/flickmatch-374a2.appspot.com/o/fm_rainbow.png?alt=media&token=1b06ae27-bf10-4974-9100-6bb5f2308314',
       order_id: orderId,
-      callback_url: 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/processPassPayment',
+      // callback_url: 'https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/processPassPayment',
+      callback_url:
+        import.meta.env.MODE == 'development'
+          ? import.meta.env.VITE_CALLBACK_LOCAL
+          : import.meta.env.VITE_CALLBACK_URL,
       // callback_url: 'http://localhost:5173',
       redirect: true,
       prefill: {

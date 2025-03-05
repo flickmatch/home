@@ -55,6 +55,10 @@ export const AddPlayer: FC<ChildProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [teamColor, setTeamColor] = useState('');
   const [, notificationsActions] = useNotifications();
+  const apiUrl =
+    import.meta.env.MODE == 'development'
+      ? import.meta.env.VITE_API_LOCAL
+      : import.meta.env.VITE_API_URL;
 
   function showSuccessNotification() {
     notificationsActions.push({
@@ -72,7 +76,7 @@ export const AddPlayer: FC<ChildProps> = ({
     if (!name || !phoneNumber) {
       alert('All input fields are required.');
     } else {
-      fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
+      fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

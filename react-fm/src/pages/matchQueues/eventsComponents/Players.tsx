@@ -144,7 +144,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           </Typography>
         </Box>
       </Draggable>
-    ) : userState.login.isAdmin ? (
+    ) : (
       <Draggable
         handle=".handle"
         // position={controlledPosition}
@@ -183,24 +183,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           </Typography>
         </Box>
       </Draggable>
-    ) : (
-      <Grid
-        item
-        xs={2}
-        sm={4}
-        md={3}
-        className={displayName === 'Add Name' ? styles.addName : styles.grid}
-        key={index}
-      >
-        {displayName === 'Add Name' ? (
-          <AddCircleIcon className={styles.personAvatar} />
-        ) : (
-          <Box className={styles.profilePic}>
-            <Avatar className={styles.avatar} alt="profile" src={avatars[index]} />
-          </Box>
-        )}
-        <Typography className={styles.playerNames}>{displayName}</Typography>
-      </Grid>
     )
   ) : (
     <Grid
