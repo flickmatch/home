@@ -282,6 +282,7 @@ export const EventComponent: FC<event> = ({
                 {isPortrait ? null : (
                   <JoinNow
                     stripePaymentUrl={playingEvent.stripePaymentUrl}
+                    venuePinCode={playingEvent.venuePinCode}
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
@@ -310,6 +311,7 @@ export const EventComponent: FC<event> = ({
                 charges={playingEvent.charges}
                 date={playingEvent.date}
                 time={playingEvent.time}
+                venuePinCode={playingEvent.venuePinCode}
                 venueLocationLink={playingEvent.venueLocationLink}
                 reservedPlayersCount={playingEvent.reservedPlayersCount}
                 waitListPlayersCount={playingEvent.waitListPlayersCount}

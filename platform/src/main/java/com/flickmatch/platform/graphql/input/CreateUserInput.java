@@ -12,4 +12,5 @@ public class CreateUserInput {
     String email;
     String phoneNumber;
     String location;
+    String pinCode;
 }

@@ -11,6 +11,7 @@ const createOrder = (
   email: string,
   phoneNumber: string,
   teamColor: string,
+  venuePinCode: string,
 ): Promise<string> =>
   // fetch('http://localhost:8080/graphql', {
   fetch(apiUrl, {
@@ -33,6 +34,7 @@ const createOrder = (
                 email : "${email}"
                 phoneNumber: "${phoneNumber}"
                 redirectUrl: "${window.location.origin}"
+                venuePinCode: "${venuePinCode}"
             }
         ) {
             orderId
