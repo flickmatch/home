@@ -402,7 +402,7 @@ export const JoinNow: FC<EventDetails> = ({
           email,
           userData.phoneNumber,
           teamColor,
-          venuePinCode,
+          venuePinCode || '',
         ) // to be changed after local testing
           .then((orderId) => {
             setOrderId(orderId);
