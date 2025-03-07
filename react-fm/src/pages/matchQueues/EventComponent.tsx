@@ -133,6 +133,7 @@ export const EventComponent: FC<event> = ({
     />
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const teamA = (teamAColor: string) => {
     // Determine the display color for Team A
     const displayColor =
@@ -150,6 +151,7 @@ export const EventComponent: FC<event> = ({
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const teamB = (teamBColor: string) => {
     // Determine the display color for Team B
     const displayColor =
@@ -407,35 +409,36 @@ export const EventComponent: FC<event> = ({
                       </>
                     ) : null}
                   </Box>
-                ) : !userState.login.isAdmin ? (
-                  <Box>
-                    {teamA(playingEvent?.team1Color || 'Orange')}
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamAPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          index,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                        ),
-                      )}
-                    </Grid>
-
-                    <Typography className={styles.versus}>v/s</Typography>
-                    {teamB(playingEvent?.team2Color || 'White')}
-
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamBPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          index,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                        ),
-                      )}
-                    </Grid>
-                  </Box>
                 ) : (
+                  // : !userState.login.isAdmin ? (
+                  //   <Box>
+                  //     {teamA(playingEvent?.team1Color || 'Orange')}
+                  //     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                  //       {teamAPlayers.map((player, index) =>
+                  //         renderPlayer(
+                  //           player,
+                  //           index,
+                  //           teamCoordinates?.[index],
+                  //           playingEvent.teamDivision || false,
+                  //         ),
+                  //       )}
+                  //     </Grid>
+
+                  //     <Typography className={styles.versus}>v/s</Typography>
+                  //     {teamB(playingEvent?.team2Color || 'White')}
+
+                  //     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                  //       {teamBPlayers.map((player, index) =>
+                  //         renderPlayer(
+                  //           player,
+                  //           index,
+                  //           teamCoordinates?.[index],
+                  //           playingEvent.teamDivision || false,
+                  //         ),
+                  //       )}
+                  //     </Grid>
+                  //   </Box>
+                  // )
                   <Box className={styles.groundImageContainer}>
                     <Box className={styles.dragContainer}>
                       {fullTeamPlayers.map((player, index) =>

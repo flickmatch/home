@@ -309,7 +309,7 @@ function AddGame() {
           onChange={handleCityName}
           style={{ width: '100%' }}
         >
-          {citiesData.map((city, i) => (
+          {citiesData?.map((city, i) => (
             <MenuItem value={city.cityId} key={i} style={{ width: '100%' }}>
               {city.cityName}
             </MenuItem>
@@ -331,7 +331,7 @@ function AddGame() {
           onChange={handleTurfName}
           style={{ width: '100%' }}
         >
-          {sportsVenues.map((venue, i) => (
+          {sportsVenues?.map((venue, i) => (
             <MenuItem
               value={venue.sportsVenueId}
               key={i}
