@@ -29,6 +29,21 @@ jobs:
         with:
           java-version: "17"
           distribution: "corretto"
+      - name: Create .env file
+      - run: |
+          touch .env
+          echo SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN=${{ secrets.SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN }} >> .env
+          echo PROD_DYNAMODB_ENDPOINT=${{ secrets.PROD_DYNAMODB_ENDPOINT }} >> .env
+          echo PROD_AWS_REGION=${{ secrets.PROD_AWS_REGION }} >> .env
+          echo PROD_AWS_PROFILE=${{ secrets.PROD_AWS_PROFILE }} >> .env
+          echo PROD_PHONEPE_MERCHANT_ID=${{ secrets.PROD_PHONEPE_MERCHANT_ID }} >> .env
+          echo PROD_PHONEPE_SALT_KEY=${{ secrets.PROD_PHONEPE_SALT_KEY }} >> .env
+          echo PROD_PHONEPE_SALT_KEY_INDEX=${{ secrets.PROD_PHONEPE_SALT_KEY_INDEX }} >> .env
+          echo PROD_WHATSAPP_ENDPOINT=${{ secrets.PROD_WHATSAPP_ENDPOINT }} >> .env
+          echo PROD_RAZORPAY_KEY_ID=${{ secrets.PROD_RAZORPAY_KEY_ID }} >> .env
+          echo PROD_RAZORPAY_KEY_SECRET=${{ secrets.PROD_RAZORPAY_KEY_SECRET }} >> .env
+          echo PROD_TWILIO_ACCOUNT_SID=${{ secrets.PROD_TWILIO_ACCOUNT_SID }} >> .env
+          cat .env
       - name: Setup Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       - name: Execute Gradle build
