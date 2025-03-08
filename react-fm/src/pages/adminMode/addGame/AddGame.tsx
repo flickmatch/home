@@ -52,9 +52,9 @@ function AddGame() {
   const [endTime, setEndTime] = useState('');
   const [credits, setCredits] = useState('');
   const [testGame, setTestGame] = useState(false);
-  const [teamDivision, setTeamDivision] = useState(false);
-  const [team1Color, setTeam1Color] = useState('');
-  const [team2Color, setTeam2Color] = useState('');
+  const [teamDivision, setTeamDivision] = useState(true);
+  const [team1Color, setTeam1Color] = useState('Bibs');
+  const [team2Color, setTeam2Color] = useState('No Bibs');
 
   // console.log(testGame);
 
