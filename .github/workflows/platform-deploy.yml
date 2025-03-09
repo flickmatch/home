@@ -30,7 +30,7 @@ jobs:
           java-version: "17"
           distribution: "corretto"
       - name: Create .env file
-      - run: |
+        run: |
           touch .env
           echo SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN=${{ secrets.SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN }} >> .env
           echo PROD_DYNAMODB_ENDPOINT=${{ secrets.PROD_DYNAMODB_ENDPOINT }} >> .env
