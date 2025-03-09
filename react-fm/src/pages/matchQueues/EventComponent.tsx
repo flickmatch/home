@@ -9,13 +9,12 @@ import { Button } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import Radio from '@mui/material/Radio';
-import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
 import downloadjs from 'downloadjs';
@@ -29,6 +28,7 @@ import styles from './../matchQueues/Queue.module.scss';
 import { AddPlayer } from './AddPlayer';
 import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
+import Jersey from './eventsComponents/Jersey';
 import { JoinNow } from './eventsComponents/JoinNow';
 import { PlayerDetails } from './eventsComponents/Players';
 import { teamACoordinates5, teamBCoordinates5 } from './playerCoordinates5v5';
@@ -391,23 +391,42 @@ export const EventComponent: FC<event> = ({
                   />
                 ) : null}
                 {playingEvent?.teamDivision && isPortrait && userState.login.isAdmin ? (
-                  <FormGroup style={{ marginLeft: 25 }}>
-                    <FormControlLabel
-                      control={
-                        <Badge
-                          badgeContent={'Single Team'}
-                          color="success"
-                          className={styles.teamSwitchBadge}
+                  <Stack direction="row" spacing={4}>
+                    <ToggleButtonGroup
+                      value={singleTeamView}
+                      exclusive
+                      aria-label="Team View"
+                      style={{ height: 45, marginLeft: 80, marginTop: -5 }}
+                    >
+                      <ToggleButton
+                        value="true"
+                        aria-label="Single-team"
+                        onChange={() => setSingleTeamView(true)}
+                      >
+                        <Jersey size={22} color="White" number="" />
+                      </ToggleButton>
+
+                      <ToggleButton
+                        value="false"
+                        aria-label="Both-team"
+                        onChange={() => setSingleTeamView(false)}
+                      >
+                        <div
+                          style={{
+                            position: 'relative',
+                            height: '100%',
+                            width: 31,
+                            marginTop: 5,
+                          }}
                         >
-                          <Switch
-                            checked={singleTeamView}
-                            onChange={() => setSingleTeamView(!singleTeamView)}
-                          />
-                        </Badge>
-                      }
-                      label=""
-                    />
-                  </FormGroup>
+                          <Jersey size={22} color="White" number="" />
+                          <div style={{ position: 'absolute', top: '-9px', left: 10 }}>
+                            <Jersey size={22} color="White" number="" />
+                          </div>
+                        </div>
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </Stack>
                 ) : null}
               </Box>
 
