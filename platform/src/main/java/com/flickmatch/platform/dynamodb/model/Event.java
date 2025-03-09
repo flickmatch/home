@@ -85,6 +85,8 @@ public class Event {
         String team2Color;
 
         String currency;
+        Integer team1Score;
+        Integer team2Score;
         //TODO:Add status attribute
 
         @DynamoDBAttribute(attributeName = "teamDivision")
@@ -247,6 +249,24 @@ public class Event {
 
         public void setPlayerDetailsList(List<PlayerDetails> playerDetailsList) {
             this.playerDetailsList = playerDetailsList;
+        }
+        
+        @DynamoDBAttribute(attributeName = "team1Score")
+        public Integer getTeam1Score() {
+            return team1Score;
+        }
+    
+        public void setTeam1Score(Integer team1Score) {
+            this.team1Score = team1Score;
+        }
+    
+        @DynamoDBAttribute(attributeName = "team2Score")
+        public Integer getTeam2Score() {
+            return team2Score;
+        }
+    
+        public void setTeam2Score(Integer team2Score) {
+            this.team2Score = team2Score;
         }
     }
 

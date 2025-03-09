@@ -18,10 +18,13 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
-import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
+import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink, apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/types';
+import { Input } from '@mui/material';
 
 export const EventsCard: FC<EventDetails> = ({
   charges,
@@ -43,16 +46,21 @@ export const EventsCard: FC<EventDetails> = ({
   team_division,
   team1_color,
   team2_color,
+  team1Score,
+  team2Score,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
   const [currencyCode, setCurrencyCode] = useState('INR');
-
+  const [isPast, setIsPast] = useState(false);
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
-  // console.log(team1_color, team2_color, team_division);
+  const userState = useSelector((state: RootState) => state);
+  const [teamAGoals, setTeamAGoals] = useState(team1Score || 0);
+  const [teamBGoals, setTeamBGoals] = useState(team2Score || 0);
+  const [isEditable, setEditable] = useState(false);
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -78,10 +86,35 @@ export const EventsCard: FC<EventDetails> = ({
 
   time = time.split('GMT')[0].trim();
 
+const getTimeDifference = (eventDateTime: string): boolean => {
+  const currentYear = new Date().getFullYear(); 
+
+  const [dayOfWeek, month, day, timeRange] = eventDateTime.split(" ");
+  const [startingTime, startPeriod] = timeRange.split(" - ")[0].split(/(?<=\d)(?=[apm])/); 
+
+  const eventDateTimeString = `${month} ${day}, ${currentYear} ${startingTime} ${startPeriod}`;
+  const eventTime = new Date(eventDateTimeString); 
+
+  const currentTime = new Date();
+  return currentTime > eventTime
+}
+  
   useEffect(() => {
-    currencyFromCity();
+    try {
+      currencyFromCity();
+      const timeInfo = getTimeDifference(usTime);
+      setIsPast(timeInfo);
+    } catch (error) {
+      console.error('Error in useEffect:', error);
+      setIsPast(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [usTime]);
+
+  useEffect(() => {
+    setTeamAGoals(team1Score || 0);
+    setTeamBGoals(team2Score || 0);
+  }, [team1Score, team2Score]);
 
   const currencyFromCity = async () => {
     const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -109,6 +142,95 @@ export const EventsCard: FC<EventDetails> = ({
 
     const data = await response.json();
     setCurrencyCode(data.data.city.countryCode);
+  };
+
+
+  const updateEventScore = async () => {
+    try {
+      if (isEditable) {
+        const userInput = {
+          input: {
+            uniqueEventId: uniqueEventId,
+            team1Score: Number(teamAGoals),
+            team2Score: Number(teamBGoals),
+          },
+        };
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `
+              mutation UpdateEventScore {
+                updateEventScore(
+                  input: {
+                    uniqueEventId: "${userInput.input.uniqueEventId}",
+                    team1Score: ${userInput.input.team1Score},
+                    team2Score: ${userInput.input.team2Score}
+                  }
+                ) {
+                  isSuccessful
+                  errorMessage
+                }
+              }
+            `,
+            variables: userInput.input,
+        })
+        });
+
+        const result = await response.json();
+
+        if (result.data?.updateEventScore?.isSuccessful) {
+          notificationsActions.push({
+            options: {
+              content: (
+                <Alert severity="success">
+                  <AlertTitle>Success</AlertTitle>
+                  Score updated successfully!
+                </Alert>
+              ),
+            },
+          });
+
+          // Keep the current values as they are successfully saved
+          setTeamAGoals(Number(teamAGoals));
+          setTeamBGoals(Number(teamBGoals));
+        } else {
+          notificationsActions.push({
+            options: {
+              content: (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {result.data?.updateEventScore?.errorMessage || 'Failed to update score'}
+                </Alert>
+              ),
+            },
+          });
+          
+          // Reset to previous values if update failed
+          setTeamAGoals(Number(team1Score));
+          setTeamBGoals(Number(team2Score));
+        }
+      }
+      setEditable(!isEditable);
+    } catch (error) {
+      console.error('Error updating score:', error);
+        notificationsActions.push({
+        options: {
+          content: (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              An unexpected error occurred. Please try again.
+            </Alert>
+          ),
+        },
+      });
+      // Reset to previous values on error
+      setTeamAGoals(Number(team1Score));
+      setTeamBGoals(Number(team2Score));
+      setEditable(false);
+    }
   };
 
   const currency = () => {
@@ -218,8 +340,54 @@ export const EventsCard: FC<EventDetails> = ({
     showSuccessNotification();
   };
 
+  const score = () => (
+    <Grid item xs={12} sm={4} md={12}>
+      <Typography className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
+          <h4 className={isPortrait ? styles.mobileScore : styles.score}>Score</h4>
+        
+        <span>
+          <span className={styles.teamLabel}>Team {team1_color}</span>
+          {isEditable && userState.login.isAdmin ? (
+            <Input
+              type="number"
+              value={teamAGoals}
+              onChange={(e) => setTeamAGoals(Number(e.target.value))}
+              className={isPortrait ? styles.mobileScoreInput : styles.scoreInput}
+            />
+          ) : (
+            <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
+              {teamAGoals}
+            </span>
+          )} 
+          <span className={styles.scoreDisplay}> - </span> 
+          {isEditable && userState.login.isAdmin ? (
+            <Input
+              type="number"
+              value={teamBGoals}
+              onChange={(e) => setTeamBGoals(Number(e.target.value))}
+              className={isPortrait ? styles.mobileScoreInput : styles.scoreInput}
+            />
+          ) : (
+            <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
+              {teamBGoals}
+            </span>
+          )} 
+          <span className={styles.teamLabel}>Team {team2_color}</span>
+        </span>
+        {userState.login.isAdmin ? (
+          <Button variant="contained" 
+          onClick={updateEventScore} 
+          className={isPortrait ? styles.mobileEditScoreButton : styles.editScoreButton}>
+            {!isEditable ? "Edit" : "Save"} 
+          </Button>
+        ) : null}
+        
+      </Typography>
+    </Grid>
+  );
+
   const gameLink = () => (
-    <Grid item xs={4} sm={4} md={6}>
+    <Grid item xs={4} sm={4} md={7}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
         Game Invite{' '}
@@ -264,43 +432,82 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
-  return (
-    <>
-      <FlexBox
-        className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
-        >
-          {price()}
-          {dateTime()}
-          {whatsappGroup()}
-        </Grid>
-      </FlexBox>
-
-      <FlexBox
-        className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
-        >
-          {googleLocation()}
-          {numberOfPlayers()}
-          {playersRequired()}
-
-          {gameLink()}
-        </Grid>
-
-        {joinNow()}
-      </FlexBox>
-    </>
-  );
-};
+    return (
+      <>
+      {isPast ? (
+        <>
+          <FlexBox
+            className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+            sx={{ flexGrow: 1 }}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+            >
+              {price()}
+              {dateTime()}
+              {numberOfPlayers()}
+              {/* {!isPast && whatsappGroup()} Show WhatsApp group only for upcoming events */}
+            </Grid>
+          </FlexBox>
+      
+          <FlexBox
+            className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+            sx={{ flexGrow: 1 }}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
+            >
+              {playersRequired()}
+              {gameLink()}
+              {score()} 
+            </Grid>
+      
+            {joinNow()}
+          </FlexBox>
+        </>
+      ) : ( 
+        <>
+          <FlexBox
+            className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+            sx={{ flexGrow: 1 }}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              className={isPortrait ? styles.mobileEventDetails : styles.eventDetails}
+            >
+              {price()}
+              {dateTime()}
+              {whatsappGroup()} 
+            </Grid>
+          </FlexBox>
+      
+          <FlexBox
+            className={isPortrait ? styles.mobileEventSchedule : styles.eventSchedule}
+            sx={{ flexGrow: 1 }}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              className={isPortrait ? styles.mobileEventPlayersDetail : styles.eventPlayersDetail}
+            >
+              {googleLocation()} 
+              {numberOfPlayers()}
+              {playersRequired()} 
+              {gameLink()}
+            </Grid>
+      
+            {joinNow()}
+          </FlexBox>
+        </>
+       )}
+      </>
+    )};

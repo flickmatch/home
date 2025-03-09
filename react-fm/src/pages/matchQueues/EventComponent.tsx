@@ -325,6 +325,8 @@ export const EventComponent: FC<event> = ({
                 dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 handlePassName={passName}
                 credits={playingEvent.credits ? playingEvent.credits : 0}
+                team1Score={playingEvent.team1Score}
+                team2Score={playingEvent.team2Score}
               />
             </FlexBox>
           </AccordionSummary>
