@@ -23,6 +23,7 @@ public class UserBuilder {
     public User createUser(CreateUserInput input) {
 //        Checking if the user already exists
         String location = input.getLocation();
+        String pinCode = input.getPinCode();
         Optional<User> existingUserOptional = userRepository.findByEmail(input.getEmail());
         User user;
 
@@ -31,6 +32,7 @@ public class UserBuilder {
             user = existingUserOptional.get();
             user.setPhoneNumber(input.getPhoneNumber());
             List<String> citiesHistory = user.getCitiesHistory();
+            List<String> pinCodeHistory = user.getUserPinCodes();
             if(citiesHistory!=null) {
                 if (!citiesHistory.contains(location)) {
                     citiesHistory.add(location);
@@ -39,12 +41,24 @@ public class UserBuilder {
                 citiesHistory = new ArrayList<>();
                 citiesHistory.add(location);
             }
+            if(pinCodeHistory!=null) {
+//                log.info("Location:",location);
+                if (!pinCodeHistory.contains(pinCode)) {
+                    pinCodeHistory.add(pinCode);
+                }
+            } else {
+//                log.info("Location:",location);
+                pinCodeHistory = new ArrayList<>();
+                pinCodeHistory.add(pinCode);
+            }
             user.setCitiesHistory(citiesHistory);
+            user.setUserPinCodes(pinCodeHistory);
             log.info("User already exists, updating phone number for user: {}", user);
             return userRepository.save(user);
         } else {
             List<String>citiesHistory = new ArrayList<>();
-            citiesHistory.add(location);
+            List<String>pinCodeHistory = new ArrayList<>();
+//            citiesHistory.add(location);
             user = new User();
             user.setEmail(input.getEmail());
             user.setName(input.getName());
@@ -52,6 +66,7 @@ public class UserBuilder {
             user.setHasActiveSubscription(false);
             user.setSubscriptionHistory(new ArrayList<>());
             user.setCitiesHistory(citiesHistory);
+            user.setUserPinCodes(pinCodeHistory);
             log.info("Creating a new user: {}", user);
         }
 
