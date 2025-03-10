@@ -190,3 +190,162 @@ label {
   margin-bottom: 15px !important;
   // display: none;
 }
+
+.scoreTitle {
+  color: #4ce95a;
+  font-size: 20px;
+  font-weight: bolder;
+  display: flex;
+}
+.score, .mobileScore {
+  background: linear-gradient(135deg, #4ce95a 0%, #45e04a 100%);
+  margin: 0;
+  padding: 4px 20px;
+  width: 90px;
+  border-radius: 5px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(76, 233, 90, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: 0.5s;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76, 233, 90, 0.4);
+    
+    &::before {
+      left: 100%;
+    }
+  }
+}
+
+.mobileScore {
+  font-size: 16px;
+  padding: 6px 10px;
+  margin-right: 1px;
+  height: 30px;
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scoreTitle span {
+  color: #fff;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobileScoreTitle {
+  color: #4ce95a;
+  font-size: 18px;
+  font-weight: bolder;
+  display: flex;
+
+  span {
+    color: #fff;
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.scoreInput {
+  width: 40px;
+  text-align: center;
+  margin: 0 8px;
+
+  input {
+    text-align: center;
+    padding: 4px;
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      opacity: 1;
+      height: 24px;
+    }
+  }
+
+  &:hover {
+    input {
+      background-color: rgba(0, 0, 0, 0.04);
+      color: white;
+    }
+  }
+}
+
+.mobileScoreInput {
+  @extend .scoreInput;
+  margin: 0 3px;
+  width: 30px;
+  input {
+    font-size: 17px;
+    padding: 2px;
+  }
+}
+
+.scoreDisplay {
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.mobileScoreDisplay {
+  @extend .scoreDisplay;
+  margin: 0 4px;
+  font-size: 17px;
+}
+
+.teamLabel {
+  white-space: nowrap;
+  margin: 0 5px;
+}
+
+.editScoreButton {
+  margin-left: 15px;
+  margin-top: 3px;
+  height: 27px;
+  width: 60px;
+  background: #4ce95a;
+  color: black;
+}
+.editScoreButton:hover,
+.mobileEditScoreButton:hover {
+  background: #4ce95a;
+}
+
+.mobileEditScoreButton {
+  height: 27px;
+  width: 50px;
+  background: #4ce95a;
+  color: black;
+}
