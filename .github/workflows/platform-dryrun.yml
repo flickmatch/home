@@ -40,5 +40,5 @@ jobs:
           echo PROD_TWILIO_ACCOUNT_SID=${{ secrets.PROD_TWILIO_ACCOUNT_SID }} >> .env
           cat .env
       - name: Execute Gradle build
-        run: gradle clean build test -Dspring.profiles.active=prod
+        run: gradle clean build test -Dspring.profiles.active=prod --tests "*"
         working-directory: platform
