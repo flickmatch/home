@@ -57,7 +57,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       - name: Execute Gradle build
-        run: gradle clean build -Dspring.profiles.active=prod --tests "*"
+        run: gradle clean build -Dspring.profiles.active=prod
         working-directory: platform
       - name: Deploy to tomcat
         run: curl -v -u ${{ secrets.TOMCAT_USERNAME }}:${{ secrets.TOMCAT_PASSWORD }} -T ${{ secrets.WAR_FILE_PATH }} ${{ secrets.AMAZON_EC2_ADDRESS }}
