@@ -108,12 +108,17 @@ body {
 }
 
 .reservedPlayers,
-.waitListPlayers {
+.waitListPlayers,
+.portraitReservedPlayers {
   color: #4ce95a;
   margin-bottom: 30px;
   font-size: 20px;
   font-weight: 600;
   margin-left: 35px;
+}
+
+.portraitReservedPlayers {
+  margin-left: 15px;
 }
 
 .skeletonContainer {
@@ -319,4 +324,9 @@ body {
 
 .downloadButtonLandscape {
   display: none;
+}
+
+.teamSwitchBadge {
+  width: 80px;
+  left: 0;
 }
