@@ -50,5 +50,5 @@ jobs:
           echo BETA_DYNAMODB_ENDPOINT=${{ secrets.BETA_DYNAMODB_ENDPOINT }} >> .env
           cat .env
       - name: Execute Gradle build
-        run: gradle clean build test -Dspring.profiles.active=prod --tests "*"
+        run: gradle clean build test -Dspring.profiles.active=prod
         working-directory: platform
