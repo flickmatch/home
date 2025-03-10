@@ -18,12 +18,12 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
-import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink, apiUrl } from '../constants';
+import { apiUrl, flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store/types';
+import type { RootState } from '@/store/types';
 import { Input } from '@mui/material';
 
 export const EventsCard: FC<EventDetails> = ({
@@ -88,24 +88,22 @@ export const EventsCard: FC<EventDetails> = ({
 
 const getTimeDifference = (eventDateTime: string): boolean => {
   const currentYear = new Date().getFullYear(); 
-
-  const [dayOfWeek, month, day, timeRange] = eventDateTime.split(" ");
-  const [startingTime, startPeriod] = timeRange.split(" - ")[0].split(/(?<=\d)(?=[apm])/); 
-
-  const eventDateTimeString = `${month} ${day}, ${currentYear} ${startingTime} ${startPeriod}`;
+  const [, month, day, ...timeParts] = eventDateTime.split(" ");
+  const timeRange = timeParts.join(" ");
+  const [, endTime] = timeRange.split(" - "); 
+  const [endingTime, endPeriod] = endTime.split(/(?<=\d)(?=[APM])/i); 
+  const eventDateTimeString = `${month} ${day}, ${currentYear} ${endingTime} ${endPeriod}`;
   const eventTime = new Date(eventDateTimeString); 
-
   const currentTime = new Date();
   return currentTime > eventTime
 }
-  
+
   useEffect(() => {
     try {
       currencyFromCity();
       const timeInfo = getTimeDifference(usTime);
       setIsPast(timeInfo);
     } catch (error) {
-      console.error('Error in useEffect:', error);
       setIsPast(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -215,7 +213,6 @@ const getTimeDifference = (eventDateTime: string): boolean => {
       }
       setEditable(!isEditable);
     } catch (error) {
-      console.error('Error updating score:', error);
         notificationsActions.push({
         options: {
           content: (
@@ -339,7 +336,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
     copy(fullEventLink);
     showSuccessNotification();
   };
-
+  const isAdmin = userState.login.isAdmin;
   const score = () => (
     <Grid item xs={12} sm={4} md={12}>
       <Typography className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
@@ -347,7 +344,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
         
         <span>
           <span className={styles.teamLabel}>Team {team1_color}</span>
-          {isEditable && userState.login.isAdmin ? (
+          {isEditable && isAdmin ? (
             <Input
               type="number"
               value={teamAGoals}
@@ -360,7 +357,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
             </span>
           )} 
           <span className={styles.scoreDisplay}> - </span> 
-          {isEditable && userState.login.isAdmin ? (
+          {isEditable && isAdmin ? (
             <Input
               type="number"
               value={teamBGoals}
@@ -374,7 +371,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
           )} 
           <span className={styles.teamLabel}>Team {team2_color}</span>
         </span>
-        {userState.login.isAdmin ? (
+        {isAdmin ? (
           <Button variant="contained" 
           onClick={updateEventScore} 
           className={isPortrait ? styles.mobileEditScoreButton : styles.editScoreButton}>
