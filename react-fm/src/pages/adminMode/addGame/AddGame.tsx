@@ -128,6 +128,7 @@ function AddGame() {
                   displayName
                   googleMapsLink
                   availableSportsIds
+                  pinCode
                 }      
               }
             }`,
