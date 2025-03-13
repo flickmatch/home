@@ -58,6 +58,7 @@ const query = JSON.stringify({
           teamDivision
           team1Color
           team2Color
+          downloadCounter
         }
       }
     }`,
@@ -105,6 +106,7 @@ const getEventById = async (
             teamDivision
             team1Color
             team2Color
+            downloadCounter
             reservedPlayersList {
               displayName
               teamColor
