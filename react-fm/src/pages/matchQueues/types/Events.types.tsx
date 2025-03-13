@@ -43,6 +43,7 @@ type EventDetails = {
   teamDivision?: boolean;
   team1Color?: string;
   team2Color?: string;
+  downloadCounter?: number;
 };
 
 type CityDetails = {
