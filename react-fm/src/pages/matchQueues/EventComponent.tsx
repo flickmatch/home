@@ -342,7 +342,7 @@ export const EventComponent: FC<event> = ({
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
               <Box className={styles.reservedPlayersContainer}>
                 <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-                {userState.login.isAdmin && !eventPage && userState.login.isLoggedIn ? (
+                {userState.login.isAdmin && userState.login.isLoggedIn ? (
                   <BorderColorIcon
                     className={styles.editIcon}
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
@@ -360,7 +360,6 @@ export const EventComponent: FC<event> = ({
               )}
 
               {userState.login.isAdmin &&
-              !eventPage &&
               userState.login.isLoggedIn &&
               selectedEventId === playingEvent.uniqueEventId ? (
                 <AddPlayer
