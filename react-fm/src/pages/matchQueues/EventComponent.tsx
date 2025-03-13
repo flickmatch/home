@@ -419,7 +419,7 @@ export const EventComponent: FC<event> = ({
                     className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
                   >
                     <DownloadIcon />
-                    {!userState.login.isAdmin && (
+                    {userState.login.isAdmin && (
                     <Typography className={styles.downloadCount}>
                       {playingEvent.downloadCounter || 0}
                     </Typography>
