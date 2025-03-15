@@ -194,7 +194,7 @@ export const EventComponent: FC<event> = ({
       const teamSize = playingEvent.reservedPlayersCount / 2;
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
-        | null = null;
+        | null;
       let singleTeamACoordinates:
         | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
         | null;
@@ -202,47 +202,42 @@ export const EventComponent: FC<event> = ({
         | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
         | null;
       if (playingEvent.teamDivision) {
-        switch (teamSize) {
-          case 5:
-            teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
-            singleTeamACoordinates = teamACoordinates5;
-            singleTeamBCoordinates = teamBCoordinates5;
-            break;
-          case 6:
-            teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
-            singleTeamACoordinates = teamACoordinates6;
-            singleTeamBCoordinates = teamBCoordinates6;
-            break;
-          case 7:
-            teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
-            singleTeamACoordinates = teamACoordinates7;
-            singleTeamBCoordinates = teamBCoordinates7;
-            break;
-          case 8:
-            teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
-            singleTeamACoordinates = teamACoordinates8;
-            singleTeamBCoordinates = teamBCoordinates8;
-            break;
-          case 9:
-            teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
-            singleTeamACoordinates = teamACoordinates9;
-            singleTeamBCoordinates = teamBCoordinates9;
-            break;
-          case 10:
-            teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
-            singleTeamACoordinates = teamACoordinates10;
-            singleTeamBCoordinates = teamBCoordinates10;
-            break;
-          case 11:
-            teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
-            singleTeamACoordinates = teamACoordinates11;
-            singleTeamBCoordinates = teamBCoordinates11;
-            break;
-          default:
-            teamCoordinates = null;
-            singleTeamACoordinates = null;
-            singleTeamBCoordinates = null;
-            break;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const teamMap: Record<number, { A: any[]; B: any[] }> = {
+          5: { A: teamACoordinates5, B: teamBCoordinates5 },
+          6: { A: teamACoordinates6, B: teamBCoordinates6 },
+          7: { A: teamACoordinates7, B: teamBCoordinates7 },
+          8: { A: teamACoordinates8, B: teamBCoordinates8 },
+          9: { A: teamACoordinates9, B: teamBCoordinates9 },
+          10: { A: teamACoordinates10, B: teamBCoordinates10 },
+          11: { A: teamACoordinates11, B: teamBCoordinates11 },
+        };
+
+        if (teamMap[teamSize]) {
+          singleTeamACoordinates = teamMap[teamSize].A;
+          singleTeamBCoordinates = teamMap[teamSize].B;
+          teamCoordinates = [
+            ...singleTeamACoordinates.filter(
+              (
+                player,
+              ): player is { mobilePoints: { x: number; y: number }; id: number; role: string } =>
+                !!player &&
+                player.mobilePoints !== undefined &&
+                player.id !== undefined &&
+                player.role !== undefined,
+            ),
+            ...singleTeamBCoordinates.filter(
+              (
+                player,
+              ): player is { mobilePoints: { x: number; y: number }; id: number; role: string } =>
+                !!player &&
+                player.mobilePoints !== undefined &&
+                player.id !== undefined &&
+                player.role !== undefined,
+            ),
+          ];
+        } else {
+          teamCoordinates = singleTeamACoordinates = singleTeamBCoordinates = null;
         }
       }
 
@@ -391,12 +386,12 @@ export const EventComponent: FC<event> = ({
                   />
                 ) : null}
                 {playingEvent?.teamDivision && isPortrait && userState.login.isAdmin ? (
-                  <Stack direction="row" spacing={4}>
+                  <Stack direction="row" spacing={4} style={{ width: 125 }}>
                     <ToggleButtonGroup
                       value={singleTeamView}
                       exclusive
                       aria-label="Team View"
-                      style={{ height: 45, marginLeft: 80, marginTop: -5 }}
+                      style={{ height: 45, marginLeft: 50, marginTop: -5 }}
                     >
                       <ToggleButton
                         value="true"
