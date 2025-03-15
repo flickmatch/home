@@ -40,6 +40,8 @@ import { teamACoordinates10, teamBCoordinates10 } from './playerCoordinates10v10
 import { teamACoordinates11, teamBCoordinates11 } from './playerCoordinates11v11';
 import type { EventDetails, ReservedPlayerDetails } from './types/Events.types';
 
+const appLogo = `${window.location.origin}/fm_rainbow.webp`;
+
 interface event {
   gameEvent: EventDetails[];
   cityName: string;
@@ -317,6 +319,7 @@ export const EventComponent: FC<event> = ({
                 {isPortrait ? null : (
                   <JoinNow
                     stripePaymentUrl={playingEvent.stripePaymentUrl}
+                    venuePinCode={playingEvent.venuePinCode}
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
@@ -345,6 +348,7 @@ export const EventComponent: FC<event> = ({
                 charges={playingEvent.charges}
                 date={playingEvent.date}
                 time={playingEvent.time}
+                venuePinCode={playingEvent.venuePinCode}
                 venueLocationLink={playingEvent.venueLocationLink}
                 reservedPlayersCount={playingEvent.reservedPlayersCount}
                 waitListPlayersCount={playingEvent.waitListPlayersCount}
@@ -379,7 +383,7 @@ export const EventComponent: FC<event> = ({
                 >
                   Reserved Players
                 </Typography>
-                {userState.login.isAdmin && !eventPage && userState.login.isLoggedIn ? (
+                {userState.login.isAdmin && userState.login.isLoggedIn ? (
                   <BorderColorIcon
                     className={styles.editIcon}
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
@@ -435,7 +439,6 @@ export const EventComponent: FC<event> = ({
               )}
 
               {userState.login.isAdmin &&
-              !eventPage &&
               userState.login.isLoggedIn &&
               selectedEventId === playingEvent.uniqueEventId ? (
                 <AddPlayer
@@ -545,6 +548,19 @@ export const EventComponent: FC<event> = ({
                       height={670}
                       className={isPortrait ? styles.portraitGroundImage : styles.groundImage}
                     />
+                    {isPortrait ? (
+                      <>
+                        <div className={styles.watermarkTop}>flickmatch.in</div>
+                        <div className={styles.watermarkBottom}>flickmatch.in</div>
+                        <img
+                          src={appLogo}
+                          alt="logo"
+                          className={styles.logo}
+                          height="52px"
+                          width="54.23px"
+                        />
+                      </>
+                    ) : null}
                   </Box>
                 ) : !userState.login.isAdmin ? (
                   <Box>
