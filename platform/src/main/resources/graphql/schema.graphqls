@@ -46,7 +46,8 @@ input CreateEventInput {
   teamDivision: Boolean
   team1Color:String
   team2Color:String
-
+  team1Name:String
+  team2Name:String
   """
   Not required for P0, will be defaulted to FOOTBALL
   """

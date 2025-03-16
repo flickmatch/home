@@ -18,4 +18,6 @@ public class CreateEventInput {
     Boolean teamDivision;
     String team1Color;
     String team2Color;
+    String team1Name;
+    String team2Name;
 }
