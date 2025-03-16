@@ -92,6 +92,7 @@ input RazorPayInput {
   email: String!
   phoneNumber: String!
   redirectUrl: String!
+  venuePinCode: String!
 }
 
 input UpdateSubscriptionInput {
