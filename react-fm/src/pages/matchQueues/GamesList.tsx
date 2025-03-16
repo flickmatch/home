@@ -185,7 +185,7 @@ export const GamesList: FC<event> = ({
           teamColor: '',
         }));
 
-        // Merge unassigned players with empty slots
+        // Merge unassigned players with empty slots ------
         const unassignedPlayers = playingEvent.reservedPlayersList
           .filter((player) => player.teamColor === null)
           .concat(emptySlots);
