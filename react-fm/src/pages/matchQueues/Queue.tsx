@@ -84,6 +84,8 @@ function MatchQueue() {
     const fetchData = async () => {
       try {
         const url = apiUrl;
+        // eslint-disable-next-line no-console
+        console.log(url);
         const response = await fetch(url, {
           method: 'POST',
           signal: signal,
