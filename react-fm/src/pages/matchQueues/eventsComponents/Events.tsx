@@ -48,6 +48,7 @@ export const EventsCard: FC<EventDetails> = ({
   team2_color,
   team1Score,
   team2Score,
+  venuePinCode,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
@@ -60,7 +61,7 @@ export const EventsCard: FC<EventDetails> = ({
   const userState = useSelector((state: RootState) => state);
   const [teamAGoals, setTeamAGoals] = useState(team1Score || 0);
   const [teamBGoals, setTeamBGoals] = useState(team2Score || 0);
-  const [isEditable, setEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -211,7 +212,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
           setTeamBGoals(Number(team2Score));
         }
       }
-      setEditable(!isEditable);
+      setIsEditable(!isEditable);
     } catch (error) {
         notificationsActions.push({
         options: {
@@ -226,7 +227,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
       // Reset to previous values on error
       setTeamAGoals(Number(team1Score));
       setTeamBGoals(Number(team2Score));
-      setEditable(false);
+      setIsEditable(false);
     }
   };
 
@@ -415,6 +416,7 @@ const getTimeDifference = (eventDateTime: string): boolean => {
             time={''}
             venueLocationLink={''}
             venueName={venueName}
+            venuePinCode={venuePinCode}
             waitListPlayers={waitListPlayers}
             waitListPlayersCount={waitListPlayersCount}
             team_division={team_division}
