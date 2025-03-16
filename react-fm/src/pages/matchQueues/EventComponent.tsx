@@ -12,6 +12,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 import downloadjs from 'downloadjs';
 import html2canvas from 'html2canvas';
@@ -19,8 +21,10 @@ import html2canvas from 'html2canvas';
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
+import useNotifications from '@/store/notifications';
 
 import styles from './../matchQueues/Queue.module.scss';
+import { apiUrl } from './constants';
 import { AddPlayer } from './AddPlayer';
 import { VenueName } from './VenueName';
 import { EventsCard } from './eventsComponents/Events';
@@ -58,15 +62,72 @@ export const EventComponent: FC<event> = ({
   const [open, setOpen] = useState(false);
   const [highLighted, setHighlighted] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [downloadCount, setDownloadCount] = useState<{ [key: string]: number }>({});
+  const [, notificationsActions] = useNotifications();
 
   const handleCaptureClick = async (eventId: string) => {
     const groundElement = document.querySelector<HTMLElement>('.ground-container-id' + eventId);
-    // console.log(groundElement);
     if (!groundElement) return;
 
-    const canvas = await html2canvas(groundElement);
-    const dataURL = canvas.toDataURL('image/png');
-    downloadjs(dataURL, '(www.flickmatch.in).png', 'image/png');
+    try {
+      const canvas = await html2canvas(groundElement);
+      const dataURL = canvas.toDataURL('image/png');
+      if(dataURL) {
+        downloadjs(dataURL, '(www.flickmatch.in).png', 'image/png');
+        const newCount = (downloadCount[eventId] || 0) + 1;
+        setDownloadCount((prevCount) => ({
+          ...prevCount,
+          [eventId]: newCount,
+        }));
+
+        const userInput = {
+          input: {
+            uniqueEventId: eventId,
+            downloadCounter: newCount
+          },
+        };
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `
+              mutation UpdateDownloadCount {
+                updateDownloadCount(
+                  input: {
+                    uniqueEventId: "${userInput.input.uniqueEventId}",
+                    downloadCounter: ${userInput.input.downloadCounter},
+                  }
+                ) {
+                  isSuccessful
+                  errorMessage
+                }
+              }
+            `,
+            variables: userInput.input,
+        })
+        });
+        const result = await response.json();
+        if (!result.data?.updateDownloadCount.isSuccessful) {
+          setDownloadCount((prevCount) => ({
+            ...prevCount,
+            [eventId]: Math.max((prevCount[eventId] || 0) - 1, 0),
+          }));
+        }
+      }
+    } catch (error) {
+      notificationsActions.push({
+        options: {
+          content: (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {'Error in download process:' + error}
+            </Alert>
+          ),
+        },
+      });
+    }
   };
 
   const handleClick = (id: string) => {
@@ -176,6 +237,7 @@ export const EventComponent: FC<event> = ({
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
       const teamSize = playingEvent.reservedPlayersCount / 2;
+      downloadCount[playingEvent.uniqueEventId] = playingEvent.downloadCounter || 0;
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
         | null = null;
@@ -353,12 +415,20 @@ export const EventComponent: FC<event> = ({
               </Box>
 
               {playingEvent?.teamDivision && (
-                <Button
-                  onClick={() => handleCaptureClick(playingEvent.uniqueEventId)}
-                  className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
-                >
-                  <DownloadIcon />
-                </Button>
+                <Box>
+                  <Button
+                    onClick={() => handleCaptureClick(playingEvent.uniqueEventId)}
+                    className={isPortrait ? styles.downloadButton : styles.downloadButtonLandscape}
+                  >
+                    <DownloadIcon />
+                    {userState.login.isAdmin && (
+                    <Typography className={styles.downloadCount}>
+                      {downloadCount[playingEvent.uniqueEventId] || 0}
+                    </Typography>
+                    )}
+                    
+                  </Button>
+                </Box>
               )}
 
               {userState.login.isAdmin &&
