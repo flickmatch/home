@@ -50,7 +50,7 @@ function MatchQueue() {
 
   // eslint-disable-next-line no-console
   console.log(apiUrl);
-  
+
   useEffect(() => {
     if (id) {
       getEventById(id, setError)
@@ -101,7 +101,7 @@ function MatchQueue() {
         const citiesOrder = ['San Francisco', 'San Jose', 'Mountain View'];
         const reorderedCities: CityDetails[] = [];
 
-        data.data.cities.forEach(
+        data?.data?.cities?.forEach(
           (
             city: {
               cityName: string;
@@ -110,17 +110,17 @@ function MatchQueue() {
             },
             i: number,
           ) => {
-            const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+            const cityExists = _.some(dummyData?.data?.cities, { cityId: city.cityId });
             if (cityExists) {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
+                const eventArray = data?.data?.cities[i];
                 eventArray.events.sort(
                   (a: { date: string }, b: { date: string }) =>
                     parseDate(b).getTime() - parseDate(a).getTime(),
                 ),
                   reorderedCities.push(eventArray);
               } else {
-                dummyData.data.cities.forEach(
+                dummyData?.data?.cities?.forEach(
                   (
                     dummyCityData: {
                       cityName: string;
@@ -130,14 +130,14 @@ function MatchQueue() {
                     j: number,
                   ) => {
                     if (dummyCityData.cityName == city.cityName) {
-                      reorderedCities.push(dummyData.data.cities[j]);
+                      reorderedCities.push(dummyData?.data?.cities[j]);
                     }
                   },
                 );
               }
             } else {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
+                const eventArray = data?.data?.cities[i];
                 eventArray.events.sort(
                   (a: { date: string }, b: { date: string }) =>
                     parseDate(b).getTime() - parseDate(a).getTime(),
@@ -208,9 +208,9 @@ function MatchQueue() {
         </Zoom>
       );
     }
-    citiesData.sort((a) => (a.dummyData === false ? 1 : -1));
+    citiesData?.sort((a) => (a.dummyData === false ? 1 : -1));
 
-    const gameQueues = citiesData.map((city: CityDetails) => {
+    const gameQueues = citiesData?.map((city: CityDetails) => {
       const count = city?.events?.filter((event) => event.testGame !== true)?.length;
 
       if (count === 0 && !userState.login.isAdmin) {
