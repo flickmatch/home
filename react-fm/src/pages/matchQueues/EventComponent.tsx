@@ -96,7 +96,7 @@ export const EventComponent: FC<event> = ({
               mutation UpdateDownloadCount {
                 updateDownloadCount(
                   input: {
-                    uniqueEventId: "2-2025-03-12-1",
+                    uniqueEventId: "${userInput.input.uniqueEventId}",
                     downloadCounter: ${userInput.input.downloadCounter},
                   }
                 ) {
@@ -237,6 +237,7 @@ export const EventComponent: FC<event> = ({
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
       const teamSize = playingEvent.reservedPlayersCount / 2;
+      downloadCount[playingEvent.uniqueEventId] = playingEvent.downloadCounter || 0;
       let teamCoordinates:
         | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
         | null = null;
@@ -421,7 +422,7 @@ export const EventComponent: FC<event> = ({
                     <DownloadIcon />
                     {userState.login.isAdmin && (
                     <Typography className={styles.downloadCount}>
-                      {playingEvent.downloadCounter || 0}
+                      {downloadCount[playingEvent.uniqueEventId] || 0}
                     </Typography>
                     )}
                     
