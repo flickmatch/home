@@ -508,7 +508,7 @@ export const EventComponent: FC<event> = ({
                           position: 'absolute',
                           zIndex: 9999,
                           top: 75,
-                          left: 8,
+                          right: 8,
                         }}
                       >
                         <Radio
@@ -561,36 +561,6 @@ export const EventComponent: FC<event> = ({
                         />
                       </>
                     ) : null}
-                  </Box>
-                ) : !userState.login.isAdmin ? (
-                  <Box>
-                    {teamA(playingEvent?.team1Color || 'Orange')}
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamAPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          index,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                          false,
-                        ),
-                      )}
-                    </Grid>
-
-                    <Typography className={styles.versus}>v/s</Typography>
-                    {teamB(playingEvent?.team2Color || 'White')}
-
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                      {teamBPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          index,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                          false,
-                        ),
-                      )}
-                    </Grid>
                   </Box>
                 ) : (
                   // : !userState.login.isAdmin ? (
