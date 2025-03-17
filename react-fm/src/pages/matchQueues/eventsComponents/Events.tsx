@@ -148,11 +148,9 @@ const getTimeDifference = (eventDateTime: string): boolean => {
     try {
       if (isEditable) {
         const userInput = {
-          input: {
-            uniqueEventId: uniqueEventId,
-            team1Score: Number(teamAGoals),
-            team2Score: Number(teamBGoals),
-          },
+          uniqueEventId: uniqueEventId,
+          team1Score: Number(teamAGoals),
+          team2Score: Number(teamBGoals),
         };
         const response = await fetch(apiUrl, {
           method: 'POST',
@@ -161,25 +159,21 @@ const getTimeDifference = (eventDateTime: string): boolean => {
           },
           body: JSON.stringify({
             query: `
-              mutation UpdateEventScore {
-                updateEventScore(
-                  input: {
-                    uniqueEventId: "${userInput.input.uniqueEventId}",
-                    team1Score: ${userInput.input.team1Score},
-                    team2Score: ${userInput.input.team2Score}
-                  }
-                ) {
+              mutation UpdateEventScore($input: UpdateEventScoreInput!) {
+                updateEventScore(input: $input) {
                   isSuccessful
                   errorMessage
                 }
               }
             `,
-            variables: userInput.input,
+            variables: {
+              input: userInput
+            }
         })
         });
 
         const result = await response.json();
-
+        console.log(result);
         if (result.data?.updateEventScore?.isSuccessful) {
           notificationsActions.push({
             options: {
