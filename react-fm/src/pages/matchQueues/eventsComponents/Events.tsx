@@ -173,7 +173,6 @@ const getTimeDifference = (eventDateTime: string): boolean => {
         });
 
         const result = await response.json();
-        console.log(result);
         if (result.data?.updateEventScore?.isSuccessful) {
           notificationsActions.push({
             options: {
