@@ -284,6 +284,7 @@ export const EventComponent: FC<event> = ({
                 {isPortrait ? null : (
                   <JoinNow
                     stripePaymentUrl={playingEvent.stripePaymentUrl}
+                    venuePinCode={playingEvent.venuePinCode}
                     charges={0}
                     date={''}
                     uniqueEventId={playingEvent.uniqueEventId}
@@ -312,6 +313,7 @@ export const EventComponent: FC<event> = ({
                 charges={playingEvent.charges}
                 date={playingEvent.date}
                 time={playingEvent.time}
+                venuePinCode={playingEvent.venuePinCode}
                 venueLocationLink={playingEvent.venueLocationLink}
                 reservedPlayersCount={playingEvent.reservedPlayersCount}
                 waitListPlayersCount={playingEvent.waitListPlayersCount}
@@ -342,7 +344,7 @@ export const EventComponent: FC<event> = ({
             <Box className={styles.box} sx={{ flexGrow: 1 }}>
               <Box className={styles.reservedPlayersContainer}>
                 <Typography className={styles.reservedPlayers}>Reserved Players</Typography>
-                {userState.login.isAdmin && !eventPage && userState.login.isLoggedIn ? (
+                {userState.login.isAdmin && userState.login.isLoggedIn ? (
                   <BorderColorIcon
                     className={styles.editIcon}
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
@@ -360,7 +362,6 @@ export const EventComponent: FC<event> = ({
               )}
 
               {userState.login.isAdmin &&
-              !eventPage &&
               userState.login.isLoggedIn &&
               selectedEventId === playingEvent.uniqueEventId ? (
                 <AddPlayer

@@ -49,6 +49,7 @@ public class SportsVenueBuilder {
                         .availableSportsIds(sportsVenue.getAvailableSportsIds())
                         .stripePaymentLinks(StripePaymentLinkMapper
                                 .toStripePaymentLinkType(sportsVenue.getStripePaymentLinks()))
+                        .pinCode(sportsVenue.getPinCode())
                         .build())
                 .toList()).orElse(null);
     }
