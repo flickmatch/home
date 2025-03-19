@@ -188,5 +188,121 @@ label {
 
 .portraitGetPassButton {
   margin-bottom: 15px !important;
-  // display: none;
+}
+
+.score, .mobileScore {
+  background: linear-gradient(135deg, #4ce95a 0%, #45e04a 100%);
+  margin: 0;
+  padding: 4px 20px;
+  width: 85px;
+  height: 35px;
+  border-radius: 5px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 1px 1px rgba(76, 233, 90, 0.2);
+  letter-spacing: 1px;
+}
+
+.mobileScore {
+  font-size: 16px;
+  padding: 6px 10px;
+  margin-right: 1px;
+  height: 30px;
+  width: 75px;
+}
+
+.scoreTitle {
+  color: #4ce95a;
+  font-size: 20px;
+  font-weight: bolder;
+  display: flex;
+  span {
+    color: #fff;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.mobileScoreTitle {
+  color: #4ce95a;
+  font-size: 18px;
+  font-weight: bolder;
+  display: flex;
+
+  span {
+    color: #fff;
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.scoreInput, .mobileScoreInput {
+  width: 40px;
+  text-align: center;
+  margin: 0 8px;
+
+  input {
+    text-align: center;
+    padding: 4px;
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      opacity: 1;
+      height: 24px;
+    }
+  }
+}
+
+.mobileScoreInput {
+  margin: 0 3px;
+  width: 30px;
+  input {
+    font-size: 17px;
+    padding: 2px;
+  }
+}
+
+.scoreDisplay, .mobileScoreDisplay {
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.mobileScoreDisplay {
+  margin: 0 4px;
+  font-size: 17px;
+}
+
+.teamLabel {
+  margin: 0 5px;
+}
+
+.editScoreButton {
+  margin-left: 15px;
+  margin-top: 3px;
+  height: 27px;
+  width: 40px;
+  background: #4ce95a;
+  color: black;
+}
+.editScoreButton:hover {
+  background: #4ce95a;
+}
+
+.editIcon {
+  margin-left: 10px;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 40px;
+  margin-top: -7px;
 }
