@@ -33,4 +33,5 @@ public class Event {
     String team1Color;
     String team2Color;
     String venuePinCode;
+    Integer downloadCounter;
 }

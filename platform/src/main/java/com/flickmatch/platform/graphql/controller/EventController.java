@@ -3,6 +3,7 @@ package com.flickmatch.platform.graphql.controller;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
+import com.flickmatch.platform.graphql.input.UpdateDownloadInput;
 import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.Event;
 import com.flickmatch.platform.graphql.type.MutationResult;
@@ -71,4 +72,19 @@ public class EventController {
         return eventBuilder.getPastEvents(city.getCityId(), inDays, city.getLocalTimeZone());
     }
 
+    @MutationMapping
+    public MutationResult updateDownload(@Argument UpdateDownloadInput input) {
+        try {
+            eventBuilder.updateDownloadCount(input);
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(exception.getMessage())
+                    .build();
+        }
+    }
 }

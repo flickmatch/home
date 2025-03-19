@@ -85,6 +85,7 @@ public class Event {
         String team2Color;
 
         String currency;
+        Integer downloadCounter;
         //TODO:Add status attribute
 
         @DynamoDBAttribute(attributeName = "teamDivision")
@@ -247,6 +248,14 @@ public class Event {
 
         public void setPlayerDetailsList(List<PlayerDetails> playerDetailsList) {
             this.playerDetailsList = playerDetailsList;
+        }
+        @DynamoDBAttribute(attributeName = "downloadCounter")
+        public Integer getDownloadCounter() {
+            return downloadCounter;
+        }
+
+        public void setDownloadCounter(Integer downloadCounter) {
+            this.downloadCounter = downloadCounter;
         }
     }
 
