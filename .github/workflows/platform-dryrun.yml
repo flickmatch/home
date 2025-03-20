@@ -1,20 +1,20 @@
 name: Build Backend
-
+ 
 on:
   pull_request:
     branches: ["main"]
     paths:
       - "platform/**"
-
+ 
   workflow_dispatch:
-
+ 
 permissions:
   contents: read
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+ 
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -24,31 +24,51 @@ jobs:
           distribution: "corretto"
       - name: Setup Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      - name: Create .env file
+      - name: Execute Gradle build with secrets as env variables
         run: |
-          touch .env
-          echo SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN=${{ secrets.SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN }} >> .env
-          echo PROD_DYNAMODB_ENDPOINT=${{ secrets.PROD_DYNAMODB_ENDPOINT }} >> .env
-          echo PROD_AWS_REGION=${{ secrets.PROD_AWS_REGION }} >> .env
-          echo PROD_AWS_PROFILE=${{ secrets.PROD_AWS_PROFILE }} >> .env
-          echo PROD_PHONEPE_MERCHANT_ID=${{ secrets.PROD_PHONEPE_MERCHANT_ID }} >> .env
-          echo PROD_PHONEPE_SALT_KEY=${{ secrets.PROD_PHONEPE_SALT_KEY }} >> .env
-          echo PROD_PHONEPE_SALT_KEY_INDEX=${{ secrets.PROD_PHONEPE_SALT_KEY_INDEX }} >> .env
-          echo PROD_WHATSAPP_ENDPOINT=${{ secrets.PROD_WHATSAPP_ENDPOINT }} >> .env
-          echo PROD_RAZORPAY_KEY_ID=${{ secrets.PROD_RAZORPAY_KEY_ID }} >> .env
-          echo PROD_RAZORPAY_KEY_SECRET=${{ secrets.PROD_RAZORPAY_KEY_SECRET }} >> .env
-          echo PROD_TWILIO_ACCOUNT_SID=${{ secrets.PROD_TWILIO_ACCOUNT_SID }} >> .env
-          echo DEV_AWS_REGION=${{ secrets.DEV_AWS_REGION }} >> .env
-          echo DEV_AWS_PROFILE=${{ secrets.DEV_AWS_PROFILE }} >> .env
-          echo DEV_PHONEPE_MERCHANT_ID=${{ secrets.DEV_PHONEPE_MERCHANT_ID }} >> .env
-          echo DEV_PHONEPE_SALT_KEY=${{ secrets.DEV_PHONEPE_SALT_KEY }} >> .env
-          echo DEV_PHONEPE_SALT_KEY_INDEX=${{ secrets.DEV_PHONEPE_SALT_KEY_INDEX }} >> .env
-          echo DEV_WHATSAPP_ENDPOINT=${{ secrets.DEV_WHATSAPP_ENDPOINT }} >> .env
-          echo DEV_RAZORPAY_KEY_ID=${{ secrets.DEV_RAZORPAY_KEY_ID }} >> .env
-          echo DEV_RAZORPAY_KEY_SECRET=${{ secrets.DEV_RAZORPAY_KEY_SECRET }} >> .env
-          echo DEV_TWILIO_ACCOUNT_SID=${{ secrets.DEV_TWILIO_ACCOUNT_SID }} >> .env
-          echo BETA_DYNAMODB_ENDPOINT=${{ secrets.BETA_DYNAMODB_ENDPOINT }} >> .env
-          cat .env
-      - name: Execute Gradle build
-        run: gradle clean build test -Dspring.profiles.active=prod
+          gradle clean build test \
+            -Dspring.profiles.active=prod \
+            -Dorg.gradle.jvmargs="-DSPRING_GRAPHQL_CORS_ALLOWED_ORIGIN=$SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN \
+                                   -DPROD_DYNAMODB_ENDPOINT=$PROD_DYNAMODB_ENDPOINT \
+                                   -DPROD_AWS_REGION=$PROD_AWS_REGION \
+                                   -DPROD_AWS_PROFILE=$PROD_AWS_PROFILE \
+                                   -DPROD_PHONEPE_MERCHANT_ID=$PROD_PHONEPE_MERCHANT_ID \
+                                   -DPROD_PHONEPE_SALT_KEY=$PROD_PHONEPE_SALT_KEY \
+                                   -DPROD_PHONEPE_SALT_KEY_INDEX=$PROD_PHONEPE_SALT_KEY_INDEX \
+                                   -DPROD_WHATSAPP_ENDPOINT=$PROD_WHATSAPP_ENDPOINT \
+                                   -DPROD_RAZORPAY_KEY_ID=$PROD_RAZORPAY_KEY_ID \
+                                   -DPROD_RAZORPAY_KEY_SECRET=$PROD_RAZORPAY_KEY_SECRET \
+                                   -DPROD_TWILIO_ACCOUNT_SID=$PROD_TWILIO_ACCOUNT_SID \
+                                   -DDEV_AWS_REGION=$DEV_AWS_REGION \
+                                   -DDEV_AWS_PROFILE=$DEV_AWS_PROFILE \
+                                   -DDEV_PHONEPE_MERCHANT_ID=$DEV_PHONEPE_MERCHANT_ID \
+                                   -DDEV_PHONEPE_SALT_KEY=$DEV_PHONEPE_SALT_KEY \
+                                   -DDEV_PHONEPE_SALT_KEY_INDEX=$DEV_PHONEPE_SALT_KEY_INDEX \
+                                   -DDEV_WHATSAPP_ENDPOINT=$DEV_WHATSAPP_ENDPOINT \
+                                   -DDEV_RAZORPAY_KEY_ID=$DEV_RAZORPAY_KEY_ID \
+                                   -DDEV_RAZORPAY_KEY_SECRET=$DEV_RAZORPAY_KEY_SECRET \
+                                   -DDEV_TWILIO_ACCOUNT_SID=$DEV_TWILIO_ACCOUNT_SID \
+                                   -DBETA_DYNAMODB_ENDPOINT=$BETA_DYNAMODB_ENDPOINT"
         working-directory: platform
+        env:
+          SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN: ${{ secrets.SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN }}
+          PROD_DYNAMODB_ENDPOINT: ${{ secrets.PROD_DYNAMODB_ENDPOINT }}
+          PROD_AWS_REGION: ${{ secrets.PROD_AWS_REGION }}
+          PROD_AWS_PROFILE: ${{ secrets.PROD_AWS_PROFILE }}
+          PROD_PHONEPE_MERCHANT_ID: ${{ secrets.PROD_PHONEPE_MERCHANT_ID }}
+          PROD_PHONEPE_SALT_KEY: ${{ secrets.PROD_PHONEPE_SALT_KEY }}
+          PROD_PHONEPE_SALT_KEY_INDEX: ${{ secrets.PROD_PHONEPE_SALT_KEY_INDEX }}
+          PROD_WHATSAPP_ENDPOINT: ${{ secrets.PROD_WHATSAPP_ENDPOINT }}
+          PROD_RAZORPAY_KEY_ID: ${{ secrets.PROD_RAZORPAY_KEY_ID }}
+          PROD_RAZORPAY_KEY_SECRET: ${{ secrets.PROD_RAZORPAY_KEY_SECRET }}
+          PROD_TWILIO_ACCOUNT_SID: ${{ secrets.PROD_TWILIO_ACCOUNT_SID }}
+          DEV_AWS_REGION: ${{ secrets.DEV_AWS_REGION }}
+          DEV_AWS_PROFILE: ${{ secrets.DEV_AWS_PROFILE }}
+          DEV_PHONEPE_MERCHANT_ID: ${{ secrets.DEV_PHONEPE_MERCHANT_ID }}
+          DEV_PHONEPE_SALT_KEY: ${{ secrets.DEV_PHONEPE_SALT_KEY }}
+          DEV_PHONEPE_SALT_KEY_INDEX: ${{ secrets.DEV_PHONEPE_SALT_KEY_INDEX }}
+          DEV_WHATSAPP_ENDPOINT: ${{ secrets.DEV_WHATSAPP_ENDPOINT }}
+          DEV_RAZORPAY_KEY_ID: ${{ secrets.DEV_RAZORPAY_KEY_ID }}
+          DEV_RAZORPAY_KEY_SECRET: ${{ secrets.DEV_RAZORPAY_KEY_SECRET }}
+          DEV_TWILIO_ACCOUNT_SID: ${{ secrets.DEV_TWILIO_ACCOUNT_SID }}
+          BETA_DYNAMODB_ENDPOINT: ${{ secrets.BETA_DYNAMODB_ENDPOINT }}
