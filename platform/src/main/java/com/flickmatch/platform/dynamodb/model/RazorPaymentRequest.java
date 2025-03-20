@@ -29,6 +29,16 @@ public class RazorPaymentRequest {
     private String paymentId;
     private String phoneNumber;
     private String redirectUrl;
+    private String pinCode;
+
+    @DynamoDBAttribute(attributeName="pinCode")
+    public String getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
+    }
 
     @DynamoDBAttribute(attributeName="redirectUrl")
     public String getRedirectUrl() {

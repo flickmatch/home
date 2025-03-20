@@ -50,7 +50,8 @@ public class RazorPaymentRequestBuilder {
                                                     final String gameNumber,
                                                     final String email,
                                                     final String phoneNumber,
-                                                    final String redirectUrl) {
+                                                    final String redirectUrl,
+                                                    final String pinCode) {
         AtomicInteger existingPlayerCount = new AtomicInteger(eventBuilder.countPlayersInQueue(uniqueEventId));
         List<Event.PlayerDetails> playerDetailsList = playerInputList.stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
@@ -68,6 +69,7 @@ public class RazorPaymentRequestBuilder {
                 .email(email) // Assuming you have the email from the payment request
                 .phoneNumber(phoneNumber)
                 .location(location)
+                .pinCode(pinCode)
                 .build();
         userBuilder.createUser(createUserInput);
         } catch (Exception e) {
@@ -86,6 +88,7 @@ public class RazorPaymentRequestBuilder {
                 .email(email)
                 .phoneNumber(phoneNumber)
                 .redirectUrl(redirectUrl)
+                .pinCode(pinCode)
                 .build();
         return razorPaymentRequestRepository.save(razorPaymentRequest);
     }

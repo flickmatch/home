@@ -24,6 +24,13 @@ type Mutation {
   """
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   sendMessage(input: SendMessageInput!): MutationResult!
+  updateEventScore(input: UpdateEventScoreInput!): MutationResult!
+}
+
+input UpdateEventScoreInput {
+  uniqueEventId: String!
+  team1Score: Int!
+  team2Score: Int!
 }
 
 input CreateEventInput {
@@ -45,8 +52,8 @@ input CreateEventInput {
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
 
   """
   Not required for P0, will be defaulted to FOOTBALL
@@ -87,6 +94,7 @@ input RazorPayInput {
   email: String!
   phoneNumber: String!
   redirectUrl: String!
+  venuePinCode: String!
 }
 
 input UpdateSubscriptionInput {
@@ -140,7 +148,7 @@ type Pass {
   status: String!
   features: [String]
   description: String
-#  payForGames: Int
+  #  payForGames: Int
 }
 
 type User {
@@ -259,8 +267,10 @@ type EVENT {
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
+  team1Score: Int
+  team2Score: Int
 }
 
 type Player {

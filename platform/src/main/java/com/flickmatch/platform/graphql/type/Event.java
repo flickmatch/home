@@ -33,4 +33,6 @@ public class Event {
     String team1Color;
     String team2Color;
     String venuePinCode;
+    Integer team1Score;
+    Integer team2Score;
 }
