@@ -23,10 +23,11 @@ type Mutation {
   This is not implemented yet, will be required for P1
   """
   registerModerator(input: RegisterModeratorInput!): MutationResult!
+  sendMessage(input: SendMessageInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
 }
 
-input UpdateEventScoreInput{
+input UpdateEventScoreInput {
   uniqueEventId: String!
   team1Score: Int!
   team2Score: Int!
@@ -51,8 +52,8 @@ input CreateEventInput {
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
 
   """
   Not required for P0, will be defaulted to FOOTBALL
@@ -113,6 +114,12 @@ input CreateSubscriptionInput {
   email: String!
 }
 
+input SendMessageInput {
+  message: String!
+  to: String!
+  from: String!
+}
+
 type SubscriptionOutput {
   isSuccessful: Boolean!
   errorMessage: String
@@ -141,7 +148,7 @@ type Pass {
   status: String!
   features: [String]
   description: String
-#  payForGames: Int
+  #  payForGames: Int
 }
 
 type User {
@@ -260,8 +267,8 @@ type EVENT {
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
   team1Score: Int
   team2Score: Int
 }
