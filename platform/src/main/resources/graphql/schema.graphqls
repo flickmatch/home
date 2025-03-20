@@ -24,12 +24,18 @@ type Mutation {
   """
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
+  updateDownload(input: UpdateDownloadInput!): MutationResult!
 }
 
 input UpdateEventScoreInput{
   uniqueEventId: String!
   team1Score: Int!
   team2Score: Int!
+}
+
+input UpdateDownloadInput {
+  uniqueEventId: ID!
+  downloadCounter: Int!
 }
 
 input CreateEventInput {
@@ -264,6 +270,7 @@ type EVENT {
   team2Color:String
   team1Score: Int
   team2Score: Int
+  downloadCounter: Int
 }
 
 type Player {

@@ -8,6 +8,7 @@ import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.UpdateEventScoreInput;
+import com.flickmatch.platform.graphql.input.UpdateDownloadInput;
 import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
@@ -369,6 +370,7 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .downloadCounter(eventDetails.getDownloadCounter())
                 .build();
     }
 
@@ -431,6 +433,27 @@ public class EventBuilder {
                 Event.EventDetails eventDetails = selectedEvent.get();
                 eventDetails.setTeam1Score(input.getTeam1Score());
                 eventDetails.setTeam2Score(input.getTeam2Score());
+                return eventRepository.save(event);
+            }
+        }
+        throw new IllegalArgumentException("Event not found");
+    }
+
+    public Event updateDownloadCount(UpdateDownloadInput input) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(input.getUniqueEventId());
+        Optional<Event> eventsInCity = eventRepository
+                .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+
+        if (eventsInCity.isPresent()) {
+            Event event = eventsInCity.get();
+            Optional<Event.EventDetails> selectedEvent = event.getEventDetailsList()
+                    .stream()
+                    .filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index()))
+                    .findFirst();
+
+            if (selectedEvent.isPresent()) {
+                Event.EventDetails eventDetails = selectedEvent.get();
+                eventDetails.setDownloadCounter(input.getDownloadCounter());
                 return eventRepository.save(event);
             }
         }

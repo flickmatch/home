@@ -35,4 +35,5 @@ public class Event {
     String venuePinCode;
     Integer team1Score;
     Integer team2Score;
+    Integer downloadCounter;
 }
