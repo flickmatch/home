@@ -363,7 +363,7 @@ export const JoinNow: FC<EventDetails> = ({
                         playerInputList: [${objectArray
                           .map(
                             (obj) =>
-                              `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}" }`,
+                              `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}",email:"${obj.email}" }`,
                           )
                           .join(',')}] 
                     }
