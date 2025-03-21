@@ -108,14 +108,20 @@ function MatchQueue() {
             i: number,
           ) => {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+            const validEvents = city.events.filter(
+              (event) => (event as { testGame: unknown }).testGame === null,
+            );
+
             if (cityExists) {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
-                eventArray.events.sort(
-                  (a: { date: string }, b: { date: string }) =>
-                    parseDate(b).getTime() - parseDate(a).getTime(),
-                ),
-                  reorderedCities.push(eventArray);
+                if (validEvents.length > 0) {
+                  const eventArray = data.data.cities[i];
+                  eventArray.events.sort(
+                    (a: { date: string }, b: { date: string }) =>
+                      parseDate(b).getTime() - parseDate(a).getTime(),
+                  ),
+                    reorderedCities.push(eventArray);
+                }
               } else {
                 dummyData.data.cities.forEach(
                   (
@@ -133,7 +139,7 @@ function MatchQueue() {
                 );
               }
             } else {
-              if (city.events.length > 0) {
+              if (city.events.length > 0 && validEvents.length > 0) {
                 const eventArray = data.data.cities[i];
                 eventArray.events.sort(
                   (a: { date: string }, b: { date: string }) =>
