@@ -66,8 +66,6 @@ function MatchQueue() {
     }
   }, [id]);
 
-  // console.log(event);
-
   const isPortrait = useOrientation();
 
   const addPlayerInQueue = (name: string) => {
@@ -109,7 +107,7 @@ function MatchQueue() {
           ) => {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
             const validEvents = city.events.filter(
-              (event) => (event as { testGame: unknown }).testGame === null,
+              (event) => (event as { testGame: unknown }).testGame === false,
             );
 
             if (cityExists) {
