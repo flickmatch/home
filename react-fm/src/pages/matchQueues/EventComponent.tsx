@@ -257,7 +257,7 @@ export const EventComponent: FC<event> = ({
         return eventId;
       }
 
-      return (
+      return !playingEvent.testGame ? (
         <Accordion
           className={isPortrait ? styles.mobileAccordion : styles.accordion}
           key={playingEvent.uniqueEventId}
@@ -475,7 +475,7 @@ export const EventComponent: FC<event> = ({
             </Box>
           </AccordionDetails>
         </Accordion>
-      );
+      ) : null;
     });
 
   return <>{EventsMapFunc()}</>;
