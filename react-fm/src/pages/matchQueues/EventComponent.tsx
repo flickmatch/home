@@ -278,6 +278,7 @@ export const EventComponent: FC<event> = ({
               <FlexBox className={styles.venue}>
                 <VenueName
                   venueName={playingEvent.venueName}
+                  testGame={playingEvent.testGame}
                   date={playingEvent.date}
                   dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 />
