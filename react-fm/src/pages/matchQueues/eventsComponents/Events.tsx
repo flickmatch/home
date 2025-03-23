@@ -1,8 +1,11 @@
+import type { ChangeEvent } from 'react';
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import DoneIcon from '@mui/icons-material/Done';
+import EditIcon from '@mui/icons-material/Edit';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ShareIcon from '@mui/icons-material/Share';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -10,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import copy from 'copy-text-to-clipboard';
@@ -18,6 +22,7 @@ import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 
+import { apiUrl } from '../constants';
 import { flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
@@ -48,6 +53,10 @@ export const EventsCard: FC<EventDetails> = ({
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
   const [currencyCode, setCurrencyCode] = useState('INR');
+  const [editPrice, setEditPrice] = useState(false);
+  const [editNumberOfPlayers, setEditNumberOfPlayers] = useState(false);
+  const [newEventPrice, setNewEventPrice] = useState(charges);
+  const [newNumberOfPlayers, setNewNumberOfPlayers] = useState<number>(reservedPlayersCount);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -83,6 +92,88 @@ export const EventsCard: FC<EventDetails> = ({
     currencyFromCity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const updateNumberOfPlayers = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `mutation UpdateEventDetails {
+      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :"${newNumberOfPlayers}",waitListPlayersCount :"${
+          newNumberOfPlayers / 2
+        }"
+       }) {
+          isSuccessful
+          errorMessage
+      }
+  }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          // Handle GraphQL errors
+          alert(result.errors[0].message);
+        } else {
+          setEditNumberOfPlayers(false);
+          // eslint-disable-next-line no-console
+          console.log('Number of players updated');
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  const updatePrice = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `mutation UpdateEventDetails {
+          updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", charges: "${newEventPrice}" }) {
+            isSuccessful
+            errorMessage
+          }
+        }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          alert(result.errors[0].message);
+        } else {
+          setEditPrice(false);
+          // eslint-disable-next-line no-console
+          console.log('Price updated');
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewEventPrice(Number(e.target.value));
+    // eslint-disable-next-line no-console
+    console.log('Price changed');
+  };
+
+  const handleNumberOfPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewNumberOfPlayers(Number(e.target.value));
+    // eslint-disable-next-line no-console
+    console.log('Price changed');
+  };
+
+  const handleFocus = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+  };
 
   const currencyFromCity = async () => {
     const response = await fetch('https://service.flickmatch.in/platform-0.0.1-SNAPSHOT/graphql', {
@@ -124,14 +215,39 @@ export const EventsCard: FC<EventDetails> = ({
   };
 
   const price = () => (
-    <Grid item xs={4} sm={4} md={3}>
+    <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
           {currency()}
-          {charges}
+          {editPrice ? (
+            <input
+              type="number"
+              value={newEventPrice}
+              className={styles.priceInputField}
+              onChange={(e) => handlePriceChange(e)}
+              onClick={(e) => handleFocus(e)}
+            />
+          ) : (
+            newEventPrice
+          )}
         </span>
       </Typography>
+
+      <div className={styles.updatePrice}>
+        {editPrice ? (
+          <Tooltip title="Update" placement="top">
+            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updatePrice} />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Edit" placement="top">
+            <EditIcon
+              style={{ fontSize: 22, color: '#4ce95a' }}
+              onClick={() => setEditPrice(true)}
+            />
+          </Tooltip>
+        )}
+      </div>
     </Grid>
   );
 
@@ -183,10 +299,38 @@ export const EventsCard: FC<EventDetails> = ({
   );
 
   const numberOfPlayers = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
       <Typography className={styles.title}>
-        Number of Players <span>{reservedPlayersCount}</span>
+        Number of Players{' '}
+        <span>
+          {editNumberOfPlayers ? (
+            <input
+              type="number"
+              value={newNumberOfPlayers}
+              className={styles.priceInputField}
+              onChange={(e) => handleNumberOfPriceChange(e)}
+              onClick={(e) => handleFocus(e)}
+            />
+          ) : (
+            newNumberOfPlayers
+          )}{' '}
+        </span>
       </Typography>
+
+      <div className={styles.updatePlayersCount}>
+        {editNumberOfPlayers ? (
+          <Tooltip title="Update" placement="top">
+            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateNumberOfPlayers} />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Edit" placement="top">
+            <EditIcon
+              style={{ fontSize: 22, color: '#4ce95a' }}
+              onClick={() => setEditNumberOfPlayers(true)}
+            />
+          </Tooltip>
+        )}
+      </div>
     </Grid>
   );
 
