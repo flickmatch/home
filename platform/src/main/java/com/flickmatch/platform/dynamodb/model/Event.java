@@ -20,7 +20,6 @@ public class Event {
 
     private List<EventDetails> eventDetailsList;
 
-
     public Event() {}
 
     public Event(EventId eventId) {
