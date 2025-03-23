@@ -14,7 +14,7 @@ type venueDetails = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   date: any;
   dummyData: boolean;
-  testGame: boolean | undefined;
+  testGame?: boolean | undefined;
 };
 
 export const VenueName: FC<venueDetails> = ({ venueName, date, dummyData, testGame }) => {
