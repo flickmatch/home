@@ -257,7 +257,7 @@ export const EventComponent: FC<event> = ({
         return eventId;
       }
 
-      return !playingEvent.testGame ? (
+      return userState.login.isAdmin || !playingEvent.testGame ? (
         <Accordion
           className={isPortrait ? styles.mobileAccordion : styles.accordion}
           key={playingEvent.uniqueEventId}

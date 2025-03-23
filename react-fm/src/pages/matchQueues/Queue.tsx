@@ -112,7 +112,7 @@ function MatchQueue() {
 
             if (cityExists) {
               if (city.events.length > 0) {
-                if (validEvents.length > 0) {
+                if (userState.login.isAdmin || validEvents.length > 0) {
                   const eventArray = data.data.cities[i];
                   eventArray.events.sort(
                     (a: { date: string }, b: { date: string }) =>
@@ -137,13 +137,15 @@ function MatchQueue() {
                 );
               }
             } else {
-              if (city.events.length > 0 && validEvents.length > 0) {
-                const eventArray = data.data.cities[i];
-                eventArray.events.sort(
-                  (a: { date: string }, b: { date: string }) =>
-                    parseDate(b).getTime() - parseDate(a).getTime(),
-                ),
-                  reorderedCities.push(eventArray);
+              if (city.events.length > 0) {
+                if (userState.login.isAdmin || validEvents.length > 0) {
+                  const eventArray = data.data.cities[i];
+                  eventArray.events.sort(
+                    (a: { date: string }, b: { date: string }) =>
+                      parseDate(b).getTime() - parseDate(a).getTime(),
+                  ),
+                    reorderedCities.push(eventArray);
+                }
               }
             }
             setShowSkeleton(false);
@@ -177,7 +179,7 @@ function MatchQueue() {
     return () => {
       controller.abort();
     };
-  }, [players]);
+  }, [players, userState.login.isAdmin]);
 
   const events = () => {
     if (event) {
