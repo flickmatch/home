@@ -5,18 +5,20 @@ import static com.flickmatch.platform.graphql.util.DateUtil.extractDateFromISOFo
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Date.from;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
+import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
+import com.flickmatch.platform.records.ParsedUniqueEventId;
 import com.flickmatch.platform.graphql.input.UpdateEventScoreInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -249,8 +251,6 @@ public class EventBuilderTest {
     @Test
     public void testGetUniqueEventById() throws ParseException {
 
-        // Case where the event exists and is found :
-
         // Mock input data
         String uniqueEventId = "1-2023-07-11-1";
 
@@ -343,6 +343,78 @@ public class EventBuilderTest {
 
         // Assert that the result is null due to index out of bounds
         assertThat(result, equalTo(null));
+    }
+
+    @Test
+    void testUpdateEventDetails_UpdatePricePlayersAndCredits() throws ParseException {
+        // Date formatter
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Create a real UpdateEventDetailsInput object
+        UpdateEventDetailsInput input = UpdateEventDetailsInput.builder()
+                .uniqueEventId("1-2023-07-11-1")
+                .charges(Optional.of(500.0))
+                .reservedPlayersCount(Optional.of(20))
+                .credits(Optional.of(100.0))
+                .build();
+
+        // Create mock Event and EventDetails
+        Event event = new Event(new Event.EventId("1", "2023-07-11")); // Fixed event ID to match parsed values
+        Event.EventDetails eventDetails = Event.EventDetails.builder()
+                .index(1) // Ensure index matches parsedUniqueEventId.index()
+                .startTime(dateFormat.parse("2023-07-24"))
+                .endTime(dateFormat.parse("2023-07-24"))
+                .charges(10.0)
+                .reservedPlayersCount(5)
+                .waitListPlayersCount(2)
+                .sportName("Football")
+                .venueName("Stadium")
+                .venueLocationLink("https://maps.google.com/stadium")
+                .playerDetailsList(new ArrayList<>())
+                .credits(1.0)
+                .build();
+
+        if (event.getEventDetailsList() == null) {
+            event.setEventDetailsList(new ArrayList<>());
+        }
+        event.getEventDetailsList().add(eventDetails);
+
+        event.setEventDetailsList(Collections.singletonList(eventDetails));
+
+        Optional<Event> optionalEvent = Optional.of(event);
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
+
+
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Execute the method
+        Event updatedEvent = eventBuilder.updateEventDetails(input);
+
+        // Validate updates
+        assertNotNull(updatedEvent);
+        Event.EventDetails updatedDetails = updatedEvent.getEventDetailsList().get(0);
+
+        assertEquals(500.0, updatedDetails.getCharges(), "Charges should be updated correctly");
+        assertEquals(20, updatedDetails.getReservedPlayersCount(), "Reserved players count should be updated");
+        assertEquals(100.0, updatedDetails.getCredits(), "Credits should be updated");
+
+    }
+    @Test
+    void testUpdateEventDetails_EventNotFound() {
+        // Mock input
+        UpdateEventDetailsInput input = mock(UpdateEventDetailsInput.class);
+        when(input.getUniqueEventId()).thenReturn("city123-2025-03-20-1");
+
+        // Mock repository to return empty
+        when(eventRepository.findById(any())).thenReturn(Optional.empty());
+
+        // Exception validation
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            eventBuilder.updateEventDetails(input);
+        });
+
+        assertEquals("Event not found", exception.getMessage());
+        verify(eventRepository, times(1)).findById(any());
     }
 
     @Test

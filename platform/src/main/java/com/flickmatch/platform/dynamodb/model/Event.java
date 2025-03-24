@@ -20,7 +20,6 @@ public class Event {
 
     private List<EventDetails> eventDetailsList;
 
-
     public Event() {}
 
     public Event(EventId eventId) {
@@ -83,11 +82,21 @@ public class Event {
         Boolean teamDivision;
         String team1Color;
         String team2Color;
+        Boolean isDeleted;
 
         String currency;
         Integer team1Score;
         Integer team2Score;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName = "isDeleted")
+        public Boolean getIsDeleted() {
+            return isDeleted;
+        }
+
+        public void setIsDeleted(Boolean isDeleted) {
+            this.isDeleted = isDeleted;
+        }
 
         @DynamoDBAttribute(attributeName = "teamDivision")
         public Boolean getTeamDivision() {
