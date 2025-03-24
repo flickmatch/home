@@ -27,7 +27,7 @@
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/gapi.client": "^1.0.8",
-    "axios": "^1.7.4",
+    "axios": "^1.8.2",
     "copy-text-to-clipboard": "^3.2.0",
     "downloadjs": "^1.4.7",
     "firebase": "^10.12.0",
@@ -64,7 +64,7 @@
     "@types/youtube-player": "^5.5.9",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
-    "@vitejs/plugin-react": "^2.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-autofix": "^1.1.0",
@@ -76,8 +76,8 @@
     "prettier": "^2.7.1",
     "sass": "^1.63.6",
     "typescript": "^4.8.3",
-    "vite": "^3.2.11",
-    "vite-plugin-pwa": "^0.13.1"
+    "vite": "^6.2.2",
+    "vite-plugin-pwa": "^0.21.2"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
