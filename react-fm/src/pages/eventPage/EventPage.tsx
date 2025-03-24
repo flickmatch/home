@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { Typography } from '@mui/material';
 import Zoom from '@mui/material/Zoom';
@@ -15,16 +15,31 @@ import mapCityData from '../matchQueues/map';
 import type { EventDetails } from '../matchQueues/types/Events.types';
 import NotFound from '../notFound';
 import styles from './EventPage.module.scss';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/store/types';
 
 // import type { Event } from './EventPage.types';
 
 const EventPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [event, setEvent] = useState<EventDetails | null>(null);
   const [, setPlayers] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const userState = useSelector((state: RootState) => state);
+  const isLoggedIn = userState.login.isLoggedIn;
+
+  useEffect(() => {
+    if(!isLoggedIn)
+      navigate('/login', {
+        state: {
+          from: location.pathname,
+        }
+      });
+  }, [isLoggedIn, location.pathname, navigate]);
 
   const addPlayerInQueue = (name: string) => {
     setPlayers((prevData) => [...prevData, name]);
