@@ -17,6 +17,7 @@ import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
+import com.flickmatch.platform.graphql.input.UpdateEventScoreInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -344,4 +345,40 @@ public class EventBuilderTest {
         assertThat(result, equalTo(null));
     }
 
+    @Test
+    public void testUpdateEventScore() {
+        // Mock input data
+        String uniqueEventId = "1-2023-07-11-1";
+        int team1Score = 3;
+        int team2Score = 2;
+
+        UpdateEventScoreInput updateEventScoreInput = UpdateEventScoreInput.builder()
+                .uniqueEventId(uniqueEventId)
+                .team1Score(team1Score)
+                .team2Score(team2Score)
+                .build();
+
+        // Mock existing event
+        Event.EventDetails eventDetails = Event.EventDetails.builder()
+                .index(1)
+                .team1Score(0)
+                .team2Score(0)
+                .build();
+
+        Event.EventId eventIdObj = new Event.EventId("1", "2023-07-11");
+        Event event = new Event(eventIdObj);
+        event.setEventDetailsList(Collections.singletonList(eventDetails));
+
+        Optional<Event> optionalEvent = Optional.of(event);
+        when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
+        when(eventRepository.save(any(Event.class))).thenReturn(event);
+
+        // Call the method under test
+        Event updatedEvent = eventBuilder.updateEventScore(updateEventScoreInput);
+
+        // Assert the results
+        assertThat(updatedEvent, notNullValue());
+        assertThat(updatedEvent.getEventDetailsList().get(0).getTeam1Score(), equalTo(team1Score));
+        assertThat(updatedEvent.getEventDetailsList().get(0).getTeam2Score(), equalTo(team2Score));
+    }
 }
