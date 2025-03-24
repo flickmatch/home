@@ -11,8 +11,9 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { Input } from '@mui/material';
+import { IconButton, Input } from '@mui/material';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import CheckIcon from "@mui/icons-material/Check";
 
 import copy from 'copy-text-to-clipboard';
 
@@ -61,8 +62,8 @@ export const EventsCard: FC<EventDetails> = ({
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
   const [isPast, setIsPast] = useState(false);
   const userState = useSelector((state: RootState) => state);
-  const [teamAGoals, setTeamAGoals] = useState(team1Score || 0);
-  const [teamBGoals, setTeamBGoals] = useState(team2Score || 0);
+  const [teamAGoals, setTeamAGoals] = useState(team1Score);
+  const [teamBGoals, setTeamBGoals] = useState(team2Score);
   const [isEditable, setIsEditable] = useState(false);
 
   // console.log(team1_color, team2_color, team_division);
@@ -114,8 +115,8 @@ export const EventsCard: FC<EventDetails> = ({
   }, [usTime]);
 
   useEffect(() => {
-    setTeamAGoals(team1Score || 0);
-    setTeamBGoals(team2Score || 0);
+    setTeamAGoals(team1Score);
+    setTeamBGoals(team2Score);
   }, [team1Score, team2Score]);
 
   const currencyFromCity = async () => {
@@ -146,7 +147,8 @@ export const EventsCard: FC<EventDetails> = ({
     setCurrencyCode(data.data.city.countryCode);
   };
 
-  const updateEventScore = async () => {
+  const updateEventScore = async (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
     try {
       if (isEditable) {
         const userInput = {
@@ -206,8 +208,8 @@ export const EventsCard: FC<EventDetails> = ({
   };
   
   const resetScores = () => {
-    setTeamAGoals(Number(team1Score));
-    setTeamBGoals(Number(team2Score));
+    setTeamAGoals(team1Score);
+    setTeamBGoals(team2Score);
   };
 
   const currency = () => {
@@ -344,12 +346,13 @@ export const EventsCard: FC<EventDetails> = ({
               <Input
                 type="number"
                 value={teamAGoals}
+                onClick={(e) => e.stopPropagation()}
                 onChange={(e) => setTeamAGoals(Number(e.target.value))}
                 className={isPortrait ? styles.mobileScoreInput : styles.scoreInput}
               />
             ) : (
               <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
-                {teamAGoals}
+                {teamAGoals !== -1 ? teamAGoals : ""}
               </span>
             )} 
             <span className={styles.scoreDisplay}> - </span> 
@@ -357,22 +360,22 @@ export const EventsCard: FC<EventDetails> = ({
               <Input
                 type="number"
                 value={teamBGoals}
+                onClick={(e) => e.stopPropagation()}
                 onChange={(e) => setTeamBGoals(Number(e.target.value))}
                 className={isPortrait ? styles.mobileScoreInput : styles.scoreInput}
               />
             ) : (
               <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
-                {teamBGoals}
+                {teamBGoals !== -1 ? teamBGoals : ""}
               </span>
             )} 
             <span className={styles.teamLabel}>Team {team2_color}</span>
           </span>
           {isAdmin ? (
             isPortrait ? (
-              <BorderColorIcon
-                className={styles.editIcon}
-                onClick={updateEventScore}
-              />
+              <IconButton onClick={updateEventScore} className={styles.editIcon}>
+              {isEditable ? <CheckIcon /> : <BorderColorIcon />}
+              </IconButton>
             ) : (
               <Button
                 variant="contained"
