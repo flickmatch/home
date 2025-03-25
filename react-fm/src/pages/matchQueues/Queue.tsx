@@ -66,8 +66,6 @@ function MatchQueue() {
     }
   }, [id]);
 
-  // console.log(event);
-
   const isPortrait = useOrientation();
 
   const addPlayerInQueue = (name: string) => {
@@ -108,14 +106,20 @@ function MatchQueue() {
             i: number,
           ) => {
             const cityExists = _.some(dummyData.data.cities, { cityId: city.cityId });
+            const validEvents = city.events.filter(
+              (event) => (event as { testGame: unknown }).testGame === false,
+            );
+
             if (cityExists) {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
-                eventArray.events.sort(
-                  (a: { date: string }, b: { date: string }) =>
-                    parseDate(b).getTime() - parseDate(a).getTime(),
-                ),
-                  reorderedCities.push(eventArray);
+                if (userState.login.isAdmin || validEvents.length > 0) {
+                  const eventArray = data.data.cities[i];
+                  eventArray.events.sort(
+                    (a: { date: string }, b: { date: string }) =>
+                      parseDate(b).getTime() - parseDate(a).getTime(),
+                  ),
+                    reorderedCities.push(eventArray);
+                }
               } else {
                 dummyData.data.cities.forEach(
                   (
@@ -134,12 +138,14 @@ function MatchQueue() {
               }
             } else {
               if (city.events.length > 0) {
-                const eventArray = data.data.cities[i];
-                eventArray.events.sort(
-                  (a: { date: string }, b: { date: string }) =>
-                    parseDate(b).getTime() - parseDate(a).getTime(),
-                ),
-                  reorderedCities.push(eventArray);
+                if (userState.login.isAdmin || validEvents.length > 0) {
+                  const eventArray = data.data.cities[i];
+                  eventArray.events.sort(
+                    (a: { date: string }, b: { date: string }) =>
+                      parseDate(b).getTime() - parseDate(a).getTime(),
+                  ),
+                    reorderedCities.push(eventArray);
+                }
               }
             }
             setShowSkeleton(false);
@@ -173,7 +179,7 @@ function MatchQueue() {
     return () => {
       controller.abort();
     };
-  }, [players]);
+  }, [players, userState.login.isAdmin]);
 
   const events = () => {
     if (event) {
