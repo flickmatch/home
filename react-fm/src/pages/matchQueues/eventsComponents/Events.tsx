@@ -27,6 +27,7 @@ import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store/types';
+import { Box } from '@mui/system';
 
 export const EventsCard: FC<EventDetails> = ({
   charges,
@@ -337,9 +338,8 @@ export const EventsCard: FC<EventDetails> = ({
   const score = () => (
     isPast ? (
       <Grid item xs={12} sm={4} md={12}>
-        <Typography className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
-            <h4 className={isPortrait ? styles.mobileScore : styles.score}>SCORE</h4>
-
+        <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
+            <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
             <span className={styles.teamLabel}>Team {team1_color}</span>
             {isEditable && isAdmin ? (
@@ -387,14 +387,12 @@ export const EventsCard: FC<EventDetails> = ({
             )
           ) : null}
 
-        </Typography>
+        </Box>
       </Grid>
     ) : null
   );
 
-  const 
-  
-  gameLink = () => (
+  const gameLink = () => (
     <Grid item xs={4} sm={4} md={7}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}

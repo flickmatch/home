@@ -420,7 +420,7 @@ public class EventBuilderTest {
     @Test
     public void testUpdateEventScore() {
         // Mock input data
-        String uniqueEventId = "1-2023-07-11-1";
+        String uniqueEventId = "1-2025-03-25-1";
         int team1Score = 3;
         int team2Score = 2;
 
@@ -437,7 +437,7 @@ public class EventBuilderTest {
                 .team2Score(0)
                 .build();
 
-        Event.EventId eventIdObj = new Event.EventId("1", "2023-07-11");
+        Event.EventId eventIdObj = new Event.EventId("1", "2025-03-25");
         Event event = new Event(eventIdObj);
         event.setEventDetailsList(Collections.singletonList(eventDetails));
 

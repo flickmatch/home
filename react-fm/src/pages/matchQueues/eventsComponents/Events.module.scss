@@ -195,7 +195,7 @@ label {
   margin: 0;
   padding: 4px 20px;
   width: 85px;
-  height: 35px;
+  height: 30px;
   border-radius: 5px;
   color: #000;
   display: flex;
@@ -211,14 +211,13 @@ label {
   font-size: 16px;
   padding: 6px 10px;
   margin-right: 1px;
-  height: 30px;
+  height: 28px;
   width: 75px;
 }
 
 .scoreTitle {
   color: #4ce95a;
   font-size: 20px;
-  font-weight: bolder;
   display: flex;
   span {
     color: #fff;
@@ -232,7 +231,6 @@ label {
 .mobileScoreTitle {
   color: #4ce95a;
   font-size: 18px;
-  font-weight: bolder;
   display: flex;
 
   span {
@@ -256,11 +254,6 @@ label {
     font-size: 19px;
     font-weight: bold;
     color: #ffffff;
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-      opacity: 1;
-      height: 24px;
-    }
   }
 }
 
@@ -305,4 +298,5 @@ label {
   padding: 8px;
   font-size: 40px;
   margin-top: -7px;
+  color: #4ce95a;
 }

@@ -48,9 +48,6 @@ function MatchQueue() {
   const [event, setEvent] = useState<EventDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // eslint-disable-next-line no-console
-  console.log(apiUrl);
-
   useEffect(() => {
     if (id) {
       getEventById(id, setError)
