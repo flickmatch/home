@@ -14,9 +14,10 @@ type venueDetails = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   date: any;
   dummyData: boolean;
+  testGame?: boolean | undefined;
 };
 
-export const VenueName: FC<venueDetails> = ({ venueName, date, dummyData }) => {
+export const VenueName: FC<venueDetails> = ({ venueName, date, dummyData, testGame }) => {
   const isPortrait = useOrientation();
   const [batchVisible, setBatchVisible] = useState(false);
 
@@ -40,6 +41,9 @@ export const VenueName: FC<venueDetails> = ({ venueName, date, dummyData }) => {
       {venueName}
       {batchVisible ? (
         <Chip label="today" color="primary" variant="outlined" className={styles.todayGameTag} />
+      ) : null}
+      {testGame ? (
+        <Chip label="test game" color="primary" variant="outlined" className={styles.testGameTag} />
       ) : null}
     </Typography>
   );
