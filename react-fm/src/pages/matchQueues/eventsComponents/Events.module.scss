@@ -191,7 +191,7 @@ label {
 }
 
 .score, .mobileScore {
-  background: linear-gradient(135deg, #4ce95a 0%, #45e04a 100%);
+  background: #4ce95a;
   margin: 0;
   padding: 4px 20px;
   width: 85px;
@@ -204,7 +204,6 @@ label {
   font-size: 18px;
   font-weight: 700;
   box-shadow: 0 1px 1px rgba(76, 233, 90, 0.2);
-  letter-spacing: 1px;
 }
 
 .mobileScore {
@@ -215,31 +214,24 @@ label {
   width: 75px;
 }
 
-.scoreTitle {
+.scoreTitle, .mobileScoreTitle {
   color: #4ce95a;
   font-size: 20px;
   display: flex;
-  span {
-    color: #fff;
-    margin-left: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  align-items: center;
 }
-
-.mobileScoreTitle {
-  color: #4ce95a;
-  font-size: 18px;
+.scoreTitle span, .mobileScoreTitle span {
+  color: #fff;
+  margin-left: 8px;
   display: flex;
-
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.mobileScoreTitle{
+  font-size: 18px;
   span {
-    color: #fff;
     margin-left: 3px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
   }
 }
 
@@ -247,7 +239,6 @@ label {
   width: 40px;
   text-align: center;
   margin: 0 8px;
-
   input {
     text-align: center;
     padding: 4px;

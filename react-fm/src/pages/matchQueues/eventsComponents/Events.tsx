@@ -115,11 +115,6 @@ export const EventsCard: FC<EventDetails> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usTime]);
 
-  useEffect(() => {
-    setTeamAGoals(team1Score);
-    setTeamBGoals(team2Score);
-  }, [team1Score, team2Score]);
-
   const currencyFromCity = async () => {
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -334,10 +329,10 @@ export const EventsCard: FC<EventDetails> = ({
     showSuccessNotification();
   };
 
-  const isAdmin = userState.login.isAdmin;
+  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
   const score = () => (
     isPast ? (
-      <Grid item xs={12} sm={4} md={12}>
+      <Grid item xs={12} sm={6} md={12}>
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
             <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
