@@ -55,10 +55,10 @@ export const EventsCard: FC<EventDetails> = ({
   const [currencyCode, setCurrencyCode] = useState('INR');
   const [editPrice, setEditPrice] = useState(false);
   const [editNumberOfPlayers, setEditNumberOfPlayers] = useState(false);
-  const [newEventPrice, setNewEventPrice] = useState(charges);
+  const [newEventPrice, setNewEventPrice] = useState<number>(charges);
   const [newNumberOfPlayers, setNewNumberOfPlayers] = useState<number>(reservedPlayersCount);
 
-  const openSpots = reservedPlayersCount - reservedPlayersList.length;
+  const openSpots = newNumberOfPlayers - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
@@ -102,9 +102,9 @@ export const EventsCard: FC<EventDetails> = ({
       },
       body: JSON.stringify({
         query: `mutation UpdateEventDetails {
-      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :"${newNumberOfPlayers}",waitListPlayersCount :"${
+      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :${newNumberOfPlayers},waitListPlayersCount : ${
           newNumberOfPlayers / 2
-        }"
+        }
        }) {
           isSuccessful
           errorMessage
@@ -119,8 +119,7 @@ export const EventsCard: FC<EventDetails> = ({
           alert(result.errors[0].message);
         } else {
           setEditNumberOfPlayers(false);
-          // eslint-disable-next-line no-console
-          console.log('Number of players updated');
+          alert('Number of players updated');
         }
       })
       .catch((error) => {
@@ -137,7 +136,7 @@ export const EventsCard: FC<EventDetails> = ({
       },
       body: JSON.stringify({
         query: `mutation UpdateEventDetails {
-          updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", charges: "${newEventPrice}" }) {
+          updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", charges: ${newEventPrice} }) {
             isSuccessful
             errorMessage
           }
@@ -150,8 +149,7 @@ export const EventsCard: FC<EventDetails> = ({
           alert(result.errors[0].message);
         } else {
           setEditPrice(false);
-          // eslint-disable-next-line no-console
-          console.log('Price updated');
+          alert('Price updated');
         }
       })
       .catch((error) => {
@@ -161,14 +159,10 @@ export const EventsCard: FC<EventDetails> = ({
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewEventPrice(Number(e.target.value));
-    // eslint-disable-next-line no-console
-    console.log('Price changed');
   };
 
   const handleNumberOfPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewNumberOfPlayers(Number(e.target.value));
-    // eslint-disable-next-line no-console
-    console.log('Price changed');
   };
 
   const handleFocus = (event: { stopPropagation: () => void }) => {
