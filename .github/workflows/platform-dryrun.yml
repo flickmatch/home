@@ -27,7 +27,6 @@ jobs:
       - name: Execute Gradle build with secrets as env variables
         run: |
          gradle clean build test \
-          -Dspring.profiles.active=prod \
           -DSPRING_GRAPHQL_CORS_ALLOWED_ORIGIN="${{ secrets.SPRING_GRAPHQL_CORS_ALLOWED_ORIGIN }}" \
           -DPROD_DYNAMODB_ENDPOINT="${{ secrets.PROD_DYNAMODB_ENDPOINT }}" \
           -DPROD_AWS_REGION="${{ secrets.PROD_AWS_REGION }}" \
