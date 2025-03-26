@@ -47,7 +47,7 @@ tasks.named('test', Test) {
 	useJUnitPlatform()
 	exclude('**/integration/**')
 	testLogging {
-		events "PASSED", "SKIPPED", "FAILED", "STANDARD_ERROR"
+		events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT" , "STANDARD_ERROR"
 	}
 	finalizedBy jacocoTestReport
 }
@@ -60,6 +60,6 @@ tasks.register('integrationTest', Test) {
 	useJUnitPlatform()
 	include('**/integration/**')
 	testLogging {
-		events "PASSED", "SKIPPED", "FAILED", "STANDARD_ERROR"
+		events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
 	}
 }
