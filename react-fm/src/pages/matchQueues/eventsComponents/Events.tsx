@@ -93,7 +93,7 @@ export const EventsCard: FC<EventDetails> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updateNumberOfPlayers = (event: { stopPropagation: () => void }) => {
+  const updateEventDetails = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
     fetch(apiUrl, {
       method: 'POST',
@@ -102,9 +102,8 @@ export const EventsCard: FC<EventDetails> = ({
       },
       body: JSON.stringify({
         query: `mutation UpdateEventDetails {
-      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :${newNumberOfPlayers},waitListPlayersCount : ${
-          newNumberOfPlayers / 2
-        }
+      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :${newNumberOfPlayers}, 
+      waitListPlayersCount : ${newNumberOfPlayers / 2}, charges: ${newEventPrice}
        }) {
           isSuccessful
           errorMessage
@@ -119,37 +118,8 @@ export const EventsCard: FC<EventDetails> = ({
           alert(result.errors[0].message);
         } else {
           setEditNumberOfPlayers(false);
-          alert('Number of players updated');
-        }
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  const updatePrice = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `mutation UpdateEventDetails {
-          updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", charges: ${newEventPrice} }) {
-            isSuccessful
-            errorMessage
-          }
-        }`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.errors) {
-          alert(result.errors[0].message);
-        } else {
           setEditPrice(false);
-          alert('Price updated');
+          alert('Updated successfully');
         }
       })
       .catch((error) => {
@@ -231,7 +201,7 @@ export const EventsCard: FC<EventDetails> = ({
       <div className={styles.updatePrice}>
         {editPrice ? (
           <Tooltip title="Update" placement="top">
-            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updatePrice} />
+            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
           </Tooltip>
         ) : (
           <Tooltip title="Edit" placement="top">
@@ -314,7 +284,7 @@ export const EventsCard: FC<EventDetails> = ({
       <div className={styles.updatePlayersCount}>
         {editNumberOfPlayers ? (
           <Tooltip title="Update" placement="top">
-            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateNumberOfPlayers} />
+            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
           </Tooltip>
         ) : (
           <Tooltip title="Edit" placement="top">
