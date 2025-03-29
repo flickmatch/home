@@ -7,6 +7,8 @@ import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
+import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
+import com.flickmatch.platform.graphql.input.UpdateEventScoreInput;
 import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.Player;
 import com.flickmatch.platform.graphql.type.SportsVenue;
@@ -366,6 +368,8 @@ public class EventBuilder {
                 .team1Color(eventDetails.getTeam1Color())
                 .team2Color(eventDetails.getTeam2Color())
                 .teamDivision(eventDetails.getTeamDivision())
+                .team1Score(eventDetails.getTeam1Score())
+                .team2Score(eventDetails.getTeam2Score())
                 .build();
     }
 
@@ -410,5 +414,60 @@ public class EventBuilder {
         if (currentTime.after(startTime)) {
             throw new IllegalArgumentException("Selected past event/Time");
         }
+    }
+
+    public Event updateEventScore(UpdateEventScoreInput input) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(input.getUniqueEventId());
+        Optional<Event> eventsInCity = eventRepository
+                .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+
+        if (eventsInCity.isPresent()) {
+            Event event = eventsInCity.get();
+            Optional<Event.EventDetails> selectedEvent = event.getEventDetailsList()
+                    .stream()
+                    .filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index()))
+                    .findFirst();
+
+            if (selectedEvent.isPresent()) {
+                Event.EventDetails eventDetails = selectedEvent.get();
+                eventDetails.setTeam1Score(input.getTeam1Score());
+                eventDetails.setTeam2Score(input.getTeam2Score());
+                return eventRepository.save(event);
+            }
+        }
+        throw new IllegalArgumentException("Event not found");
+    }
+
+    public Event updateEventDetails(UpdateEventDetailsInput input) {
+        ParsedUniqueEventId parsedUniqueEventId = parseUniqueEventId(input.getUniqueEventId());
+        Optional<Event> eventsInCity = eventRepository
+                .findById(new Event.EventId(parsedUniqueEventId.cityId(), parsedUniqueEventId.date()));
+
+        if (eventsInCity.isPresent()) {
+            Event event = eventsInCity.get();
+            Optional<Event.EventDetails> selectedEvent = event.getEventDetailsList()
+                    .stream()
+                    .filter(eventDetails -> eventDetails.getIndex().equals(parsedUniqueEventId.index()))
+                    .findFirst();
+
+            if (selectedEvent.isPresent()) {
+                Event.EventDetails eventDetails = selectedEvent.get();
+                input.getStartTime().ifPresent(eventDetails::setStartTime);
+                input.getEndTime().ifPresent(eventDetails::setEndTime);
+                input.getCharges().ifPresent(eventDetails::setCharges);
+                input.getReservedPlayersCount().ifPresent(eventDetails::setReservedPlayersCount);
+                input.getWaitListPlayersCount().ifPresent(eventDetails::setWaitListPlayersCount);
+                input.getIsDeleted().ifPresent(eventDetails::setIsDeleted);
+                input.getSportsVenueId().ifPresent(eventDetails::setVenueName);
+                input.getCredits().ifPresent(eventDetails::setCredits);
+                input.getTestGame().ifPresent(eventDetails::setTestGame);
+                input.getTeamDivision().ifPresent(eventDetails::setTeamDivision);
+                input.getTeam1Color().ifPresent(eventDetails::setTeam1Color);
+                input.getTeam2Color().ifPresent(eventDetails::setTeam2Color);
+
+                return eventRepository.save(event);
+            }
+        }
+        throw new IllegalArgumentException("Event not found");
     }
 }
