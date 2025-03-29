@@ -29,10 +29,11 @@ public class Event {
     private String stripePaymentUrl;
     private Double credits;
     private Boolean testGame;
-    Boolean teamDivision;
-    String team1Color;
-    String team2Color;
-    String venuePinCode;
-    Integer team1Score;
-    Integer team2Score;
+    private Boolean teamDivision;
+    private String team1Color;
+    private String team2Color;
+    private String venuePinCode;
+    private List<String> paymentMethods;
+    private Integer team1Score;
+    private Integer team2Score;
 }

@@ -60,6 +60,7 @@ const query = JSON.stringify({
           team2Color
           team1Score
           team2Score
+          paymentMethods
         }
       }
     }`,
