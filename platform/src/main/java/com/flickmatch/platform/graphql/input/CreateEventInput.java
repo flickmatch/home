@@ -3,6 +3,8 @@ package com.flickmatch.platform.graphql.input;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder
 public class CreateEventInput {
@@ -18,4 +20,5 @@ public class CreateEventInput {
     Boolean teamDivision;
     String team1Color;
     String team2Color;
+    List<String> paymentMethods;
 }

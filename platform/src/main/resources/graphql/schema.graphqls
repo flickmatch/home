@@ -255,6 +255,7 @@ type EVENT {
   teamDivision: Boolean
   team1Color:String
   team2Color:String
+  paymentMethods:[String]
 }
 
 type Player {

@@ -79,13 +79,21 @@ public class Event {
         String stripePaymentUrl;
         Double credits;
         Boolean testGame;
-
         Boolean teamDivision;
         String team1Color;
         String team2Color;
-
+        List<String> paymentMethods;
         String currency;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName = "paymentMethods")
+        public List<String> getPaymentMethods() {return paymentMethods;}
+
+        public void setPaymentMethods(List<String> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+        }
+
+
 
         @DynamoDBAttribute(attributeName = "teamDivision")
         public Boolean getTeamDivision() {
@@ -314,6 +322,8 @@ public class Event {
             this.waNumber = waNumber;
         }
     }
+
+
 
     @Builder
     public static class EventId {
