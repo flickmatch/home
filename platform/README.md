@@ -29,7 +29,7 @@ The following guides illustrate how to use some features concretely:
 * Install postman.
 * [Optional] install aws CLI
 * Set up AWS credentials using SOP https://docs.google.com/document/d/1CKlucg8TiFdQLcRTRgTmlalzUyMWF-HF2WzFVLqI474/edit?usp=sharing
-
+* Get the .env file from this link https://drive.google.com/file/d/1PXQmoIWG_OM7cUyZ1a5N1VTNhUeRUMEu/view?usp=sharing and add it to the root directory of platform.
 
 ### IDE Setup
 
@@ -74,7 +74,7 @@ mutation {
   }
 }
 ```
-  * Search event, sports venues
+* Search event, sports venues
 ```aidl
 query {
   city(cityId: "1") {
@@ -98,7 +98,7 @@ query {
   }
 }
 ```
-  * Add new player, After running below mutation run query mentioned in step "Search event" to check if player is added.
+* Add new player, After running below mutation run query mentioned in step "Search event" to check if player is added.
 ```aidl
 mutation {
   joinEvent(input: {
@@ -121,7 +121,7 @@ These additional references should also help you:
 #### Running Dynamodb instance locally
 
 * [One time setup] Use this guide to install and run dynamodb in local [DynamoDBLocal.DownloadingAndRunning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
-* [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables  
+* [One time setup] Run `local_db_init.sh` to create all tables and populate City and Sport tables
 * To hit local dynamoDB set `spring.profiles.active=dev` in command to start application.
 
 ### Server errors and their resolution
