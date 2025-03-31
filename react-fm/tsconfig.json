@@ -23,6 +23,13 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "global.d.ts",
+    "node_modules/vite-plugin-pwa/client.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
