@@ -75,6 +75,8 @@ export const EventsCard: FC<EventDetails> = ({
   const [teamBGoals, setTeamBGoals] = useState(team2Score);
   const [isEditable, setIsEditable] = useState(false);
 
+  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
+
   // console.log(team1_color, team2_color, team_division);
 
   let whatsappGroupLink: string | undefined;
@@ -296,21 +298,22 @@ export const EventsCard: FC<EventDetails> = ({
           )}
         </span>
       </Typography>
-
-      <div className={styles.updatePrice}>
-        {editPrice ? (
-          <Tooltip title="Update" placement="top">
-            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Edit" placement="top">
-            <EditIcon
-              style={{ fontSize: 22, color: '#4ce95a' }}
-              onClick={() => setEditPrice(true)}
-            />
-          </Tooltip>
-        )}
-      </div>
+      {isAdmin ? (
+        <div className={styles.updatePrice}>
+          {editPrice ? (
+            <Tooltip title="Update" placement="top">
+              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Edit" placement="top">
+              <EditIcon
+                style={{ fontSize: 22, color: '#4ce95a' }}
+                onClick={() => setEditPrice(true)}
+              />
+            </Tooltip>
+          )}
+        </div>
+      ) : null}
     </Grid>
   );
 
@@ -381,21 +384,22 @@ export const EventsCard: FC<EventDetails> = ({
           )}{' '}
         </span>
       </Typography>
-
-      <div className={styles.updatePlayersCount}>
-        {editNumberOfPlayers ? (
-          <Tooltip title="Update" placement="top">
-            <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Edit" placement="top">
-            <EditIcon
-              style={{ fontSize: 22, color: '#4ce95a' }}
-              onClick={() => setEditNumberOfPlayers(true)}
-            />
-          </Tooltip>
-        )}
-      </div>
+      {isAdmin ? (
+        <div className={styles.updatePlayersCount}>
+          {editNumberOfPlayers ? (
+            <Tooltip title="Update" placement="top">
+              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Edit" placement="top">
+              <EditIcon
+                style={{ fontSize: 22, color: '#4ce95a' }}
+                onClick={() => setEditNumberOfPlayers(true)}
+              />
+            </Tooltip>
+          )}
+        </div>
+      ) : null}
     </Grid>
   );
 
@@ -430,7 +434,6 @@ export const EventsCard: FC<EventDetails> = ({
     showSuccessNotification();
   };
 
-  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
   const score = () =>
     isPast ? (
       <Grid item xs={12} sm={6} md={12}>
