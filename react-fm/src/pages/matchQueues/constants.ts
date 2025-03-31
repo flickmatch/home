@@ -58,6 +58,8 @@ const query = JSON.stringify({
           teamDivision
           team1Color
           team2Color
+          team1Score
+          team2Score
         }
       }
     }`,
@@ -105,6 +107,8 @@ const getEventById = async (
             teamDivision
             team1Color
             team2Color
+            team1Score
+            team2Score
             reservedPlayersList {
               displayName
               teamColor
@@ -133,7 +137,7 @@ const getEventById = async (
 };
 
 const apiUrl =
-  import.meta.env.MODE == 'development'
+  import.meta.env.MODE === 'development'
     ? import.meta.env.VITE_API_LOCAL
     : import.meta.env.VITE_API_URL;
 
