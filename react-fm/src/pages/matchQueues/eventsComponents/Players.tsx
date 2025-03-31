@@ -65,10 +65,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
     coordinates?.mobileSingleTeam ? coordinates?.mobileSingleTeam : { x: 0, y: 0 },
   );
 
-  const userState = useSelector((state: RootState) => state);
-
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role, deltaPosition);
+  // console.log(activeDrags, id, role, deltaPosition);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -116,6 +114,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           y: singleTeamView ? portraitSingleTeamDeltaPosition.y : portraitDeltaPosition.y,
         }}
         onDrag={handlePortraitDrag}
+        key={index}
       >
         <Box
           style={{
@@ -155,6 +154,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
           y: deltaPosition.y,
         }}
         onDrag={handleDrag}
+        key={index}
       >
         <Box
           style={{
