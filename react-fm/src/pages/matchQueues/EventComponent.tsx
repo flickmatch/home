@@ -509,7 +509,7 @@ export const EventComponent: FC<event> = ({
                       <div
                         style={{
                           position: 'absolute',
-                          zIndex: 9999,
+                          zIndex: 999,
                           top: 75,
                           right: 8,
                         }}
