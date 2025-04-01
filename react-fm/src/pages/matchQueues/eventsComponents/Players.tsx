@@ -68,7 +68,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role, deltaPosition);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
