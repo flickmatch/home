@@ -20,6 +20,7 @@ public class Event {
 
     private List<EventDetails> eventDetailsList;
 
+
     public Event() {}
 
     public Event(EventId eventId) {
@@ -82,6 +83,7 @@ public class Event {
         Boolean teamDivision;
         String team1Color;
         String team2Color;
+        List<String> paymentMethods;
         Boolean isDeleted;
 
         String currency;
@@ -97,6 +99,15 @@ public class Event {
         public void setIsDeleted(Boolean isDeleted) {
             this.isDeleted = isDeleted;
         }
+
+        @DynamoDBAttribute(attributeName = "paymentMethods")
+        public List<String> getPaymentMethods() {return paymentMethods;}
+
+        public void setPaymentMethods(List<String> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+        }
+
+
 
         @DynamoDBAttribute(attributeName = "teamDivision")
         public Boolean getTeamDivision() {
