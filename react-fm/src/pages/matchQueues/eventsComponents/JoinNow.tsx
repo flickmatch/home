@@ -423,7 +423,11 @@ export const JoinNow: FC<EventDetails> = ({
     if (userData.name) {
       setShowPaymentOptions(true);
     } else {
-      navigate('/login');
+      navigate('/login', {
+        state: {
+          from: `/event/${uniqueEventId}`,
+        }
+      });
     }
   };
 
