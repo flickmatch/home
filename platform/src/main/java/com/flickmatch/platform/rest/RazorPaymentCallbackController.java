@@ -114,7 +114,7 @@ public class RazorPaymentCallbackController {
                 }
             }
 
-            log.info("Proceeding for redirection part.");
+//            log.info("Proceeding for redirection part.");
 
             try {
                 eventDate = LocalDate.parse(dateStr, formatter);
