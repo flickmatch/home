@@ -1,0 +1,37 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "platform/**"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: "corretto"
+          java-version: "17"
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      - name: Execute Gradle build
+        run: gradle clean build -Dspring.profiles.active=prod
+        working-directory: platform
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "Springboot-example-app"
+          environment_name: "springboot-example-app-env"
+          version_label: ${{ github.sha }}
+          region: us-east-1
+          deployment_package: target/springboot-example.jar
