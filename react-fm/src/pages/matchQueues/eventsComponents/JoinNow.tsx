@@ -90,6 +90,7 @@ export const JoinNow: FC<EventDetails> = ({
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const [teamColor, setTeamColor] = useState('');
   const userState = useSelector((state: RootState) => state);
+  // console.log(userState.login.isAdmin);
 
   const handleColorChange = (event: { target: { value: string } }) => {
     setTeamColor(event.target.value);

@@ -1,37 +1,33 @@
-import type { ChangeEvent } from 'react';
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import CheckIcon from '@mui/icons-material/Check';
-import DoneIcon from '@mui/icons-material/Done';
-import EditIcon from '@mui/icons-material/Edit';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ShareIcon from '@mui/icons-material/Share';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { IconButton, Input } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/system';
+import { IconButton, Input } from '@mui/material';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import CheckIcon from "@mui/icons-material/Check";
 
 import copy from 'copy-text-to-clipboard';
 
 import { FlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
-import type { RootState } from '@/store/types';
 
 import { apiUrl, flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/store/types';
+import { Box } from '@mui/system';
 
 export const EventsCard: FC<EventDetails> = ({
   charges,
@@ -60,12 +56,8 @@ export const EventsCard: FC<EventDetails> = ({
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
   const [currencyCode, setCurrencyCode] = useState('INR');
-  const [editPrice, setEditPrice] = useState(false);
-  const [editNumberOfPlayers, setEditNumberOfPlayers] = useState(false);
-  const [newEventPrice, setNewEventPrice] = useState<number>(charges);
-  const [newNumberOfPlayers, setNewNumberOfPlayers] = useState<number>(reservedPlayersCount);
 
-  const openSpots = newNumberOfPlayers - reservedPlayersList.length;
+  const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
@@ -74,8 +66,6 @@ export const EventsCard: FC<EventDetails> = ({
   const [teamAGoals, setTeamAGoals] = useState(team1Score);
   const [teamBGoals, setTeamBGoals] = useState(team2Score);
   const [isEditable, setIsEditable] = useState(false);
-
-  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
 
   // console.log(team1_color, team2_color, team_division);
 
@@ -104,16 +94,16 @@ export const EventsCard: FC<EventDetails> = ({
   time = time.split('GMT')[0].trim();
 
   const getTimeDifference = (eventDateTime: string): boolean => {
-    const currentYear = new Date().getFullYear();
-    const [, month, day, ...timeParts] = eventDateTime.split(' ');
-    const timeRange = timeParts.join(' ');
-    const [, endTime] = timeRange.split(' - ');
-    const [endingTime, endPeriod] = endTime.split(/(?<=\d)(?=[APM])/i);
+    const currentYear = new Date().getFullYear(); 
+    const [, month, day, ...timeParts] = eventDateTime.split(" ");
+    const timeRange = timeParts.join(" ");
+    const [, endTime] = timeRange.split(" - "); 
+    const [endingTime, endPeriod] = endTime.split(/(?<=\d)(?=[APM])/i); 
     const eventDateTimeString = `${month} ${day}, ${currentYear} ${endingTime} ${endPeriod}`;
-    const eventTime = new Date(eventDateTimeString);
+    const eventTime = new Date(eventDateTimeString); 
     const currentTime = new Date();
-    return currentTime > eventTime;
-  };
+    return currentTime > eventTime
+  }
 
   useEffect(() => {
     try {
@@ -121,55 +111,9 @@ export const EventsCard: FC<EventDetails> = ({
       setIsPast(getTimeDifference(usTime));
     } catch (error) {
       setIsPast(false);
-    }
+    }    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usTime]);
-
-  const updateEventDetails = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `mutation UpdateEventDetails {
-      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :${newNumberOfPlayers}, 
-      waitListPlayersCount : ${newNumberOfPlayers / 2}, charges: ${newEventPrice}
-       }) {
-          isSuccessful
-          errorMessage
-      }
-  }`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.errors) {
-          // Handle GraphQL errors
-          alert(result.errors[0].message);
-        } else {
-          setEditNumberOfPlayers(false);
-          setEditPrice(false);
-          alert('Updated successfully');
-        }
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewEventPrice(Number(e.target.value));
-  };
-
-  const handleNumberOfPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewNumberOfPlayers(Number(e.target.value));
-  };
-
-  const handleFocus = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-  };
 
   const currencyFromCity = async () => {
     const response = await fetch(apiUrl, {
@@ -223,9 +167,9 @@ export const EventsCard: FC<EventDetails> = ({
               }
             `,
             variables: {
-              input: userInput,
-            },
-          }),
+              input: userInput
+            }
+        })
         });
 
         const result = await response.json();
@@ -234,18 +178,14 @@ export const EventsCard: FC<EventDetails> = ({
           setTeamAGoals(Number(teamAGoals));
           setTeamBGoals(Number(teamBGoals));
         } else {
-          showNotification(
-            'error',
-            'Error',
-            result.data?.updateEventScore?.errorMessage || 'Failed to update score',
-          );
-          resetScores();
+          showNotification('error', 'Error', result.data?.updateEventScore?.errorMessage || 'Failed to update score');
+          resetScores(); 
         }
       }
       setIsEditable(!isEditable);
     } catch (error) {
       showNotification('error', 'Error', 'An unexpected error occurred. Please try again.');
-      resetScores();
+      resetScores(); 
       setIsEditable(false);
     }
   };
@@ -262,7 +202,7 @@ export const EventsCard: FC<EventDetails> = ({
       },
     });
   };
-
+  
   const resetScores = () => {
     setTeamAGoals(team1Score);
     setTeamBGoals(team2Score);
@@ -280,45 +220,19 @@ export const EventsCard: FC<EventDetails> = ({
   };
 
   const price = () => (
-    <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
+    <Grid item xs={4} sm={4} md={3}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
           {currency()}
-          {editPrice ? (
-            <input
-              type="number"
-              value={newEventPrice}
-              className={styles.priceInputField}
-              onChange={(e) => handlePriceChange(e)}
-              onClick={(e) => handleFocus(e)}
-            />
-          ) : (
-            newEventPrice
-          )}
+          {charges}
         </span>
       </Typography>
-      {isAdmin ? (
-        <div className={styles.updatePrice}>
-          {editPrice ? (
-            <Tooltip title="Update" placement="top">
-              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Edit" placement="top">
-              <EditIcon
-                style={{ fontSize: 22, color: '#4ce95a' }}
-                onClick={() => setEditPrice(true)}
-              />
-            </Tooltip>
-          )}
-        </div>
-      ) : null}
     </Grid>
   );
 
-  const whatsappGroup = () =>
-    !isPast ? (
+  const whatsappGroup = () => (
+    !isPast ?
       <Grid item xs={4} sm={4} md={3}>
         <Typography className={styles.title}>
           Game Group{' '}
@@ -327,7 +241,8 @@ export const EventsCard: FC<EventDetails> = ({
           </a>
         </Typography>
       </Grid>
-    ) : null;
+    : null
+  );
 
   const timeFrame = () => {
     let timeZone;
@@ -354,7 +269,7 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const googleLocation = () =>
+  const googleLocation = () => (
     !isPast ? (
       <Grid item xs={4} sm={4} md={3}>
         <Typography className={styles.title}>
@@ -364,43 +279,23 @@ export const EventsCard: FC<EventDetails> = ({
           </a>
         </Typography>
       </Grid>
-    ) : null;
+    ) : null
+  );
 
   const numberOfPlayers = () => (
-    <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
-      <Typography className={styles.title}>
-        Number of Players{' '}
-        <span>
-          {editNumberOfPlayers ? (
-            <input
-              type="number"
-              value={newNumberOfPlayers}
-              className={styles.priceInputField}
-              onChange={(e) => handleNumberOfPriceChange(e)}
-              onClick={(e) => handleFocus(e)}
-            />
-          ) : (
-            newNumberOfPlayers
-          )}{' '}
-        </span>
-      </Typography>
-      {isAdmin ? (
-        <div className={styles.updatePlayersCount}>
-          {editNumberOfPlayers ? (
-            <Tooltip title="Update" placement="top">
-              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Edit" placement="top">
-              <EditIcon
-                style={{ fontSize: 22, color: '#4ce95a' }}
-                onClick={() => setEditNumberOfPlayers(true)}
-              />
-            </Tooltip>
-          )}
-        </div>
-      ) : null}
-    </Grid>
+    isPast ? (
+      <Grid item xs={4} sm={4} md={3}>
+        <Typography className={styles.title}>
+          Number of Players <span>{reservedPlayersCount}</span>
+        </Typography>
+      </Grid>
+    ) : (
+      <Grid item xs={4} sm={4} md={4}>
+        <Typography className={styles.title}>
+          Number of Players <span>{reservedPlayersCount}</span>
+        </Typography>
+      </Grid>
+    )
   );
 
   const playersRequired = () =>
@@ -434,11 +329,12 @@ export const EventsCard: FC<EventDetails> = ({
     showSuccessNotification();
   };
 
-  const score = () =>
+  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
+  const score = () => (
     isPast ? (
       <Grid item xs={12} sm={6} md={12}>
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
-          <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
+            <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
             <span className={styles.teamLabel}>Team {team1_color}</span>
             {isEditable && isAdmin ? (
@@ -451,10 +347,10 @@ export const EventsCard: FC<EventDetails> = ({
               />
             ) : (
               <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
-                {teamAGoals !== -1 ? teamAGoals : ''}
+                {teamAGoals !== -1 ? teamAGoals : ""}
               </span>
-            )}
-            <span className={styles.scoreDisplay}> - </span>
+            )} 
+            <span className={styles.scoreDisplay}> - </span> 
             {isEditable && isAdmin ? (
               <Input
                 type="number"
@@ -465,15 +361,15 @@ export const EventsCard: FC<EventDetails> = ({
               />
             ) : (
               <span className={isPortrait ? styles.mobileScoreDisplay : styles.scoreDisplay}>
-                {teamBGoals !== -1 ? teamBGoals : ''}
+                {teamBGoals !== -1 ? teamBGoals : ""}
               </span>
-            )}
+            )} 
             <span className={styles.teamLabel}>Team {team2_color}</span>
           </span>
           {isAdmin ? (
             isPortrait ? (
               <IconButton onClick={updateEventScore} className={styles.editIcon}>
-                {isEditable ? <CheckIcon /> : <BorderColorIcon />}
+              {isEditable ? <CheckIcon /> : <BorderColorIcon />}
               </IconButton>
             ) : (
               <Button
@@ -481,13 +377,15 @@ export const EventsCard: FC<EventDetails> = ({
                 onClick={updateEventScore}
                 className={styles.editScoreButton}
               >
-                {!isEditable ? 'Edit' : 'Save'}
+                {!isEditable ? "Edit" : "Save"}
               </Button>
             )
           ) : null}
+
         </Box>
       </Grid>
-    ) : null;
+    ) : null
+  );
 
   const gameLink = () => (
     <Grid item xs={4} sm={4} md={7}>
