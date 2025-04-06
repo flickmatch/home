@@ -1,0 +1,52 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get PR diff
+      run: |
+        echo "Fetching PR diff..."
+        gh pr diff ${{ github.event.pull_request.number }} > diff.txt
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y jq curl
+
+    - name: Call Gemini API with diff
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      run: |
+        DIFF=$(cat diff.txt)
+
+        JSON_PAYLOAD=$(jq -n \
+          --arg prompt "Review this code and provide suggestions:\n$DIFF" \
+          '{
+            contents: [{
+              role: "user",
+              parts: [{text: $prompt}]
+            }]
+          }')
+
+        RESPONSE=$(curl -s -X POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GOOGLE_API_KEY \
+          -H "Content-Type: application/json" \
+          -d "$JSON_PAYLOAD")
+
+        REVIEW=$(echo $RESPONSE | jq -r '.candidates[0].content.parts[0].text')
+
+        echo "$REVIEW" > review.txt
+
+    - name: Comment on PR
+      run: |
+        gh pr comment ${{ github.event.pull_request.number }} --body "$(cat review.txt)"
