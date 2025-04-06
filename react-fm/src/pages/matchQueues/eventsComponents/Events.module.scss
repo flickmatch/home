@@ -190,7 +190,39 @@ label {
   margin-bottom: 15px !important;
 }
 
-.score, .mobileScore {
+.updatePlayersCount,
+.updatePrice {
+  width: 30px;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  height: 30px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 50%;
+  top: 17px;
+  left: 250px;
+  position: absolute;
+}
+
+.updatePrice {
+  left: 160px;
+}
+
+.priceInputField {
+  background: black;
+  border: navajowhite;
+  color: white;
+  font-weight: bold;
+  width: 40px;
+  height: 25px;
+  font-size: 16px;
+  text-align: center;
+}
+.score,
+.mobileScore {
   background: #4ce95a;
   margin: 0;
   padding: 4px 20px;
@@ -214,13 +246,15 @@ label {
   width: 75px;
 }
 
-.scoreTitle, .mobileScoreTitle {
+.scoreTitle,
+.mobileScoreTitle {
   color: #4ce95a;
   font-size: 20px;
   display: flex;
   align-items: center;
 }
-.scoreTitle span, .mobileScoreTitle span {
+.scoreTitle span,
+.mobileScoreTitle span {
   color: #fff;
   margin-left: 8px;
   display: flex;
@@ -228,14 +262,15 @@ label {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.mobileScoreTitle{
+.mobileScoreTitle {
   font-size: 18px;
   span {
     margin-left: 3px;
   }
 }
 
-.scoreInput, .mobileScoreInput {
+.scoreInput,
+.mobileScoreInput {
   width: 40px;
   text-align: center;
   margin: 0 8px;
@@ -257,7 +292,8 @@ label {
   }
 }
 
-.scoreDisplay, .mobileScoreDisplay {
+.scoreDisplay,
+.mobileScoreDisplay {
   margin: 0 5px;
   font-weight: bold;
 }
