@@ -25,6 +25,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
+    checkoutProducts(input: StripeInput): StripeOutput
 }
 
 input UpdateEventScoreInput{
@@ -349,4 +350,18 @@ type Author {
   id: ID
   firstName: String
   lastName: String
+}
+
+type StripeOutput {
+  sessionId: String
+  sessionUrl: String
+  status: String
+  message: String
+}
+
+input StripeInput {
+  name: String!
+  amount: Float!
+  currency: String!
+  quantity: Int!
 }
