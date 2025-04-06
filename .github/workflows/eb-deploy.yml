@@ -1,6 +1,8 @@
 name: Deploy to Elastic Beanstalk
 
 on:
+  pull_request:
+    types: [opened]
   push:
     branches: ["main", "eb-deploy"]
     paths:
