@@ -92,7 +92,7 @@ public class RazorPaymentCallbackController {
             String sanitizedPaymentId = sanitizeForLog(paymentId);
             String sanitizedSignature = sanitizeForLog(signature);
 
-            log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
+//            log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
             log.info("Status: {}", status);
 
             if(status) {
