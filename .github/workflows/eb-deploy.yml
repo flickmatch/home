@@ -2,7 +2,7 @@ name: Deploy to Elastic Beanstalk
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "eb-deploy"]
     paths:
       - "platform/**"
   workflow_dispatch:
@@ -19,12 +19,19 @@ jobs:
         with:
           distribution: "corretto"
           java-version: "17"
+      # - name: Debug AWS Secrets (⚠️ Remove after testing!)
+      #   run: |
+      #     echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}"
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@v2
       - name: Execute Gradle build
-        run: gradle clean build -Dspring.profiles.active=prod
+        run: ./gradlew clean build -Dspring.profiles.active=prod
         working-directory: platform
+      - name: List build artifacts
+        run: ls -l platform/build/libs
+
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -34,4 +41,4 @@ jobs:
           environment_name: "Flickmatch-platform-env"
           version_label: ${{ github.sha }}
           region: ap-south-1
-          deployment_package: target/platform.jar
+          deployment_package: platform/build/libs/platform-0.0.1-SNAPSHOT.war
