@@ -92,8 +92,7 @@ function MatchQueue() {
         });
 
         const data = await response.json();
-        // eslint-disable-next-line no-console
-        console.log(data, '');
+
         const citiesOrder = ['San Francisco', 'San Jose', 'Mountain View'];
         const reorderedCities: CityDetails[] = [];
 
