@@ -135,5 +135,10 @@
 }
 
 .switchBtn {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
+}
+
+.paymentMethods {
+  display: flex;
+  justify-content: space-between;
 }
