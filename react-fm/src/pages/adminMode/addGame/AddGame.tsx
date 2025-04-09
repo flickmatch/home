@@ -627,7 +627,7 @@ function AddGame() {
                   {sectionSwitch('teamDivision')}
                 </FlexBox>
                 {teamDivision && sectionTeamColors()}
-                
+
                 <br />
                 {sectionFourth()}
               </FlexBox>
