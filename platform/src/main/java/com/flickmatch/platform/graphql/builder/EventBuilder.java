@@ -304,6 +304,7 @@ public class EventBuilder {
                 .team1Color(input.getTeam1Color())
                 .team2Color(input.getTeam2Color())
                 .teamDivision(input.getTeamDivision())
+                .paymentMethods(input.getPaymentMethods())
                 .build();
         return eventDetails;
     }
