@@ -55,6 +55,7 @@ function AddGame() {
   const [teamDivision, setTeamDivision] = useState(true);
   const [team1Color, setTeam1Color] = useState('Bibs');
   const [team2Color, setTeam2Color] = useState('No Bibs');
+  const [paymentMethods, setPaymentMethods] = useState(['']);
 
   // console.log(testGame);
 
@@ -109,6 +110,15 @@ function AddGame() {
       controller.abort();
     };
   }, []);
+
+  const handlePaymentMethodChange = (method: string) => {
+    setPaymentMethods(
+      (prev) =>
+        prev.includes(method)
+          ? prev.filter((item) => item !== method) // Remove if already selected
+          : [...prev, method], // Add if not selected
+    );
+  };
 
   const fetchSportsTurf = (cityId: string) => {
     const fetchData = async () => {
@@ -237,6 +247,7 @@ function AddGame() {
       endTime: endTime,
       reservedPlayersCount: parseInt(playersCount),
       waitListPlayersCount: parseInt(playersCount) / 2,
+      paymentMethods: paymentMethods.filter((method) => method !== ''),
     },
   };
 
@@ -272,6 +283,9 @@ function AddGame() {
                       teamDivision: ${teamDivision}
                       team1Color: "${team1Color}"
                       team2Color: "${team2Color}"
+                      paymentMethods: ${JSON.stringify(
+                        paymentMethods.filter((method) => method !== ''),
+                      )}
                   }
               ) {
                 isSuccessful
@@ -295,6 +309,7 @@ function AddGame() {
           // eslint-disable-next-line no-console
           console.log(error);
         });
+     
     }
   };
 
@@ -399,8 +414,44 @@ function AddGame() {
 
   const sectionChargesPlayers = () => (
     <FlexBox className={styles.sectionThird}>
-      <Box className={styles.dateTimePicker}>
-        <FlexBox className={styles.startTimePicker}>
+      <FlexBox className={styles.dateTimePicker} marginTop={2}>
+        <FlexBox className={styles.startEndPicker} flex={1}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Payment Methods</Typography>
+          </Box>
+          <div className={isPortrait ? styles.portraitPaymentMethods : styles.paymentMethods}>
+            <div>
+              <input
+                type="checkbox"
+                id="razorpay"
+                checked={paymentMethods.includes('razorpay')}
+                onChange={() => handlePaymentMethodChange('razorpay')}
+              />
+              <label htmlFor="razorpay">Razorpay</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="phonepe"
+                checked={paymentMethods.includes('phonepe')}
+                onChange={() => handlePaymentMethodChange('phonepe')}
+              />
+              <label htmlFor="phonepe">PhonePe</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="stripe"
+                checked={paymentMethods.includes('stripe')}
+                onChange={() => handlePaymentMethodChange('stripe')}
+              />
+              <label htmlFor="stripe">Stripe</label>
+            </div>
+          </div>
+        </FlexBox>
+      </FlexBox>
+      <FlexBox className={styles.dateTimePicker}>
+        <FlexBox className={styles.startTimePicker} flex={1} marginRight={2}>
           <Box>
             <Typography className={styles.fieldTitle}>Event Charges</Typography>
           </Box>
@@ -427,10 +478,9 @@ function AddGame() {
             type="number"
           />
         </FlexBox>
-      </Box>
 
-      <Box className={styles.dateTimePicker}>
-        <FlexBox className={styles.startEndPicker}>
+        {/* Total Players */}
+        <FlexBox className={styles.startEndPicker} flex={1}>
           <Box>
             <Typography className={styles.fieldTitle}>Total Players</Typography>
           </Box>
@@ -443,7 +493,7 @@ function AddGame() {
             type="number"
           />
         </FlexBox>
-      </Box>
+      </FlexBox>
     </FlexBox>
   );
 
