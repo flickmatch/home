@@ -571,7 +571,6 @@ function AddGame() {
     );
   };
 
-
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
@@ -628,6 +627,7 @@ function AddGame() {
                   {sectionSwitch('teamDivision')}
                 </FlexBox>
                 {teamDivision && sectionTeamColors()}
+                
                 <br />
                 {sectionFourth()}
               </FlexBox>
