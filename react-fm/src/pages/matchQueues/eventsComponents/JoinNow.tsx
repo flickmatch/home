@@ -29,6 +29,7 @@ import type { RootState } from '@/store/types';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+import { JoinNowPayLater } from './JoinNowPayLater';
 import { createOrder, displayRazorpay } from './RazorPay';
 
 const url =
@@ -55,6 +56,7 @@ export const JoinNow: FC<EventDetails> = ({
   venueName,
   uniqueEventId,
   handlePassName,
+  addPlayerInQueue,
   cityId,
   credits,
   team_division,
@@ -85,6 +87,8 @@ export const JoinNow: FC<EventDetails> = ({
     status: '',
     cityId: 0,
   });
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [openJoinModal, setOpenJoinModal] = useState(false);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -451,6 +455,24 @@ export const JoinNow: FC<EventDetails> = ({
     );
   }
 
+  const handleOpen = (eventId: string) => {
+    history.replaceState(null, '', `#${eventId}`);
+    setSelectedEventId(eventId);
+    setOpenJoinModal((prevState) => !prevState);
+  };
+
+  const handleToggle = () => {
+    if (selectedEventId) {
+      handleOpen(selectedEventId);
+    }
+  };
+
+  const passName = (name: string) => {
+    if (addPlayerInQueue) {
+      addPlayerInQueue(name);
+    }
+  };
+
   //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
   // console.log(team1_color, team2_color, team_division);
 
@@ -460,6 +482,23 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
+              <JoinNowPayLater
+                isOpen={openJoinModal}
+                onToggle={handleToggle}
+                uniqueEventId={selectedEventId ? selectedEventId : ''}
+                cityId={cityId ? cityId : ''}
+                handlePassName={passName}
+                team1_color={team1_color ? team1_color : ''}
+                team2_color={team2_color ? team2_color : ''}
+              />
+              <Button
+                className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                startIcon={<LocalOfferIcon />}
+                variant="contained"
+                onClick={() => handleOpen(uniqueEventId)}
+              >
+                Pay Later
+              </Button>
               {hasSubscription &&
               activeSubscriptonData &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&

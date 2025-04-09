@@ -127,3 +127,15 @@
   justify-content: center;
   align-items: center;
 }
+
+.paymentStatus {
+  position: absolute;
+  background: black;
+  top: -16px;
+  font-size: 11px;
+  text-align: center;
+  width: 50px;
+  border-radius: 10%;
+  height: 18px;
+  font-weight: 600;
+}

@@ -339,6 +339,7 @@ export const EventComponent: FC<event> = ({
                     handlePassName={passName}
                     cityId={cityNameId}
                     credits={playingEvent.credits ? playingEvent.credits : 0}
+                    addPlayerInQueue={addPlayerInQueue}
                   />
                 )}
               </FlexBox>

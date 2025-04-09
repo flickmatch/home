@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
+
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
@@ -136,6 +138,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
               style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
               className="handle"
             >
+              {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                <div className={styles.paymentStatus} style={{ position: 'absolute' }}>
+                  unpaid
+                </div>
+              ) : null}
               <Jersey size={45} color={teamColor} number={index.toString()} />
             </Box>
           )}
@@ -172,9 +179,19 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             </Box>
           ) : (
             <Box
-              style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: 4,
+                position: 'relative',
+              }}
               className="handle"
             >
+              {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                <div className={styles.paymentStatus} style={{ position: 'absolute' }}>
+                  unpaid
+                </div>
+              ) : null}
               <Jersey size={42} color={teamColor} number={index.toString()} />
             </Box>
           )}
