@@ -46,6 +46,7 @@ input UpdateEventDetailsInput {
   team1Color:String
   team2Color:String
   isDeleted: Boolean
+    paymentMethods:[String]
 }
 
 input CreateEventInput {
@@ -83,7 +84,9 @@ input CreateEventInput {
   Not required for P0
   """
   moderatorId: ID
+    paymentMethods:[String]
 }
+
 
 input JoinEventInput {
   eventId: ID @deprecated(reason: "Use uniqueEventId.")
@@ -279,6 +282,7 @@ type EVENT {
   teamDivision: Boolean
   team1Color:String
   team2Color:String
+  paymentMethods:[String]
   team1Score: Int
   team2Score: Int
 }

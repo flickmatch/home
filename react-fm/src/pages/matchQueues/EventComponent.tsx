@@ -365,6 +365,8 @@ export const EventComponent: FC<event> = ({
                 dummyData={playingEvent.dummyData ? playingEvent.dummyData : false}
                 handlePassName={passName}
                 credits={playingEvent.credits ? playingEvent.credits : 0}
+                team1Score={playingEvent.team1Score !== null ? playingEvent.team1Score : -1}
+                team2Score={playingEvent.team2Score !== null ? playingEvent.team2Score : -1}
               />
             </FlexBox>
           </AccordionSummary>
@@ -507,7 +509,7 @@ export const EventComponent: FC<event> = ({
                       <div
                         style={{
                           position: 'absolute',
-                          zIndex: 9999,
+                          zIndex: 999,
                           top: 75,
                           right: 8,
                         }}
