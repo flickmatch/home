@@ -371,6 +371,7 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .paymentMethods(eventDetails.getPaymentMethods())
                 .build();
     }
 
@@ -465,6 +466,7 @@ public class EventBuilder {
                 input.getTeamDivision().ifPresent(eventDetails::setTeamDivision);
                 input.getTeam1Color().ifPresent(eventDetails::setTeam1Color);
                 input.getTeam2Color().ifPresent(eventDetails::setTeam2Color);
+                
 
                 return eventRepository.save(event);
             }
