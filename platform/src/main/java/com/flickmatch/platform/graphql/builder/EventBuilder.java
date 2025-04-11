@@ -304,6 +304,8 @@ public class EventBuilder {
                 .team1Color(input.getTeam1Color())
                 .team2Color(input.getTeam2Color())
                 .teamDivision(input.getTeamDivision())
+                .team1Name(input.getTeam1Name())
+                .team2Name(input.getTeam2Name())
                 .paymentMethods(input.getPaymentMethods())
                 .build();
         return eventDetails;
@@ -466,7 +468,6 @@ public class EventBuilder {
                 input.getTeamDivision().ifPresent(eventDetails::setTeamDivision);
                 input.getTeam1Color().ifPresent(eventDetails::setTeam1Color);
                 input.getTeam2Color().ifPresent(eventDetails::setTeam2Color);
-                
 
                 return eventRepository.save(event);
             }

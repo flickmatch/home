@@ -1,7 +1,7 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -32,6 +32,7 @@ import { apiUrl } from './constants';
 function GoogleLogin() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+  const location = useLocation();
   const auth = getAuth();
   // const [emailId, setEmailId] = useState('');
   // const login = useSelector((store) => store.login);
@@ -109,7 +110,11 @@ function GoogleLogin() {
 
         dispatch(logingin(res.data));
 
-        navigate('/match-queues');
+        if (location.state?.from?.includes('/event/')) {
+          navigate(location.state.from);
+        } else {
+          navigate('/match-queues');
+        }
       })
       .catch((err) => {
         alert(err);
@@ -173,7 +178,11 @@ function GoogleLogin() {
           dispatch(logingin(emailData));
 
           checkAdmin(user.email as string);
-          navigate('/match-queues');
+          if (location.state?.from?.includes('/event/')) {
+            navigate(location.state.from);
+          } else {
+            navigate('/match-queues');
+          }
         } else {
           alert('Please verify your email to login.');
         }

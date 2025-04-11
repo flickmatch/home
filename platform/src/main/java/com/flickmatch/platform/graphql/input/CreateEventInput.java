@@ -21,4 +21,6 @@ public class CreateEventInput {
     String team1Color;
     String team2Color;
     List<String> paymentMethods;
+    String team1Name;
+    String team2Name;
 }
