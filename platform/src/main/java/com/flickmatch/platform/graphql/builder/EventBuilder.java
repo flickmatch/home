@@ -306,6 +306,7 @@ public class EventBuilder {
                 .teamDivision(input.getTeamDivision())
                 .team1Name(input.getTeam1Name())
                 .team2Name(input.getTeam2Name())
+                .paymentMethods(input.getPaymentMethods())
                 .build();
         return eventDetails;
     }
@@ -372,6 +373,7 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .paymentMethods(eventDetails.getPaymentMethods())
                 .build();
     }
 
