@@ -65,9 +65,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
     coordinates?.mobileSingleTeam ? coordinates?.mobileSingleTeam : { x: 0, y: 0 },
   );
 
-  
-
-
+  // eslint-disable-next-line no-console
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
