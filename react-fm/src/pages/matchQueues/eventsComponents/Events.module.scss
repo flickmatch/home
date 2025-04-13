@@ -191,7 +191,7 @@ label {
 }
 
 .score, .mobileScore {
-  background: #4ce95a;
+  background: #c48106;
   margin: 0;
   padding: 4px 20px;
   width: 85px;
@@ -203,7 +203,7 @@ label {
   align-items: center;
   font-size: 18px;
   font-weight: 700;
-  box-shadow: 0 1px 1px rgba(76, 233, 90, 0.2);
+  box-shadow: 0 1px 1px rgba(244, 154, 18, 0.2);
 }
 
 .mobileScore {
@@ -216,7 +216,7 @@ label {
 
 .scoreTitle, .mobileScoreTitle {
   color: #4ce95a;
-  font-size: 20px;
+  font-size: 19px;
   display: flex;
   align-items: center;
 }
@@ -227,6 +227,7 @@ label {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+  font-weight: bold;
 }
 .mobileScoreTitle{
   font-size: 18px;

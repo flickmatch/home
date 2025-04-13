@@ -55,7 +55,8 @@ function AddGame() {
   const [teamDivision, setTeamDivision] = useState(true);
   const [team1Color, setTeam1Color] = useState('Bibs');
   const [team2Color, setTeam2Color] = useState('No Bibs');
-
+  const [team1Name, setTeam1Name] = useState('');
+  const [team2Name, setTeam2Name] = useState('');
   // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
@@ -272,6 +273,8 @@ function AddGame() {
                       teamDivision: ${teamDivision}
                       team1Color: "${team1Color}"
                       team2Color: "${team2Color}"
+                      team1Name: "${team1Name}"
+                      team2Name: "${team2Name}"
                   }
               ) {
                 isSuccessful
@@ -571,6 +574,40 @@ function AddGame() {
     );
   };
 
+  const sectionTeamNames = () => (
+    <FlexBox className={styles.sectionThird}>
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startTimePicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 1</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team1Name}
+            onChange={(e) => setTeam1Name(e.target.value)}
+            placeholder="Name"
+            id="team1Name"
+          />
+        </FlexBox>
+      </Box>
+
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startEndPicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 2</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team2Name}
+            onChange={(e) => setTeam2Name(e.target.value)}
+            placeholder="Name"
+            id="team2Name"
+          />
+        </FlexBox>
+      </Box>
+    </FlexBox>
+  );
+
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
@@ -627,7 +664,7 @@ function AddGame() {
                   {sectionSwitch('teamDivision')}
                 </FlexBox>
                 {teamDivision && sectionTeamColors()}
-
+                {teamDivision && sectionTeamNames()}
                 <br />
                 {sectionFourth()}
               </FlexBox>
