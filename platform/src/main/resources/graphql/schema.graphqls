@@ -285,6 +285,8 @@ type EVENT {
   paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  team1Name: String
+  team2Name: String
 }
 
 type Player {

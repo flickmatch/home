@@ -36,4 +36,6 @@ public class Event {
     private List<String> paymentMethods;
     private Integer team1Score;
     private Integer team2Score;
+    private String team1Name;
+    private String team2Name;
 }
