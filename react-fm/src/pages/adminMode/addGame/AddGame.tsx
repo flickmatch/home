@@ -416,32 +416,31 @@ function AddGame() {
   );
 
   const sectionChargesPlayers = () => (
-    <FlexBox className={styles.sectionThird}>
-      <FlexBox className={styles.dateTimePicker} marginTop={2}>
-        <FlexBox className={styles.startEndPicker} flex={1}>
-          <Box>
-            <Typography className={styles.fieldTitle}>Payment Methods</Typography>
-          </Box>
-          <div className={isPortrait ? styles.portraitPaymentMethods : styles.paymentMethods}>
-            <div>
-              <input
-                type="checkbox"
-                id="razorpay"
-                checked={paymentMethods.includes('razorpay')}
-                onChange={() => handlePaymentMethodChange('razorpay')}
-              />
-              <label htmlFor="razorpay">Razorpay</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="phonepe"
-                checked={paymentMethods.includes('phonepe')}
-                onChange={() => handlePaymentMethodChange('phonepe')}
-              />
-              <label htmlFor="phonepe">PhonePe</label>
-            </div>
-            {/* <div>
+    <FlexBox className={isPortrait ? styles.portraitSectionChargesPlayers : styles.sectionThird}>
+      <FlexBox className={styles.startEndPicker} flex={1}>
+        <Box>
+          <Typography className={styles.fieldTitle}>Payment Methods</Typography>
+        </Box>
+        <div className={styles.paymentMethods}>
+          <div className={styles.flexBox}>
+            <input
+              type="checkbox"
+              id="razorpay"
+              checked={paymentMethods.includes('razorpay')}
+              onChange={() => handlePaymentMethodChange('razorpay')}
+            />
+            <label htmlFor="razorpay">Razorpay</label>
+          </div>
+          <div className={styles.flexBox}>
+            <input
+              type="checkbox"
+              id="phonepe"
+              checked={paymentMethods.includes('phonepe')}
+              onChange={() => handlePaymentMethodChange('phonepe')}
+            />
+            <label htmlFor="phonepe">PhonePe</label>
+          </div>
+          {/* <div>
               <input
                 type="checkbox"
                 id="stripe"
@@ -450,10 +449,9 @@ function AddGame() {
               />
               <label htmlFor="stripe">Stripe</label>
             </div> */}
-          </div>
-        </FlexBox>
+        </div>
       </FlexBox>
-      <FlexBox className={styles.dateTimePicker}>
+      <FlexBox className={isPortrait ? styles.portraitDateTimePicker : styles.dateTimePicker}>
         <FlexBox className={styles.startTimePicker} flex={1} marginRight={2}>
           <Box>
             <Typography className={styles.fieldTitle}>Event Charges</Typography>
@@ -692,7 +690,6 @@ function AddGame() {
                 {sectionThird()}
                 {sectionDatetime()}
                 {sectionChargesPlayers()}
-
                 <FlexBox className={styles.sectionThird}>
                   <Box className={styles.dateTimePicker}>
                     <FlexBox className={styles.startTimePicker}>
