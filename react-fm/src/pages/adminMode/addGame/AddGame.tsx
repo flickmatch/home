@@ -55,7 +55,7 @@ function AddGame() {
   const [teamDivision, setTeamDivision] = useState(true);
   const [team1Color, setTeam1Color] = useState('Bibs');
   const [team2Color, setTeam2Color] = useState('No Bibs');
-  const [paymentMethods, setPaymentMethods] = useState(['']);
+  const [paymentMethods, setPaymentMethods] = useState(['razorpay']);
 
   // console.log(testGame);
 
@@ -309,7 +309,6 @@ function AddGame() {
           // eslint-disable-next-line no-console
           console.log(error);
         });
-     
     }
   };
 
@@ -438,7 +437,7 @@ function AddGame() {
               />
               <label htmlFor="phonepe">PhonePe</label>
             </div>
-            <div>
+            {/* <div>
               <input
                 type="checkbox"
                 id="stripe"
@@ -446,7 +445,7 @@ function AddGame() {
                 onChange={() => handlePaymentMethodChange('stripe')}
               />
               <label htmlFor="stripe">Stripe</label>
-            </div>
+            </div> */}
           </div>
         </FlexBox>
       </FlexBox>
