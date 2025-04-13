@@ -579,7 +579,7 @@ function AddGame() {
       <Box className={styles.dateTimePicker}>
         <FlexBox className={styles.startTimePicker}>
           <Box>
-            <Typography className={styles.fieldTitle}>Team 1</Typography>
+            <Typography className={styles.fieldTitle}>Team 1 Name</Typography>
           </Box>
           <TextField
             fullWidth
@@ -594,7 +594,7 @@ function AddGame() {
       <Box className={styles.dateTimePicker}>
         <FlexBox className={styles.startEndPicker}>
           <Box>
-            <Typography className={styles.fieldTitle}>Team 2</Typography>
+            <Typography className={styles.fieldTitle}>Team 2 Name</Typography>
           </Box>
           <TextField
             fullWidth
