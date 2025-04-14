@@ -1,13 +1,12 @@
-import type { ChangeEvent } from 'react';
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CheckIcon from '@mui/icons-material/Check';
-import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ShareIcon from '@mui/icons-material/Share';
@@ -58,14 +57,11 @@ export const EventsCard: FC<EventDetails> = ({
   team2Score,
 }) => {
   const isPortrait = useOrientation();
+  const navigate = useNavigate();
   const [, notificationsActions] = useNotifications();
   const [currencyCode, setCurrencyCode] = useState('INR');
-  const [editPrice, setEditPrice] = useState(false);
-  const [editNumberOfPlayers, setEditNumberOfPlayers] = useState(false);
-  const [newEventPrice, setNewEventPrice] = useState<number>(charges);
-  const [newNumberOfPlayers, setNewNumberOfPlayers] = useState<number>(reservedPlayersCount);
 
-  const openSpots = newNumberOfPlayers - reservedPlayersList.length;
+  const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
   const currentUrl = window.location.origin;
   const fullEventLink = `${currentUrl}/event/${uniqueEventId}`;
@@ -76,8 +72,6 @@ export const EventsCard: FC<EventDetails> = ({
   const [isEditable, setIsEditable] = useState(false);
 
   const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
-
-  // console.log(team1_color, team2_color, team_division);
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -124,52 +118,6 @@ export const EventsCard: FC<EventDetails> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usTime]);
-
-  const updateEventDetails = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `mutation UpdateEventDetails {
-      updateEventDetails(input: { uniqueEventId: "${uniqueEventId}", reservedPlayersCount :${newNumberOfPlayers}, 
-      waitListPlayersCount : ${newNumberOfPlayers / 2}, charges: ${newEventPrice}
-       }) {
-          isSuccessful
-          errorMessage
-      }
-  }`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.errors) {
-          // Handle GraphQL errors
-          alert(result.errors[0].message);
-        } else {
-          setEditNumberOfPlayers(false);
-          setEditPrice(false);
-          alert('Updated successfully');
-        }
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewEventPrice(Number(e.target.value));
-  };
-
-  const handleNumberOfPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewNumberOfPlayers(Number(e.target.value));
-  };
-
-  const handleFocus = (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-  };
 
   const currencyFromCity = async () => {
     const response = await fetch(apiUrl, {
@@ -285,33 +233,17 @@ export const EventsCard: FC<EventDetails> = ({
         Price{' '}
         <span>
           {currency()}
-          {editPrice ? (
-            <input
-              type="number"
-              value={newEventPrice}
-              className={styles.priceInputField}
-              onChange={(e) => handlePriceChange(e)}
-              onClick={(e) => handleFocus(e)}
-            />
-          ) : (
-            newEventPrice
-          )}
+          {charges}
         </span>
       </Typography>
       {isAdmin ? (
         <div className={styles.updatePrice}>
-          {editPrice ? (
-            <Tooltip title="Update" placement="top">
-              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Edit" placement="top">
-              <EditIcon
-                style={{ fontSize: 22, color: '#4ce95a' }}
-                onClick={() => setEditPrice(true)}
-              />
-            </Tooltip>
-          )}
+          <Tooltip title="Edit" placement="top">
+            <EditIcon
+              style={{ fontSize: 22, color: '#4ce95a' }}
+              onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+            />
+          </Tooltip>
         </div>
       ) : null}
     </Grid>
@@ -369,35 +301,16 @@ export const EventsCard: FC<EventDetails> = ({
   const numberOfPlayers = () => (
     <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
       <Typography className={styles.title}>
-        Number of Players{' '}
-        <span>
-          {editNumberOfPlayers ? (
-            <input
-              type="number"
-              value={newNumberOfPlayers}
-              className={styles.priceInputField}
-              onChange={(e) => handleNumberOfPriceChange(e)}
-              onClick={(e) => handleFocus(e)}
-            />
-          ) : (
-            newNumberOfPlayers
-          )}{' '}
-        </span>
+        Number of Players <span>{reservedPlayersCount}</span>
       </Typography>
       {isAdmin ? (
         <div className={styles.updatePlayersCount}>
-          {editNumberOfPlayers ? (
-            <Tooltip title="Update" placement="top">
-              <DoneIcon style={{ fontSize: 22, color: '#4ce95a' }} onClick={updateEventDetails} />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Edit" placement="top">
-              <EditIcon
-                style={{ fontSize: 22, color: '#4ce95a' }}
-                onClick={() => setEditNumberOfPlayers(true)}
-              />
-            </Tooltip>
-          )}
+          <Tooltip title="Edit" placement="top">
+            <EditIcon
+              style={{ fontSize: 22, color: '#4ce95a' }}
+              onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+            />
+          </Tooltip>
         </div>
       ) : null}
     </Grid>
