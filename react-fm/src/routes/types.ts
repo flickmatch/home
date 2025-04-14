@@ -17,6 +17,7 @@ enum Pages {
   PrivacyPolicy,
   AddTurfPage,
   AddGame,
+  UpdateGame,
   ServicesPrivacyPolicy,
   GeneralTermsConditions,
   Contact8,
