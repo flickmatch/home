@@ -1,3 +1,4 @@
+import type { SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -60,6 +61,9 @@ function AddGame() {
   const [team1Color, setTeam1Color] = useState('Bibs');
   const [team2Color, setTeam2Color] = useState('No Bibs');
   const [error, setError] = useState<string | null>(null);
+  const [team1Name, setTeam1Name] = useState('');
+  const [team2Name, setTeam2Name] = useState('');
+  // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
 
@@ -69,14 +73,12 @@ function AddGame() {
         .then((eventDetails) => {
           if (eventDetails) {
             const eventCityId = id.charAt(0);
-
             setCityName(eventCityId);
-            fetchSportsTurf(eventCityId);
+            fetchSportsTurf(eventCityId, eventDetails.venueName);
 
             setCharges(eventDetails.charges.toString());
             setCredits(eventDetails.credits != null ? eventDetails.credits.toString() : '');
             setMapLink(eventDetails.venueLocationLink);
-            setTurfName(eventDetails.venueName);
             setPlayersCount(eventDetails.reservedPlayersCount.toString());
             setTeam1Color(
               eventDetails.team1Color !== undefined ? eventDetails.team1Color : team1Color,
@@ -152,7 +154,7 @@ function AddGame() {
     return <div>Error: {error}</div>;
   }
 
-  const fetchSportsTurf = (cityId: string) => {
+  const fetchSportsTurf = (cityId: string, eventVenueName: string) => {
     const fetchData = async () => {
       try {
         const response = await fetch(gameQueuesApiUrl, {
@@ -180,6 +182,15 @@ function AddGame() {
         const data = await response.json();
 
         setSportsVenues(data.data.city.sportsVenues);
+        if (eventVenueName) {
+          data.data.city.sportsVenues.forEach(
+            (sportVenue: { displayName: string; sportsVenueId: SetStateAction<string> }) => {
+              if (sportVenue.displayName === eventVenueName) {
+                setTurfName(sportVenue.sportsVenueId);
+              }
+            },
+          );
+        }
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
@@ -218,7 +229,7 @@ function AddGame() {
     if (data.data.city.cityId === e.target.value) {
       setCurrencyType(data.data.city.countryCode);
     }
-    fetchSportsTurf(e.target.value);
+    fetchSportsTurf(e.target.value, '');
   };
 
   const handleTurfName = (e: SelectChangeEvent) => {
@@ -314,6 +325,8 @@ function AddGame() {
                       teamDivision: ${teamDivision}
                       team1Color: "${team1Color}"
                       team2Color: "${team2Color}"
+                      team1Name: "${team1Name}"
+                      team2Name: "${team2Name}"
                   }
               ) {
                 isSuccessful
@@ -652,6 +665,40 @@ function AddGame() {
     );
   };
 
+  const sectionTeamNames = () => (
+    <FlexBox className={styles.sectionThird}>
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startTimePicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 1</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team1Name}
+            onChange={(e) => setTeam1Name(e.target.value)}
+            placeholder="Name"
+            id="team1Name"
+          />
+        </FlexBox>
+      </Box>
+
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startEndPicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 2</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team2Name}
+            onChange={(e) => setTeam2Name(e.target.value)}
+            placeholder="Name"
+            id="team2Name"
+          />
+        </FlexBox>
+      </Box>
+    </FlexBox>
+  );
+
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button
@@ -713,7 +760,7 @@ function AddGame() {
                   {sectionSwitch('teamDivision')}
                 </FlexBox>
                 {teamDivision && sectionTeamColors()}
-
+                {teamDivision && sectionTeamNames()}
                 <br />
                 {sectionFourth()}
               </FlexBox>

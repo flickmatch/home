@@ -298,23 +298,33 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
-  const numberOfPlayers = () => (
-    <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
-      <Typography className={styles.title}>
-        Number of Players <span>{reservedPlayersCount}</span>
-      </Typography>
-      {isAdmin ? (
-        <div className={styles.updatePlayersCount}>
-          <Tooltip title="Edit" placement="top">
-            <EditIcon
-              style={{ fontSize: 22, color: '#4ce95a' }}
-              onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
-            />
-          </Tooltip>
-        </div>
-      ) : null}
-    </Grid>
+  const changeNumberOfPlayersAndPrice = () => (
+    <div className={styles.updatePlayersCount}>
+      <Tooltip title="Edit" placement="top">
+        <EditIcon
+          style={{ fontSize: 22, color: '#4ce95a' }}
+          onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+        />
+      </Tooltip>
+    </div>
   );
+
+  const numberOfPlayers = () =>
+    isPast ? (
+      <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
+        <Typography className={styles.title}>
+          Number of Players <span>{reservedPlayersCount}</span>
+        </Typography>
+        {isAdmin ? changeNumberOfPlayersAndPrice() : null}
+      </Grid>
+    ) : (
+      <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
+        <Typography className={styles.title}>
+          Number of Players <span>{reservedPlayersCount}</span>
+        </Typography>
+        {isAdmin ? changeNumberOfPlayersAndPrice() : null}
+      </Grid>
+    );
 
   const playersRequired = () =>
     !isPast ? (
