@@ -1,0 +1,4 @@
+This is a dummy commit message for demonstration purposes.
+Replace this message with a meaningful description of your changes.
+
+Dummy commit: Initial placeholder content.
