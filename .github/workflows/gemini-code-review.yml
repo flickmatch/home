@@ -12,41 +12,99 @@ jobs:
       contents: read
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Get PR diff
-      run: |
-        echo "Fetching PR diff..."
-        gh pr diff ${{ github.event.pull_request.number }} > diff.txt
+      - name: Install gh CLI
+        run: |
+          echo "Installing GitHub CLI..."
+          sudo apt-get update
+          sudo apt-get install -y curl
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y gh
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update && sudo apt-get install -y jq curl
+      - name: Get PR diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Fetching PR diff..."
+          gh pr diff ${{ github.event.pull_request.number }} > diff.txt
 
-    - name: Call Gemini API with diff
-      env:
-        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-      run: |
-        DIFF=$(cat diff.txt)
+      - name: Check Diff Size
+        id: check_diff_size
+        run: |
+          DIFF_SIZE=$(wc -l < diff.txt)
+          MAX_DIFF_SIZE=2000  # Example: Limit to 2000 lines
+          echo "Diff size: $DIFF_SIZE lines"
+          if [[ $DIFF_SIZE -gt $MAX_DIFF_SIZE ]]; then
+            echo "::set-output name=skip_review::true"
+            echo "Diff is too large ($DIFF_SIZE lines). Skipping review."
+          else
+            echo "::set-output name=skip_review::false"
+          fi
 
-        JSON_PAYLOAD=$(jq -n \
-          --arg prompt "Review this code and provide suggestions:\n$DIFF" \
-          '{
-            contents: [{
-              role: "user",
-              parts: [{text: $prompt}]
-            }]
-          }')
+      - name: Install dependencies
+        if: steps.check_diff_size.outputs.skip_review == 'false'
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq curl
 
-        RESPONSE=$(curl -s -X POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GOOGLE_API_KEY \
-          -H "Content-Type: application/json" \
-          -d "$JSON_PAYLOAD")
+      - name: Call Gemini API with diff
+        if: steps.check_diff_size.outputs.skip_review == 'false'
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          set -e  # Exit immediately if a command exits with a non-zero status.
+          DIFF=$(cat diff.txt)
+          JSON_PAYLOAD=$(jq -n \
+            --arg prompt "Review this code and provide suggestions. Identify potential bugs, security vulnerabilities, and style violations. Here is the code diff:\n$DIFF" \
+            '{
+              contents: [{
+                role: "user",
+                parts: [{text: $prompt}]
+              }]
+            }')
 
-        REVIEW=$(echo $RESPONSE | jq -r '.candidates[0].content.parts[0].text')
+          RESPONSE=$(curl -s -X POST \
+            https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GOOGLE_API_KEY \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD")
 
-        echo "$REVIEW" > review.txt
+          REVIEW=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text' || echo "No review generated.")  # Handle empty response
 
-    - name: Comment on PR
-      run: |
-        gh pr comment ${{ github.event.pull_request.number }} --body "$(cat review.txt)"
+          echo "$REVIEW" > review.txt
+        continue-on-error: true 
+
+      - name: Comment on PR (Success)
+        if: steps.check_diff_size.outputs.skip_review == 'false' && success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_BODY=$(cat review.txt | jq -Rs .)
+          PR_NUMBER=${{ github.event.pull_request.number }}       
+          REPO=${{ github.repository }}
+          gh pr comment "$PR_NUMBER" \
+          --repo "$REPO" \
+          --body-file review.txt
+
+      - name: Comment on PR (Skipped due to size)
+        if: steps.check_diff_size.outputs.skip_review == 'true'
+        run: |
+          COMMENT_BODY=$(cat review.txt | jq -Rs .)
+          PR_NUMBER=${{ github.event.pull_request.number }}       
+          REPO=${{ github.repository }}
+          gh pr comment "$PR_NUMBER" \
+          --repo "$REPO" \
+          --body-file "Code review skipped because the diff is too large."          
+
+      - name: Comment on PR (Failure)
+        if: steps.check_diff_size.outputs.skip_review == 'false' && failure()
+        run: |
+          COMMENT_BODY=$(cat review.txt | jq -Rs .)
+          PR_NUMBER=${{ github.event.pull_request.number }}      
+          REPO=${{ github.repository }}
+          gh pr comment "$PR_NUMBER" \
+          --repo "$REPO" \
+          --body-file "An error occurred during the code review process. Check the workflow logs for details."
