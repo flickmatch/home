@@ -1,27 +1,51 @@
-import { useCallback, useEffect } from 'react';
-
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-// TODO (Suren): this should be a custom hook :)
-function SW() {
-  //const [, notificationsActions] = useNotifications();
-  //const notificationKey = useRef<SnackbarKey | null>(null);
+import './SW.css';
+
+function ReloadPrompt() {
   const {
-    ///offlineReady: [offlineReady, setOfflineReady],
+    offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
-  } = useRegisterSW();
+  } = useRegisterSW({
+    onRegistered(r) {
+      // eslint-disable-next-line prefer-template, no-console
+      console.log('SW Registered: ' + r);
+    },
+    onRegisterError(error) {
+      // eslint-disable-next-line no-console
+      console.log('SW registration error', error);
+    },
+  });
 
-  const close = useCallback(() => {
-    //setOfflineReady(false);
+  const close = () => {
+    setOfflineReady(false);
     setNeedRefresh(false);
-  }, [setNeedRefresh]);
+  };
 
-  useEffect(() => {
-    updateServiceWorker(true);
-  }, [close, needRefresh, updateServiceWorker]);
-
-  return null;
+  return (
+    <div className="ReloadPrompt-container">
+      {(offlineReady || needRefresh) && (
+        <div className="ReloadPrompt-toast">
+          <div className="ReloadPrompt-message">
+            {offlineReady ? (
+              <span>App ready to work offline</span>
+            ) : (
+              <span>New content available, click on reload button to update.</span>
+            )}
+          </div>
+          {needRefresh && (
+            <button className="ReloadPrompt-toast-button" onClick={() => updateServiceWorker(true)}>
+              Reload
+            </button>
+          )}
+          <button className="ReloadPrompt-toast-button" onClick={() => close()}>
+            Close
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default SW;
+export default ReloadPrompt;
