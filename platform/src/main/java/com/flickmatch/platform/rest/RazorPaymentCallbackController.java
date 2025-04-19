@@ -149,10 +149,10 @@ public class RazorPaymentCallbackController {
         }
         else {
             if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/match-queues#" +uniqueEventId);
+                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
             }
             else
-                headers.add("Location", "https://flickmatch.in/match-queues#" +uniqueEventId);
+                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
         }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
@@ -229,10 +229,10 @@ public class RazorPaymentCallbackController {
         }
         else {
             if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/match-queues#" +uniqueEventId);
+                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
             }
             else
-                headers.add("Location", "https://flickmatch.in/match-queues#" +uniqueEventId);
+                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
         }
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
