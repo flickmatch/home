@@ -52,11 +52,7 @@ public class StripePaymentRequestBuilder {
     public StripeOutput checkoutProducts(StripeInput input, double amount,long quantity,String name,String currency){
 
         Stripe.apiKey=secretKey;
-        System.out.println("the parame are:");
-        System.out.println(amount);
-        System.out.println(quantity);
-        System.out.println(name);
-
+       
 
         SessionCreateParams.LineItem.PriceData.ProductData productData =
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
