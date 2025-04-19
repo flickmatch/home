@@ -1,7 +1,12 @@
 package com.flickmatch.platform.graphql.controller;
 
+import com.flickmatch.platform.dynamodb.model.StripePaymentRequest;
+import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.StripePaymentRequestBuilder;
+import com.flickmatch.platform.graphql.input.StripeCheckoutInput;
 import com.flickmatch.platform.graphql.input.StripeInput;
+import com.flickmatch.platform.graphql.type.City;
+import com.flickmatch.platform.graphql.type.Event;
 import com.flickmatch.platform.graphql.type.StripeOutput;
 import com.stripe.Stripe;
 import lombok.extern.log4j.Log4j2;
@@ -14,16 +19,34 @@ import org.springframework.stereotype.Controller;
 @Log4j2
 public class StripeController {
     @Autowired
-    private  StripePaymentRequestBuilder stripePaymentBuilder;
+    StripePaymentRequestBuilder stripePaymentBuilder;
+
+    @Autowired
+    EventBuilder eventBuilder;
+
+    @Autowired
+    CityController cityController;
 
     @MutationMapping
-    public StripeOutput checkoutProducts(@Argument StripeInput input) {
+    public StripePaymentRequest checkoutProducts(@Argument StripeInput input) {
+        Event event = eventBuilder.getEventById(input.getUniqueEventId());
+        double amount=event.getCharges();
+        long quantity=input.getPlayerInputList().size();
+        String name=event.getUniqueEventId();
+        String currency=input.getCurrency();
+        City city = cityController.getCity(input.getUniqueEventId().split("-")[0]);
+        String location = city.getCityName();
+
+
         try {
-            return stripePaymentBuilder.checkoutProducts(input);
+            return stripePaymentBuilder.createPaymentRequest(input,amount,quantity,name,currency,location);
         }
         catch (Exception e) {
             log.error("Error creating checkout session :{}",e.getMessage(),e);
         }
-        return StripeOutput.builder().build();
+        return StripePaymentRequest.builder().build();
     }
+
+
+
 }
