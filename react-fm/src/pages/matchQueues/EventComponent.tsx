@@ -392,7 +392,7 @@ export const EventComponent: FC<event> = ({
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
                   />
                 ) : null}
-                {playingEvent?.teamDivision && isPortrait && userState.login.isAdmin ? (
+                {playingEvent?.teamDivision && isPortrait ? (
                   <Stack direction="row" spacing={4} style={{ width: 125 }}>
                     <ToggleButtonGroup
                       value={singleTeamView}
