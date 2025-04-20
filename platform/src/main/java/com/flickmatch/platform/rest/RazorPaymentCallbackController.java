@@ -140,21 +140,8 @@ public class RazorPaymentCallbackController {
 
 //        whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(uniqueEventId));
         HttpHeaders headers = new HttpHeaders();
-        if (flag==1) {
-            if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
-            }
-            else
-                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
-        }
-        else {
-            if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
-            }
-            else
-                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
-        }
-            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        headers.add("Location", redirectUrl + "/event/" + uniqueEventId);
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 
     }
@@ -220,20 +207,7 @@ public class RazorPaymentCallbackController {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        if (isEventBeforeToday==1) {
-            if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
-            }
-            else
-                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
-        }
-        else {
-            if (redirectUrl != null && redirectUrl.contains("play")) {
-                headers.add("Location", "https://play.flickmatch.in/event/" +uniqueEventId);
-            }
-            else
-                headers.add("Location", "https://flickmatch.in/event/" +uniqueEventId);
-        }
+        headers.add("Location", redirectUrl + "/event/" + uniqueEventId);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
     }
