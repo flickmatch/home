@@ -57,6 +57,8 @@ function AddGame() {
   const [team2Color, setTeam2Color] = useState('No Bibs');
   const [paymentMethods, setPaymentMethods] = useState(['']);
 
+  const [team1Name, setTeam1Name] = useState('');
+  const [team2Name, setTeam2Name] = useState('');
   // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
@@ -286,6 +288,8 @@ function AddGame() {
                       paymentMethods: ${JSON.stringify(
                         paymentMethods.filter((method) => method !== ''),
                       )}
+                      team1Name: "${team1Name}"
+                      team2Name: "${team2Name}"
                   }
               ) {
                 isSuccessful
@@ -620,6 +624,40 @@ function AddGame() {
     );
   };
 
+  const sectionTeamNames = () => (
+    <FlexBox className={styles.sectionThird}>
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startTimePicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 1</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team1Name}
+            onChange={(e) => setTeam1Name(e.target.value)}
+            placeholder="Name"
+            id="team1Name"
+          />
+        </FlexBox>
+      </Box>
+
+      <Box className={styles.dateTimePicker}>
+        <FlexBox className={styles.startEndPicker}>
+          <Box>
+            <Typography className={styles.fieldTitle}>Team 2</Typography>
+          </Box>
+          <TextField
+            fullWidth
+            value={team2Name}
+            onChange={(e) => setTeam2Name(e.target.value)}
+            placeholder="Name"
+            id="team2Name"
+          />
+        </FlexBox>
+      </Box>
+    </FlexBox>
+  );
+
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
       <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
@@ -676,7 +714,7 @@ function AddGame() {
                   {sectionSwitch('teamDivision')}
                 </FlexBox>
                 {teamDivision && sectionTeamColors()}
-
+                {teamDivision && sectionTeamNames()}
                 <br />
                 {sectionFourth()}
               </FlexBox>
