@@ -3,7 +3,9 @@ package com.flickmatch.platform.graphql.controller;
 import com.flickmatch.platform.dynamodb.model.User;
 //import com.flickmatch.platform.dynamodb.service.PlayerService;
 import com.flickmatch.platform.graphql.builder.UserBuilder;
+import com.flickmatch.platform.graphql.input.CreatePlayerStatsInput;
 import com.flickmatch.platform.graphql.input.CreateUserInput;
+import com.flickmatch.platform.graphql.type.MutationResult;
 import com.flickmatch.platform.graphql.type.UserResult;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,25 @@ public class UserController {
         return userBuilder.hasActiveSubscription(email);
     }
 
+    @MutationMapping
+    public MutationResult createPlayerStats(@Argument CreatePlayerStatsInput input) {
+        try {
+            userBuilder.createPlayerStats(input);
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .build();
+        }
+    }
+
+    @QueryMapping(name="getUserStats")
+    public com.flickmatch.platform.graphql.type.User getUserStats(@Argument String email) {
+        return userBuilder.getUserStats(email);
+    }
 
 
 }
