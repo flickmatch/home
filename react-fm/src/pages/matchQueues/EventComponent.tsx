@@ -128,6 +128,7 @@ export const EventComponent: FC<event> = ({
       | {
           mobilePoints?: { x: number; y: number };
           mobileSingleTeam?: { x: number; y: number };
+          desktopSingleTeam?: { x: number; y: number };
           id?: number;
           role?: string;
         }
@@ -195,13 +196,34 @@ export const EventComponent: FC<event> = ({
       let teamBPlayers: ReservedPlayerDetails[] = [];
       const teamSize = playingEvent.reservedPlayersCount / 2;
       let teamCoordinates:
-        | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
+        | {
+            mobilePoints: { x: number; y: number };
+
+            id: number;
+            role: string;
+          }[]
         | null;
       let singleTeamACoordinates:
-        | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
+        | (
+            | {
+                mobilePoints?: { x: number; y: number };
+
+                id?: number;
+                role?: string;
+              }
+            | undefined
+          )[]
         | null;
       let singleTeamBCoordinates:
-        | ({ mobilePoints?: { x: number; y: number }; id?: number; role?: string } | undefined)[]
+        | (
+            | {
+                mobilePoints?: { x: number; y: number };
+
+                id?: number;
+                role?: string;
+              }
+            | undefined
+          )[]
         | null;
       if (playingEvent.teamDivision) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -217,12 +239,18 @@ export const EventComponent: FC<event> = ({
 
         if (teamMap[teamSize]) {
           singleTeamACoordinates = teamMap[teamSize].A;
+
           singleTeamBCoordinates = teamMap[teamSize].B;
           teamCoordinates = [
             ...singleTeamACoordinates.filter(
               (
                 player,
-              ): player is { mobilePoints: { x: number; y: number }; id: number; role: string } =>
+              ): player is {
+                mobilePoints: { x: number; y: number };
+
+                id: number;
+                role: string;
+              } =>
                 !!player &&
                 player.mobilePoints !== undefined &&
                 player.id !== undefined &&
@@ -231,7 +259,12 @@ export const EventComponent: FC<event> = ({
             ...singleTeamBCoordinates.filter(
               (
                 player,
-              ): player is { mobilePoints: { x: number; y: number }; id: number; role: string } =>
+              ): player is {
+                mobilePoints: { x: number; y: number };
+
+                id: number;
+                role: string;
+              } =>
                 !!player &&
                 player.mobilePoints !== undefined &&
                 player.id !== undefined &&
@@ -392,13 +425,13 @@ export const EventComponent: FC<event> = ({
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
                   />
                 ) : null}
-                {playingEvent?.teamDivision && isPortrait && userState.login.isAdmin ? (
+                {playingEvent?.teamDivision && userState.login.isAdmin ? (
                   <Stack direction="row" spacing={4} style={{ width: 125 }}>
                     <ToggleButtonGroup
                       value={singleTeamView}
                       exclusive
                       aria-label="Team View"
-                      style={{ height: 45, marginLeft: 50, marginTop: -5 }}
+                      style={{ height: isPortrait ? 45 : 40, marginLeft: 50, marginTop: -5 }}
                     >
                       <ToggleButton
                         value="true"
@@ -429,6 +462,46 @@ export const EventComponent: FC<event> = ({
                       </ToggleButton>
                     </ToggleButtonGroup>
                   </Stack>
+                ) : null}
+                {singleTeamView && playingEvent?.teamDivision ? (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      zIndex: 9999,
+                      top: isPortrait ? 75 : -5,
+                      right: isPortrait ? 8 : 25,
+                    }}
+                  >
+                    <Radio
+                      checked={showTeamA === 'true'}
+                      onChange={handleChange}
+                      value={'true'}
+                      name="radio-buttons"
+                      inputProps={{ 'aria-label': 'A' }}
+                      sx={{
+                        color: playingEvent.team1Color,
+                        '&.Mui-checked': {
+                          color: playingEvent.team1Color,
+                        },
+                      }}
+                      size="small"
+                    />
+
+                    <Radio
+                      checked={showTeamA === 'false'}
+                      onChange={handleChange}
+                      value={'false'}
+                      name="radio-buttons"
+                      inputProps={{ 'aria-label': 'B' }}
+                      sx={{
+                        color: playingEvent.team2Color,
+                        '&.Mui-checked': {
+                          color: playingEvent.team2Color,
+                        },
+                      }}
+                      size="small"
+                    />
+                  </div>
                 ) : null}
               </Box>
 
@@ -505,46 +578,7 @@ export const EventComponent: FC<event> = ({
                         ),
                       )}
                     </Box>
-                    {singleTeamView ? (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          zIndex: 999,
-                          top: 75,
-                          right: 8,
-                        }}
-                      >
-                        <Radio
-                          checked={showTeamA === 'true'}
-                          onChange={handleChange}
-                          value={'true'}
-                          name="radio-buttons"
-                          inputProps={{ 'aria-label': 'A' }}
-                          sx={{
-                            color: playingEvent.team1Color,
-                            '&.Mui-checked': {
-                              color: playingEvent.team1Color,
-                            },
-                          }}
-                          size="small"
-                        />
 
-                        <Radio
-                          checked={showTeamA === 'false'}
-                          onChange={handleChange}
-                          value={'false'}
-                          name="radio-buttons"
-                          inputProps={{ 'aria-label': 'B' }}
-                          sx={{
-                            color: playingEvent.team2Color,
-                            '&.Mui-checked': {
-                              color: playingEvent.team2Color,
-                            },
-                          }}
-                          size="small"
-                        />
-                      </div>
-                    ) : null}
                     <img
                       src={isPortrait ? '/ground.jpeg' : ''}
                       alt="ground"
@@ -595,25 +629,62 @@ export const EventComponent: FC<event> = ({
                   //     </Grid>
                   //   </Box>
                   // )
-                  <Box className={styles.groundImageContainer}>
-                    <Box className={styles.dragContainer}>
-                      {fullTeamPlayers.map((player, index) =>
-                        renderPlayer(
-                          player,
-                          (index % teamSize) + 1,
-                          teamCoordinates?.[index],
-                          playingEvent.teamDivision || false,
-                          false,
-                        ),
-                      )}
+                  <>
+                    {showTeamA === 'true' ? (
+                      <Box
+                        className={styles.dragContainer}
+                        style={{ display: singleTeamView ? 'block' : 'none' }}
+                      >
+                        {teamAPlayers.map((player, index) =>
+                          renderPlayer(
+                            player,
+                            (index % teamSize) + 1,
+                            singleTeamACoordinates?.[index],
+                            playingEvent.teamDivision || false,
+                            true,
+                          ),
+                        )}
+                      </Box>
+                    ) : (
+                      <Box
+                        className={styles.dragContainer}
+                        style={{ display: singleTeamView ? 'block' : 'none' }}
+                      >
+                        {teamBPlayers.map((player, index) =>
+                          renderPlayer(
+                            player,
+                            (index % teamSize) + 1,
+                            singleTeamBCoordinates?.[index],
+                            playingEvent.teamDivision || false,
+                            true,
+                          ),
+                        )}
+                      </Box>
+                    )}
+
+                    <Box className={styles.groundImageContainer}>
+                      <Box
+                        className={styles.dragContainer}
+                        style={{ display: singleTeamView ? 'none' : 'block' }}
+                      >
+                        {fullTeamPlayers.map((player, index) =>
+                          renderPlayer(
+                            player,
+                            (index % teamSize) + 1,
+                            teamCoordinates?.[index],
+                            playingEvent.teamDivision || false,
+                            false,
+                          ),
+                        )}
+                      </Box>
+                      <img
+                        src={'/landscape.jpeg'}
+                        alt="ground"
+                        height={698}
+                        className={styles.groundImage}
+                      />
                     </Box>
-                    <img
-                      src={'/landscape.jpeg'}
-                      alt="ground"
-                      height={698}
-                      className={styles.groundImage}
-                    />
-                  </Box>
+                  </>
                 )
               ) : (
                 <>

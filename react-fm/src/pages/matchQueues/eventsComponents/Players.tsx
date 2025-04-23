@@ -27,6 +27,7 @@ type PlayerDetailProps = {
   coordinates?: {
     mobilePoints?: { x: number; y: number };
     mobileSingleTeam?: { x: number; y: number };
+    desktopSingleTeam?: { x: number; y: number };
     points?: { x: number; y: number };
     id?: number;
     role?: string;
@@ -43,20 +44,22 @@ type Position = {
 export const PlayerDetails: FC<PlayerDetailProps> = ({
   displayName,
   index,
-
   coordinates,
   id,
   teamColor,
   teamDivision,
   singleTeamView,
-
   role,
 }) => {
   const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
+  //console.log(coordinates);
 
   const [deltaPosition, setDeltaPosition] = useState<Position>(
     coordinates?.points ? coordinates?.points : { x: 0, y: 0 },
+  );
+  const [deltaSingleTeamPosition, setPortraitDeltaSinglePosition] = useState<Position>(
+    coordinates?.desktopSingleTeam ? coordinates?.desktopSingleTeam : { x: 0, y: 0 },
   );
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
     coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
@@ -150,8 +153,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
         onStart={onStart}
         onStop={onStop}
         defaultPosition={{
-          x: deltaPosition.x,
-          y: deltaPosition.y,
+          x: singleTeamView ? deltaSingleTeamPosition.x : deltaPosition.x,
+          y: singleTeamView ? deltaSingleTeamPosition.y : deltaPosition.y,
         }}
         onDrag={handleDrag}
       >
