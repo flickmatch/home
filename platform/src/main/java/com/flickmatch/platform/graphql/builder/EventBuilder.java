@@ -373,6 +373,8 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .team1Name(eventDetails.getTeam1Name())
+                .team2Name(eventDetails.getTeam2Name())
                 .paymentMethods(eventDetails.getPaymentMethods())
                 .build();
     }
