@@ -5,6 +5,7 @@ import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
 import com.flickmatch.platform.graphql.input.UpdateEventScoreInput;
+import com.flickmatch.platform.graphql.input.UpdateDownloadInput;
 import com.flickmatch.platform.graphql.type.City;
 import com.flickmatch.platform.graphql.type.Event;
 import com.flickmatch.platform.graphql.type.MutationResult;
@@ -106,4 +107,19 @@ public class EventController {
                 .build();
     }
 
+    @MutationMapping
+    public MutationResult updateDownload(@Argument UpdateDownloadInput input) {
+        try {
+            eventBuilder.updateDownloadCount(input);
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(exception.getMessage())
+                    .build();
+        }
+    }
 }

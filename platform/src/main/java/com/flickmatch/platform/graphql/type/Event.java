@@ -36,4 +36,5 @@ public class Event {
     private List<String> paymentMethods;
     private Integer team1Score;
     private Integer team2Score;
+    Integer downloadCounter;
 }

@@ -25,6 +25,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
+  updateDownload(input: UpdateDownloadInput!): MutationResult!
 }
 
 input UpdateEventScoreInput{
@@ -47,6 +48,11 @@ input UpdateEventDetailsInput {
   team2Color:String
   isDeleted: Boolean
     paymentMethods:[String]
+}
+
+input UpdateDownloadInput {
+  uniqueEventId: ID!
+  downloadCounter: Int!
 }
 
 input CreateEventInput {
@@ -285,6 +291,7 @@ type EVENT {
   paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  downloadCounter: Int
 }
 
 type Player {

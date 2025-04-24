@@ -90,6 +90,7 @@ public class Event {
         String currency;
         Integer team1Score;
         Integer team2Score;
+        Integer downloadCounter;
         //TODO:Add status attribute
 
         @DynamoDBAttribute(attributeName = "isDeleted")
@@ -303,6 +304,15 @@ public class Event {
 
         public void setTeam2Score(Integer team2Score) {
             this.team2Score = team2Score;
+        }
+
+        @DynamoDBAttribute(attributeName = "downloadCounter")
+        public Integer getDownloadCounter() {
+            return downloadCounter;
+        }
+
+        public void setDownloadCounter(Integer downloadCounter) {
+            this.downloadCounter = downloadCounter;
         }
     }
 
