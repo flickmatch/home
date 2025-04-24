@@ -54,6 +54,7 @@ input:-webkit-autofill:active {
   color: #4ce95a;
   font-size: 18px;
   font-weight: bold;
+  display: inline-block;
 }
 
 .title span {
@@ -190,25 +191,15 @@ label {
   margin-bottom: 15px !important;
 }
 
-.updatePlayersCount,
 .updatePrice {
-  width: 30px;
-  display: flex;
-  justify-content: center;
-
-  align-items: center;
-  height: 30px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
-    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
-    rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  border-radius: 50%;
-  top: 17px;
-  left: 240px;
-  position: absolute;
+  background-color: #4ce95a;
+  height: 27px;
+  top: -4px;
+  left: 15px;
 }
 
-.updatePrice {
-  left: 160px;
+.updatePrice:hover {
+  background-color: #4ce95a;
 }
 
 .score,

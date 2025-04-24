@@ -42,6 +42,7 @@ import { apiUrl, gameQueuesApiUrl } from './constants';
 function AddGame() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+
   const { id } = useParams<{ id?: string }>();
   const [, notificationsActions] = useNotifications();
 
@@ -63,7 +64,6 @@ function AddGame() {
   const [error, setError] = useState<string | null>(null);
   const [team1Name, setTeam1Name] = useState('');
   const [team2Name, setTeam2Name] = useState('');
-  // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
 

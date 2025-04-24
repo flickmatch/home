@@ -7,7 +7,6 @@ import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CheckIcon from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ShareIcon from '@mui/icons-material/Share';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -16,7 +15,6 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 
@@ -237,14 +235,12 @@ export const EventsCard: FC<EventDetails> = ({
         </span>
       </Typography>
       {isAdmin ? (
-        <div className={styles.updatePrice}>
-          <Tooltip title="Edit" placement="top">
-            <EditIcon
-              style={{ fontSize: 22, color: '#4ce95a' }}
-              onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
-            />
-          </Tooltip>
-        </div>
+        <Button
+          className={styles.updatePrice}
+          onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+        >
+          update
+        </Button>
       ) : null}
     </Grid>
   );
@@ -298,31 +294,18 @@ export const EventsCard: FC<EventDetails> = ({
       </Grid>
     ) : null;
 
-  const changeNumberOfPlayersAndPrice = () => (
-    <div className={styles.updatePlayersCount}>
-      <Tooltip title="Edit" placement="top">
-        <EditIcon
-          style={{ fontSize: 22, color: '#4ce95a' }}
-          onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
-        />
-      </Tooltip>
-    </div>
-  );
-
   const numberOfPlayers = () =>
     isPast ? (
       <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
         <Typography className={styles.title}>
           Number of Players <span>{reservedPlayersCount}</span>
         </Typography>
-        {isAdmin ? changeNumberOfPlayersAndPrice() : null}
       </Grid>
     ) : (
       <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
         <Typography className={styles.title}>
           Number of Players <span>{reservedPlayersCount}</span>
         </Typography>
-        {isAdmin ? changeNumberOfPlayersAndPrice() : null}
       </Grid>
     );
 
