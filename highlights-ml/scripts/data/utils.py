@@ -1,12 +1,12 @@
 r"""Script for common utilities across all modules of FM ML scripts.
 
 """
-
-import numpy as np
 import pandas as pd
 import cv2
 import pytube
-
+import os 
+import random
+import numpy as np
 
 _VIDEO_URL_COLUMN_NAME = 'Link'
 _START_DURATION_COLUMN_NAME = 'Start'
@@ -40,7 +40,7 @@ def get_annotations(video_url, annotations_file_path):
     (start_time, end_time) of every goal that occured in that video.
     
     Keyword Arguments:
-        video_url: URL of the video. #TODO(@shivam15668): This is a primary key 
+        video_url: URL of the video. This is a primary key 
             of our spreadsheet database. Check if it is referenced by video_name or video_url 
             and update accordingly. 
         annotations_file_path: Path to the spreadsheet of annotations.
@@ -55,21 +55,6 @@ def get_annotations(video_url, annotations_file_path):
     goal_durations = list(zip(start_times.values, end_times.values))
     print("Successfully fetched annotations.")
     return goal_durations
-
-
-def save_frames(frames, frames_save_folder):
-    r"""Saves the frames to a specified location `frames_save_folder`.
-    
-    Keyword Arguments:
-        frames: Video frames to save
-        frames_save_folder: Path to save the frames for this video. 
-    
-    Returns:
-        None. Saves the frames at the specified location.
-    """
-    for i, frame in enumerate(frames):
-        frame_path = f"{frames_save_folder}/frame_{i}.jpg"
-        cv2.imwrite(frame_path, frame)
 
 
 def resize_image(image, target_shape):
@@ -96,3 +81,4 @@ def resize_image(image, target_shape):
         image = np.pad(image, ((0, 0), (padding, padding), (0, 0)), mode='constant')
 
     return cv2.resize(image, target_shape)
+
