@@ -53,6 +53,7 @@ export const EventsCard: FC<EventDetails> = ({
   venuePinCode,
   team1Score,
   team2Score,
+  paymentMethods,
 }) => {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
@@ -418,6 +419,7 @@ export const EventsCard: FC<EventDetails> = ({
         <FlexBox className={styles.joinNow}>
           <JoinNow
             stripePaymentUrl={stripePaymentUrl}
+            paymentMethods={paymentMethods}
             charges={0}
             date={''}
             uniqueEventId={uniqueEventId}
