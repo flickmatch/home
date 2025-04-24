@@ -76,6 +76,8 @@ export const JoinNow: FC<EventDetails> = ({
   const [names, setNames] = useState<Array<string>>([]);
   const [amount, setAmount] = useState(0);
   const [hasSubscription, setHasSubscription] = useState(false);
+  const [teamAData, setTeamAData] = useState({ color: '', totalPlayers: 0 });
+  const [teamBData, setTeamBData] = useState({ color: '', totalPlayers: 0 });
   const [activeSubscriptonData, setActiveSubscriptionData] = useState<subscriptionType>({
     subscriptionId: '',
     passId: '',
@@ -91,6 +93,26 @@ export const JoinNow: FC<EventDetails> = ({
   const [teamColor, setTeamColor] = useState('');
   const userState = useSelector((state: RootState) => state);
   // console.log(userState.login.isAdmin);
+
+  useEffect(() => {
+    if (!team1_color || !team2_color) return;
+    const { teamAplayers, teamBplayers } = reservedPlayersList.reduce(
+      (acc, player) => {
+        if (player.teamColor === team1_color) {
+          acc.teamAplayers++;
+        } else {
+          acc.teamBplayers++;
+        }
+        return acc;
+      },
+      { teamAplayers: 0, teamBplayers: 0 },
+    );
+
+    setTeamAData({ color: team1_color, totalPlayers: teamAplayers });
+    setTeamBData({ color: team2_color, totalPlayers: teamBplayers });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleColorChange = (event: { target: { value: string } }) => {
     setTeamColor(event.target.value);
@@ -128,7 +150,7 @@ export const JoinNow: FC<EventDetails> = ({
 
     currencyFromCity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reservedPlayersList]);
 
   const checkActiveSubscription = async (email: string) => {
     try {
@@ -363,7 +385,7 @@ export const JoinNow: FC<EventDetails> = ({
                         playerInputList: [${objectArray
                           .map(
                             (obj) =>
-                              `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}" }`,
+                              `{ waNumber: "${obj.waNumber}", name: "${obj.name}",teamColor: "${teamColor}",email:"${obj.email}" }`,
                           )
                           .join(',')}] 
                     }
@@ -423,7 +445,11 @@ export const JoinNow: FC<EventDetails> = ({
     if (userData.name) {
       setShowPaymentOptions(true);
     } else {
-      navigate('/login');
+      navigate('/login', {
+        state: {
+          from: `/event/${uniqueEventId}`,
+        }
+      });
     }
   };
 
@@ -629,8 +655,14 @@ export const JoinNow: FC<EventDetails> = ({
                         onChange={handleColorChange}
                         variant="standard"
                       >
-                        <MenuItem value={team1_color}>{team1_color}</MenuItem>
-                        <MenuItem value={team2_color}>{team2_color}</MenuItem>
+                        {teamAData.color === team1_color &&
+                        reservedPlayersCount / 2 - teamAData.totalPlayers > 0 ? (
+                          <MenuItem value={team1_color}>{team1_color}</MenuItem>
+                        ) : null}
+                        {teamBData.color === team2_color &&
+                        reservedPlayersCount / 2 - teamBData.totalPlayers > 0 ? (
+                          <MenuItem value={team2_color}>{team2_color}</MenuItem>
+                        ) : null}
                       </Select>
                     </div>
                   </Box>

@@ -108,12 +108,17 @@ body {
 }
 
 .reservedPlayers,
-.waitListPlayers {
+.waitListPlayers,
+.portraitReservedPlayers {
   color: #4ce95a;
   margin-bottom: 30px;
   font-size: 20px;
   font-weight: 600;
   margin-left: 35px;
+}
+
+.portraitReservedPlayers {
+  margin-left: 15px;
 }
 
 .skeletonContainer {
@@ -180,6 +185,14 @@ body {
 }
 
 .todayGameTag {
+  height: 26px;
+  border: 0.5px solid #4ce95a;
+  color: #cc1313;
+  margin-left: 15px;
+  animation: blinkAnimation 2s infinite;
+}
+
+.testGameTag {
   height: 26px;
   border: 0.5px solid #4ce95a;
   color: #cc1313;
@@ -275,20 +288,18 @@ body {
   border-radius: 5px;
   border: 1px solid #4ce95a;
   font-family: 'CustomFont', Arial, sans-serif;
-  
 }
-
 
 .logo {
   position: absolute;
-  top:10;
+  top: 10;
   left: 0;
   margin-right: 5px;
   font-size: 12px;
   font-weight: 600;
   margin-left: 4px;
   font-family: 'CustomFont', Arial, sans-serif;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .watermarkTop {
@@ -301,7 +312,7 @@ body {
   font-weight: 600;
   margin-left: 4px;
   font-family: 'CustomFont', Arial, sans-serif;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .watermarkBottom {
@@ -314,9 +325,14 @@ body {
   font-weight: 600;
   margin-left: 5px;
   font-family: 'CustomFont', Arial, sans-serif;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .downloadButtonLandscape {
   display: none;
+}
+
+.teamSwitchBadge {
+  width: 80px;
+  left: 0;
 }

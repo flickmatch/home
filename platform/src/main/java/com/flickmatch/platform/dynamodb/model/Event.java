@@ -83,12 +83,33 @@ public class Event {
         Boolean teamDivision;
         String team1Color;
         String team2Color;
-
+        List<String> paymentMethods;
+        Boolean isDeleted;
+        String team1Name;
+        String team2Name;
         String currency;
         Integer team1Score;
         Integer team2Score;
         Integer downloadCounter;
         //TODO:Add status attribute
+
+        @DynamoDBAttribute(attributeName = "isDeleted")
+        public Boolean getIsDeleted() {
+            return isDeleted;
+        }
+
+        public void setIsDeleted(Boolean isDeleted) {
+            this.isDeleted = isDeleted;
+        }
+
+        @DynamoDBAttribute(attributeName = "paymentMethods")
+        public List<String> getPaymentMethods() {return paymentMethods;}
+
+        public void setPaymentMethods(List<String> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+        }
+
+
 
         @DynamoDBAttribute(attributeName = "teamDivision")
         public Boolean getTeamDivision() {
@@ -124,6 +145,21 @@ public class Event {
             this.team2Color = team2Color;
         }
 
+        @DynamoDBAttribute(attributeName = "team1Name")
+        public String getTeam1Name() {
+            return team1Name;
+        }
+        public void setTeam1Name(String team1Name) {
+            this.team1Name = team1Name;
+        }
+
+        @DynamoDBAttribute(attributeName = "team2Name")
+        public String getTeam2Name() {
+            return team2Name;
+        }
+        public void setTeam2Name(String team2Name) {
+            this.team2Name = team2Name;
+        }
 
 
         @DynamoDBAttribute(attributeName = "testGame")

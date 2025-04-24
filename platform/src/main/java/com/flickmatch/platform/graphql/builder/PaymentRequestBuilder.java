@@ -25,6 +25,8 @@ public class PaymentRequestBuilder {
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
+                        .email(playerInput.getEmail())
+                        .teamColor(playerInput.getTeamColor())
                         .build())
                 .collect(Collectors.toList());
         log.info("Razorpay Merchant Transaction Id", merchantTransactionId);

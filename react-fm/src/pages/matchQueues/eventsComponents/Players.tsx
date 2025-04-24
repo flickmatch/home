@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { FC } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { DraggableData, DraggableEvent } from 'react-draggable';
 import Draggable from 'react-draggable';
 import { useSelector } from 'react-redux';
@@ -26,11 +26,13 @@ type PlayerDetailProps = {
   teamColor?: string;
   coordinates?: {
     mobilePoints?: { x: number; y: number };
+    mobileSingleTeam?: { x: number; y: number };
     points?: { x: number; y: number };
     id?: number;
     role?: string;
   };
   teamDivision: boolean;
+  singleTeamView: boolean;
 };
 
 type Position = {
@@ -46,6 +48,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   id,
   teamColor,
   teamDivision,
+  singleTeamView,
+
   role,
 }) => {
   const isPortrait = useOrientation();
@@ -57,11 +61,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
     coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
   );
-
-  const userState = useSelector((state: RootState) => state);
+  const [portraitSingleTeamDeltaPosition, setPortraitSingleTeamDeltaPosition] = useState<Position>(
+    coordinates?.mobileSingleTeam ? coordinates?.mobileSingleTeam : { x: 0, y: 0 },
+  );
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role, deltaPosition);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -93,7 +97,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
 
   const onStart = useCallback(() => setActiveDrags((prev) => prev + 1), []);
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
-  const onStop = useCallback(() => console.log(deltaPosition), []);
+  const onStop = useCallback(() => console.log(), []);
 
   return teamDivision ? (
     isPortrait ? (
@@ -102,8 +106,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
         onStart={onStart}
         onStop={onStop}
         defaultPosition={{
-          x: normalizePosition(portraitDeltaPosition.x, true),
-          y: portraitDeltaPosition.y,
+          x: normalizePosition(
+            singleTeamView ? portraitSingleTeamDeltaPosition.x : portraitDeltaPosition.x,
+            true,
+          ),
+          y: singleTeamView ? portraitSingleTeamDeltaPosition.y : portraitDeltaPosition.y,
         }}
         onDrag={handlePortraitDrag}
       >
@@ -114,6 +121,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             display: 'flex',
             flexFlow: 'column',
             alignItems: 'center',
+            maxWidth: '51px',
           }}
         >
           {displayName === 'Add Name' ? (
@@ -152,6 +160,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             display: 'flex',
             flexFlow: 'column',
             alignItems: 'center',
+            maxWidth: '51px',
           }}
         >
           {displayName === 'Add Name' ? (
