@@ -9,7 +9,7 @@ const teamACoordinates6 = [
   },
   {
     mobilePoints: { x: 23, y: 130 },
-    mobileSingleTeam: { x: 23, y: 175 },
+    mobileSingleTeam: { x: 23, y: 200 },
     points: { x: 330, y: 70 },
     desktopSingleTeam: { x: 400, y: 70 },
     id: 2,
@@ -17,7 +17,7 @@ const teamACoordinates6 = [
   },
   {
     mobilePoints: { x: 65, y: 130 },
-    mobileSingleTeam: { x: 65, y: 175 },
+    mobileSingleTeam: { x: 65, y: 200 },
     points: { x: 300, y: 140 },
     desktopSingleTeam: { x: 370, y: 140 },
     id: 3,
@@ -25,7 +25,7 @@ const teamACoordinates6 = [
   },
   {
     mobilePoints: { x: 23, y: 220 },
-    mobileSingleTeam: { x: 23, y: 195 },
+    mobileSingleTeam: { x: 23, y: 400 },
     points: { x: 430, y: 70 },
     desktopSingleTeam: { x: 585, y: 70 },
     id: 4,
@@ -33,7 +33,7 @@ const teamACoordinates6 = [
   },
   {
     mobilePoints: { x: 65, y: 220 },
-    mobileSingleTeam: { x: 65, y: 195 },
+    mobileSingleTeam: { x: 65, y: 400 },
     points: { x: 490, y: 100 },
     desktopSingleTeam: { x: 585, y: 140 },
     id: 5,
@@ -41,7 +41,7 @@ const teamACoordinates6 = [
   },
   {
     mobilePoints: { x: 45, y: 247 },
-    mobileSingleTeam: { x: 45, y: 220 },
+    mobileSingleTeam: { x: 45, y: 490 },
     points: { x: 400, y: 140 },
     desktopSingleTeam: { x: 760, y: 95 },
     id: 6,
