@@ -5,15 +5,27 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class StripeInput {
-    private Long amount;
-    private Long quantity;
-    private String name;
-    private String currency;
+    String uniqueEventId;
+    List<PlayerInput> playerInputList;
+    String currency;
+    String email;
+    String phoneNumber;
+    String redirectUrl;
+    String venuePinCode;
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
 }

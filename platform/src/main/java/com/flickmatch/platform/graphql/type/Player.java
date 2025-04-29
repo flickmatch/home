@@ -6,4 +6,7 @@ import lombok.Builder;
 public class Player {
     String displayName;
     String teamColor;
+    Integer matchesPlayed;
+    Integer wins;
+    String gameLinks;
 }

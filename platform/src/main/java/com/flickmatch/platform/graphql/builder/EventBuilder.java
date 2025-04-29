@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -81,6 +82,7 @@ public class EventBuilder {
         Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                 .name(input.getPlayer().getName())
                 .waNumber(input.getPlayer().getWaNumber())
+                .teamColor(input.getPlayer().getTeamColor())
                 .build();
         addPlayersInEvent(parsedUniqueEventId, List.of(playerDetails));
     }
@@ -306,6 +308,7 @@ public class EventBuilder {
                 .teamDivision(input.getTeamDivision())
                 .team1Name(input.getTeam1Name())
                 .team2Name(input.getTeam2Name())
+                .paymentMethods(input.getPaymentMethods())
                 .build();
         return eventDetails;
     }
@@ -372,6 +375,9 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .team1Name(eventDetails.getTeam1Name())
+                .team2Name(eventDetails.getTeam2Name())
+                .paymentMethods(eventDetails.getPaymentMethods())
                 .build();
     }
 
@@ -383,6 +389,9 @@ public class EventBuilder {
             Player player = Player.builder()
                     .displayName(playerDetails.getName())
                     .teamColor(playerDetails.getTeamColor())
+                    .matchesPlayed(playerDetails.getPlayerStats().getMatchesPlayed())
+                    .wins(playerDetails.getPlayerStats().getWins())
+                    .gameLinks(playerDetails.getPlayerStats().getGameLinks().toString())
                     .build();
             if (counter.get() < eventDetails.getReservedPlayersCount()) {
                 reservedPlayers.add(player);
@@ -434,6 +443,46 @@ public class EventBuilder {
                 Event.EventDetails eventDetails = selectedEvent.get();
                 eventDetails.setTeam1Score(input.getTeam1Score());
                 eventDetails.setTeam2Score(input.getTeam2Score());
+
+                // Update player stats
+                String winningTeamColor = null;
+                if (input.getTeam1Score() > input.getTeam2Score()) {
+                    winningTeamColor = eventDetails.getTeam1Color();
+                } else if (input.getTeam2Score() > input.getTeam1Score()) {
+                    winningTeamColor = eventDetails.getTeam2Color();
+                }
+
+                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+                    if (player.getPlayerStats() == null) {
+                        player.setPlayerStats(Event.PlayerStats.builder()
+                                .matchesPlayed(0)
+                                .wins(0)
+                                .gameLinks(new ArrayList<>())
+                                .build());
+                    }
+                    if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
+                        player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
+                        Integer totalMatches = player.getPlayerStats().getMatchesPlayed();
+                        player.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
+
+                        Integer wins = player.getPlayerStats().getWins();
+                        if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
+                            player.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
+                        }
+
+//                        if (player.getPlayerStats().getGameLinks() == null) {
+//                            player.getPlayerStats().setGameLinks(new ArrayList<>());
+//                        }
+//                        if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
+//                            player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
+//                        }
+                    }
+                    else{
+                        log.info("Score already updated");
+                    }
+
+                }
+
                 return eventRepository.save(event);
             }
         }
@@ -472,4 +521,8 @@ public class EventBuilder {
         }
         throw new IllegalArgumentException("Event not found");
     }
+
+//    public Integer countMatchesPlayed(String uniqueId) {
+//        Event.PlayerDetails playerDetails = eventRepository.findById()
+//    }
 }

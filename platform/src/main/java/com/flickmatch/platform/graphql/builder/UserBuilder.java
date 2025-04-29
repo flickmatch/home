@@ -2,7 +2,6 @@ package com.flickmatch.platform.graphql.builder;
 
 import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.UserRepository;
-import com.flickmatch.platform.graphql.input.CreatePlayerStatsInput;
 import com.flickmatch.platform.graphql.input.CreateUserInput;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -135,37 +134,4 @@ public class UserBuilder {
         return user.getHasActiveSubscription();
     }
 
-
-    public void createPlayerStats(CreatePlayerStatsInput input) {
-        Optional<User> userOpt = userRepository.findByEmail(input.getEmail());
-        if (userOpt.isEmpty()) {
-            return;
-        }
-        User user = userOpt.get();
-        User.PlayerStats playerStats = new User.PlayerStats();
-        playerStats.setWins(input.getWins());
-        user.setPlayerStats(playerStats);
-        userRepository.save(user);
-    }
-
-    public com.flickmatch.platform.graphql.type.User getUserStats(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        try {
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-
-                return com.flickmatch.platform.graphql.type.User.builder()
-                        .email(user.getEmail())
-                        .wins(user.getPlayerStats().getWins())
-                        .build();
-            } else {
-                log.info("No user found for the given email Id: " + email);
-                return null;
-            }
-        }
-        catch (Exception e){
-            log.error("Error fetching user by email Id: " + email, e);
-            return null;
-        }
-    }
 }

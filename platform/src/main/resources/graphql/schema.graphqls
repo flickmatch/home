@@ -26,7 +26,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
-  createPlayerStats(input: CreatePlayerStatsInput!): MutationResult!
+  checkoutProducts(input: StripeInput): StripeOutput
 }
 
 input UpdateEventScoreInput{
@@ -87,11 +87,6 @@ input CreateEventInput {
   """
   moderatorId: ID
     paymentMethods:[String]
-}
-
-input CreatePlayerStatsInput {
-  email: String!
-  wins: Int!
 }
 
 input JoinEventInput {
@@ -172,7 +167,9 @@ type Pass {
 
 type User {
   email: String!
-  wins: Int
+  name: String!
+  phoneNumber: String
+  userId: String
 }
 
 type RazorPayOutput {
@@ -260,6 +257,23 @@ type City {
   iconUrl: String!
 }
 
+type StripeOutput {
+  sessionId: String
+  sessionUrl: String
+  status: String
+  message: String
+}
+
+input StripeInput {
+   uniqueEventId :String!
+   playerInputList:[PlayerInput]!
+  currency:String!
+  phoneNumber:String!
+  redirectUrl:String!
+  venuePinCode:String!
+  email:String!
+}
+
 type EVENT {
   currency: String!
   startTime: String!
@@ -289,11 +303,16 @@ type EVENT {
   paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  team1Name: String
+  team2Name: String
 }
 
 type Player {
   displayName: String!
   teamColor: String
+  matchesPlayed: Int
+  wins: Int
+  gameLinks: String
 }
 
 type SportsVenue {
