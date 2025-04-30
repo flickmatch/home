@@ -319,7 +319,7 @@ public class Event {
         Integer index;
         String email;
         String pinCode;
-        PlayerStats playerStats = new PlayerStats();
+
 
         @DynamoDBAttribute(attributeName = "pinCode")
         public String getPinCode() {
@@ -372,53 +372,8 @@ public class Event {
         public void setWaNumber(String waNumber) {
             this.waNumber = waNumber;
         }
-
-        @DynamoDBAttribute(attributeName = "playerStats")
-        public PlayerStats getPlayerStats() {
-            return playerStats;
-        }
-
-        public void setPlayerStats(PlayerStats playerStats) {
-            this.playerStats = playerStats;
-        }
     }
 
-    @DynamoDBDocument
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class PlayerStats {
-        private Integer matchesPlayed;
-        private Integer wins;
-        private List<String> gameLinks = new ArrayList<>();
-
-        @DynamoDBAttribute(attributeName = "matchesPlayed")
-        public Integer getMatchesPlayed() {
-            return matchesPlayed;
-        }
-
-        public void setMatchesPlayed(Integer matchesPlayed) {
-            this.matchesPlayed = matchesPlayed;
-        }
-
-        @DynamoDBAttribute(attributeName = "wins")
-        public Integer getWins() {
-            return wins;
-        }
-
-        public void setWins(Integer wins) {
-            this.wins = wins;
-        }
-
-        @DynamoDBAttribute(attributeName = "gameLinks")
-        public List<String> getGameLinks() {
-            return gameLinks;
-        }
-
-        public void setGameLinks(List<String> gameLinks) {
-            this.gameLinks = gameLinks;
-        }
-    }
 
     @Builder
     public static class EventId {

@@ -389,9 +389,9 @@ public class EventBuilder {
             Player player = Player.builder()
                     .displayName(playerDetails.getName())
                     .teamColor(playerDetails.getTeamColor())
-                    .matchesPlayed(playerDetails.getPlayerStats().getMatchesPlayed())
-                    .wins(playerDetails.getPlayerStats().getWins())
-                    .gameLinks(playerDetails.getPlayerStats().getGameLinks().toString())
+//                    .matchesPlayed(playerDetails.getPlayerStats().getMatchesPlayed())
+//                    .wins(playerDetails.getPlayerStats().getWins())
+//                    .gameLinks(playerDetails.getPlayerStats().getGameLinks().toString())
                     .build();
             if (counter.get() < eventDetails.getReservedPlayersCount()) {
                 reservedPlayers.add(player);
@@ -445,30 +445,30 @@ public class EventBuilder {
                 eventDetails.setTeam2Score(input.getTeam2Score());
 
                 // Update player stats
-                String winningTeamColor = null;
-                if (input.getTeam1Score() > input.getTeam2Score()) {
-                    winningTeamColor = eventDetails.getTeam1Color();
-                } else if (input.getTeam2Score() > input.getTeam1Score()) {
-                    winningTeamColor = eventDetails.getTeam2Color();
-                }
+//                String winningTeamColor = null;
+//                if (input.getTeam1Score() > input.getTeam2Score()) {
+//                    winningTeamColor = eventDetails.getTeam1Color();
+//                } else if (input.getTeam2Score() > input.getTeam1Score()) {
+//                    winningTeamColor = eventDetails.getTeam2Color();
+//                }
 
-                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
-                    if (player.getPlayerStats() == null) {
-                        player.setPlayerStats(Event.PlayerStats.builder()
-                                .matchesPlayed(0)
-                                .wins(0)
-                                .gameLinks(new ArrayList<>())
-                                .build());
-                    }
-                    if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
-                        player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
-                        Integer totalMatches = player.getPlayerStats().getMatchesPlayed();
-                        player.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
-
-                        Integer wins = player.getPlayerStats().getWins();
-                        if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
-                            player.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
-                        }
+//                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+//                    if (player.getPlayerStats() == null) {
+//                        player.setPlayerStats(Event.PlayerStats.builder()
+//                                .matchesPlayed(0)
+//                                .wins(0)
+//                                .gameLinks(new ArrayList<>())
+//                                .build());
+//                    }
+//                    if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
+//                        player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
+//                        Integer totalMatches = player.getPlayerStats().getMatchesPlayed();
+//                        player.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
+//
+//                        Integer wins = player.getPlayerStats().getWins();
+//                        if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
+//                            player.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
+//                        }
 
 //                        if (player.getPlayerStats().getGameLinks() == null) {
 //                            player.getPlayerStats().setGameLinks(new ArrayList<>());
@@ -476,12 +476,12 @@ public class EventBuilder {
 //                        if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
 //                            player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
 //                        }
-                    }
-                    else{
-                        log.info("Score already updated");
-                    }
-
-                }
+//                    }
+//                    else{
+//                        log.info("Score already updated");
+//                    }
+//
+//                }
 
                 return eventRepository.save(event);
             }
