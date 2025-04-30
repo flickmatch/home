@@ -2,6 +2,3 @@ This is a dummy commit message for demonstration purposes.
 Replace this message with a meaningful description of your changes.
 
 Dummy commit: Initial placeholder content.
-
-Additional dummy content added here for testing purposes.
-Feel free to modify this section as needed for your project.
