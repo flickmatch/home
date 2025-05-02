@@ -59,7 +59,14 @@ jobs:
           set -e  # Exit immediately if a command exits with a non-zero status.
           DIFF=$(cat diff.txt)
           JSON_PAYLOAD=$(jq -n \
-            --arg prompt "Review this code and provide suggestions. Identify potential bugs, security vulnerabilities, and style violations. Here is the code diff:\n$DIFF" \
+            --arg prompt "Review the following code diff thoroughly and provide:
+            - Potential bugs and null safety risks
+            - Security vulnerabilities
+            - Code smells and anti-patterns
+            - Suggestions for performance and readability improvements
+            - Clear, actionable comments inline
+            - Corrected and optimized code snippets where applicable
+            Focus on logic integrity, exception handling, and clean code best practices. Here is the code diff:\n$DIFF" \
             '{
               contents: [{
                 role: "user",

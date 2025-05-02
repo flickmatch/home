@@ -47,7 +47,7 @@ public class EventBuilderTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         eventRepository = mock(EventRepository.class);
-        eventBuilder = new EventBuilder(eventRepository, null);
+        eventBuilder = new EventBuilder(eventRepository, null, null);
         cityBuilder = mock(CityBuilder.class);
         eventBuilder.cityBuilder = cityBuilder;
     }
