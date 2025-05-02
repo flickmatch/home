@@ -457,9 +457,6 @@ public class EventBuilder {
                         Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
                         if (existingUser.isPresent()) {
                             User user = existingUser.get();
-                            if (user.getPlayerStats().getGameLinks() == null) {
-                                user.getPlayerStats().setGameLinks(new ArrayList<>());
-                            }
                             if (!user.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
                                 user.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
 

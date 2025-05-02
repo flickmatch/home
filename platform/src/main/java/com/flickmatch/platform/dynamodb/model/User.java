@@ -21,7 +21,7 @@ public class User {
     private Boolean hasActiveSubscription;
     private List<String> citiesHistory=new ArrayList<>();
     private List<String> userPinCodes = new ArrayList<>();
-    PlayerStats playerStats = new PlayerStats();
+    private PlayerStats playerStats = new PlayerStats();
 
     @DynamoDBAttribute(attributeName="userPinCodes")
     public List<String> getUserPinCodes() {
@@ -111,6 +111,7 @@ public class User {
     public static class PlayerStats {
         private Integer matchesPlayed;
         private Integer wins;
+        @Builder.Default
         private List<String> gameLinks = new ArrayList<>();
 
         @DynamoDBAttribute(attributeName = "matchesPlayed")
