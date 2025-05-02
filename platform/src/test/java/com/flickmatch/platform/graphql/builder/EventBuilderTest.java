@@ -14,7 +14,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.flickmatch.platform.dynamodb.model.Event;
+import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.PlayerInput;
 import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
@@ -39,6 +41,8 @@ public class EventBuilderTest {
     @Mock
     private EventRepository eventRepository;
     @Mock
+    private UserRepository userRepository;
+    @Mock
     private CityBuilder cityBuilder;
 
     private EventBuilder eventBuilder;
@@ -47,7 +51,7 @@ public class EventBuilderTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         eventRepository = mock(EventRepository.class);
-        eventBuilder = new EventBuilder(eventRepository, null, null);
+        eventBuilder = new EventBuilder(eventRepository, null, userRepository);
         cityBuilder = mock(CityBuilder.class);
         eventBuilder.cityBuilder = cityBuilder;
     }
@@ -435,6 +439,12 @@ public class EventBuilderTest {
                 .index(1)
                 .team1Score(0)
                 .team2Score(0)
+                .team1Color("Red")
+                .team2Color("Blue")
+                .playerDetailsList(Arrays.asList(
+                        Event.PlayerDetails.builder().email("player1@example.com").teamColor("Red").build(),
+                        Event.PlayerDetails.builder().email("player2@example.com").teamColor("Blue").build()
+                ))
                 .build();
 
         Event.EventId eventIdObj = new Event.EventId("1", "2025-03-25");
@@ -445,6 +455,25 @@ public class EventBuilderTest {
         when(eventRepository.findById(any(Event.EventId.class))).thenReturn(optionalEvent);
         when(eventRepository.save(any(Event.class))).thenReturn(event);
 
+        // Mock user repository
+        User mockUser1 = new User();
+        mockUser1.setEmail("player1@example.com");
+        mockUser1.setPlayerStats(new User.PlayerStats());
+        mockUser1.getPlayerStats().setGameLinks(new ArrayList<>());
+        mockUser1.getPlayerStats().setMatchesPlayed(0);
+        mockUser1.getPlayerStats().setWins(0);
+
+        User mockUser2 = new User();
+        mockUser2.setEmail("player2@example.com");
+        mockUser2.setPlayerStats(new User.PlayerStats());
+        mockUser2.getPlayerStats().setGameLinks(new ArrayList<>());
+        mockUser2.getPlayerStats().setMatchesPlayed(0);
+        mockUser2.getPlayerStats().setWins(0);
+
+        when(userRepository.findByEmail("player1@example.com")).thenReturn(Optional.of(mockUser1));
+        when(userRepository.findByEmail("player2@example.com")).thenReturn(Optional.of(mockUser2));
+        when(userRepository.save(any(User.class))).thenReturn(mockUser1);
+
         // Call the method under test
         Event updatedEvent = eventBuilder.updateEventScore(updateEventScoreInput);
 
@@ -452,5 +481,17 @@ public class EventBuilderTest {
         assertThat(updatedEvent, notNullValue());
         assertThat(updatedEvent.getEventDetailsList().get(0).getTeam1Score(), equalTo(team1Score));
         assertThat(updatedEvent.getEventDetailsList().get(0).getTeam2Score(), equalTo(team2Score));
+
+        // Verify if the user stats were updated correctly
+        assertThat(mockUser1.getPlayerStats().getMatchesPlayed(), equalTo(1));
+        assertThat(mockUser1.getPlayerStats().getWins(), equalTo(1));  // Player 1's team wins
+        assertThat(mockUser2.getPlayerStats().getMatchesPlayed(), equalTo(1));
+        assertThat(mockUser2.getPlayerStats().getWins(), equalTo(0));  // Player 2's team loses
+
+        // Verify interactions with the repositories
+        verify(eventRepository).save(any(Event.class));
+        verify(userRepository).save(mockUser1);
+        verify(userRepository).save(mockUser2);
     }
+
 }
