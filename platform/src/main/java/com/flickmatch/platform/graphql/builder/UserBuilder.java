@@ -134,4 +134,17 @@ public class UserBuilder {
         return user.getHasActiveSubscription();
     }
 
+    public com.flickmatch.platform.graphql.type.User getUser(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        User user = userOpt.get();
+        return com.flickmatch.platform.graphql.type.User.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .userId(user.getUserId())
+                .phoneNumber(user.getPhoneNumber())
+                .matchesPlayed(user.getPlayerStats().getMatchesPlayed())
+                .wins(user.getPlayerStats().getWins())
+                .gameLinks(user.getPlayerStats().getGameLinks().toString())
+                .build();
+    }
 }

@@ -3,8 +3,10 @@ package com.flickmatch.platform.graphql.builder;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
+import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
@@ -42,15 +44,17 @@ public class EventBuilder {
 
     EventRepository eventRepository;
     CityRepository cityRepository;
+    UserRepository userRepository;
 
     @Autowired
     SportsVenueBuilder sportsVenueBuilder;
     @Autowired
     CityBuilder cityBuilder;
 
-    public EventBuilder(EventRepository eventRepository, CityRepository cityRepository) {
+    public EventBuilder(EventRepository eventRepository, CityRepository cityRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
         this.cityRepository = cityRepository;
+        this.userRepository = userRepository;
     }
 
     public Event createEvent(CreateEventInput input, boolean shouldValidateStartTime) throws ParseException {
@@ -389,9 +393,6 @@ public class EventBuilder {
             Player player = Player.builder()
                     .displayName(playerDetails.getName())
                     .teamColor(playerDetails.getTeamColor())
-//                    .matchesPlayed(playerDetails.getPlayerStats().getMatchesPlayed())
-//                    .wins(playerDetails.getPlayerStats().getWins())
-//                    .gameLinks(playerDetails.getPlayerStats().getGameLinks().toString())
                     .build();
             if (counter.get() < eventDetails.getReservedPlayersCount()) {
                 reservedPlayers.add(player);
@@ -444,44 +445,38 @@ public class EventBuilder {
                 eventDetails.setTeam1Score(input.getTeam1Score());
                 eventDetails.setTeam2Score(input.getTeam2Score());
 
-                // Update player stats
-//                String winningTeamColor = null;
-//                if (input.getTeam1Score() > input.getTeam2Score()) {
-//                    winningTeamColor = eventDetails.getTeam1Color();
-//                } else if (input.getTeam2Score() > input.getTeam1Score()) {
-//                    winningTeamColor = eventDetails.getTeam2Color();
-//                }
+                String winningTeamColor = null;
+                if (input.getTeam1Score() > input.getTeam2Score()) {
+                    winningTeamColor = eventDetails.getTeam1Color();
+                } else if (input.getTeam2Score() > input.getTeam1Score()) {
+                    winningTeamColor = eventDetails.getTeam2Color();
+                }
 
-//                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
-//                    if (player.getPlayerStats() == null) {
-//                        player.setPlayerStats(Event.PlayerStats.builder()
-//                                .matchesPlayed(0)
-//                                .wins(0)
-//                                .gameLinks(new ArrayList<>())
-//                                .build());
-//                    }
-//                    if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
-//                        player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
-//                        Integer totalMatches = player.getPlayerStats().getMatchesPlayed();
-//                        player.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
-//
-//                        Integer wins = player.getPlayerStats().getWins();
-//                        if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
-//                            player.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
-//                        }
+                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+                    if(player.getEmail() != null) {
+                        Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                        if (existingUser.isPresent()) {
+                            User user = existingUser.get();
+                            if (user.getPlayerStats().getGameLinks() == null) {
+                                user.getPlayerStats().setGameLinks(new ArrayList<>());
+                            }
+                            if (!user.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
+                                user.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
 
-//                        if (player.getPlayerStats().getGameLinks() == null) {
-//                            player.getPlayerStats().setGameLinks(new ArrayList<>());
-//                        }
-//                        if (!player.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
-//                            player.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
-//                        }
-//                    }
-//                    else{
-//                        log.info("Score already updated");
-//                    }
-//
-//                }
+                                Integer totalMatches = user.getPlayerStats().getMatchesPlayed();
+                                user.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
+
+                                Integer wins = user.getPlayerStats().getWins();
+                                if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
+                                    user.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
+                                }
+                            } else {
+                                log.info("Score already updated");
+                            }
+                            userRepository.save(user);
+                        }
+                    }
+                }
 
                 return eventRepository.save(event);
             }
@@ -522,7 +517,4 @@ public class EventBuilder {
         throw new IllegalArgumentException("Event not found");
     }
 
-//    public Integer countMatchesPlayed(String uniqueId) {
-//        Event.PlayerDetails playerDetails = eventRepository.findById()
-//    }
 }

@@ -167,9 +167,12 @@ type Pass {
 
 type User {
   email: String!
-  name: String!
+  name: String
   phoneNumber: String
   userId: String
+  matchesPlayed: Int
+  wins: Int
+  gameLinks: String
 }
 
 type RazorPayOutput {
@@ -310,9 +313,6 @@ type EVENT {
 type Player {
   displayName: String!
   teamColor: String
-  matchesPlayed: Int
-  wins: Int
-  gameLinks: String
 }
 
 type SportsVenue {

@@ -1,13 +1,11 @@
 package com.flickmatch.platform.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.flickmatch.platform.records.ParsedUniqueEventId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -320,7 +318,6 @@ public class Event {
         String email;
         String pinCode;
 
-
         @DynamoDBAttribute(attributeName = "pinCode")
         public String getPinCode() {
             return pinCode;
@@ -373,7 +370,6 @@ public class Event {
             this.waNumber = waNumber;
         }
     }
-
 
     @Builder
     public static class EventId {
