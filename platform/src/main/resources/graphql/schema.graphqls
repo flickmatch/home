@@ -25,6 +25,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
+  checkoutProducts(input: StripeInput): StripeOutput
 }
 
 input UpdateEventScoreInput{
@@ -256,6 +257,23 @@ type City {
   iconUrl: String!
 }
 
+type StripeOutput {
+  sessionId: String
+  sessionUrl: String
+  status: String
+  message: String
+}
+
+input StripeInput {
+   uniqueEventId :String!
+   playerInputList:[PlayerInput]!
+  currency:String!
+  phoneNumber:String!
+  redirectUrl:String!
+  venuePinCode:String!
+  email:String!
+}
+
 type EVENT {
   currency: String!
   startTime: String!
@@ -285,6 +303,8 @@ type EVENT {
   paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  team1Name: String
+  team2Name: String
 }
 
 type Player {

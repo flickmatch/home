@@ -110,6 +110,7 @@ const getEventById = async (
             team2Color
             team1Score
             team2Score
+            paymentMethods
             reservedPlayersList {
               displayName
               teamColor
