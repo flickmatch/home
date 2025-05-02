@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import './SW.css';
@@ -22,6 +24,12 @@ function ReloadPrompt() {
     setOfflineReady(false);
     setNeedRefresh(false);
   };
+
+  useEffect(() => {
+    if (needRefresh) {
+      updateServiceWorker(true);
+    }
+  }, [needRefresh, updateServiceWorker]);
 
   return (
     <div className="ReloadPrompt-container">
