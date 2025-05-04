@@ -61,6 +61,8 @@ export const JoinNow: FC<EventDetails> = ({
   team1_color,
   team2_color,
   venuePinCode,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  paymentMethods,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -448,7 +450,7 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login', {
         state: {
           from: `/event/${uniqueEventId}`,
-        }
+        },
       });
     }
   };
@@ -520,7 +522,7 @@ export const JoinNow: FC<EventDetails> = ({
 
           {showPaymentOptions ? (
             <FlexBox className={isPortrait ? styles.paymentOptionsPortrait : styles.paymentOptions}>
-              {userState.login.isAdmin && (
+              {userState.login.isAdmin && paymentMethods?.includes('phonepe') && (
                 <Button
                   variant="contained"
                   startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
@@ -546,20 +548,22 @@ export const JoinNow: FC<EventDetails> = ({
                   Pay via card
                 </Button>
               ) : null}
-              <Button
-                variant="contained"
-                // className={isPortrait ? styles.payViaRazorpay : ''}
-                className={styles.payViaRazorpay}
-                startIcon={
-                  <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
-                }
-                onClick={() => {
-                  setRazorPay(true);
-                  setOpen(true);
-                }}
-              >
-                Pay Now
-              </Button>
+              {paymentMethods?.includes('razorpay') && (
+                <Button
+                  variant="contained"
+                  // className={isPortrait ? styles.payViaRazorpay : ''}
+                  className={styles.payViaRazorpay}
+                  startIcon={
+                    <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
+                  }
+                  onClick={() => {
+                    setRazorPay(true);
+                    setOpen(true);
+                  }}
+                >
+                  Pay Now
+                </Button>
+              )}
             </FlexBox>
           ) : null}
 
