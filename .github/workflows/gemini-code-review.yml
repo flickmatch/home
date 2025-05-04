@@ -59,18 +59,21 @@ jobs:
           set -e  # Exit immediately if a command exits with a non-zero status.
           DIFF=$(cat diff.txt)
           JSON_PAYLOAD=$(jq -n \
-            --arg prompt "Analyze the following code diff. Report on:
-              1. Potential bugs and null safety errors.
-              2. Security vulnerabilities.
-              3. Code smells and anti-patterns.
-              4. Suggestions for performance improvements.
-              5. Suggestions for better readability and maintainability.
-            Deliverables:
-              1. Actionable inline comments.
-              2. Corrected / optimized code snippets (where appropriate).
-              3. A summary of the code review.
-            Key areas of focus: Logic integrity, exception handling, and overall code quality.
-            Here is the code diff:\n$DIFF" \
+            --arg prompt "Please perform a detailed review of the following code diff with emphasis on:
+
+            1. Bug Risks & Null Safety – Identify any potential runtime issues or unsafe operations.
+            2. Security Concerns – Highlight vulnerabilities such as data exposure, injection risks, or unsafe input handling.
+            3. Code Smells & Anti-Patterns – Point out redundant logic, overcomplication, or violations of best practices.
+            4. Performance Optimization – Suggest ways to improve efficiency or reduce unnecessary computation.          
+            5. Readability & Maintainability – Recommend improvements for clearer structure, naming, or modularity.
+          
+          Review Deliverables:
+            Inline, actionable comments explaining issues and improvements.          
+            Refactored or corrected code snippets where applicable.          
+            A concise summary highlighting the main concerns and recommendations.
+          
+          Primary Review Goals: Ensure logical correctness, robust exception handling, and high code quality.
+          Here is the code diff:\n$DIFF" \
             '{
               contents: [{
                 role: "user",
