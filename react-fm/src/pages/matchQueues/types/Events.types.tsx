@@ -46,6 +46,7 @@ type EventDetails = {
   team2Color?: string;
   team1Score?: number;
   team2Score?: number;
+  paymentMethods?: string[];
 };
 
 type CityDetails = {

@@ -190,6 +190,7 @@ export const EventComponent: FC<event> = ({
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
       // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
+
       let fullTeamPlayers: ReservedPlayerDetails[] = [];
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
@@ -340,6 +341,7 @@ export const EventComponent: FC<event> = ({
                     cityId={cityNameId}
                     credits={playingEvent.credits ? playingEvent.credits : 0}
                     addPlayerInQueue={addPlayerInQueue}
+                    paymentMethods={playingEvent.paymentMethods}
                   />
                 )}
               </FlexBox>
@@ -368,6 +370,7 @@ export const EventComponent: FC<event> = ({
                 credits={playingEvent.credits ? playingEvent.credits : 0}
                 team1Score={playingEvent.team1Score !== null ? playingEvent.team1Score : -1}
                 team2Score={playingEvent.team2Score !== null ? playingEvent.team2Score : -1}
+                paymentMethods={playingEvent.paymentMethods}
               />
             </FlexBox>
           </AccordionSummary>
@@ -393,7 +396,7 @@ export const EventComponent: FC<event> = ({
                     onClick={() => handleOpen(playingEvent.uniqueEventId)}
                   />
                 ) : null}
-                {playingEvent?.teamDivision && isPortrait && userState.login.isAdmin ? (
+                {playingEvent?.teamDivision && isPortrait ? (
                   <Stack direction="row" spacing={4} style={{ width: 125 }}>
                     <ToggleButtonGroup
                       value={singleTeamView}
@@ -510,7 +513,7 @@ export const EventComponent: FC<event> = ({
                       <div
                         style={{
                           position: 'absolute',
-                          zIndex: 9999,
+                          zIndex: 999,
                           top: 75,
                           right: 8,
                         }}

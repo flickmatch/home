@@ -1,6 +1,7 @@
 import { type FC, useState } from 'react';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
@@ -14,8 +15,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import { FirebaseError } from 'firebase/app';
+import type { ConfirmationResult } from 'firebase/auth';
+import { RecaptchaVerifier, getAuth, signInWithPhoneNumber } from 'firebase/auth';
+
 import useNotifications from '@/store/notifications';
 
+import { generateFirebaseAuthErrorMessage } from '../../googleLoginAuth/FirebaseError';
 import styles from './JoinNowPayLater.module.scss';
 
 interface ChildProps {
@@ -56,13 +62,15 @@ export const JoinNowPayLater: FC<ChildProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneOtp, setPhoneOtp] = useState('');
   const [teamColor, setTeamColor] = useState('');
+
+  const [userConfirmation, setUserConfirmation] = useState<ConfirmationResult | null>(null);
   const [, notificationsActions] = useNotifications();
   const apiUrl =
     import.meta.env.MODE == 'development'
       ? import.meta.env.VITE_API_LOCAL
       : import.meta.env.VITE_API_URL;
 
-  const testOtp = 126147;
+  const auth = getAuth();
 
   function showSuccessNotification() {
     notificationsActions.push({
@@ -79,57 +87,89 @@ export const JoinNowPayLater: FC<ChildProps> = ({
   }
 
   const handleVerifyPhoneNumber = () => {
-    setShowOtpField(true);
-    alert(`your phone otp is ${testOtp}`);
-  };
-
-  const handlePay = () => {
-    if (!name || !phoneNumber) {
-      alert('All input fields are required.');
-    } else if (Number(phoneOtp) !== testOtp) {
-      alert('Incorrect Otp');
+    if (phoneNumber.length < 10) {
+      alert('Invalid phone number. Please try again.');
     } else {
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            mutation JoinEvent($input: JoinEventInput!) {
-              joinEvent(input: $input) {
-                isSuccessful
-              }
-            }
-          `,
-          variables: {
-            input: {
-              uniqueEventId,
-              cityId,
-              player: {
-                waNumber: phoneNumber,
-                name,
-                teamColor,
-              },
-            },
-          },
-        }),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.errors) {
-            // Handle GraphQL errors
-            alert(result.errors[0].message);
-          } else {
-            handlePassName(name);
-            showSuccessNotification();
-            setName('');
-            setPhoneNumber('');
-          }
+      const appVerifier = new RecaptchaVerifier(auth, 'recaptcha', {});
+      signInWithPhoneNumber(auth, '+91' + phoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          // eslint-disable-next-line no-console
+          console.log(confirmationResult);
+          setUserConfirmation(confirmationResult);
+          setShowOtpField(true);
         })
         .catch((error) => {
-          alert(error.message);
+          //alert('error while sending otp ' + error);
+          if (error instanceof FirebaseError) {
+            generateFirebaseAuthErrorMessage(error);
+          }
         });
+    }
+  };
+
+  const handlePay = async () => {
+    if (!name || !phoneNumber) {
+      alert('All input fields are required.');
+    } else {
+      if (userConfirmation) {
+        userConfirmation
+          .confirm(phoneOtp)
+          .then((result: { user: any }) => {
+            const user = result.user;
+            // eslint-disable-next-line no-console
+            console.log(user);
+            fetch(apiUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                query: `
+                mutation JoinEvent($input: JoinEventInput!) {
+                  joinEvent(input: $input) {
+                    isSuccessful
+                  }
+                }
+              `,
+                variables: {
+                  input: {
+                    uniqueEventId,
+                    cityId,
+                    player: {
+                      waNumber: phoneNumber,
+                      name,
+                      teamColor,
+                    },
+                  },
+                },
+              }),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                if (result.errors) {
+                  // Handle GraphQL errors
+                  alert(result.errors[0].message);
+                } else {
+                  handlePassName(name);
+                  showSuccessNotification();
+                  setName('');
+                  setPhoneNumber('');
+                }
+              })
+              .catch((error) => {
+                alert(error.message);
+              });
+            // eslint-disable-next-line no-console
+            console.log(user);
+            // ...
+          })
+          .catch((error: any) => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+            // User couldn't sign in (bad verification code?)
+            // ...
+          });
+      }
     }
   };
 
@@ -148,7 +188,7 @@ export const JoinNowPayLater: FC<ChildProps> = ({
         <Box sx={style}>
           <Box className={styles.adminModePanel}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Join Now Pay Later
+              Play Now Pay Later
             </Typography>
           </Box>
 
@@ -170,10 +210,17 @@ export const JoinNowPayLater: FC<ChildProps> = ({
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
-            <button className={styles.verifyPhoneNumber} onClick={handleVerifyPhoneNumber}>
-              verify
-            </button>
+            {showOtpField ? (
+              <Button className={styles.otpSend} onClick={handleVerifyPhoneNumber}>
+                OTP sent <CheckCircleOutlineIcon style={{ fontSize: 16 }} />
+              </Button>
+            ) : (
+              <button className={styles.verifyPhoneNumber} onClick={handleVerifyPhoneNumber}>
+                verify
+              </button>
+            )}
           </Box>
+          <Box id="recaptcha" style={{ marginTop: 10 }} />
           {showOtpField ? (
             <Box className={styles.verifyOtp}>
               <TextField
@@ -190,7 +237,7 @@ export const JoinNowPayLater: FC<ChildProps> = ({
             <Box style={{ marginTop: 20 }}>
               <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label" style={{ marginBottom: 10 }}>
-                  Team Color
+                  Select Team
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"

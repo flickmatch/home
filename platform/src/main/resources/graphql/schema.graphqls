@@ -25,6 +25,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
+  checkoutProducts(input: StripeInput): StripeOutput
 }
 
 input UpdateEventScoreInput{
@@ -46,6 +47,7 @@ input UpdateEventDetailsInput {
   team1Color:String
   team2Color:String
   isDeleted: Boolean
+    paymentMethods:[String]
 }
 
 input CreateEventInput {
@@ -69,7 +71,8 @@ input CreateEventInput {
   teamDivision: Boolean
   team1Color:String
   team2Color:String
-
+  team1Name:String
+  team2Name:String
   """
   Not required for P0, will be defaulted to FOOTBALL
   """
@@ -82,7 +85,9 @@ input CreateEventInput {
   Not required for P0
   """
   moderatorId: ID
+    paymentMethods:[String]
 }
+
 
 input JoinEventInput {
   eventId: ID @deprecated(reason: "Use uniqueEventId.")
@@ -252,6 +257,23 @@ type City {
   iconUrl: String!
 }
 
+type StripeOutput {
+  sessionId: String
+  sessionUrl: String
+  status: String
+  message: String
+}
+
+input StripeInput {
+   uniqueEventId :String!
+   playerInputList:[PlayerInput]!
+  currency:String!
+  phoneNumber:String!
+  redirectUrl:String!
+  venuePinCode:String!
+  email:String!
+}
+
 type EVENT {
   currency: String!
   startTime: String!
@@ -278,8 +300,11 @@ type EVENT {
   teamDivision: Boolean
   team1Color:String
   team2Color:String
+  paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  team1Name: String
+  team2Name: String
 }
 
 type Player {

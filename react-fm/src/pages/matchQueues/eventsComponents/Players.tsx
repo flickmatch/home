@@ -70,7 +70,6 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
   const userState = useSelector((state: RootState) => state);
 
   // eslint-disable-next-line no-console
-  console.log(activeDrags, id, role, deltaPosition);
 
   //track position of the player in big screen devices while dragging {x, y} coordinates
   const handleDrag = useCallback((e: DraggableEvent, ui: DraggableData) => {
@@ -102,7 +101,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
 
   const onStart = useCallback(() => setActiveDrags((prev) => prev + 1), []);
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
-  const onStop = useCallback(() => console.log(deltaPosition), []);
+  const onStop = useCallback(() => console.log(), []);
 
   return teamDivision ? (
     isPortrait ? (

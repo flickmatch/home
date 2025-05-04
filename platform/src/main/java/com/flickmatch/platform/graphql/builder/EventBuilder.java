@@ -304,6 +304,9 @@ public class EventBuilder {
                 .team1Color(input.getTeam1Color())
                 .team2Color(input.getTeam2Color())
                 .teamDivision(input.getTeamDivision())
+                .team1Name(input.getTeam1Name())
+                .team2Name(input.getTeam2Name())
+                .paymentMethods(input.getPaymentMethods())
                 .build();
         return eventDetails;
     }
@@ -370,6 +373,9 @@ public class EventBuilder {
                 .teamDivision(eventDetails.getTeamDivision())
                 .team1Score(eventDetails.getTeam1Score())
                 .team2Score(eventDetails.getTeam2Score())
+                .team1Name(eventDetails.getTeam1Name())
+                .team2Name(eventDetails.getTeam2Name())
+                .paymentMethods(eventDetails.getPaymentMethods())
                 .build();
     }
 
