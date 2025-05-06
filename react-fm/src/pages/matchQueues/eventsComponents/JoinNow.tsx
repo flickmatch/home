@@ -61,7 +61,6 @@ export const JoinNow: FC<EventDetails> = ({
   team1_color,
   team2_color,
   venuePinCode,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   paymentMethods,
   //singleEvent,
 }) => {
