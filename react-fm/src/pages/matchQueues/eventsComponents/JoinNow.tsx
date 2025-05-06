@@ -30,6 +30,7 @@ import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { createOrder, displayRazorpay } from './RazorPay';
+import { checkoutProducts } from './Stripe';
 
 const url =
   import.meta.env.MODE == 'development'
@@ -47,8 +48,7 @@ type subscriptionType = {
 };
 
 export const JoinNow: FC<EventDetails> = ({
-  stripePaymentUrl,
-  reservedPlayersCount,
+ reservedPlayersCount,
   reservedPlayersList,
   waitListPlayers,
   waitListPlayersCount,
@@ -72,6 +72,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   const [orderId, setOrderId] = useState('');
   const [razorPay, setRazorPay] = useState(false);
+  const [stripe, setStripe] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>([]);
   const [amount, setAmount] = useState(0);
@@ -370,7 +371,7 @@ export const JoinNow: FC<EventDetails> = ({
     } else {
       setOpen(false);
 
-      if (!razorPay) {
+      if (!razorPay && !stripe) {
         const generateUrl = () => {
           fetch(apiUrl, {
             method: 'POST',
@@ -413,7 +414,7 @@ export const JoinNow: FC<EventDetails> = ({
         };
 
         generateUrl();
-      } else {
+      } else if (razorPay) {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
         createOrder(
           // '2-2025-01-03-1',
@@ -437,6 +438,26 @@ export const JoinNow: FC<EventDetails> = ({
             // eslint-disable-next-line no-console
             console.error(error);
           });
+      } else if (stripe) {
+        checkoutProducts(
+          // '2-2025-01-03-1',
+          uniqueEventId,
+          objectArray,
+          setAmount,
+          currency || 'INR',
+          email,
+          userData.phoneNumber,
+          teamColor,
+          venuePinCode || '',
+        )
+          .then((res: { sessionId: string; sessionUrl: string }) => {
+            setOpen(false);
+            openInNewTab(res.sessionUrl);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+          });
       }
     }
   };
@@ -448,7 +469,7 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login', {
         state: {
           from: `/event/${uniqueEventId}`,
-        }
+        },
       });
     }
   };
@@ -531,7 +552,7 @@ export const JoinNow: FC<EventDetails> = ({
                   UPI
                 </Button>
               )}
-              {userState.login.isAdmin && stripePaymentUrl.slice(0, 5) === 'https' ? (
+              {userState.login.isAdmin && (
                 <Button
                   variant="contained"
                   startIcon={
@@ -540,12 +561,14 @@ export const JoinNow: FC<EventDetails> = ({
                   }
                   className={isPortrait ? '' : styles.payViaCard}
                   onClick={() => {
-                    openInNewTab(stripePaymentUrl);
+                    setStripe(true);
+                    setOpen(true);
                   }}
+                  style={{ display: 'none' }}
                 >
                   Pay via card
                 </Button>
-              ) : null}
+              )}
               <Button
                 variant="contained"
                 // className={isPortrait ? styles.payViaRazorpay : ''}
