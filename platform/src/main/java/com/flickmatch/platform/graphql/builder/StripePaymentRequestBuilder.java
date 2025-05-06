@@ -74,8 +74,9 @@ public class StripePaymentRequestBuilder {
 
         SessionCreateParams params= SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://flickmatch.in/stripe/success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl("https://flickmatch.in/stripe/cancel")
+                .setSuccessUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/cancel")
+                .setBillingAddressCollection(SessionCreateParams.BillingAddressCollection.REQUIRED)
                 .addLineItem(lineItem)
                 .build();
 
