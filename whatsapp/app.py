@@ -59,7 +59,7 @@ def send_message():
         return jsonify({"isSuccessful": True, "sid": sid}), 200
     except Exception as e:
         logger.error(f"Error sending message: {str(e)}")
-        return jsonify({"isSuccessful": False, "errorMessage": str(e)}), 500
+        return jsonify({"isSuccessful": False, "errorMessage": "An internal error occurred. Please try again later."}), 500
 
 
 @app.route('/')
@@ -68,4 +68,5 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    app.run(debug=debug_mode)

@@ -10,7 +10,10 @@ class MessageBuilder:
         self.twilio_proxy = twilio_proxy
 
     def send_message(self, from_number: str, to_number: str, message: str) -> str:
-        logger.info(f"Sending message from: {from_number} to: {to_number}")
+        sanitized_from_number = from_number.replace('\n', '').replace('\r', '')
+        sanitized_to_number = to_number.replace('\n', '').replace('\r', '')
+        logger.info(
+            f"Sending message from: {sanitized_from_number} to: {sanitized_to_number}")
         try:
             client = self.twilio_proxy.init_twilio()
 
