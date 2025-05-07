@@ -93,6 +93,7 @@ export const JoinNowPayLater: FC<ChildProps> = ({
       const appVerifier = new RecaptchaVerifier(auth, 'recaptcha', {});
       signInWithPhoneNumber(auth, '+91' + phoneNumber, appVerifier)
         .then((confirmationResult) => {
+          //console.log("")
           // eslint-disable-next-line no-console
           console.log(confirmationResult);
           setUserConfirmation(confirmationResult);
