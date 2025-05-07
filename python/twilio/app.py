@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 from message_builder import MessageBuilder
-from twillio.twilio_proxy import TwilioProxy
+from twilio_proxy import TwilioProxy
 import logging
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
