@@ -525,7 +525,7 @@ export const JoinNow: FC<EventDetails> = ({
                   variant="contained"
                   onClick={() => handleOpen(uniqueEventId)}
                 >
-                  Start Free
+                  Pay Later
                 </Button>
               ) : null}
               {hasSubscription &&
