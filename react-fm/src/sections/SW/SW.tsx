@@ -13,7 +13,7 @@ function ReloadPrompt() {
       console.log('SW registration error', error);
     },
   });
-
+  //
   useEffect(() => {
     if (needRefresh) {
       updateServiceWorker(true);
