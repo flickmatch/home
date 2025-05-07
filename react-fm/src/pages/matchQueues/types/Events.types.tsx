@@ -39,6 +39,7 @@ type EventDetails = {
   singleEvent?: boolean;
   cityId?: string;
   handlePassName?: (name: string) => void;
+  addPlayerInQueue?: (name: string) => void;
   credits?: number;
   teamDivision?: boolean;
   team1Color?: string;

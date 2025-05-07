@@ -190,7 +190,7 @@ export const EventComponent: FC<event> = ({
   const EventsMapFunc = () =>
     gameEvent.map((playingEvent) => {
       // const openSpots = playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
-    
+
       let fullTeamPlayers: ReservedPlayerDetails[] = [];
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
@@ -340,6 +340,7 @@ export const EventComponent: FC<event> = ({
                     handlePassName={passName}
                     cityId={cityNameId}
                     credits={playingEvent.credits ? playingEvent.credits : 0}
+                    addPlayerInQueue={addPlayerInQueue}
                     paymentMethods={playingEvent.paymentMethods}
                   />
                 )}
