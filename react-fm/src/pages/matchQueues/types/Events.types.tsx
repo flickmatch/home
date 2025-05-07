@@ -9,6 +9,7 @@ type ReservedPlayerDetails = {
 
 type Coordinates = {
   mobilePoints?: { x: number; y: number };
+  desktopSingleTeam?: { x: 50; y: 50 };
   id?: number;
   role?: string;
 };
