@@ -43,7 +43,7 @@ public class StripePaymentCallbackController {
                 log.info("Payment status updated to SUCCESS for sessionId: {}", sanitizedSessionId);
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(URI.create("https://flickmatch.in/match-queues"));
+                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl()));
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
                 log.warn("No StripePaymentRequest found for sessionId: {}", sanitizedSessionId);
@@ -71,7 +71,7 @@ public class StripePaymentCallbackController {
                 log.info("Payment status updated to CANCELLED for sessionId: {}", sanitizedSessionId);
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(URI.create("https://flickmatch.in/match-queues"));
+                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl()));
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
                 log.warn("No StripePaymentRequest found for sessionId: {}", sanitizedSessionId);
