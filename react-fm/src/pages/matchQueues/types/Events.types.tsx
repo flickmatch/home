@@ -48,6 +48,8 @@ type EventDetails = {
   team1Score?: number;
   team2Score?: number;
   paymentMethods?: string[];
+  team1Name?: string;
+  team2Name?: string;
 };
 
 type CityDetails = {

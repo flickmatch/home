@@ -404,6 +404,8 @@ export const EventComponent: FC<event> = ({
                 team1Score={playingEvent.team1Score !== null ? playingEvent.team1Score : -1}
                 team2Score={playingEvent.team2Score !== null ? playingEvent.team2Score : -1}
                 paymentMethods={playingEvent.paymentMethods}
+                team1Name={playingEvent.team1Name ? playingEvent.team1Name : ''}
+                team2Name={playingEvent.team2Name ? playingEvent.team2Name : ''}
               />
             </FlexBox>
           </AccordionSummary>
