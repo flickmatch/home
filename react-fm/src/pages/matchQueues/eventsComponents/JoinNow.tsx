@@ -573,7 +573,6 @@ export const JoinNow: FC<EventDetails> = ({
               {paymentMethods?.includes('razorpay') && (
                 <Button
                   variant="contained"
-                  // className={isPortrait ? styles.payViaRazorpay : ''}
                   className={styles.payViaRazorpay}
                   startIcon={
                     <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
