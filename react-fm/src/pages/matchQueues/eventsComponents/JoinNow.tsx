@@ -518,14 +518,16 @@ export const JoinNow: FC<EventDetails> = ({
                 team1_color={team1_color ? team1_color : ''}
                 team2_color={team2_color ? team2_color : ''}
               />
-              <Button
-                className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
-                startIcon={<CelebrationIcon />}
-                variant="contained"
-                onClick={() => handleOpen(uniqueEventId)}
-              >
-                Start Free
-              </Button>
+              {userState.login.isAdmin ? (
+                <Button
+                  className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                  startIcon={<CelebrationIcon />}
+                  variant="contained"
+                  onClick={() => handleOpen(uniqueEventId)}
+                >
+                  Start Free
+                </Button>
+              ) : null}
               {hasSubscription &&
               activeSubscriptonData &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
