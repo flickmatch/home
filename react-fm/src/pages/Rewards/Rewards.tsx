@@ -55,7 +55,7 @@ function Rewards() {
             Get Free Games
           </Typography>
           <Typography variant="h5" className={styles.primaryHeading}>
-            Gift passes and flickmatch rewards coming soon..
+            Gift passes and flickmatch rewards coming soon....
           </Typography>
           <Typography variant="h6" className={styles.secondaryHeading}>
             Sign up to know more.
