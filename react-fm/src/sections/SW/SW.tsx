@@ -18,6 +18,7 @@ function ReloadPrompt() {
     if (needRefresh) {
       updateServiceWorker(true);
     }
+    //
   }, [needRefresh, updateServiceWorker]);
 
   return null;
