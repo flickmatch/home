@@ -1,25 +1,63 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+
+import type { SnackbarKey } from 'notistack';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
+import useNotifications from '@/store/notifications';
+
 function ReloadPrompt() {
-  const { needRefresh, updateServiceWorker } = useRegisterSW({
+  const [, notificationsActions] = useNotifications();
+  const notificationKey = useRef<SnackbarKey | null>(null);
+  const {
+    offlineReady: [offlineReady, setOfflineReady],
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
     onRegistered(r) {
       // eslint-disable-next-line no-console
-      console.log('SW Registered: ' + r);
+      console.log('SW Registered: ', r);
     },
     onRegisterError(error) {
       // eslint-disable-next-line no-console
       console.log('SW registration error', error);
     },
   });
-  //
-  useEffect(() => {
-    if (needRefresh) {
-      updateServiceWorker(true);
+
+  const close = useCallback(() => {
+    setOfflineReady(false);
+    setNeedRefresh(false);
+    if (notificationKey.current) {
+      notificationsActions.close(notificationKey.current);
     }
-    //
-  }, [needRefresh, updateServiceWorker]);
+  }, [setOfflineReady, setNeedRefresh, notificationsActions]);
+
+  useEffect(() => {
+    if (offlineReady) {
+      notificationsActions.push({
+        options: {
+          autoHideDuration: 4500,
+          content: <Alert severity="success">App is ready to work offline.</Alert>,
+        },
+      });
+    } else if (needRefresh) {
+      notificationKey.current = notificationsActions.push({
+        message: 'New content is available, click on reload button to update.',
+        options: {
+          variant: 'warning',
+          persist: true,
+          action: (
+            <>
+              <Button onClick={() => updateServiceWorker(true)}>Reload</Button>
+              <Button onClick={close}>Close</Button>
+            </>
+          ),
+        },
+      });
+    }
+  }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);
 
   return null;
 }
