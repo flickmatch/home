@@ -235,14 +235,6 @@ export const EventsCard: FC<EventDetails> = ({
           {charges}
         </span>
       </Typography>
-      {isAdmin ? (
-        <Button
-          className={styles.updatePrice}
-          onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
-        >
-          update
-        </Button>
-      ) : null}
     </Grid>
   );
 
@@ -409,6 +401,14 @@ export const EventsCard: FC<EventDetails> = ({
         >
           Share
         </Button>
+        {isAdmin ? (
+          <Button
+            className={styles.updatePrice}
+            onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+          >
+            update
+          </Button>
+        ) : null}
       </Typography>
     </Grid>
   );
