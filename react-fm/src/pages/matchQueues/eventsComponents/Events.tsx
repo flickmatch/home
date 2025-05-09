@@ -335,11 +335,11 @@ export const EventsCard: FC<EventDetails> = ({
   const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
   const score = () =>
     isPast ? (
-      <Grid item xs={12} sm={6} md={12}>
+      <Grid item xs={12} sm={8} md={12}>
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
           <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
-            <span className={styles.teamLabel}>Team {team1Name ? team1Name : team1_color}</span>
+            <span className={styles.teamLabel}>Team {team1Name ? team1Name.toUpperCase() : team1_color}</span>
             {isEditable && isAdmin ? (
               <Input
                 type="number"
@@ -367,7 +367,7 @@ export const EventsCard: FC<EventDetails> = ({
                 {teamBGoals !== -1 ? teamBGoals : ''}
               </span>
             )}
-            <span className={styles.teamLabel}>Team {team2Name ? team2Name : team2_color}</span>
+            <span className={styles.teamLabel}>Team {team2Name ? team2Name.toUpperCase() : team2_color}</span>
           </span>
           {isAdmin ? (
             isPortrait ? (
@@ -389,7 +389,7 @@ export const EventsCard: FC<EventDetails> = ({
     ) : null;
 
   const gameLink = () => (
-    <Grid item xs={4} sm={4} md={4}>
+    <Grid item xs={4} sm={5} md={3}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
         Game Invite{' '}
@@ -404,6 +404,19 @@ export const EventsCard: FC<EventDetails> = ({
       </Typography>
     </Grid>
   );
+
+  const showTeam = () => 
+    !isPast ? (
+      team1Name || team2Name ? (
+        <Grid item xs={4} sm={6} md={8}>
+          <Typography className={styles.teamShow}>
+            {'Team '}<span> {team1Name ? team1Name.toUpperCase() : team1_color?.toUpperCase()} </span>
+            <span className={styles.title}>Vs</span>
+            {'Team '}<span> {team2Name ? team2Name.toUpperCase() : team2_color?.toUpperCase()}</span>
+          </Typography>
+        </Grid>
+      ) : null
+    ) : null;
 
   const joinNow = () =>
     isPortrait ? (
@@ -469,6 +482,7 @@ export const EventsCard: FC<EventDetails> = ({
           {playersRequired()}
 
           {gameLink()}
+          {showTeam()}
           {score()}
         </Grid>
 
