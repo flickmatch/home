@@ -410,9 +410,9 @@ export const EventsCard: FC<EventDetails> = ({
       team1Name || team2Name ? (
         <Grid item xs={4} sm={6} md={8}>
           <Typography className={styles.teamShow}>
-            {'Team '}<span> {team1Name ? team1Name.toUpperCase() : team1_color?.toUpperCase()} </span>
+            <span> {team1Name ? team1Name.toUpperCase() : team1_color?.toUpperCase()} </span>
             <span className={styles.title}>Vs</span>
-            {'Team '}<span> {team2Name ? team2Name.toUpperCase() : team2_color?.toUpperCase()}</span>
+            <span> {team2Name ? team2Name.toUpperCase() : team2_color?.toUpperCase()}</span>
           </Typography>
         </Grid>
       ) : null
