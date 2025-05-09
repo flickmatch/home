@@ -54,6 +54,8 @@ public class UserController {
         return userBuilder.hasActiveSubscription(email);
     }
 
-
-
+    @QueryMapping(name = "getUserStats")
+    public com.flickmatch.platform.graphql.type.User getUser(@Argument String email){
+        return userBuilder.getUser(email);
+    }
 }
