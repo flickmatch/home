@@ -7,6 +7,8 @@ type Query {
   hasActiveSubscription(email: String!): Boolean!
   getActiveSubscription(email: String!): Subscription
   getUserStats(email: String!): User
+  updateGameLinks: MutationResult!
+  users: [User]
 }
 
 type Mutation {

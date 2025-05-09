@@ -45,7 +45,7 @@ public class UserController {
 //        playerService.deletePlayer(id);
 //    }
         @QueryMapping(name="users")
-        public List<User> getAllUsers() {
+        public List<com.flickmatch.platform.graphql.type.User> getAllUsers() {
             return userBuilder.getAllUsers();
         }
 

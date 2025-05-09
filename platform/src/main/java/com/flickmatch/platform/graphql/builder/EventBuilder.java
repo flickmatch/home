@@ -514,4 +514,38 @@ public class EventBuilder {
         throw new IllegalArgumentException("Event not found");
     }
 
+    public void updateAllPlayersGameLinks() {
+        log.info("Starting to update game links for all players");
+        List<Event> allEvents = new ArrayList<>();
+        eventRepository.findAll().forEach(allEvents::add);
+
+        for (Event event : allEvents) {
+            String cityId = event.getCityId();
+            String date = event.getDate();
+            
+            for (Event.EventDetails eventDetails : event.getEventDetailsList()) {
+                String uniqueEventId = cityId + "-" + date + "-" + eventDetails.getIndex();
+                
+                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+                    if (player.getEmail() != null) {
+                        Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                        if (existingUser.isPresent()) {
+                            User user = existingUser.get();
+                            
+                            if (user.getPlayerStats().getGameLinks() == null) {
+                                user.getPlayerStats().setGameLinks(new ArrayList<>());
+                            }
+                            
+                            if (!user.getPlayerStats().getGameLinks().contains(uniqueEventId)) {
+                                user.getPlayerStats().getGameLinks().add(uniqueEventId);
+                                userRepository.save(user);
+                                log.info("Added game event ID {} for user {}", uniqueEventId, player.getEmail());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
