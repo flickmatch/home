@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+transformers
+torch
+google.generativeai
+awsebcli
+botocore
+boto3
+gunicorn
+python-dotenv
+requests

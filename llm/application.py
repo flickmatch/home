@@ -2,6 +2,7 @@ from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from transformers import pipeline
 import google.generativeai as genai
+import os
 
 app = FastAPI()
 
@@ -15,12 +16,16 @@ app.add_middleware(
 )
 
 # Configure Gemini
-genai.configure(api_key="GEMINI_API_KEY")  # Replace with os.getenv(...) for safety
+genai.configure(api_key=os.getenv("GEMINI_API_KEY")) 
 
 # Local models
 local_models = {
     "gpt2": pipeline("text-generation", model="gpt2"),
 }
+
+@app.get("/")
+def read_root():
+    return {"message": "FastAPI backend is running!"}
 
 @app.post("/generate")
 async def generate_text(
