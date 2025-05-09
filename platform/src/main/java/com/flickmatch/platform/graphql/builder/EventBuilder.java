@@ -3,8 +3,10 @@ package com.flickmatch.platform.graphql.builder;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
+import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
 import com.flickmatch.platform.graphql.input.UpdateEventDetailsInput;
@@ -29,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -41,15 +44,17 @@ public class EventBuilder {
 
     EventRepository eventRepository;
     CityRepository cityRepository;
+    UserRepository userRepository;
 
     @Autowired
     SportsVenueBuilder sportsVenueBuilder;
     @Autowired
     CityBuilder cityBuilder;
 
-    public EventBuilder(EventRepository eventRepository, CityRepository cityRepository) {
+    public EventBuilder(EventRepository eventRepository, CityRepository cityRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
         this.cityRepository = cityRepository;
+        this.userRepository = userRepository;
     }
 
     public Event createEvent(CreateEventInput input, boolean shouldValidateStartTime) throws ParseException {
@@ -81,6 +86,7 @@ public class EventBuilder {
         Event.PlayerDetails playerDetails = Event.PlayerDetails.builder()
                 .name(input.getPlayer().getName())
                 .waNumber(input.getPlayer().getWaNumber())
+                .teamColor(input.getPlayer().getTeamColor())
                 .build();
         addPlayersInEvent(parsedUniqueEventId, List.of(playerDetails));
     }
@@ -438,6 +444,37 @@ public class EventBuilder {
                 Event.EventDetails eventDetails = selectedEvent.get();
                 eventDetails.setTeam1Score(input.getTeam1Score());
                 eventDetails.setTeam2Score(input.getTeam2Score());
+
+                String winningTeamColor = null;
+                if (input.getTeam1Score() > input.getTeam2Score()) {
+                    winningTeamColor = eventDetails.getTeam1Color();
+                } else if (input.getTeam2Score() > input.getTeam1Score()) {
+                    winningTeamColor = eventDetails.getTeam2Color();
+                }
+
+                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+                    if(player.getEmail() != null) {
+                        Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                        if (existingUser.isPresent()) {
+                            User user = existingUser.get();
+                            if (!user.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
+                                user.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
+
+                                Integer totalMatches = user.getPlayerStats().getMatchesPlayed();
+                                user.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
+
+                                Integer wins = user.getPlayerStats().getWins();
+                                if (winningTeamColor != null && winningTeamColor.equals(player.getTeamColor())) {
+                                    user.getPlayerStats().setWins(wins != null ? wins + 1 : 1);
+                                }
+                            } else {
+                                log.info("Score already updated");
+                            }
+                            userRepository.save(user);
+                        }
+                    }
+                }
+
                 return eventRepository.save(event);
             }
         }
@@ -476,4 +513,39 @@ public class EventBuilder {
         }
         throw new IllegalArgumentException("Event not found");
     }
+
+    public void updateAllPlayersGameLinks() {
+        log.info("Starting to update game links for all players");
+        List<Event> allEvents = new ArrayList<>();
+        eventRepository.findAll().forEach(allEvents::add);
+
+        for (Event event : allEvents) {
+            String cityId = event.getCityId();
+            String date = event.getDate();
+            
+            for (Event.EventDetails eventDetails : event.getEventDetailsList()) {
+                String uniqueEventId = cityId + "-" + date + "-" + eventDetails.getIndex();
+                
+                for (Event.PlayerDetails player : eventDetails.getPlayerDetailsList()) {
+                    if (player.getEmail() != null) {
+                        Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                        if (existingUser.isPresent()) {
+                            User user = existingUser.get();
+                            
+                            if (user.getPlayerStats().getGameLinks() == null) {
+                                user.getPlayerStats().setGameLinks(new ArrayList<>());
+                            }
+                            
+                            if (!user.getPlayerStats().getGameLinks().contains(uniqueEventId)) {
+                                user.getPlayerStats().getGameLinks().add(uniqueEventId);
+                                userRepository.save(user);
+                                log.info("Added game event ID {} for user {}", uniqueEventId, player.getEmail());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
