@@ -2,6 +2,7 @@ package com.flickmatch.platform.rest;
 
 import com.flickmatch.platform.dynamodb.model.StripePaymentRequest;
 import com.flickmatch.platform.dynamodb.repository.StripePaymentRequestRepository;
+import com.flickmatch.platform.graphql.builder.EventBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,9 @@ import java.util.Optional;
 public class StripePaymentCallbackController {
 
     @Autowired
+    EventBuilder eventBuilder;
+
+    @Autowired
     private StripePaymentRequestRepository stripePaymentRequestRepository;
 
     private String sanitizeForLog(String input) {
@@ -38,12 +42,13 @@ public class StripePaymentCallbackController {
 
             if (optionalRequest.isPresent()) {
                 StripePaymentRequest request = optionalRequest.get();
+                eventBuilder.joinEventStripePayment(request);
                 request.setStatus("SUCCESS");
                 stripePaymentRequestRepository.save(request);
                 log.info("Payment status updated to SUCCESS for sessionId: {}", sanitizedSessionId);
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl()));
+                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl() + "/event/" + optionalRequest.get().getUniqueEventId()));
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
                 log.warn("No StripePaymentRequest found for sessionId: {}", sanitizedSessionId);
@@ -71,7 +76,7 @@ public class StripePaymentCallbackController {
                 log.info("Payment status updated to CANCELLED for sessionId: {}", sanitizedSessionId);
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl()));
+                headers.setLocation(URI.create(optionalRequest.get().getRedirectUrl() + "/event/" + optionalRequest.get().getUniqueEventId()));
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
                 log.warn("No StripePaymentRequest found for sessionId: {}", sanitizedSessionId);

@@ -252,7 +252,7 @@ type City {
   sportsVenues: [SportsVenue!]
   events: [EVENT]
   pastEvents(inDays: Int!): [EVENT]!
-  currency: String!
+  currency: String
   countryCode: String!
   iconUrl: String!
 }
