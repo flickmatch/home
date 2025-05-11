@@ -1,0 +1,29 @@
+# Exclude Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+
+# Exclude Git files
+.git
+.gitignore
+
+# Exclude Docker-related files (Dockerfile, .dockerignore itself, etc.)
+Dockerfile
+.dockerignore
+
+# Exclude node_modules or any other irrelevant directories
+node_modules
+
+# Exclude other build or temporary files
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Exclude deployment files if not needed (e.g., deployment scripts)
+deployment.zip
+
+# If you have virtual environments or other temp directories, exclude them
+venv
+env
