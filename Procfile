@@ -1,1 +1,1 @@
-web: gunicorn llm.application:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+web: gunicorn llm.app:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:3000

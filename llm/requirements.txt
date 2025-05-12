@@ -3,6 +3,7 @@ uvicorn
 transformers
 torch
 google.generativeai
+python-multipart
 awsebcli
 botocore
 boto3

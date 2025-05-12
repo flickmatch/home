@@ -45,3 +45,7 @@ async def generate_text(
 
     else:
         raise HTTPException(status_code=400, detail="Model not available.")
+if __name__ == "__main__":
+    import uvicorn
+    print("Device set to use cpu")
+    uvicorn.run(app, host="0.0.0.0", port=3000)
