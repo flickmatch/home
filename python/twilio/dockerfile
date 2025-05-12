@@ -1,0 +1,14 @@
+# Use the official Python 3.11 slim image as the base image
+FROM python:3.11-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the local directory contents into the container at /app
+COPY . .
+
+# Install any necessary dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Command to run the Flask app using Gunicorn
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]

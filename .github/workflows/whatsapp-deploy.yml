@@ -1,42 +1,83 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# name: WhatsApp Deploy
 
-name: Deploy WA JS
+# on:
+#   push:
+#     branches: ["main", "twilio-flask"]
+#   workflow_dispatch:
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.9"
+
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r python/twilio/requirements.txt
+
+#       - name: Create deployment zip
+#         run: |
+#           cd python/twilio
+#           zip -r ../../deployment.zip . -x ".git" ".github"
+
+#       - name: Deploy to Elastic Beanstalk
+#         uses: einaregilsson/beanstalk-deploy@v21
+#         with:
+#           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+#           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           application_name: "whatsapp deploy"
+#           environment_name: "whatsapp-platform-env"
+#           version_label: ${{ github.sha }}-${{ github.run_id }}
+#           region: ap-south-1
+#           deployment_package: deployment.zip
+#           use_existing_version_if_available: true
+name: Build and Deploy to Elastic Beanstalk
 
 on:
   push:
-    branches: ["main"]
-    paths:
-      - "whatsapp-js/**"
-  workflow_dispatch:
+    branches: ["main", "twilio-flask"]
 
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Check for QR code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
         run: |
-          if grep -q "QR RECEIVED" whatsapp-js/main.js; then
-            echo "QR code received, deployment failed"
-            exit 1
-          else
-            echo "No QR code received, continue deployment"
-          fi
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
+          docker build -f python/twilio/Dockerfile -t flickmatch .
+
+      - name: Log in to AWS
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ${{ secrets.WA_SERVER }}
-          username: ${{ secrets.WA_SERVER_USERNAME }}
-          key: ${{ secrets.WA_SERVER_PRIVATE_KEY }}
-          password: ${{ secrets.WA_SERVER_PASSWORD }}
-          port: 22
-          script: |
-            cd ~/home/safeuser/home/whatsapp-js
-            git stash
-            git pull origin main
-            git status
-            /usr/bin/pm2 restart main
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Deploy Docker container to Elastic Beanstalk
+        run: |
+          # Create a zip file that contains the application and Dockerrun.aws.json
+          zip -r app.zip . -x ".git" ".github"
+
+          # Upload to Elastic Beanstalk
+          aws elasticbeanstalk create-application-version \
+            --application-name flickmatch \
+            --version-label $GITHUB_SHA \
+            --source-bundle S3Bucket="your-s3-bucket-name",S3Key="app.zip"
+
+          aws elasticbeanstalk update-environment \
+            --environment-name flickmatch-env \
+            --version-label $GITHUB_SHA
