@@ -1,6 +1,8 @@
+import type { SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -31,6 +33,7 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
+import { getEventById } from '../../matchQueues/constants';
 import { query } from '../../matchQueues/constants';
 import type { CityDetails, SportsVenues } from '../../matchQueues/types/Events.types';
 import styles from './AddGame.module.scss';
@@ -39,7 +42,10 @@ import { apiUrl, gameQueuesApiUrl } from './constants';
 function AddGame() {
   const isPortrait = useOrientation();
   const navigate = useNavigate();
+
+  const { id } = useParams<{ id?: string }>();
   const [, notificationsActions] = useNotifications();
+
   const [cityName, setCityName] = useState('');
   const [turfName, setTurfName] = useState('');
   const [mapLink, setMapLink] = useState('');
@@ -55,28 +61,61 @@ function AddGame() {
   const [teamDivision, setTeamDivision] = useState(true);
   const [team1Color, setTeam1Color] = useState('Bibs');
   const [team2Color, setTeam2Color] = useState('No Bibs');
+  const [error, setError] = useState<string | null>(null);
   const [paymentMethods, setPaymentMethods] = useState(['razorpay']);
 
   const [team1Name, setTeam1Name] = useState('');
   const [team2Name, setTeam2Name] = useState('');
-  // console.log(testGame);
 
   const userState = useSelector((state: RootState) => state);
 
   useEffect(() => {
-    const storedData = localStorage.getItem('userData');
+    if (id) {
+      getEventById(id, setError)
+        .then((eventDetails) => {
+          if (eventDetails) {
+            const eventCityId = id.charAt(0);
+            setCityName(eventCityId);
+            fetchSportsTurf(eventCityId, eventDetails.venueName);
 
-    if (storedData) {
-      if (!userState.login.isAdmin) {
-        Swal.fire({
-          title: 'Unauthorized Access',
-          text: 'You are not authorized to view this page.',
-          icon: 'error',
-        }).then(() => {
-          navigate('/match-queues');
+            setCharges(eventDetails.charges.toString());
+            setCredits(eventDetails.credits != null ? eventDetails.credits.toString() : '');
+            setMapLink(eventDetails.venueLocationLink);
+            setPlayersCount(eventDetails.reservedPlayersCount.toString());
+            setTeam1Color(
+              eventDetails.team1Color !== undefined ? eventDetails.team1Color : team1Color,
+            );
+            setTeam2Color(
+              eventDetails.team2Color !== undefined ? eventDetails.team2Color : team2Color,
+            );
+            setTeamDivision(
+              eventDetails.teamDivision !== undefined ? eventDetails.teamDivision : teamDivision,
+            );
+          } else {
+            // eslint-disable-next-line no-console
+            console.error(`No event found with ID: ${id}`);
+          }
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
         });
-      }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  useEffect(() => {
+    if (!userState.login.isAdmin) {
+      Swal.fire({
+        title: 'Unauthorized Access',
+        text: 'You are not authorized to view this page.',
+        icon: 'error',
+      }).then(() => {
+        navigate('/match-queues');
+      });
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userState.login.isAdmin, navigate]);
 
@@ -113,6 +152,10 @@ function AddGame() {
     };
   }, []);
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   const handlePaymentMethodChange = (method: string) => {
     setPaymentMethods(
       (prev) =>
@@ -122,7 +165,7 @@ function AddGame() {
     );
   };
 
-  const fetchSportsTurf = (cityId: string) => {
+  const fetchSportsTurf = (cityId: string, eventVenueName: string) => {
     const fetchData = async () => {
       try {
         const response = await fetch(gameQueuesApiUrl, {
@@ -150,6 +193,15 @@ function AddGame() {
         const data = await response.json();
 
         setSportsVenues(data.data.city.sportsVenues);
+        if (eventVenueName) {
+          data.data.city.sportsVenues.forEach(
+            (sportVenue: { displayName: string; sportsVenueId: SetStateAction<string> }) => {
+              if (sportVenue.displayName === eventVenueName) {
+                setTurfName(sportVenue.sportsVenueId);
+              }
+            },
+          );
+        }
       } catch (error) {
         if (error instanceof Error) {
           if (error.name === 'TypeError') {
@@ -188,7 +240,7 @@ function AddGame() {
     if (data.data.city.cityId === e.target.value) {
       setCurrencyType(data.data.city.countryCode);
     }
-    fetchSportsTurf(e.target.value);
+    fetchSportsTurf(e.target.value, '');
   };
 
   const handleTurfName = (e: SelectChangeEvent) => {
@@ -216,12 +268,12 @@ function AddGame() {
     });
   }
 
-  function showSuccessNotification() {
+  function showSuccessNotification(responsePrompt: string) {
     notificationsActions.push({
       options: {
         content: (
           <Alert severity="success">
-            <AlertTitle className={styles.alertTitle}>Game Added Successfully</AlertTitle>
+            <AlertTitle className={styles.alertTitle}>{responsePrompt}</AlertTitle>
           </Alert>
         ),
       },
@@ -304,7 +356,7 @@ function AddGame() {
           if (result.data.createEvent.isSuccessful === false) {
             showErrorNotification(result.data.createEvent.errorMessage);
           } else {
-            showSuccessNotification();
+            showSuccessNotification('Game Added Successfully');
             navigate('/match-queues');
           }
         })
@@ -314,6 +366,45 @@ function AddGame() {
           console.log(error);
         });
     }
+  };
+
+  const updateEventDetails = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `mutation UpdateEventDetails {
+      updateEventDetails(input: { uniqueEventId: "${id}", reservedPlayersCount :${parseInt(
+          playersCount,
+        )}, 
+      waitListPlayersCount : ${parseInt(playersCount) / 2}, charges: ${parseInt(charges)}
+       }) {
+          isSuccessful
+          errorMessage
+      }
+  }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          // Handle GraphQL errors
+          alert(result.errors[0].message);
+        } else {
+          if (result.data.updateEventDetails.isSuccessful === false) {
+            showErrorNotification(result.data.createEvent.errorMessage);
+          } else {
+            showSuccessNotification('Game Updated Successfully');
+            navigate(`/match-queues#${id}`);
+          }
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
 
   const sectionFirst = () => (
@@ -658,8 +749,13 @@ function AddGame() {
 
   const sectionFourth = () => (
     <Box className={styles.sectionFourth}>
-      <Button variant="contained" color="success" className={styles.createButton} onClick={addGame}>
-        Add Game
+      <Button
+        variant="contained"
+        color="success"
+        className={styles.createButton}
+        onClick={id ? updateEventDetails : addGame}
+      >
+        {id ? 'Update' : 'Add'} Game
       </Button>
     </Box>
   );
@@ -680,7 +776,7 @@ function AddGame() {
               />
               <Box>
                 <Typography variant="h3" className={styles.title}>
-                  Add Game
+                  {id ? 'Update' : 'Add'} Game
                 </Typography>
                 <Box className={styles.divider} />
               </Box>
