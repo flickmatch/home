@@ -93,9 +93,6 @@ export const JoinNowPayLater: FC<ChildProps> = ({
       const appVerifier = new RecaptchaVerifier(auth, 'recaptcha', {});
       signInWithPhoneNumber(auth, '+91' + phoneNumber, appVerifier)
         .then((confirmationResult) => {
-          //console.log("")
-          // eslint-disable-next-line no-console
-          console.log(confirmationResult);
           setUserConfirmation(confirmationResult);
           setShowOtpField(true);
         })
@@ -115,10 +112,10 @@ export const JoinNowPayLater: FC<ChildProps> = ({
       if (userConfirmation) {
         userConfirmation
           .confirm(phoneOtp)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .then((result: { user: any }) => {
             const user = result.user;
-            // eslint-disable-next-line no-console
-            console.log(user);
+
             fetch(apiUrl, {
               method: 'POST',
               headers: {
@@ -160,15 +157,12 @@ export const JoinNowPayLater: FC<ChildProps> = ({
               .catch((error) => {
                 alert(error.message);
               });
-            // eslint-disable-next-line no-console
-            console.log(user);
-            // ...
           })
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .catch((error: any) => {
             // eslint-disable-next-line no-console
             console.log(error);
             // User couldn't sign in (bad verification code?)
-            // ...
           });
       }
     }
