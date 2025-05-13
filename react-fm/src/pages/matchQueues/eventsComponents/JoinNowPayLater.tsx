@@ -157,6 +157,8 @@ export const JoinNowPayLater: FC<ChildProps> = ({
               .catch((error) => {
                 alert(error.message);
               });
+            // eslint-disable-next-line no-console
+            console.log(user);
           })
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .catch((error: any) => {
