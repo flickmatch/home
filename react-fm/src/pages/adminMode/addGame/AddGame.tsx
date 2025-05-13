@@ -95,7 +95,7 @@ function AddGame() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         setCitiesData(data.data.cities);
       } catch (error) {
         if (error instanceof Error) {
@@ -148,7 +148,7 @@ function AddGame() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         setSportsVenues(data.data.city.sportsVenues);
       } catch (error) {
         if (error instanceof Error) {

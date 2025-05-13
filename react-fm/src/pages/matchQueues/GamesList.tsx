@@ -138,78 +138,60 @@ export const GamesList: FC<event> = ({
       let teamAPlayers: ReservedPlayerDetails[] = [];
       let teamBPlayers: ReservedPlayerDetails[] = [];
       const teamSize = playingEvent.reservedPlayersCount / 2;
-      let teamCoordinates:
-        | { mobilePoints: { x: number; y: number }; id: number; role: string }[]
-        | null = null;
-      if (playingEvent.teamDivision) {
-        switch (teamSize) {
-          case 5:
-            teamCoordinates = teamACoordinates5.concat(teamBCoordinates5);
-            break;
-          case 6:
-            teamCoordinates = teamACoordinates6.concat(teamBCoordinates6);
-            break;
-          case 7:
-            teamCoordinates = teamACoordinates7.concat(teamBCoordinates7);
-            break;
-          case 8:
-            teamCoordinates = teamACoordinates8.concat(teamBCoordinates8);
-            break;
-          case 9:
-            teamCoordinates = teamACoordinates9.concat(teamBCoordinates9);
-            break;
-          case 10:
-            teamCoordinates = teamACoordinates10.concat(teamBCoordinates10);
-            break;
-          case 11:
-            teamCoordinates = teamACoordinates11.concat(teamBCoordinates11);
-            break;
-          default:
-            teamCoordinates = null;
-            break;
-        }
-      }
+      // Assign team coordinates based on team size
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const teamCoordinatesMap: Record<number, any[]> = {
+        5: teamACoordinates5.concat(teamBCoordinates5),
+        6: teamACoordinates6.concat(teamBCoordinates6),
+        7: teamACoordinates7.concat(teamBCoordinates7),
+        8: teamACoordinates8.concat(teamBCoordinates8),
+        9: teamACoordinates9.concat(teamBCoordinates9),
+        10: teamACoordinates10.concat(teamBCoordinates10),
+        11: teamACoordinates11.concat(teamBCoordinates11),
+      };
 
-      if (playingEvent?.teamDivision) {
-        teamAPlayers = playingEvent.reservedPlayersList.filter(
-          (player) => player.teamColor === playingEvent?.team1Color,
-        );
-        teamBPlayers = playingEvent.reservedPlayersList.filter(
-          (player) => player.teamColor === playingEvent?.team2Color,
-        );
+      const teamCoordinates = playingEvent.teamDivision
+        ? teamCoordinatesMap[teamSize] || null
+        : null;
 
-        // Calculate open spots and create placeholders
-        const openSpots =
-          playingEvent.reservedPlayersCount - playingEvent.reservedPlayersList.length;
-        const emptySlots = Array.from({ length: openSpots }, () => ({
-          displayName: 'Add Name',
-          teamColor: '',
-        }));
+      // Skip team logic if not divided
+      if (!playingEvent.teamDivision) return;
 
-        // Merge unassigned players with empty slots
-        const unassignedPlayers = playingEvent.reservedPlayersList
-          .filter((player) => player.teamColor === null)
-          .concat(emptySlots);
+      const { team1Color, team2Color, reservedPlayersList, reservedPlayersCount } = playingEvent;
 
-        // Assign unassigned players to the smaller team
-        unassignedPlayers.forEach((player) => {
-          if (teamAPlayers.length <= teamBPlayers.length) {
-            teamAPlayers.push(
-              player
-                ? { ...player, teamColor: playingEvent.team1Color }
-                : { displayName: 'Add Name', teamColor: playingEvent.team1Color },
-            );
-          } else {
-            teamBPlayers.push(
-              player
-                ? { ...player, teamColor: playingEvent.team2Color }
-                : { displayName: 'Add Name', teamColor: playingEvent.team2Color },
-            );
-          }
-        });
+      teamAPlayers = reservedPlayersList.filter((player) => player.teamColor === team1Color);
+      teamBPlayers = reservedPlayersList.filter((player) => player.teamColor === team2Color);
 
-        fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
-      }
+      // Calculate open spots and create placeholders
+      const openSpots = reservedPlayersCount - reservedPlayersList.length;
+
+      const emptySlots = Array.from({ length: openSpots }, () => ({
+        displayName: 'Add Name',
+        teamColor: '',
+      }));
+
+      // Merge unassigned players with empty slots
+      const unassignedPlayers = playingEvent.reservedPlayersList
+        .filter((player) => player.teamColor === null)
+        .concat(emptySlots);
+
+      // Assign unassigned players to the smaller team
+      unassignedPlayers.forEach((player) => {
+        const isTeamASmaller = teamAPlayers.length <= teamBPlayers.length;
+        const targetTeam = isTeamASmaller ? teamAPlayers : teamBPlayers;
+        const targetColor = isTeamASmaller ? playingEvent.team1Color : playingEvent.team2Color;
+
+        // Ensure player has a displayName and assign the team color
+        const playerWithTeam: ReservedPlayerDetails = {
+          ...player,
+          displayName: player.displayName || 'Add Name',
+          teamColor: targetColor,
+        };
+
+        targetTeam.push(playerWithTeam);
+      });
+
+      fullTeamPlayers = teamAPlayers.concat(teamBPlayers);
 
       return (
         <Accordion
