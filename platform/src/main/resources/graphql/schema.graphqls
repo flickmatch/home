@@ -6,6 +6,7 @@ type Query {
   passesForCity(cityId: ID!): [Pass!]
   hasActiveSubscription(email: String!): Boolean!
   getActiveSubscription(email: String!): Subscription
+  getOutstandingPaymentStatus(email: String!): String
 }
 
 type Mutation {
@@ -26,6 +27,7 @@ type Mutation {
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
   checkoutProducts(input: StripeInput): StripeOutput
+  updateOutstandingPaymentStatus(email: String!, status: String!): MutationResult!
 }
 
 input UpdateEventScoreInput{
@@ -242,6 +244,7 @@ input PlayerInput {
   name: String!
   teamColor: String
   email: String
+  paymentStatus: String
 }
 
 type PassPaymentOutput {

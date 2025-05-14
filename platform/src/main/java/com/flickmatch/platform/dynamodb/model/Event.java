@@ -317,6 +317,7 @@ public class Event {
         Integer index;
         String email;
         String pinCode;
+        String paymentStatus;
 
         @DynamoDBAttribute(attributeName = "pinCode")
         public String getPinCode() {
@@ -368,6 +369,14 @@ public class Event {
 
         public void setWaNumber(String waNumber) {
             this.waNumber = waNumber;
+        }
+        @DynamoDBAttribute(attributeName = "paymentStatus")
+        public String getPaymentStatus() {
+            return paymentStatus;
+        }
+
+        public void setPaymentStatus(String paymentStatus) {
+            this.paymentStatus = paymentStatus;
         }
     }
 
