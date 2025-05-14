@@ -234,6 +234,7 @@ input PlayerInput {
   name: String!
   teamColor: String
   email: String
+  paymentStatus: String
 }
 
 type PassPaymentOutput {
