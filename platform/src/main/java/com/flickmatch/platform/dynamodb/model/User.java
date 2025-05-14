@@ -21,6 +21,7 @@ public class User {
     private Boolean hasActiveSubscription;
     private List<String> citiesHistory=new ArrayList<>();
     private List<String> userPinCodes = new ArrayList<>();
+    private String outstandingPaymentStatus = "no";
 
     @DynamoDBAttribute(attributeName="userPinCodes")
     public List<String> getUserPinCodes() {
@@ -93,5 +94,13 @@ public class User {
 
     public void setHasActiveSubscription(Boolean hasActiveSubscription) {
         this.hasActiveSubscription = hasActiveSubscription;
+    }
+    @DynamoDBAttribute(attributeName="outstandingPaymentStatus")
+    public String getOutstandingPaymentStatus() {
+        return outstandingPaymentStatus;
+    }
+
+    public void setOutstandingPaymentStatus(String outstandingPaymentStatus) {
+        this.outstandingPaymentStatus = outstandingPaymentStatus;
     }
 }
