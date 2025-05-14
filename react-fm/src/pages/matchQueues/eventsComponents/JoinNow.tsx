@@ -50,7 +50,7 @@ type subscriptionType = {
 };
 
 export const JoinNow: FC<EventDetails> = ({
- reservedPlayersCount,
+  reservedPlayersCount,
   reservedPlayersList,
   waitListPlayers,
   waitListPlayersCount,
@@ -64,6 +64,7 @@ export const JoinNow: FC<EventDetails> = ({
   team1_color,
   team2_color,
   venuePinCode,
+  paymentMethods,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -583,7 +584,7 @@ export const JoinNow: FC<EventDetails> = ({
 
           {showPaymentOptions ? (
             <FlexBox className={isPortrait ? styles.paymentOptionsPortrait : styles.paymentOptions}>
-              {userState.login.isAdmin && (
+              {userState.login.isAdmin && paymentMethods?.includes('phonepe') && (
                 <Button
                   variant="contained"
                   startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
@@ -611,20 +612,21 @@ export const JoinNow: FC<EventDetails> = ({
                   Pay via card
                 </Button>
               )}
-              <Button
-                variant="contained"
-                // className={isPortrait ? styles.payViaRazorpay : ''}
-                className={styles.payViaRazorpay}
-                startIcon={
-                  <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
-                }
-                onClick={() => {
-                  setRazorPay(true);
-                  setOpen(true);
-                }}
-              >
-                Pay Now
-              </Button>
+              {paymentMethods?.includes('razorpay') && (
+                <Button
+                  variant="contained"
+                  className={styles.payViaRazorpay}
+                  startIcon={
+                    <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
+                  }
+                  onClick={() => {
+                    setRazorPay(true);
+                    setOpen(true);
+                  }}
+                >
+                  Pay Now
+                </Button>
+              )}
             </FlexBox>
           ) : null}
 
