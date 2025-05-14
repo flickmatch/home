@@ -53,6 +53,8 @@ export const EventsCard: FC<EventDetails> = ({
   team1Score,
   team2Score,
   paymentMethods,
+  team1Name,
+  team2Name,
 }) => {
   const isPortrait = useOrientation();
   const [, notificationsActions] = useNotifications();
@@ -273,17 +275,16 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const googleLocation = () =>
-    !isPast ? (
-      <Grid item xs={4} sm={4} md={3}>
-        <Typography className={styles.title}>
-          Google Map{' '}
-          <a href={venueLocationLink} target="_blank" rel="noreferrer">
-            <LocationOnIcon className={styles.locationIcon} />
-          </a>
-        </Typography>
-      </Grid>
-    ) : null;
+  const googleLocation = () => (
+    <Grid item xs={4} sm={4} md={3}>
+      <Typography className={styles.title}>
+        Google Map{' '}
+        <a href={venueLocationLink} target="_blank" rel="noreferrer">
+          <LocationOnIcon className={styles.locationIcon} />
+        </a>
+      </Typography>
+    </Grid>
+  );
 
   const numberOfPlayers = () =>
     isPast ? (
@@ -338,7 +339,7 @@ export const EventsCard: FC<EventDetails> = ({
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
           <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
-            <span className={styles.teamLabel}>Team {team1_color}</span>
+            <span className={styles.teamLabel}>Team {team1Name ? team1Name : team1_color}</span>
             {isEditable && isAdmin ? (
               <Input
                 type="number"
@@ -366,7 +367,7 @@ export const EventsCard: FC<EventDetails> = ({
                 {teamBGoals !== -1 ? teamBGoals : ''}
               </span>
             )}
-            <span className={styles.teamLabel}>Team {team2_color}</span>
+            <span className={styles.teamLabel}>Team {team2Name ? team2Name : team2_color}</span>
           </span>
           {isAdmin ? (
             isPortrait ? (
@@ -388,7 +389,7 @@ export const EventsCard: FC<EventDetails> = ({
     ) : null;
 
   const gameLink = () => (
-    <Grid item xs={4} sm={4} md={7}>
+    <Grid item xs={4} sm={4} md={4}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
         Game Invite{' '}

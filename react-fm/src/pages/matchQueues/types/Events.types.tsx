@@ -9,6 +9,7 @@ type ReservedPlayerDetails = {
 
 type Coordinates = {
   mobilePoints?: { x: number; y: number };
+  desktopSingleTeam?: { x: 50; y: 50 };
   id?: number;
   role?: string;
 };
@@ -39,6 +40,7 @@ type EventDetails = {
   singleEvent?: boolean;
   cityId?: string;
   handlePassName?: (name: string) => void;
+  addPlayerInQueue?: (name: string) => void;
   credits?: number;
   teamDivision?: boolean;
   team1Color?: string;
@@ -46,6 +48,8 @@ type EventDetails = {
   team1Score?: number;
   team2Score?: number;
   paymentMethods?: string[];
+  team1Name?: string;
+  team2Name?: string;
 };
 
 type CityDetails = {

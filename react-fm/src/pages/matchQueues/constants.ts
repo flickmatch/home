@@ -60,6 +60,8 @@ const query = JSON.stringify({
           team2Color
           team1Score
           team2Score
+          team1Name
+          team2Name
           paymentMethods
         }
       }
@@ -111,6 +113,8 @@ const getEventById = async (
             team1Score
             team2Score
             paymentMethods
+            team1Name
+            team2Name
             reservedPlayersList {
               displayName
               teamColor

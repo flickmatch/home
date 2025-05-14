@@ -3,6 +3,7 @@ package com.flickmatch.platform.graphql.builder;
 import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
+import com.flickmatch.platform.dynamodb.model.StripePaymentRequest;
 import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.dynamodb.repository.CityRepository;
 import com.flickmatch.platform.dynamodb.repository.EventRepository;
@@ -99,6 +100,10 @@ public class EventBuilder {
     public Event joinEventRazorPayment(final RazorPaymentRequest paymentRequest) {
         return addPlayersInEvent(parseUniqueEventId(paymentRequest.getUniqueEventId()),
                 paymentRequest.getPlayerDetailsList());
+    }
+
+    public Event joinEventStripePayment(final StripePaymentRequest paymentRequest){
+        return addPlayersInEvent(parseUniqueEventId(paymentRequest.getUniqueEventId()),paymentRequest.getPlayerDetailsList());
     }
 
     public List<com.flickmatch.platform.graphql.type.Event> getEvents(String cityId, String localTimeZone) {
