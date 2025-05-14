@@ -2,11 +2,7 @@ fastapi
 uvicorn
 transformers
 torch
-google.generativeai
+google-generativeai
 python-multipart
-awsebcli
-botocore
-boto3
-gunicorn
-python-dotenv
 requests
+gunicorn
