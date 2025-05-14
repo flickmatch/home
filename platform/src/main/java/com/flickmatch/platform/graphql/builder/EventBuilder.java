@@ -463,22 +463,49 @@ public class EventBuilder {
 
             if (selectedEvent.isPresent()) {
                 Event.EventDetails eventDetails = selectedEvent.get();
-                input.getStartTime().ifPresent(eventDetails::setStartTime);
-                input.getEndTime().ifPresent(eventDetails::setEndTime);
+                input.getStartTime().ifPresent(startTimeStr ->
+                        {
+                            try {
+                                eventDetails.setStartTime(DateUtil.parseDateFromString(startTimeStr));
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                );
+                input.getEndTime().ifPresent(endTimeStr ->
+                        {
+                            try {
+                                eventDetails.setEndTime(DateUtil.parseDateFromString(endTimeStr));
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                );
                 input.getCharges().ifPresent(eventDetails::setCharges);
                 input.getReservedPlayersCount().ifPresent(eventDetails::setReservedPlayersCount);
                 input.getWaitListPlayersCount().ifPresent(eventDetails::setWaitListPlayersCount);
-                input.getIsDeleted().ifPresent(eventDetails::setIsDeleted);
-                input.getSportsVenueId().ifPresent(eventDetails::setVenueName);
+                input.getSportName().ifPresent(eventDetails::setSportName);
+                input.getVenueName().ifPresent(eventDetails::setVenueName);
+                input.getVenueLocationLink().ifPresent(eventDetails::setVenueLocationLink);
+                input.getVenuePinCode().ifPresent(eventDetails::setVenuePinCode);
+                input.getStripePaymentUrl().ifPresent(eventDetails::setStripePaymentUrl);
                 input.getCredits().ifPresent(eventDetails::setCredits);
                 input.getTestGame().ifPresent(eventDetails::setTestGame);
                 input.getTeamDivision().ifPresent(eventDetails::setTeamDivision);
                 input.getTeam1Color().ifPresent(eventDetails::setTeam1Color);
                 input.getTeam2Color().ifPresent(eventDetails::setTeam2Color);
+                input.getPaymentMethods().ifPresent(eventDetails::setPaymentMethods);
+                input.getIsDeleted().ifPresent(eventDetails::setIsDeleted);
+                input.getTeam1Name().ifPresent(eventDetails::setTeam1Name);
+                input.getTeam2Name().ifPresent(eventDetails::setTeam2Name);
+                input.getCurrency().ifPresent(eventDetails::setCurrency);
+                input.getTeam1Score().ifPresent(eventDetails::setTeam1Score);
+                input.getTeam2Score().ifPresent(eventDetails::setTeam2Score);
 
                 return eventRepository.save(event);
             }
         }
+
         throw new IllegalArgumentException("Event not found");
     }
 }

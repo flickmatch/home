@@ -41,13 +41,23 @@ input UpdateEventDetailsInput {
   charges: Float
   reservedPlayersCount: Int
   waitListPlayersCount: Int
+  sportName: String
+  venueName: String
+  venueLocationLink: String
+  venuePinCode: String
+  stripePaymentUrl: String
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
+  paymentMethods: [String]
   isDeleted: Boolean
-    paymentMethods:[String]
+  team1Name: String
+  team2Name: String
+  currency: String
+  team1Score: Int
+  team2Score: Int
 }
 
 input CreateEventInput {
