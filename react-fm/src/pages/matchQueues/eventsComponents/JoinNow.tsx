@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import CelebrationIcon from '@mui/icons-material/Celebration';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import LockIcon from '@mui/icons-material/Lock';
@@ -29,7 +30,9 @@ import type { RootState } from '@/store/types';
 import { apiUrl } from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
+import { JoinNowPayLater } from './JoinNowPayLater';
 import { createOrder, displayRazorpay } from './RazorPay';
+import { checkoutProducts } from './Stripe';
 
 const url =
   import.meta.env.MODE == 'development'
@@ -47,14 +50,14 @@ type subscriptionType = {
 };
 
 export const JoinNow: FC<EventDetails> = ({
-  stripePaymentUrl,
-  reservedPlayersCount,
+ reservedPlayersCount,
   reservedPlayersList,
   waitListPlayers,
   waitListPlayersCount,
   venueName,
   uniqueEventId,
   handlePassName,
+  addPlayerInQueue,
   cityId,
   credits,
   team_division,
@@ -72,6 +75,7 @@ export const JoinNow: FC<EventDetails> = ({
   const [userData, setUserData] = useState({ name: '', email: '', phoneNumber: '' });
   const [orderId, setOrderId] = useState('');
   const [razorPay, setRazorPay] = useState(false);
+  const [stripe, setStripe] = useState(false);
   const [value, setValue] = useState(1);
   const [names, setNames] = useState<Array<string>>([]);
   const [amount, setAmount] = useState(0);
@@ -87,6 +91,8 @@ export const JoinNow: FC<EventDetails> = ({
     status: '',
     cityId: 0,
   });
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [openJoinModal, setOpenJoinModal] = useState(false);
 
   const openSpots = reservedPlayersCount - reservedPlayersList.length;
   const openWaitList = waitListPlayersCount - waitListPlayers.length;
@@ -370,7 +376,7 @@ export const JoinNow: FC<EventDetails> = ({
     } else {
       setOpen(false);
 
-      if (!razorPay) {
+      if (!razorPay && !stripe) {
         const generateUrl = () => {
           fetch(apiUrl, {
             method: 'POST',
@@ -413,7 +419,7 @@ export const JoinNow: FC<EventDetails> = ({
         };
 
         generateUrl();
-      } else {
+      } else if (razorPay) {
         // createOrder('2-2024-07-11-1', objectArray, setAmount, currency || 'INR', email) // to be changed after local testing
         createOrder(
           // '2-2025-01-03-1',
@@ -437,6 +443,26 @@ export const JoinNow: FC<EventDetails> = ({
             // eslint-disable-next-line no-console
             console.error(error);
           });
+      } else if (stripe) {
+        checkoutProducts(
+          // '2-2025-01-03-1',
+          uniqueEventId,
+          objectArray,
+          setAmount,
+          currency || 'INR',
+          email,
+          userData.phoneNumber,
+          teamColor,
+          venuePinCode || '',
+        )
+          .then((res: { sessionId: string; sessionUrl: string }) => {
+            setOpen(false);
+            openInNewTab(res.sessionUrl);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+          });
       }
     }
   };
@@ -448,7 +474,7 @@ export const JoinNow: FC<EventDetails> = ({
       navigate('/login', {
         state: {
           from: `/event/${uniqueEventId}`,
-        }
+        },
       });
     }
   };
@@ -477,6 +503,24 @@ export const JoinNow: FC<EventDetails> = ({
     );
   }
 
+  const handleOpen = (eventId: string) => {
+    history.replaceState(null, '', `#${eventId}`);
+    setSelectedEventId(eventId);
+    setOpenJoinModal((prevState) => !prevState);
+  };
+
+  const handleToggle = () => {
+    if (selectedEventId) {
+      handleOpen(selectedEventId);
+    }
+  };
+
+  const passName = (name: string) => {
+    if (addPlayerInQueue) {
+      addPlayerInQueue(name);
+    }
+  };
+
   //console.log(activeSubscriptonData.cityId, cityId, activeSubscriptonData);
   // console.log(team1_color, team2_color, team_division);
 
@@ -486,6 +530,25 @@ export const JoinNow: FC<EventDetails> = ({
         <>
           {!showPaymentOptions ? (
             <Box className={isPortrait ? styles.portraitJoinNowContainer : styles.joinNowContainer}>
+              <JoinNowPayLater
+                isOpen={openJoinModal}
+                onToggle={handleToggle}
+                uniqueEventId={selectedEventId ? selectedEventId : ''}
+                cityId={cityId ? cityId : ''}
+                handlePassName={passName}
+                team1_color={team1_color ? team1_color : ''}
+                team2_color={team2_color ? team2_color : ''}
+              />
+              {userState.login.isAdmin ? (
+                <Button
+                  className={isPortrait ? styles.portraitGetPassButton : styles.getPassButton}
+                  startIcon={<CelebrationIcon />}
+                  variant="contained"
+                  onClick={() => handleOpen(uniqueEventId)}
+                >
+                  Pay Later
+                </Button>
+              ) : null}
               {hasSubscription &&
               activeSubscriptonData &&
               Number(activeSubscriptonData.cityId) === Number(cityId) &&
@@ -531,7 +594,7 @@ export const JoinNow: FC<EventDetails> = ({
                   UPI
                 </Button>
               )}
-              {userState.login.isAdmin && stripePaymentUrl.slice(0, 5) === 'https' ? (
+              {userState.login.isAdmin && (
                 <Button
                   variant="contained"
                   startIcon={
@@ -540,12 +603,14 @@ export const JoinNow: FC<EventDetails> = ({
                   }
                   className={isPortrait ? '' : styles.payViaCard}
                   onClick={() => {
-                    openInNewTab(stripePaymentUrl);
+                    setStripe(true);
+                    setOpen(true);
                   }}
+                  style={{ display: 'none' }}
                 >
                   Pay via card
                 </Button>
-              ) : null}
+              )}
               <Button
                 variant="contained"
                 // className={isPortrait ? styles.payViaRazorpay : ''}
