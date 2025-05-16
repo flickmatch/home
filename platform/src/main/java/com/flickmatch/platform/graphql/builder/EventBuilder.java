@@ -266,7 +266,7 @@ public class EventBuilder {
         }
     }
 
-    private ParsedUniqueEventId parseUniqueEventId(final String uniqueEventId) {
+    public static ParsedUniqueEventId parseUniqueEventId(final String uniqueEventId) {
         int index = 0;
         String date = null;
         String cityId = null;
@@ -462,9 +462,7 @@ public class EventBuilder {
                         Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
                         if (existingUser.isPresent()) {
                             User user = existingUser.get();
-                            if (!user.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
-                                user.getPlayerStats().getGameLinks().add(input.getUniqueEventId());
-
+                            if (user.getPlayerStats().getGameLinks().contains(input.getUniqueEventId())) {
                                 Integer totalMatches = user.getPlayerStats().getMatchesPlayed();
                                 user.getPlayerStats().setMatchesPlayed(totalMatches != null ? totalMatches + 1 : 1);
 

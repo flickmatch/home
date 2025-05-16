@@ -4,13 +4,18 @@ package com.flickmatch.platform.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.RazorPaymentRequest;
+import com.flickmatch.platform.dynamodb.model.User;
+import com.flickmatch.platform.dynamodb.repository.EventRepository;
 import com.flickmatch.platform.dynamodb.repository.RazorPaymentRequestRepository;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.RazorPaymentRequestBuilder;
 import com.flickmatch.platform.graphql.type.MutationResult;
 import com.flickmatch.platform.proxy.RazorPayProxy;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
+import com.flickmatch.platform.records.ParsedUniqueEventId;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +47,8 @@ public class RazorPaymentCallbackController {
     EventBuilder eventBuilder;
     @Autowired
     private RazorPayProxy razorPayProxy;
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("${razorpay.key.secret}")
     private String secret;
@@ -94,6 +102,23 @@ public class RazorPaymentCallbackController {
 
             log.info("OrderId: {}, PaymentId: {}, Signature: {}", sanitizedOrderId, sanitizedPaymentId, sanitizedSignature);
             log.info("Status: {}", status);
+
+
+                    for (Event.PlayerDetails player : paymentRequest.getPlayerDetailsList()) {
+                        if(player.getEmail() != null) {
+                            Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                            if (existingUser.isPresent()) {
+                                User user = existingUser.get();
+                                if (!user.getPlayerStats().getGameLinks().contains(uniqueEventId)){
+//                                    List<String> links = user.getPlayerStats().getGameLinks();
+//                                    links.add(uniqueEventId);
+//                                    user.getPlayerStats().setGameLinks(links);
+                                    user.getPlayerStats().getGameLinks().add(uniqueEventId);
+                                }
+                                userRepository.save(user);
+                            }
+                        }
+                    }
 
             if(status) {
                 if(PAID_STATUS.equals(paymentRequest.getStatus())) {
