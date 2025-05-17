@@ -82,8 +82,24 @@ public class UserBuilder {
 
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<com.flickmatch.platform.graphql.type.User> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        List<com.flickmatch.platform.graphql.type.User> totalUsers = new ArrayList<>();
+        for (User oldUser : allUsers) {
+            Optional<User> userOpt = userRepository.findByEmail(oldUser.getEmail());
+            User user = userOpt.get();
+            com.flickmatch.platform.graphql.type.User newUser = com.flickmatch.platform.graphql.type.User.builder()
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .userId(user.getUserId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .matchesPlayed(user.getPlayerStats().getMatchesPlayed())
+                    .wins(user.getPlayerStats().getWins())
+                    .gameLinks(user.getPlayerStats().getGameLinks().toString())
+                    .build();
+            totalUsers.add(newUser);
+        }
+        return totalUsers;
     }
 
 
@@ -134,7 +150,17 @@ public class UserBuilder {
         return user.getHasActiveSubscription();
     }
 
-
-
-
+    public com.flickmatch.platform.graphql.type.User getUser(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        User user = userOpt.get();
+        return com.flickmatch.platform.graphql.type.User.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .userId(user.getUserId())
+                .phoneNumber(user.getPhoneNumber())
+                .matchesPlayed(user.getPlayerStats().getMatchesPlayed())
+                .wins(user.getPlayerStats().getWins())
+                .gameLinks(user.getPlayerStats().getGameLinks().toString())
+                .build();
+    }
 }

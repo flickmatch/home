@@ -6,6 +6,9 @@ type Query {
   passesForCity(cityId: ID!): [Pass!]
   hasActiveSubscription(email: String!): Boolean!
   getActiveSubscription(email: String!): Subscription
+  getUserStats(email: String!): User
+  updateGameLinks: MutationResult!
+  users: [User]
 }
 
 type Mutation {
@@ -98,7 +101,6 @@ input CreateEventInput {
     paymentMethods:[String]
 }
 
-
 input JoinEventInput {
   eventId: ID @deprecated(reason: "Use uniqueEventId.")
   cityId: ID @deprecated(reason: "Use uniqueEventId.")
@@ -177,9 +179,12 @@ type Pass {
 
 type User {
   email: String!
-  name: String!
+  name: String
   phoneNumber: String
   userId: String
+  matchesPlayed: Int
+  wins: Int
+  gameLinks: String
 }
 
 type RazorPayOutput {
