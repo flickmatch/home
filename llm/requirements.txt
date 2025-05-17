@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+transformers
+torch
+google-generativeai
+python-multipart
+requests
+gunicorn
