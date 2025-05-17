@@ -33,7 +33,7 @@ function Welcome() {
   }, []);
 
   const whatsApp = () => (
-    <a href="https://wa.me/message/YM7GOPO75EHPG1" target="_blank" rel="noreferrer">
+    <a href="https://wa.me/+919000346921" target="_blank" rel="noreferrer">
       <Button className={styles.sendHiButton} variant="contained" startIcon={<WhatsAppIcon />}>
         Start by sending Hi
       </Button>
