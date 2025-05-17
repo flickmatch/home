@@ -243,7 +243,7 @@ function AddGame() {
   const userInput = {
     input: {
       cityId: cityName,
-      charges: parseInt(charges),
+      charges: Number(charges),
       sportsVenueId: turfName,
       startTime: startTime,
       endTime: endTime,
@@ -274,7 +274,7 @@ function AddGame() {
             createEvent(
                   input: {
                       cityId: "${cityName}"
-                      charges: ${parseInt(charges)}
+                      charges: ${Number(charges)}
                       sportsVenueId: "${turfName}"
                       startTime: "${startTime + '+0530'}"
                       endTime: "${endTime + '+0530'}"
