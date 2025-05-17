@@ -6,4 +6,3 @@
 .secrets
 .venv
 __pycache__
-.elasticbeanstalk/*
