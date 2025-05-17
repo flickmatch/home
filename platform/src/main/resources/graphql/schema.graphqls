@@ -268,14 +268,14 @@ type City {
 }
 
 type StripeOutput {
-  sessionId: String
-  sessionUrl: String
-  status: String
+  sessionId: String!
+  sessionUrl: String!
+  status: String!
   message: String
 }
 
 input StripeInput {
-   uniqueEventId :String!
+   uniqueEventId :ID!
    playerInputList:[PlayerInput]!
   currency:String!
   phoneNumber:String!

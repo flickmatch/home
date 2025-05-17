@@ -15,98 +15,105 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-
-
 @Log4j2
 @Service
 public class StripePaymentRequestBuilder {
 
     @Autowired
-    private  EventBuilder eventBuilder;
+    private EventBuilder eventBuilder;
 
     @Autowired
     private UserBuilder userBuilder;
 
     @Autowired
-   private StripePaymentRequestRepository stripePaymentRequestRepository;
+    private StripePaymentRequestRepository stripePaymentRequestRepository;
 
     @Value("${stripe.publishable.key}")
-    private  String publishableKey;
-
+    private String publishableKey;
 
     @Value("${stripe.secret.key}")
     private String secretKey;
 
-
-    String formatDateToString(LocalDate date) {
+    private String formatDateToString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    public StripeOutput checkoutProducts(StripeInput input, double amount, long quantity, String name, String currency) {
+        Stripe.apiKey = secretKey;
 
-    public StripeOutput checkoutProducts(StripeInput input, double amount,long quantity,String name,String currency){
+        try {
+            log.info("Starting Stripe session creation for input: {}", input);
 
-        Stripe.apiKey=secretKey;
-       
+            SessionCreateParams.LineItem.PriceData.ProductData productData =
+                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                            .setName(name)
+                            .build();
 
-        SessionCreateParams.LineItem.PriceData.ProductData productData =
-                SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                        .setName(name)
-                        .build();
+            BigDecimal decimalAmount = BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP);
+            long amountInCents = decimalAmount.multiply(BigDecimal.valueOf(100)).longValueExact();
 
-        SessionCreateParams.LineItem.PriceData priceData=
-                SessionCreateParams.LineItem.PriceData.builder()
-                        .setCurrency(input.getCurrency()==null?"USD":input.getCurrency())
-                        .setUnitAmount((long)(amount)*100)
-                        .setProductData(productData)
-                        .build();
+            SessionCreateParams.LineItem.PriceData priceData =
+                    SessionCreateParams.LineItem.PriceData.builder()
+                            .setCurrency(input.getCurrency() == null ? "USD" : input.getCurrency())
+                            .setUnitAmount(amountInCents)
+                            .setProductData(productData)
+                            .build();
 
+            SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
+                    .setQuantity(quantity)
+                    .setPriceData(priceData)
+                    .build();
 
-        SessionCreateParams.LineItem lineItem=  SessionCreateParams.LineItem.builder()
-                .setQuantity(quantity)
-                .setPriceData(priceData)
-                .build();
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setSuccessUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/success?session_id={CHECKOUT_SESSION_ID}")
+                    .setCancelUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/cancel")
+                    .setBillingAddressCollection(SessionCreateParams.BillingAddressCollection.REQUIRED)
+                    .addLineItem(lineItem)
+                    .build();
 
-        SessionCreateParams params= SessionCreateParams.builder()
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl("https://service.flickmatch.in:8443/platform-0.0.1-SNAPSHOT/stripe/cancel")
-                .setBillingAddressCollection(SessionCreateParams.BillingAddressCollection.REQUIRED)
-                .addLineItem(lineItem)
-                .build();
+            Session session = Session.create(params);
+            log.info("Stripe session created successfully: Session ID = {}", session.getId());
 
-        Session session=null;
+            return StripeOutput.builder()
+                    .status("SUCCESS")
+                    .message("Payment session created")
+                    .sessionId(session.getId())
+                    .sessionUrl(session.getUrl())
+                    .build();
 
-        try{
-            session=Session.create(params);
-        }catch(StripeException ex){
-            System.out.println(ex.getMessage());
+        } catch (StripeException e) {
+            log.error("StripeException occurred while creating payment session: {}", e.getMessage());
+            return StripeOutput.builder()
+                    .status("FAILED")
+                    .message("Stripe session creation failed: " + e.getMessage())
+                    .build();
+        } catch (Exception e) {
+            log.error("Unexpected error during Stripe session creation: {}", e.getMessage());
+            return StripeOutput.builder()
+                    .status("FAILED")
+                    .message("Unexpected error during Stripe session creation")
+                    .build();
         }
-
-        LocalDate date = LocalDate.now();
-        String dateString = formatDateToString(date);
-
-
-        return StripeOutput.builder()
-                .status("SUCCESS")
-                .message("Payment session created")
-                .sessionId(session.getId())
-                .sessionUrl(session.getUrl())
-                .build();
-
     }
 
-    public StripePaymentRequest createPaymentRequest(StripeInput input, double amount,long quantity,String name,String currency,String location){
+    public StripePaymentRequest createPaymentRequest(StripeInput input, double amount, long quantity, String name, String currency, String location) {
         LocalDate date = LocalDate.now();
         String dateString = formatDateToString(date);
-        String uniqueEventId= input.getUniqueEventId();
+        String uniqueEventId = input.getUniqueEventId();
+
+        log.info("Creating payment request for event: {}", uniqueEventId);
+
         AtomicInteger existingPlayerCount = new AtomicInteger(eventBuilder.countPlayersInQueue(uniqueEventId));
-        List<com.flickmatch.platform.dynamodb.model.Event.PlayerDetails> playerDetailsList = input.getPlayerInputList().stream()
+        List<Event.PlayerDetails> playerDetailsList = input.getPlayerInputList().stream()
                 .map(playerInput -> Event.PlayerDetails.builder()
                         .name(playerInput.getName())
                         .waNumber(playerInput.getWaNumber())
@@ -115,23 +122,38 @@ public class StripePaymentRequestBuilder {
                         .index(existingPlayerCount.getAndIncrement())
                         .build())
                 .collect(Collectors.toList());
-        StripeOutput output=checkoutProducts(input,amount,quantity,name,currency);
-        String email=input.getEmail();
-        String phoneNumber=input.getPhoneNumber();
-        String pinCode=input.getVenuePinCode();
+
+        StripeOutput output = checkoutProducts(input, amount, quantity, name, currency);
+        if (!"SUCCESS".equals(output.getStatus())) {
+            log.error("Failed to create payment session. Aborting payment request creation.");
+            return null;
+        }
+
+        String email = input.getEmail();
+        String phoneNumber = input.getPhoneNumber();
+        String pinCode = input.getVenuePinCode();
+
         try {
-            // Create or update the user with the provided phone number
             CreateUserInput createUserInput = CreateUserInput.builder()
-                    .email(email) // Assuming you have the email from the payment request
+                    .email(email)
                     .phoneNumber(phoneNumber)
                     .location(location)
                     .pinCode(pinCode)
                     .build();
             userBuilder.createUser(createUserInput);
+            log.info("User created or updated successfully: {}", phoneNumber);
         } catch (Exception e) {
-            log.error("Error creating user: " + e.getMessage());
+            log.error("Error creating or updating user: {}", e.getMessage());
         }
-        String gameNumber = input.getUniqueEventId().split("-")[4];
+
+        String gameNumber;
+        try {
+            gameNumber = input.getUniqueEventId().split("-")[4];
+        } catch (Exception e) {
+            log.error("Failed to extract game number from eventId: {}", uniqueEventId);
+            gameNumber = "UNKNOWN";
+        }
+
         StripePaymentRequest stripePaymentRequest = StripePaymentRequest.builder()
                 .sessionId(output.getSessionId())
                 .uniqueEventId(uniqueEventId)
@@ -146,12 +168,14 @@ public class StripePaymentRequestBuilder {
                 .pinCode(pinCode)
                 .sessionUrl(output.getSessionUrl())
                 .build();
-        return stripePaymentRequestRepository.save(stripePaymentRequest);
 
-
-
+        try {
+            StripePaymentRequest savedRequest = stripePaymentRequestRepository.save(stripePaymentRequest);
+            log.info("Payment request saved successfully: sessionId={}", savedRequest.getSessionId());
+            return savedRequest;
+        } catch (Exception e) {
+            log.error("Failed to save payment request: {}", e.getMessage());
+            return null;
+        }
     }
-
 }
-
-
