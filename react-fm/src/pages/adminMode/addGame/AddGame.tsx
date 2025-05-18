@@ -440,15 +440,15 @@ function AddGame() {
             />
             <label htmlFor="phonepe">PhonePe</label>
           </div>
-          {/* <div>
-              <input
-                type="checkbox"
-                id="stripe"
-                checked={paymentMethods.includes('stripe')}
-                onChange={() => handlePaymentMethodChange('stripe')}
-              />
-              <label htmlFor="stripe">Stripe</label>
-            </div> */}
+          <div>
+            <input
+              type="checkbox"
+              id="stripe"
+              checked={paymentMethods.includes('stripe')}
+              onChange={() => handlePaymentMethodChange('stripe')}
+            />
+            <label htmlFor="stripe">Stripe</label>
+          </div>
         </div>
       </FlexBox>
       <FlexBox className={isPortrait ? styles.portraitDateTimePicker : styles.dateTimePicker}>
