@@ -474,10 +474,13 @@ public class EventBuilder {
                                 log.info("Game link not found");
                             }
                             userRepository.save(user);
+                        }else {
+                            log.warn("User not found with email: {}", player.getEmail());
                         }
+                    } else {
+                        log.warn("Player email is null.");
                     }
                 }
-
                 return eventRepository.save(event);
             }
         }

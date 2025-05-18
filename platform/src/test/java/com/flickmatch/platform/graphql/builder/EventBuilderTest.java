@@ -459,14 +459,14 @@ public class EventBuilderTest {
         User mockUser1 = new User();
         mockUser1.setEmail("player1@example.com");
         mockUser1.setPlayerStats(new User.PlayerStats());
-        mockUser1.getPlayerStats().setGameLinks(new ArrayList<>());
+        mockUser1.getPlayerStats().setGameLinks(List.of(uniqueEventId));
         mockUser1.getPlayerStats().setMatchesPlayed(0);
         mockUser1.getPlayerStats().setWins(0);
 
         User mockUser2 = new User();
         mockUser2.setEmail("player2@example.com");
         mockUser2.setPlayerStats(new User.PlayerStats());
-        mockUser2.getPlayerStats().setGameLinks(new ArrayList<>());
+        mockUser2.getPlayerStats().setGameLinks(List.of(uniqueEventId));
         mockUser2.getPlayerStats().setMatchesPlayed(0);
         mockUser2.getPlayerStats().setWins(0);
 
