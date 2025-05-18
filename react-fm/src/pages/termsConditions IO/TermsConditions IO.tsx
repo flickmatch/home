@@ -20,125 +20,115 @@ function TermsConditionsIO() {
       </FlexBox>
       <FlexBox className={isPortrait ? styles.portraitContent : styles.content}>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          In consideration of being allowed to participate in any way, in Flickmatch events or
-          activities, I understand, acknowledge and agree to the following:
+          In order to be permitted to take part in any Flickmatch events or activities, I
+          understand, acknowledge, and agree to the following terms:
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I understand the physical requirements of the program, event, or activity in which I will
-          be participating, and certify that I am physically fit and able to participate in the
-          program, event, or activity, and have not been advised otherwise by a qualified medical
-          professional.
+          I acknowledge the physical demands of the program, event, or activity I will be joining
+          and confirm that I am in good physical condition to participate. I have not received any
+          medical advice suggesting otherwise from a qualified healthcare professional.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I agree to comply with any and all rules, regulations, terms, and conditions for
-          participation in the program, event, or activity, including but not limited to the rules
-          of any sport that I may participate in and the Participant’s Code of Conduct. I agree to
-          inspect the equipment, facilities, and premises to be used prior to participation. If I
-          believe that anything is unsafe, I will inform Flickmatch officials, team captains,
-          referees, or facilities owners of the issue and refuse to participate if not corrected.
-        </Typography>
-
-        <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I acknowledge and fully understand that as a participant, I will be engaging in activities
-          that involve risk of serious injury, including permanent disability and death, property
-          loss, and severe social and economic losses. These risks include, but are not limited to,
-          those caused by: (a) the actions, inactions, or negligence of Flickmatch, other
-          participants, volunteers, spectators, coaches, event officials, referees, and organizers;
-          (b) conditions of the premises, facilities, or equipment used; (c) rules of play; (d)
-          weather conditions; (e) the skill, ability, and condition of other participants, and their
-          failure to abide by the rules, regulations, terms, and conditions for participation in the
-          program, event, or activity; and, (f) vehicular traffic. I further acknowledge and fully
-          understand that there may also be other risks that are not known or foreseeable at this
-          time. Flickmatch cannot control these risks, nor has Flickmatch judged my skill level or
-          ability prior to allowing me to participate and consequently is not in a position to
-          guarantee my personal health or safety during my participation in the programs, events, or
-          activities. I KNOWINGLY, INTELLIGENTLY, AND VOLUNTARILY ASSUME ALL SUCH RISKS, BOTH KNOWN
-          AND UNKNOWN, ANTICIPATED AND UNANTICIPATED, FORESEEABLE AND UNFORESEEABLE, EVEN IF ARISING
-          FROM THE NEGLIGENCE OF FLICKMATCH OR OTHERS, AND I ASSUME FULL RESPONSIBILITY AND
-          LIABILITY FOR MY PARTICIPATION.
+          I agree to follow all rules, regulations, terms, and conditions related to participating
+          in the program, event, or activity—including the rules of any sport involved and the
+          Participant’s Code of Conduct. I will inspect the equipment, facilities, and venue before
+          taking part, and if I find anything unsafe, I will report it to Flickmatch officials, team
+          captains, referees, or facility owners and will not participate until the issue is
+          resolved.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I, on behalf of myself, my heirs, beneficiaries, executors, administrators, personal
-          representatives, and assigns, HEREBY WAIVE, RELEASE, DISCHARGE, AND AGREE NOT TO SUE
-          Flickmatch, any of its affiliates, subsidiaries, or parents, or any of its or their
-          managers, members, directors, officers, employees, volunteers, representatives, agents,
-          coaches and referees, and other participants, sponsoring agencies, sponsors, advertisers,
-          and if applicable, owners and lessors of equipment, facilities, and premises used to
-          conduct the programs, events, or activities (collectively the “Releasees”), from any and
-          all claims for damages, injuries, losses, liabilities, and expenses, including claims
-          based on any Releasee’s negligence, which I may have or which may subsequently accrue to
-          me, relating to, resulting from, or arising out of my use and/or participation in any
-          programs, events, or activities of Flickmatch, including any injury or damage to my person
-          or property, or to that of any other person or property.
+          I fully acknowledge and understand that by participating, I will be involved in activities
+          that carry the risk of serious injury, including permanent disability, death, property
+          damage, and significant social or financial loss. These risks may result from, but are not
+          limited to: (a) the actions, negligence, or inactions of Flickmatch, other participants,
+          volunteers, spectators, coaches, referees, and organizers; (b) the condition of the venue,
+          equipment, or facilities; (c) the rules of the game; (d) weather conditions; (e) the skill
+          level, fitness, or conduct of other participants, including their failure to follow the
+          rules and guidelines; and (f) traffic-related hazards. I also understand that there may be
+          additional unknown or unpredictable risks. Flickmatch does not have control over these
+          risks, nor has it assessed my abilities before allowing me to participate, and therefore
+          cannot ensure my safety or well-being during the event. I FREELY, KNOWINGLY, AND WILLINGLY
+          ACCEPT ALL SUCH RISKS—WHETHER KNOWN OR UNKNOWN, EXPECTED OR UNEXPECTED, INCLUDING THOSE
+          CAUSED BY NEGLIGENCE—AND TAKE FULL RESPONSIBILITY FOR MY PARTICIPATION.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I agree to indemnify, defend, and hold the Releasees harmless from and against any and all
-          claims for damages, injuries, losses, liabilities, and expenses incurred by Flickmatch
-          relating to, resulting from, or arising out of my participation in any Flickmatch program,
-          event, or activity.
+          I, on behalf of myself and my heirs, beneficiaries, executors, administrators, personal
+          representatives, and assigns, HEREBY WAIVE, RELEASE, AND DISCHARGE Flickmatch—along with
+          its affiliates, subsidiaries, parent companies, and all of their managers, directors,
+          officers, employees, volunteers, agents, coaches, referees, other participants, sponsors,
+          advertisers, and, where applicable, the owners and lessors of any equipment, facilities,
+          or venues used for the events or activities (collectively referred to as the
+          “Releasees”)—from any and all claims, liabilities, damages, losses, or expenses. This
+          includes claims arising from the negligence of any Releasee, that I now have or may have
+          in the future, related to or resulting from my participation in any Flickmatch programs,
+          events, or activities, including any injury or damage to myself, my property, or others. I
+          also agree not to pursue legal action against any of the Releasees for such matters.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I consent to have medical treatment that may be deemed advisable in the event of injury,
-          accident, and/or illness during any program, event, or activity. I release Flickmatch and
-          all persons participating in any such medical treatment from all responsibility for any
-          such actions.
+          I agree to protect, defend, and compensate the Releasees against any and all claims,
+          damages, injuries, losses, liabilities, or expenses that Flickmatch may face as a result
+          of my participation in any of its programs, events, or activities.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I hereby grant to Flickmatch and those acting with its authority, the right to photograph,
-          videotape, or otherwise capture or collect my likeness, voice, and sounds (the “Content”)
-          during my participation in the Flickmatch program, event, or activity. I further
-          acknowledge the Content to be works made for hire, and otherwise irrevocably assign and
-          grant to Flickmatch all rights in this Content and the right to use or sublicense the
-          Content and my name, likeness, and biography, in Flickmatch’s discretion, in all media and
-          in all forms and for all purposes, including without limitation, advertising and other
-          promotions for Flickmatch, without any further consideration to me or any limitation
-          whatsoever.
+          I give my consent to receive medical treatment if it is considered necessary in the event
+          of an injury, accident, or illness during any program, event, or activity. I release
+          Flickmatch and anyone involved in providing such medical care from any liability related
+          to that treatment.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          By signing up for Flickmatch, I agree to receive SMS messages related to my scheduled
-          games, including confirmations and cancellations. These messages are non-promotional and
-          required for service updates. Message and data rates of your service provider may apply.
-          Message frequency varies. If I wish to opt out, I can reply STOP to any message or update
-          my preferences in the app settings. If I want help, I can reply HELP.
+          I give Flickmatch, and those acting on its behalf, permission to photograph, record, or
+          otherwise capture my image, voice, and sounds (&quot;Content&quot;) during my
+          participation in any Flickmatch program, event, or activity. I understand that this
+          Content is considered a work made for hire and I irrevocably assign all rights to
+          Flickmatch. Flickmatch may use or license the Content, along with my name, image, and
+          biography, in any media and format, for any purpose—including advertising or
+          promotion—without any further payment or restriction.
+        </Typography>
+
+        <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
+          By registering with Flickmatch, I consent to receiving SMS messages about my scheduled
+          games, such as confirmations and cancellations. These messages are service-related, not
+          promotional. Standard message and data rates from my mobile provider may apply, and the
+          number of messages may vary. To stop receiving messages, I can reply STOP or change my
+          preferences in the app settings. For assistance, I can reply HELP.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I intend that this Waiver and Release of Liability shall be construed broadly to provide a
-          release and waiver to the maximum extent permissible under applicable law.
+          I intend for this Waiver and Release of Liability to be interpreted as broadly as
+          possible, allowing the fullest release and waiver permitted under applicable law.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I HAVE READ THIS WAIVER AND RELEASE OF LIABILITY CAREFULLY AND I FULLY UNDERSTAND ITS
-          TERMS, AND I UNDERSTAND THAT I HAVE GIVEN UP SUBSTANTIAL RIGHTS BY SIGNING THIS DOCUMENT,
-          AND I SIGN IT KNOWINGLY, INTELLIGENTLY AND VOLUNTARILY WITHOUT ANY INDUCEMENT OR DURESS.
+          Having carefully read and fully understood this waiver and release of liability, I
+          acknowledge that I am giving up significant rights by signing it. My decision to sign is
+          made knowingly, intelligently, and voluntarily, without any pressure or coercion.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          CODE OF CONDUCT: The Participant’s Code of Conduct applies to all Flickmatch participants.
-          This code applies to players as individuals or as a team, and the penalties can apply to
-          any individual or an entire team. This code becomes effective as soon as participants
-          arrive at the facility of play and remains in effect until the participants leave the
-          facility.
+          The Flickmatch Participant&apos;s Code of Conduct applies to all individuals and teams
+          involved in Flickmatch from the moment they arrive at the playing facility until they
+          leave. Penalties for violating this code can be applied to individual players or entire
+          teams.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          The purpose of the Participant’s Code of Conduct is to promote a safe and fun environment
-          for all participants in the Flickmatch community. All Flickmatch participants should
-          exhibit ethical, respectful, and sportsmanlike conduct. Flickmatch celebrates diversity,
-          equity, and inclusion, and prohibits discrimination based on race, sex, religion, national
-          origin, age, sexual orientation, and gender identity.
+          The Participant&apos;s Code of Conduct aims to ensure a secure and enjoyable experience
+          for everyone in the Flickmatch community. All participants are expected to behave
+          ethically, respectfully, and with good sportsmanship. Flickmatch values diversity,
+          fairness, and inclusion, and does not tolerate discrimination based on race, sex,
+          religion, national origin, age, sexual orientation, or gender identity.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          By using this app, you agree to abide by our Terms of Service, which includes our strict
-          policy against objectionable content and abusive behavior. We do not tolerate any content
-          or conduct that is illegal, threatening, harassing, abusive, defamatory, discriminatory,
-          offensive, or otherwise objectionable. You are responsible for all content you post and
-          engage with on this app. If you encounter content that violates our policies, please
-          report it immediately. We reserve the right to remove any content and to restrict or
-          terminate access to users who violate these terms. By using this app, you agree that you
-          understand and will adhere to these guidelines and that failure to comply may result in
-          the suspension or termination of your account.
+          When you use this app, you&apos;re agreeing to follow our Terms of Service, which strictly
+          prohibits offensive content and abusive behavior. We have a zero-tolerance policy for
+          anything illegal, threatening, harassing, abusive, defamatory, discriminatory, offensive,
+          or otherwise inappropriate. You are accountable for all the content you share and interact
+          with on this app. If you see anything that violates our rules, please report it right
+          away. We have the right to remove content and block or delete the accounts of users who
+          don&apos;t follow these terms. By using this app, you&apos;re confirming that you
+          understand and will stick to these guidelines, and that not doing so could lead to your
+          account being suspended or terminated.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
           The Participant’s Code of Conduct is subject to change without notice.
@@ -152,28 +142,28 @@ function TermsConditionsIO() {
       <FlexBox className={isPortrait ? styles.portraitTerms : styles.terms}>
         <ul>
           <li>
-            Express any derogatory, discriminatory, or unwelcome comments based on or in reference
-            to race, sex, religion, national origin, disability, age, sexual orientation, or gender
+            Do not express any negative, biased, or offensive remarks that target someone&apos;s
+            race, sex, religion, national origin, disability, age, sexual orientation, or gender
             identity.
           </li>
           <li>
-            Engage in any physical or verbal sexual harassment. Sexual harassment is unwanted,
-            unacceptable, inappropriate, or offensive behavior of a sexual nature that affects the
-            dignity of another player and creates an intimidating, hostile, unstable, or offensive
-            play environment.
+            Do not participate in any physical or verbal sexual harassment. This includes any
+            unwanted, unacceptable, inappropriate, or offensive sexual behavior that disrespects
+            another player and makes the playing environment feel intimidating, hostile, unstable,
+            or offensive.
           </li>
           <li>
-            Lay hand upon, push, shove, strike, or threaten an official, employee, participant, or
+            Do not touch, push, shove, hit, or threaten any official, employee, participant, or
             spectator.
           </li>
           <li>Refuse to abide by an official’s decision.</li>
           <li>
-            Demonstrate objectionable behavior or dissent at an official’s decision by throwing
-            equipment or any other forceful action.
+            Do not show unacceptable behavior or disagree with an official&apos;s decision by
+            throwing equipment or acting forcefully.
           </li>
           <li>
-            Discuss with an official, in any manner, the decision reached by such official
-            (exception is made for team captains).
+            Only team captains are allowed to discuss an official&apos;s decision with them. Other
+            participants should not engage in any discussion about the official&apos;s ruling.
           </li>
           <li>Verbally or physically abuse any official for any decision or judgment.</li>
           <li>Verbally or physically abuse any participant.</li>
@@ -182,25 +172,25 @@ function TermsConditionsIO() {
             participant.
           </li>
           <li>
-            Discuss publicly in a derogatory manner any play, decision, or personal opinion of other
-            participants.
+            Do not publicly criticize other participants&apos; plays, decisions, or personal
+            opinions in a negative way.
           </li>
           <li>Smoke at the facility.</li>
           <li>Possess or consume alcohol at the facility.</li>
-          <li>Appear in an intoxicated condition at the facility.</li>
+          <li>Do not come to the facility while under the influence of alcohol or drugs.</li>
           <li>Display a lack of respect or care for facilities.</li>
           <li>Knowingly engage in illegal activities.</li>
           <li>
-            Play under another individual’s name, falsified name, or falsified address on an
-            official roster.
+            Do not register or play using someone else&apos;s name, a fake name, or a false address
+            on any official team list.
           </li>
           <li>
-            Promote any product or competing league to officials, employees, participants, or
-            spectators.
+            Do not advertise any products or competing sports leagues to officials, employees,
+            participants, or spectators.
           </li>
           <li>
-            Purposely disregard Flickmatch rules. In addition, participants are liable for damage to
-            equipment or the facility.
+            Do not intentionally ignore Flickmatch rules. Additionally, participants will be held
+            responsible for any damage they cause to equipment or the facility.
           </li>
         </ul>
       </FlexBox>
@@ -222,10 +212,10 @@ function TermsConditionsIO() {
 
       <FlexBox className={isPortrait ? styles.portraitContent : styles.content}>
         <Typography className={styles.termsHeading}>
-          I acknowledge that I HAVE READ THIS WAIVER AND RELEASE OF LIABILITY CAREFULLY AND I FULLY
-          UNDERSTAND ITS TERMS, AND I UNDERSTAND THAT I HAVE GIVEN UP SUBSTANTIAL RIGHTS BY SIGNING
-          THIS DOCUMENT, AND I SIGN IT KNOWINGLY, INTELLIGENTLY, AND VOLUNTARILY WITHOUT ANY
-          INDUCEMENT OR DURESS.
+          I confirm that I have thoroughly read and completely understand this waiver and release of
+          liability. I am aware that by signing it, I am giving up significant rights, and I am
+          doing so consciously, with full understanding, and of my own free will, without any
+          pressure or influence.
         </Typography>
       </FlexBox>
     </>
