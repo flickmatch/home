@@ -50,7 +50,7 @@ type subscriptionType = {
 };
 
 export const JoinNow: FC<EventDetails> = ({
- reservedPlayersCount,
+  reservedPlayersCount,
   reservedPlayersList,
   waitListPlayers,
   waitListPlayersCount,
@@ -64,6 +64,7 @@ export const JoinNow: FC<EventDetails> = ({
   team1_color,
   team2_color,
   venuePinCode,
+  paymentMethods,
   //singleEvent,
 }) => {
   const [, notificationsActions] = useNotifications();
@@ -99,6 +100,8 @@ export const JoinNow: FC<EventDetails> = ({
   const [teamColor, setTeamColor] = useState('');
   const userState = useSelector((state: RootState) => state);
   // console.log(userState.login.isAdmin);
+
+  const isFM = typeof window !== 'undefined' && window.location.hostname.includes('flickmatch.io');
 
   useEffect(() => {
     if (!team1_color || !team2_color) return;
@@ -583,7 +586,7 @@ export const JoinNow: FC<EventDetails> = ({
 
           {showPaymentOptions ? (
             <FlexBox className={isPortrait ? styles.paymentOptionsPortrait : styles.paymentOptions}>
-              {userState.login.isAdmin && (
+              {userState.login.isAdmin && paymentMethods?.includes('phonepe') && (
                 <Button
                   variant="contained"
                   startIcon={<Icon icon="simple-icons:phonepe" color="navy" />}
@@ -594,37 +597,35 @@ export const JoinNow: FC<EventDetails> = ({
                   UPI
                 </Button>
               )}
-              {userState.login.isAdmin && (
+              {paymentMethods?.includes('stripe') || isFM ? (
                 <Button
                   variant="contained"
-                  startIcon={
-                    <CreditCardIcon />
-                    // <Icon icon="simple-icons:stripe" color="navy" style={{ fontSize: 16 }} />
-                  }
+                  startIcon={<CreditCardIcon />}
                   className={isPortrait ? '' : styles.payViaCard}
                   onClick={() => {
                     setStripe(true);
                     setOpen(true);
                   }}
-                  style={{ display: 'none' }}
                 >
                   Pay via card
                 </Button>
+              ) : null}
+              {paymentMethods?.includes('razorpay') && (
+                <Button
+                  variant="contained"
+                  // className={isPortrait ? styles.payViaRazorpay : ''}
+                  className={styles.payViaRazorpay}
+                  startIcon={
+                    <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
+                  }
+                  onClick={() => {
+                    setRazorPay(true);
+                    setOpen(true);
+                  }}
+                >
+                  Pay Now
+                </Button>
               )}
-              <Button
-                variant="contained"
-                // className={isPortrait ? styles.payViaRazorpay : ''}
-                className={styles.payViaRazorpay}
-                startIcon={
-                  <Icon icon="simple-icons:razorpay" color="navy" style={{ fontSize: 16 }} />
-                }
-                onClick={() => {
-                  setRazorPay(true);
-                  setOpen(true);
-                }}
-              >
-                Pay Now
-              </Button>
             </FlexBox>
           ) : null}
 
