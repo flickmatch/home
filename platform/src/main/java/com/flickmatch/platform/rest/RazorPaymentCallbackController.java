@@ -104,22 +104,6 @@ public class RazorPaymentCallbackController {
             log.info("Status: {}", status);
 
 
-                    for (Event.PlayerDetails player : paymentRequest.getPlayerDetailsList()) {
-                        if(player.getEmail() != null) {
-                            Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
-                            if (existingUser.isPresent()) {
-                                User user = existingUser.get();
-                                if (!user.getPlayerStats().getGameLinks().contains(uniqueEventId)){
-//                                    List<String> links = user.getPlayerStats().getGameLinks();
-//                                    links.add(uniqueEventId);
-//                                    user.getPlayerStats().setGameLinks(links);
-                                    user.getPlayerStats().getGameLinks().add(uniqueEventId);
-                                }
-                                userRepository.save(user);
-                            }
-                        }
-                    }
-
             if(status) {
                 if(PAID_STATUS.equals(paymentRequest.getStatus())) {
                     log.info("Ignoring duplicate payments.");
@@ -127,6 +111,18 @@ public class RazorPaymentCallbackController {
                 else {
                     eventBuilder.joinEventRazorPayment(paymentRequest);
                     paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest,paymentId, true);
+                    for (Event.PlayerDetails player : paymentRequest.getPlayerDetailsList()) {
+                        if(player.getEmail() != null) {
+                            Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                            if (existingUser.isPresent()) {
+                                User user = existingUser.get();
+                                if (!user.getPlayerStats().getGameLinks().contains(uniqueEventId)){
+                                    user.getPlayerStats().getGameLinks().add(uniqueEventId);
+                                }
+                                userRepository.save(user);
+                            }
+                        }
+                    }
                     log.info("Player joined event successfully.");
                 }
             }
