@@ -73,7 +73,7 @@ export const EventComponent: FC<event> = ({
 
     const canvas = await html2canvas(groundElement);
     const dataURL = canvas.toDataURL('image/png');
-    downloadjs(dataURL, '(www.flickmatch.in).png', 'image/png');
+    downloadjs(dataURL, `(www.${window.location.origin}).png`, 'image/png');
   };
 
   const handleClick = (id: string) => {
@@ -593,8 +593,8 @@ export const EventComponent: FC<event> = ({
                     />
                     {isPortrait ? (
                       <>
-                        <div className={styles.watermarkTop}>flickmatch.in</div>
-                        <div className={styles.watermarkBottom}>flickmatch.in</div>
+                        <div className={styles.watermarkTop}>{window.location.origin}</div>
+                        <div className={styles.watermarkBottom}>{window.location.origin}</div>
                         <img
                           src={appLogo}
                           alt="logo"
