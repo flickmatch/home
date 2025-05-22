@@ -81,7 +81,7 @@ function Footer() {
         </Tooltip>
       </a>
       <a
-        href="https://wa.me/message/YM7GOPO75EHPG1"
+        href="https://wa.me/+919000346921"
         aria-label="Message on Whatsapp"
         target="_blank"
         rel="noreferrer"
