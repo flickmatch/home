@@ -4,3 +4,6 @@
 .idea/
 .env
 .secrets
+.venv
+__pycache__
+.elasticbeanstalk/*
