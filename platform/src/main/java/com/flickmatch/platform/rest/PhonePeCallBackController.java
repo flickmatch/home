@@ -3,7 +3,10 @@ package com.flickmatch.platform.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flickmatch.platform.dynamodb.model.Event;
 import com.flickmatch.platform.dynamodb.model.PaymentRequest;
+import com.flickmatch.platform.dynamodb.model.User;
+import com.flickmatch.platform.dynamodb.repository.UserRepository;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.builder.PaymentRequestBuilder;
 import com.flickmatch.platform.proxy.WhatsAppProxy;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import org.apache.commons.text.StringEscapeUtils;
@@ -38,6 +42,8 @@ public class PhonePeCallBackController {
     EventBuilder eventBuilder;
     @Autowired
     WhatsAppProxy whatsAppProxy;
+    @Autowired
+    UserRepository userRepository;
 
     private String sanitizeLogInput(String input) {
         // Remove new-line characters for plain text logs
@@ -75,6 +81,19 @@ public class PhonePeCallBackController {
                     eventBuilder.joinEvent(paymentRequest);
                     paymentRequestBuilder.updatePaymentRequestStatus(paymentRequest, true);
                     whatsAppProxy.sendNotification(eventBuilder.getEventDataForNotification(paymentRequest.getUniqueEventId()));
+
+                    for (Event.PlayerDetails player : paymentRequest.getPlayerDetailsList()) {
+                        if(player.getEmail() != null) {
+                            Optional<User> existingUser = userRepository.findByEmail(player.getEmail());
+                            if (existingUser.isPresent()) {
+                                User user = existingUser.get();
+                                if (!user.getPlayerStats().getGameLinks().contains(paymentRequest.getUniqueEventId())){
+                                    user.getPlayerStats().getGameLinks().add(paymentRequest.getUniqueEventId());
+                                }
+                                userRepository.save(user);
+                            }
+                        }
+                    }
                 }
             } else {
 //                String sanitizedTransactionId = sanitizeLogInput(merchantTransactionId);
