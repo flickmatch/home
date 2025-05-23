@@ -1,0 +1,37 @@
+.playerName {
+  margin: 30px 0px 30px 0px;
+}
+
+.addButton {
+  margin-top: 30px;
+  float: right;
+}
+
+.adminModePanel {
+  display: flex;
+}
+
+.verifyPhoneNumber,
+.otpSend {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verifyOtp {
+  margin-top: 30px;
+}
+
+.otpSend {
+  background-color: #4ce95a;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+  height: 24px;
+  width: 80px;
+  padding-left: 0px;
+  padding-right: 0px;
+}

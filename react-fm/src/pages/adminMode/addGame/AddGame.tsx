@@ -295,7 +295,7 @@ function AddGame() {
   const userInput = {
     input: {
       cityId: cityName,
-      charges: parseInt(charges),
+      charges: Number(charges),
       sportsVenueId: turfName,
       startTime: startTime,
       endTime: endTime,
@@ -326,7 +326,7 @@ function AddGame() {
             createEvent(
                   input: {
                       cityId: "${cityName}"
-                      charges: ${parseInt(charges)}
+                      charges: ${Number(charges)}
                       sportsVenueId: "${turfName}"
                       startTime: "${startTime + '+0530'}"
                       endTime: "${endTime + '+0530'}"
@@ -531,15 +531,15 @@ function AddGame() {
             />
             <label htmlFor="phonepe">PhonePe</label>
           </div>
-          {/* <div>
-              <input
-                type="checkbox"
-                id="stripe"
-                checked={paymentMethods.includes('stripe')}
-                onChange={() => handlePaymentMethodChange('stripe')}
-              />
-              <label htmlFor="stripe">Stripe</label>
-            </div> */}
+          <div>
+            <input
+              type="checkbox"
+              id="stripe"
+              checked={paymentMethods.includes('stripe')}
+              onChange={() => handlePaymentMethodChange('stripe')}
+            />
+            <label htmlFor="stripe">Stripe</label>
+          </div>
         </div>
       </FlexBox>
       <FlexBox className={isPortrait ? styles.portraitDateTimePicker : styles.dateTimePicker}>
