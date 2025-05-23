@@ -1,1 +1,4 @@
-pip install Flask twilio python-dotenv
+Flask
+twilio
+python-dotenv
+gunicorn

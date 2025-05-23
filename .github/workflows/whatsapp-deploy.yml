@@ -1,42 +1,62 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Deploy WA JS
+name: Deploy to AWS ECS using Private ECR
 
 on:
   push:
-    branches: ["main"]
-    paths:
-      - "whatsapp-js/**"
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_REPO: ${{secrets.ECR_REPO}}
+      IMAGE_TAG: latest
+
     steps:
-      - name: Check for QR code
-        run: |
-          if grep -q "QR RECEIVED" whatsapp-js/main.js; then
-            echo "QR code received, deployment failed"
-            exit 1
-          else
-            echo "No QR code received, continue deployment"
-          fi
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          host: ${{ secrets.WA_SERVER }}
-          username: ${{ secrets.WA_SERVER_USERNAME }}
-          key: ${{ secrets.WA_SERVER_PRIVATE_KEY }}
-          password: ${{ secrets.WA_SERVER_PASSWORD }}
-          port: 22
-          script: |
-            cd ~/home/safeuser/home/whatsapp-js
-            git stash
-            git pull origin main
-            git status
-            /usr/bin/pm2 restart main
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR (Private)
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
+
+      - name: Build and push Docker image to ECR
+        run: |
+          docker build -t $ECR_REPO:$IMAGE_TAG .
+          docker push $ECR_REPO:$IMAGE_TAG
+
+      - name: Update ECS service with new image
+        env:
+          CLUSTER_NAME: ${{ secrets.ECS_CLUSTER }}
+          SERVICE_NAME: ${{ secrets.ECS_SERVICE }}
+          TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }}
+          CONTAINER_NAME: flickmatch-whatsapp-server
+        run: |
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION > taskdef.json
+
+          jq \
+            --arg IMAGE "$ECR_REPO:$IMAGE_TAG" \
+            --arg CONTAINER "$CONTAINER_NAME" \
+            '.taskDefinition.containerDefinitions |= map(if .name == $CONTAINER then .image = $IMAGE else . end)' \
+            taskdef.json > new-taskdef.json
+
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-taskdef.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          echo "New task definition ARN: $NEW_TASK_DEF_ARN"
+
+          aws ecs update-service \
+            --cluster $CLUSTER_NAME \
+            --service $SERVICE_NAME \
+            --task-definition $NEW_TASK_DEF_ARN
