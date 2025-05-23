@@ -31,26 +31,7 @@ function TermsConditionsIO() {
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
           I agree to follow all rules, regulations, terms, and conditions related to participating
           in the program, event, or activity—including the rules of any sport involved and the
-          Participant’s Code of Conduct. I will inspect the equipment, facilities, and venue before
-          taking part, and if I find anything unsafe, I will report it to Flickmatch officials, team
-          captains, referees, or facility owners and will not participate until the issue is
-          resolved.
-        </Typography>
-
-        <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          I fully acknowledge and understand that by participating, I will be involved in activities
-          that carry the risk of serious injury, including permanent disability, death, property
-          damage, and significant social or financial loss. These risks may result from, but are not
-          limited to: (a) the actions, negligence, or inactions of Flickmatch, other participants,
-          volunteers, spectators, coaches, referees, and organizers; (b) the condition of the venue,
-          equipment, or facilities; (c) the rules of the game; (d) weather conditions; (e) the skill
-          level, fitness, or conduct of other participants, including their failure to follow the
-          rules and guidelines; and (f) traffic-related hazards. I also understand that there may be
-          additional unknown or unpredictable risks. Flickmatch does not have control over these
-          risks, nor has it assessed my abilities before allowing me to participate, and therefore
-          cannot ensure my safety or well-being during the event. I FREELY, KNOWINGLY, AND WILLINGLY
-          ACCEPT ALL SUCH RISKS—WHETHER KNOWN OR UNKNOWN, EXPECTED OR UNEXPECTED, INCLUDING THOSE
-          CAUSED BY NEGLIGENCE—AND TAKE FULL RESPONSIBILITY FOR MY PARTICIPATION.
+          Participant’s Code of Conduct.
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
