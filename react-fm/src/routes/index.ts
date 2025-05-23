@@ -121,6 +121,10 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/eventPage')),
     path: '/event/:id',
   },
+  [Pages.UpdateGame]: {
+    component: asyncComponentLoader(() => import('@/pages/adminMode/addGame')),
+    path: '/updateEvent/:id',
+  },
 };
 
 export default routes;

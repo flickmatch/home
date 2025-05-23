@@ -54,6 +54,7 @@ input:-webkit-autofill:active {
   color: #4ce95a;
   font-size: 18px;
   font-weight: bold;
+  display: inline-block;
 }
 
 .title span {
@@ -190,7 +191,18 @@ label {
   margin-bottom: 15px !important;
 }
 
-.score, .mobileScore {
+.updatePrice {
+  background-color: #4ce95a;
+  height: 27px;
+  left: 15px;
+}
+
+.updatePrice:hover {
+  background-color: #4ce95a;
+}
+
+.score,
+.mobileScore {
   background: #c48106;
   margin: 0;
   padding: 4px 20px;
@@ -214,13 +226,15 @@ label {
   width: 75px;
 }
 
-.scoreTitle, .mobileScoreTitle {
+.scoreTitle,
+.mobileScoreTitle {
   color: #4ce95a;
   font-size: 19px;
   display: flex;
   align-items: center;
 }
-.scoreTitle span, .mobileScoreTitle span {
+.scoreTitle span,
+.mobileScoreTitle span {
   color: #fff;
   margin-left: 8px;
   display: flex;
@@ -229,14 +243,15 @@ label {
   flex-wrap: wrap;
   font-weight: bold;
 }
-.mobileScoreTitle{
+.mobileScoreTitle {
   font-size: 18px;
   span {
     margin-left: 3px;
   }
 }
 
-.scoreInput, .mobileScoreInput {
+.scoreInput,
+.mobileScoreInput {
   width: 40px;
   text-align: center;
   margin: 0 8px;
@@ -258,7 +273,8 @@ label {
   }
 }
 
-.scoreDisplay, .mobileScoreDisplay {
+.scoreDisplay,
+.mobileScoreDisplay {
   margin: 0 5px;
   font-weight: bold;
 }
