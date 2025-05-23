@@ -11,6 +11,18 @@ import asyncComponentLoader from '@/utils/loader';
 import type { Routes } from './types';
 import { Pages } from './types';
 
+const isFlickmatchIN = document.location.host === 'www.flickmatch.io';
+
+const TermsConditionsRoute = isFlickmatchIN
+  ? {
+      component: asyncComponentLoader(() => import('@/pages/termsConditions IO')),
+      path: '/terms-conditions',
+    }
+  : {
+      component: asyncComponentLoader(() => import('@/pages/termsConditions')),
+      path: '/terms-conditions',
+    };
+
 const routes: Routes = {
   [Pages.Home]: {
     component: asyncComponentLoader(() => import('@/pages/welcome')),
@@ -85,10 +97,8 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/refundCancellation')),
     path: '/refund-cancellation',
   },
-  [Pages.TermsConditions]: {
-    component: asyncComponentLoader(() => import('@/pages/termsConditions')),
-    path: '/terms-conditions',
-  },
+
+  [Pages.TermsConditions]: TermsConditionsRoute,
   [Pages.PrivacyPolicy]: {
     component: asyncComponentLoader(() => import('@/pages/privacyPolicy')),
     path: '/privacy-policy',
