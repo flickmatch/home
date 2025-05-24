@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      ECR_REPO: ${{secrets.ECR_REPO}}
+      AWS_REGION: ${{ secrets.AWS_COMMONS_REGION }}
+      ECR_REPO: ${{secrets.ECR_COMMONS_REPO}}
       IMAGE_TAG: latest
 
     steps:
@@ -22,34 +22,66 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_COMMONS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_COMMONS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_COMMONS_REGION }}
 
-      - name: Login to Amazon ECR (Private)
+      - name: Install AWS CLI
         run: |
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
       - name: Build and push Docker image to ECR
         run: |
-          docker build -t $ECR_REPO:$IMAGE_TAG .
+          docker build -t $ECR_REPO:$IMAGE_TAG ./python/twilio
           docker push $ECR_REPO:$IMAGE_TAG
 
+      # - name: Update ECS service with new image
+      #   env:
+      #     CLUSTER_NAME: ${{ secrets.ECS_CLUSTER }}
+      #     SERVICE_NAME: ${{ secrets.ECS_SERVICE }}
+      #     TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }}
+      #     CONTAINER_NAME: flickmatch-whatsapp-server
+      #   run: |
+      #     aws ecs describe-task-definition --task-definition $TASK_DEFINITION > taskdef.json
+
+      #     jq \
+      #       --arg IMAGE "$ECR_REPO:$IMAGE_TAG" \
+      #       --arg CONTAINER "$CONTAINER_NAME" \
+      #       '.taskDefinition.containerDefinitions |= map(if .name == $CONTAINER then .image = $IMAGE else . end)' \
+      #       taskdef.json > new-taskdef.json
+
+      #     NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+      #       --cli-input-json file://new-taskdef.json \
+      #       --query 'taskDefinition.taskDefinitionArn' \
+      #       --output text)
+
+      #     echo "New task definition ARN: $NEW_TASK_DEF_ARN"
+
+      #     aws ecs update-service \
+      #       --cluster $CLUSTER_NAME \
+      #       --service $SERVICE_NAME \
+      #       --task-definition $NEW_TASK_DEF_ARN
       - name: Update ECS service with new image
         env:
-          CLUSTER_NAME: ${{ secrets.ECS_CLUSTER }}
-          SERVICE_NAME: ${{ secrets.ECS_SERVICE }}
-          TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }}
+          CLUSTER_NAME: ${{ secrets.ECS_COMMONS_CLUSTER }}
+          SERVICE_NAME: ${{ secrets.ECS_COMMONS_SERVICE }}
+          TASK_DEFINITION: ${{ secrets.ECS_COMMONS_TASK_DEFINITION }}
           CONTAINER_NAME: flickmatch-whatsapp-server
+          AWS_PAGER: ""
         run: |
-          aws ecs describe-task-definition --task-definition $TASK_DEFINITION > taskdef.json
+          # Get current task definition JSON
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION \
+            --query 'taskDefinition' --output json > taskdef.json
 
-          jq \
-            --arg IMAGE "$ECR_REPO:$IMAGE_TAG" \
-            --arg CONTAINER "$CONTAINER_NAME" \
-            '.taskDefinition.containerDefinitions |= map(if .name == $CONTAINER then .image = $IMAGE else . end)' \
-            taskdef.json > new-taskdef.json
+          # Clean up JSON and update container image
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy) |
+              .containerDefinitions |= map(if .name == "'$CONTAINER_NAME'" then .image = "'$ECR_REPO:$IMAGE_TAG'" else . end)' taskdef.json > new-taskdef.json
 
+          # Register updated task definition and capture ARN
           NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
             --cli-input-json file://new-taskdef.json \
             --query 'taskDefinition.taskDefinitionArn' \
@@ -57,6 +89,7 @@ jobs:
 
           echo "New task definition ARN: $NEW_TASK_DEF_ARN"
 
+          # Update ECS service with new task definition ARN
           aws ecs update-service \
             --cluster $CLUSTER_NAME \
             --service $SERVICE_NAME \
