@@ -4,6 +4,7 @@ import com.flickmatch.platform.dynamodb.model.User;
 //import com.flickmatch.platform.dynamodb.service.PlayerService;
 import com.flickmatch.platform.graphql.builder.UserBuilder;
 import com.flickmatch.platform.graphql.input.CreateUserInput;
+import com.flickmatch.platform.graphql.type.MutationResult;
 import com.flickmatch.platform.graphql.type.UserResult;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,26 @@ public class UserController {
     @QueryMapping(name="hasActiveSubscription")
     public boolean hasActiveSubscription(@Argument String email) {
         return userBuilder.hasActiveSubscription(email);
+    }
+    @QueryMapping(name="getOutstandingPaymentStatus")
+    public String getOutstandingPaymentStatus(@Argument String email) {
+        return userBuilder.getOutstandingPaymentStatus(email);
+    }
+
+    @MutationMapping
+    public MutationResult updateOutstandingPaymentStatus(@Argument String email, @Argument String status) {
+        try {
+            userBuilder.updateOutstandingPaymentStatus(email, status);
+            return MutationResult.builder()
+                    .isSuccessful(true)
+                    .build();
+        } catch (Exception e) {
+            log.error("Error updating outstanding payment status: {}", e.getMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(e.getMessage())
+                    .build();
+        }
     }
 
 
