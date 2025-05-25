@@ -12,7 +12,7 @@ jobs:
 
     env:
       AWS_REGION: ${{ secrets.AWS_COMMONS_REGION }}
-      ECR_REPO: ${{ secrets.ECR_AI_REPOSITORY }}
+      ECR_REPO: ${{ secrets.ECR_COMMONS_AI_REPOSITORY }}
       IMAGE_TAG: latest
 
     steps:
@@ -44,9 +44,9 @@ jobs:
 
       - name: Update ECS service with new image
         env:
-          CLUSTER_NAME: ${{ secrets.ECS_AI_CLUSTER }}
-          SERVICE_NAME: ${{ secrets.ECS_AI_SERVICE }}
-          TASK_DEFINITION: ${{ secrets.ECS_AI_TASK_DEFINITION }}
+          CLUSTER_NAME: ${{ secrets.ECS_COMMONS_AI_CLUSTER }}
+          SERVICE_NAME: ${{ secrets.ECS_COMMONS_AI_SERVICE }}
+          TASK_DEFINITION: ${{ secrets.ECS_COMMONS_AI_TASK_DEFINITION }}
           CONTAINER_NAME: fastapi-app
           AWS_PAGER: ""
         run: |
