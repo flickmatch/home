@@ -1,0 +1,74 @@
+name: Deploy to AWS ECS 
+
+on:
+  push:
+    branches:
+      - main
+      - llm-server
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{ secrets.AWS_COMMONS_REGION }}
+      ECR_REPO: ${{ secrets.ECR_AI_REPOSITORY }}
+      IMAGE_TAG: latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_COMMONS_ACCESS_KEY_ID  }}
+          aws-secret-access-key: ${{ secrets.AWS_COMMONS_SECRET_ACCESS_KEY  }}
+          aws-region: ${{ secrets.AWS_COMMONS_REGION  }}
+
+      # - name: Install AWS CLI in container (for act testing only)
+      #   if: env.ACT
+      #   run: |
+      #       apt-get update && apt-get install -y curl unzip
+      #       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #       unzip awscliv2.zip
+      #       ./aws/install
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image to ECR
+        run: |
+          docker build -t $ECR_REPO:$IMAGE_TAG .
+          docker push $ECR_REPO:$IMAGE_TAG
+
+      - name: Update ECS service with new image
+        env:
+          CLUSTER_NAME: ${{ secrets.ECS_AI_CLUSTER }}
+          SERVICE_NAME: ${{ secrets.ECS_AI_SERVICE }}
+          TASK_DEFINITION: ${{ secrets.ECS_AI_TASK_DEFINITION }}
+          CONTAINER_NAME: fastapi-app
+          AWS_PAGER: ""
+        run: |
+          set -e
+          echo "Fetching current task definition..."
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION \
+            --query 'taskDefinition' --output json > taskdef.json
+
+          # Clean up JSON and update container image
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy) |
+              .containerDefinitions |= map(if .name == "'$CONTAINER_NAME'" then .image = "'$ECR_REPO:$IMAGE_TAG'" else . end)' taskdef.json > new-taskdef.json
+
+          # Register updated task definition and capture ARN
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-taskdef.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          echo "New task definition ARN: $NEW_TASK_DEF_ARN"
+
+          # Update ECS service with new task definition ARN
+          aws ecs update-service \
+            --cluster $CLUSTER_NAME \
+            --service $SERVICE_NAME \
+            --task-definition $NEW_TASK_DEF_ARN
