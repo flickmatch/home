@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -210,17 +209,6 @@ export const JoinNow: FC<EventDetails> = ({
       fetchActiveSubscriptionData(userData.email);
     }
   }, [hasSubscription, userData.email]);
-
-  const openInNewTab = (url: string): void => {
-    ReactGA.event({
-      category: 'Button',
-      action: 'Click',
-      label: 'Game Joined',
-    });
-    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-
-    if (newWindow) newWindow.opener = null;
-  };
 
   function showNotification() {
     notificationsActions.push({
@@ -458,9 +446,8 @@ export const JoinNow: FC<EventDetails> = ({
           teamColor,
           venuePinCode || '',
         )
-          .then((res: { sessionId: string; sessionUrl: string }) => {
+          .then(() => {
             setOpen(false);
-            openInNewTab(res.sessionUrl);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
