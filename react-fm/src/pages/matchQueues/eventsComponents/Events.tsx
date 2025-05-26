@@ -24,7 +24,13 @@ import useOrientation from '@/hooks/useOrientation';
 import useNotifications from '@/store/notifications';
 import type { RootState } from '@/store/types';
 
-import { apiUrl, flickMatchLink, gurugramGroupLink, hyderabadGroupLink } from '../constants';
+import {
+  apiUrl,
+  flickMatchLink,
+  gurugramGroupLink,
+  hyderabadGroupLink,
+  sanjoseGroupLink,
+} from '../constants';
 import type { EventDetails } from '../types/Events.types';
 import styles from './Events.module.scss';
 import { JoinNow } from './JoinNow';
@@ -79,6 +85,9 @@ export const EventsCard: FC<EventDetails> = ({
       break;
     case 'Gurgaon':
       whatsappGroupLink = gurugramGroupLink;
+      break;
+    case 'San Jose':
+      whatsappGroupLink = sanjoseGroupLink;
       break;
     default:
       whatsappGroupLink = flickMatchLink;
@@ -339,7 +348,9 @@ export const EventsCard: FC<EventDetails> = ({
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
           <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
-            <span className={styles.teamLabel}>Team {team1Name ? team1Name.toUpperCase() : team1_color}</span>
+            <span className={styles.teamLabel}>
+              Team {team1Name ? team1Name.toUpperCase() : team1_color}
+            </span>
             {isEditable && isAdmin ? (
               <Input
                 type="number"
@@ -367,7 +378,9 @@ export const EventsCard: FC<EventDetails> = ({
                 {teamBGoals !== -1 ? teamBGoals : ''}
               </span>
             )}
-            <span className={styles.teamLabel}>Team {team2Name ? team2Name.toUpperCase() : team2_color}</span>
+            <span className={styles.teamLabel}>
+              Team {team2Name ? team2Name.toUpperCase() : team2_color}
+            </span>
           </span>
           {isAdmin ? (
             isPortrait ? (
@@ -405,7 +418,7 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const showTeam = () => 
+  const showTeam = () =>
     !isPast ? (
       team1Name || team2Name ? (
         <Grid item xs={4} sm={6} md={8}>

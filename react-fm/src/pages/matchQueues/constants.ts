@@ -149,7 +149,8 @@ const apiUrl =
 
 const gurugramGroupLink = 'https://chat.whatsapp.com/Hw9P3QVc7HcFE7aT9Khu04';
 const hyderabadGroupLink = 'https://chat.whatsapp.com/C45og1xI1lk9HDCIzljQdL';
-const flickMatchLink = 'https://wa.me/message/YM7GOPO75EHPG1';
+const sanjoseGroupLink = 'https://chat.whatsapp.com/D4C4BXbo8mILxZqiyLnthB';
+const flickMatchLink = 'https://wa.me/+919000346921';
 
 export {
   avatars,
@@ -159,4 +160,5 @@ export {
   hyderabadGroupLink,
   flickMatchLink,
   getEventById,
+  sanjoseGroupLink,
 };
