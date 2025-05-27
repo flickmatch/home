@@ -522,7 +522,7 @@ function AddGame() {
         <Box>
           <Typography className={styles.fieldTitle}>Payment Methods</Typography>
         </Box>
-        <div className={isPortrait ? styles.portaitPaymentMethods : styles.paymentMethods}>
+        <div className={isPortrait ? styles.portraitPaymentMethods : styles.paymentMethods}>
           <div className={styles.flexBox}>
             <input
               type="checkbox"
