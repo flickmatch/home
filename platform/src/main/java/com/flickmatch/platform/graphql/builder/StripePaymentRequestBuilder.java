@@ -13,10 +13,12 @@ import com.stripe.param.checkout.SessionCreateParams;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-
+import org.springframework.http.HttpHeaders;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -172,7 +174,10 @@ public class StripePaymentRequestBuilder {
         try {
             StripePaymentRequest savedRequest = stripePaymentRequestRepository.save(stripePaymentRequest);
             log.info("Payment request saved successfully: sessionId={}", savedRequest.getSessionId());
+            HttpHeaders headers= new HttpHeaders();
+            headers.setLocation(URI.create(stripePaymentRequest.getSessionUrl()));
             return savedRequest;
+
         } catch (Exception e) {
             log.error("Failed to save payment request: {}", e.getMessage());
             return null;
