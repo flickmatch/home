@@ -211,25 +211,14 @@ export const JoinNow: FC<EventDetails> = ({
     }
   }, [hasSubscription, userData.email]);
 
-  const openInNewTab = (url: string): void => {
-    // Open the window immediately in response to a user gesture
-    const newWindow = window.open('', '_blank', 'noopener,noreferrer');
-
-    // Perform analytics asynchronously after the window is created
+  const openInSameTab = (url: string): void => {
     ReactGA.event({
       category: 'Button',
       action: 'Click',
       label: 'Game Joined',
     });
 
-    // Navigate to the actual URL once everything else is done
-    if (newWindow) {
-      newWindow.opener = null;
-      newWindow.location.href = url;
-    } else {
-      // Fallback in case pop-up is blocked
-      window.location.href = url;
-    }
+    window.location.href = url;
   };
 
   function showNotification() {
@@ -470,7 +459,7 @@ export const JoinNow: FC<EventDetails> = ({
         )
           .then((res: { sessionId: string; sessionUrl: string }) => {
             setOpen(false);
-            openInNewTab(res.sessionUrl);
+            openInSameTab(res.sessionUrl);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
