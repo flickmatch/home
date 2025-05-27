@@ -42,6 +42,12 @@ public class StripePaymentCallbackController {
 
             if (optionalRequest.isPresent()) {
                 StripePaymentRequest request = optionalRequest.get();
+                if ("SUCCESS".equalsIgnoreCase(request.getStatus())) {
+                    log.info("Duplicate success callback ignored for sessionId: {}", sanitizedSessionId);
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setLocation(URI.create(request.getRedirectUrl() + "/event/" + request.getUniqueEventId()));
+                    return new ResponseEntity<>(headers, HttpStatus.FOUND);
+                }
                 eventBuilder.joinEventStripePayment(request);
                 request.setStatus("SUCCESS");
                 stripePaymentRequestRepository.save(request);
