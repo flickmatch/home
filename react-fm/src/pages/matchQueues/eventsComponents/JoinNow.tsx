@@ -211,15 +211,14 @@ export const JoinNow: FC<EventDetails> = ({
     }
   }, [hasSubscription, userData.email]);
 
-  const openInNewTab = (url: string): void => {
+  const openInSameTab = (url: string): void => {
     ReactGA.event({
       category: 'Button',
       action: 'Click',
       label: 'Game Joined',
     });
-    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
 
-    if (newWindow) newWindow.opener = null;
+    window.location.href = url;
   };
 
   function showNotification() {
@@ -460,7 +459,7 @@ export const JoinNow: FC<EventDetails> = ({
         )
           .then((res: { sessionId: string; sessionUrl: string }) => {
             setOpen(false);
-            openInNewTab(res.sessionUrl);
+            openInSameTab(res.sessionUrl);
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
