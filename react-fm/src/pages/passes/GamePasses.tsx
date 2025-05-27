@@ -14,7 +14,6 @@ import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
-import { appLogo } from '../../sections/Header/constants';
 import mapCityData from '../matchQueues/map';
 import styles from './GamePasses.module.scss';
 import dummyPassData from './PassesData';
@@ -216,7 +215,7 @@ function GamePasses() {
               {matchPasses.length > 0 && passCity != null
                 ? matchPasses.map((matchPass: PassDetails, i: number) => (
                     <Box className={isPortrait ? styles.portraitPassCard : styles.passCard} key={i}>
-                      <img src={appLogo} alt="logo" className={styles.logo} />
+                      <img src="/game-pass-logo.jpg" alt="logo" className={styles.logo} />
                       <Typography variant="h3" className={styles.title}>
                         {matchPass.title ? matchPass.title : dummyPassData.data.pass[0].title}
                       </Typography>
@@ -279,7 +278,7 @@ function GamePasses() {
                     variant="outlined"
                     className={styles.testingPurposeTag}
                   />
-                  <img src={appLogo} alt="logo" className={styles.logo} />
+                  <img src="/game-pass-logo.jpg" alt="logo" className={styles.logo} />
                   <Typography variant="h3" className={styles.title}>
                     {dummyPassData.data.pass[0].title}
                   </Typography>
