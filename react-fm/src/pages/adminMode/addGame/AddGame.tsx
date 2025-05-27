@@ -418,6 +418,7 @@ function AddGame() {
           value={cityName}
           onChange={handleCityName}
           style={{ width: '100%' }}
+          disabled={id ? true : false}
         >
           {citiesData?.map((city, i) => (
             <MenuItem value={city.cityId} key={i} style={{ width: '100%' }}>
@@ -440,6 +441,7 @@ function AddGame() {
           value={turfName}
           onChange={handleTurfName}
           style={{ width: '100%' }}
+          disabled={id ? true : false}
         >
           {sportsVenues?.map((venue, i) => (
             <MenuItem
@@ -466,6 +468,7 @@ function AddGame() {
         onChange={(e) => setMapLink(e.target.value)}
         placeholder="G-Map Link"
         id="fullWidth"
+        inputProps={{ readOnly: id ? true : false }}
       />
     </Box>
   );
@@ -484,6 +487,7 @@ function AddGame() {
             name="birthdaytime"
             className={styles.selectStartTimeInput}
             onChange={(e) => setStartTime(e.target.value)}
+            disabled={id ? true : false}
           />
         </FlexBox>
       </Box>
@@ -500,6 +504,7 @@ function AddGame() {
             name="birthdaytime"
             className={styles.selectStartTimeInput}
             onChange={(e) => setEndTime(e.target.value)}
+            disabled={id ? true : false}
           />
         </FlexBox>
       </Box>
@@ -508,17 +513,23 @@ function AddGame() {
 
   const sectionChargesPlayers = () => (
     <FlexBox className={isPortrait ? styles.portraitSectionChargesPlayers : styles.sectionThird}>
-      <FlexBox className={styles.startEndPicker} flex={1}>
+      <FlexBox
+        className={
+          isPortrait ? styles.portraitPaymentMethodsContainer : styles.paymentMethodsContainer
+        }
+        flex={1}
+      >
         <Box>
           <Typography className={styles.fieldTitle}>Payment Methods</Typography>
         </Box>
-        <div className={styles.paymentMethods}>
+        <div className={isPortrait ? styles.portaitPaymentMethods : styles.paymentMethods}>
           <div className={styles.flexBox}>
             <input
               type="checkbox"
               id="razorpay"
               checked={paymentMethods.includes('razorpay')}
               onChange={() => handlePaymentMethodChange('razorpay')}
+              disabled={id ? true : false}
             />
             <label htmlFor="razorpay">Razorpay</label>
           </div>
@@ -528,6 +539,7 @@ function AddGame() {
               id="phonepe"
               checked={paymentMethods.includes('phonepe')}
               onChange={() => handlePaymentMethodChange('phonepe')}
+              disabled={id ? true : false}
             />
             <label htmlFor="phonepe">PhonePe</label>
           </div>
@@ -537,6 +549,7 @@ function AddGame() {
               id="stripe"
               checked={paymentMethods.includes('stripe')}
               onChange={() => handlePaymentMethodChange('stripe')}
+              disabled={id ? true : false}
             />
             <label htmlFor="stripe">Stripe</label>
           </div>
@@ -612,6 +625,7 @@ function AddGame() {
               backgroundColor: '#4ce95a',
             },
           }}
+          disabled={id ? true : false}
         />
       </FlexBox>
     </Box>
@@ -671,6 +685,7 @@ function AddGame() {
                 onChange={handleTeam1ColorChange}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Team 1 Color' }}
+                disabled={id ? true : false}
               >
                 <MenuItem value="" disabled>
                   Select Team 1 Color
@@ -696,6 +711,7 @@ function AddGame() {
                 onChange={handleTeam2ColorChange}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Team 2 Color' }}
+                disabled={id ? true : false}
               >
                 <MenuItem value="" disabled>
                   Select Team 2 Color
@@ -726,6 +742,7 @@ function AddGame() {
             onChange={(e) => setTeam1Name(e.target.value)}
             placeholder="Name"
             id="team1Name"
+            inputProps={{ readOnly: id ? true : false }}
           />
         </FlexBox>
       </Box>
@@ -741,6 +758,7 @@ function AddGame() {
             onChange={(e) => setTeam2Name(e.target.value)}
             placeholder="Name"
             id="team2Name"
+            inputProps={{ readOnly: id ? true : false }}
           />
         </FlexBox>
       </Box>

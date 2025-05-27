@@ -340,7 +340,9 @@ export const EventsCard: FC<EventDetails> = ({
         <Box className={isPortrait ? styles.mobileScoreTitle : styles.scoreTitle}>
           <Typography className={isPortrait ? styles.mobileScore : styles.score}>SCORE</Typography>
           <span>
-            <span className={styles.teamLabel}>Team {team1Name ? team1Name.toUpperCase() : team1_color}</span>
+            <span className={styles.teamLabel}>
+              Team {team1Name ? team1Name.toUpperCase() : team1_color}
+            </span>
             {isEditable && isAdmin ? (
               <Input
                 type="number"
@@ -368,7 +370,9 @@ export const EventsCard: FC<EventDetails> = ({
                 {teamBGoals !== -1 ? teamBGoals : ''}
               </span>
             )}
-            <span className={styles.teamLabel}>Team {team2Name ? team2Name.toUpperCase() : team2_color}</span>
+            <span className={styles.teamLabel}>
+              Team {team2Name ? team2Name.toUpperCase() : team2_color}
+            </span>
           </span>
           {isAdmin ? (
             isPortrait ? (
@@ -390,7 +394,7 @@ export const EventsCard: FC<EventDetails> = ({
     ) : null;
 
   const gameLink = () => (
-    <Grid item xs={4} sm={5} md={3}>
+    <Grid item xs={4} sm={5} md={4}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
         Game Invite{' '}
@@ -414,7 +418,7 @@ export const EventsCard: FC<EventDetails> = ({
     </Grid>
   );
 
-  const showTeam = () => 
+  const showTeam = () =>
     !isPast ? (
       team1Name || team2Name ? (
         <Grid item xs={4} sm={6} md={8}>
