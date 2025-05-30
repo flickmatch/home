@@ -72,11 +72,9 @@ function TermsConditionsIO() {
         </Typography>
 
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          By registering with Flickmatch, I consent to receiving SMS messages about my scheduled
-          games, such as confirmations and cancellations. These messages are service-related, not
-          promotional. Standard message and data rates from my mobile provider may apply, and the
-          number of messages may vary. To stop receiving messages, I can reply STOP or change my
-          preferences in the app settings. For assistance, I can reply HELP.
+          By registering with Flickmatch, I consent to receiving Emails about my scheduled games,
+          such as confirmations and cancellations. These Emails are service-related, not
+          promotional.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
           I intend for this Waiver and Release of Liability to be interpreted as broadly as
@@ -101,18 +99,45 @@ function TermsConditionsIO() {
           religion, national origin, age, sexual orientation, or gender identity.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
-          When you use this app, you&apos;re agreeing to follow our Terms of Service, which strictly
-          prohibits offensive content and abusive behavior. We have a zero-tolerance policy for
-          anything illegal, threatening, harassing, abusive, defamatory, discriminatory, offensive,
-          or otherwise inappropriate. You are accountable for all the content you share and interact
-          with on this app. If you see anything that violates our rules, please report it right
-          away. We have the right to remove content and block or delete the accounts of users who
-          don&apos;t follow these terms. By using this app, you&apos;re confirming that you
-          understand and will stick to these guidelines, and that not doing so could lead to your
-          account being suspended or terminated.
+          When you use this website, you&apos;re agreeing to follow our Terms of Service, which
+          strictly prohibits offensive content and abusive behavior. We have a zero-tolerance policy
+          for anything illegal, threatening, harassing, abusive, defamatory, discriminatory,
+          offensive, or otherwise inappropriate. You are accountable for all the content you share
+          and interact with on this website. If you see anything that violates our rules, please
+          report it right away. We have the right to remove content and block or delete the accounts
+          of users who don&apos;t follow these terms. By using this website, you&apos;re confirming
+          that you understand and will stick to these guidelines, and that not doing so could lead
+          to your account being suspended or terminated.
         </Typography>
         <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
           The Participant’s Code of Conduct is subject to change without notice.
+        </Typography>
+      </FlexBox>
+
+      <FlexBox className={isPortrait ? styles.portraitContent : styles.content}>
+        <Typography className={styles.termsHeading}>EVENT PARTICIPATION</Typography>
+      </FlexBox>
+
+      <FlexBox className={isPortrait ? styles.portraitContent : styles.content}>
+        <ul>
+          <li>
+            Users who want to join a match or event can easily sign up through our website. We’ll
+            keep you in the loop about upcoming events through email, text messages, and push
+            notifications.
+          </li>
+          <li>
+            To register for a match, you’ll first need to choose an available event. Most matches
+            only get confirmed once enough players have signed up, typically at least five (5) hours
+            before the scheduled start time.
+          </li>
+          <li>
+            Everyone attending the event—including any guests—must be registered through our
+            platform and agree to our terms. Please note that unregistered guests are not allowed to
+            attend.
+          </li>
+        </ul>
+        <Typography className={isPortrait ? styles.portraitSubheading : styles.subHeading}>
+          We’re all about making football fun and easy to join—see you on the field!
         </Typography>
       </FlexBox>
 
