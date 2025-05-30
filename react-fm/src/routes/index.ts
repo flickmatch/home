@@ -11,7 +11,7 @@ import asyncComponentLoader from '@/utils/loader';
 import type { Routes } from './types';
 import { Pages } from './types';
 
-const isFlickmatchIN = document.location.host === 'localhost:5173';
+const isFlickmatchIN = document.location.host === 'www.flickmatch.io';
 
 const TermsConditionsRoute = isFlickmatchIN
   ? {
@@ -19,7 +19,7 @@ const TermsConditionsRoute = isFlickmatchIN
       path: '/terms-conditions',
     }
   : {
-      component: asyncComponentLoader(() => import('@/pages/termsConditions')),
+      component: asyncComponentLoader(() => import('@/pages/termsConditions IO')),
       path: '/terms-conditions',
     };
 
