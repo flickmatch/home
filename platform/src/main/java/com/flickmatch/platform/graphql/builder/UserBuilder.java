@@ -134,7 +134,35 @@ public class UserBuilder {
         return user.getHasActiveSubscription();
     }
 
+    public String getOutstandingPaymentStatus(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            log.warn("User not found for email: {}", email);
+            return "no";
+        }
 
+        String status = userOptional.get().getOutstandingPaymentStatus();
+        return status != null ? status : "no";
+    }
+
+    public void updateOutstandingPaymentStatus(String email, String newStatus) {
+        try {
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            if (userOptional.isEmpty()) {
+                log.warn("User not found for email: {}", email);
+                throw new Exception("User does not exist");
+            }
+
+            User user = userOptional.get();
+            user.setOutstandingPaymentStatus(newStatus);
+
+            userRepository.save(user);
+            log.info("Updated outstanding payment status to '{}' for user: {}", newStatus, email);
+        } catch (Exception e) {
+            log.error("Failed to update outstanding payment status for {}: {}", email, e.getMessage());
+            throw new RuntimeException("Failed to update outstanding payment status: " + e.getMessage(), e);
+        }
+    }
 
 
 }

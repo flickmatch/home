@@ -15,4 +15,5 @@ public class JoinEventInput {
     PlayerInput player;
     String email;
     Integer index;
+    String paymentStatus;
 }
