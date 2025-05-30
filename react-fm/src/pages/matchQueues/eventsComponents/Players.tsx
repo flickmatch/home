@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
+
 import useOrientation from '@/hooks/useOrientation';
 import type { RootState } from '@/store/types';
 
@@ -27,6 +29,7 @@ type PlayerDetailProps = {
   coordinates?: {
     mobilePoints?: { x: number; y: number };
     mobileSingleTeam?: { x: number; y: number };
+    desktopSingleTeam?: { x: number; y: number };
     points?: { x: number; y: number };
     id?: number;
     role?: string;
@@ -43,20 +46,22 @@ type Position = {
 export const PlayerDetails: FC<PlayerDetailProps> = ({
   displayName,
   index,
-
   coordinates,
   id,
   teamColor,
   teamDivision,
   singleTeamView,
-
   role,
 }) => {
   const isPortrait = useOrientation();
   const [activeDrags, setActiveDrags] = useState(0);
+  //console.log(coordinates);
 
   const [deltaPosition, setDeltaPosition] = useState<Position>(
     coordinates?.points ? coordinates?.points : { x: 0, y: 0 },
+  );
+  const [deltaSingleTeamPosition, setPortraitDeltaSinglePosition] = useState<Position>(
+    coordinates?.desktopSingleTeam ? coordinates?.desktopSingleTeam : { x: 0, y: 0 },
   );
   const [portraitDeltaPosition, setPortraitDeltaPosition] = useState<Position>(
     coordinates?.mobilePoints ? coordinates?.mobilePoints : { x: 0, y: 0 },
@@ -99,7 +104,7 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
 
   const onStart = useCallback(() => setActiveDrags((prev) => prev + 1), []);
   // eslint-disable-next-line react-hooks/exhaustive-deps, no-console
-  const onStop = useCallback(() => console.log(deltaPosition), []);
+  const onStop = useCallback(() => console.log(), []);
 
   return teamDivision ? (
     isPortrait ? (
@@ -135,6 +140,11 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
               style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
               className="handle"
             >
+              {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                <div className={styles.paymentStatus} style={{ position: 'absolute' }}>
+                  unpaid
+                </div>
+              ) : null}
               <Jersey size={45} color={teamColor} number={index.toString()} />
             </Box>
           )}
@@ -150,8 +160,8 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
         onStart={onStart}
         onStop={onStop}
         defaultPosition={{
-          x: deltaPosition.x,
-          y: deltaPosition.y,
+          x: singleTeamView ? deltaSingleTeamPosition.x : deltaPosition.x,
+          y: singleTeamView ? deltaSingleTeamPosition.y : deltaPosition.y,
         }}
         onDrag={handleDrag}
       >
@@ -171,9 +181,19 @@ export const PlayerDetails: FC<PlayerDetailProps> = ({
             </Box>
           ) : (
             <Box
-              style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: 4,
+                position: 'relative',
+              }}
               className="handle"
             >
+              {userState.login.isAdmin && userState.login.isLoggedIn ? (
+                <div className={styles.paymentStatus} style={{ position: 'absolute' }}>
+                  unpaid
+                </div>
+              ) : null}
               <Jersey size={42} color={teamColor} number={index.toString()} />
             </Box>
           )}

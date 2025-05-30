@@ -25,6 +25,7 @@ type Mutation {
   registerModerator(input: RegisterModeratorInput!): MutationResult!
   updateEventScore(input: UpdateEventScoreInput!): MutationResult!
   updateEventDetails(input: UpdateEventDetailsInput!): MutationResult!
+  checkoutProducts(input: StripeInput): StripeOutput
 }
 
 input UpdateEventScoreInput{
@@ -40,13 +41,23 @@ input UpdateEventDetailsInput {
   charges: Float
   reservedPlayersCount: Int
   waitListPlayersCount: Int
+  sportName: String
+  venueName: String
+  venueLocationLink: String
+  venuePinCode: String
+  stripePaymentUrl: String
   credits: Float
   testGame: Boolean
   teamDivision: Boolean
-  team1Color:String
-  team2Color:String
+  team1Color: String
+  team2Color: String
+  paymentMethods: [String]
   isDeleted: Boolean
-    paymentMethods:[String]
+  team1Name: String
+  team2Name: String
+  currency: String
+  team1Score: Int
+  team2Score: Int
 }
 
 input CreateEventInput {
@@ -251,9 +262,26 @@ type City {
   sportsVenues: [SportsVenue!]
   events: [EVENT]
   pastEvents(inDays: Int!): [EVENT]!
-  currency: String!
+  currency: String
   countryCode: String!
   iconUrl: String!
+}
+
+type StripeOutput {
+  sessionId: String!
+  sessionUrl: String!
+  status: String!
+  message: String
+}
+
+input StripeInput {
+   uniqueEventId :ID!
+   playerInputList:[PlayerInput]!
+  currency:String!
+  phoneNumber:String!
+  redirectUrl:String!
+  venuePinCode:String!
+  email:String!
 }
 
 type EVENT {
@@ -285,6 +313,8 @@ type EVENT {
   paymentMethods:[String]
   team1Score: Int
   team2Score: Int
+  team1Name: String
+  team2Name: String
 }
 
 type Player {

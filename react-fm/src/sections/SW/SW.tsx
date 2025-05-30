@@ -1,27 +1,27 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-// TODO (Suren): this should be a custom hook :)
-function SW() {
-  //const [, notificationsActions] = useNotifications();
-  //const notificationKey = useRef<SnackbarKey | null>(null);
+function ReloadPrompt() {
   const {
-    ///offlineReady: [offlineReady, setOfflineReady],
-    needRefresh: [needRefresh, setNeedRefresh],
+    needRefresh: [needRefresh],
     updateServiceWorker,
-  } = useRegisterSW();
-
-  const close = useCallback(() => {
-    //setOfflineReady(false);
-    setNeedRefresh(false);
-  }, [setNeedRefresh]);
+  } = useRegisterSW({
+    onRegistered(r) {
+      // eslint-disable-next-line no-console
+      console.log('SW Registered: ', r);
+    },
+    onRegisterError(error) {
+      // eslint-disable-next-line no-console
+      console.log('SW registration error', error);
+    },
+  });
 
   useEffect(() => {
     updateServiceWorker(true);
-  }, [close, needRefresh, updateServiceWorker]);
+  }, [updateServiceWorker, needRefresh]);
 
   return null;
 }
 
-export default SW;
+export default ReloadPrompt;
