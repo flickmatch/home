@@ -82,6 +82,9 @@ function AddGame() {
             setCredits(eventDetails.credits != null ? eventDetails.credits.toString() : '');
             setMapLink(eventDetails.venueLocationLink);
             setPlayersCount(eventDetails.reservedPlayersCount.toString());
+
+            setTeam1Name(eventDetails.team1Name !== undefined ? eventDetails.team1Name : team1Name);
+            setTeam2Name(eventDetails.team2Name !== undefined ? eventDetails.team2Name : team2Name);
             setTeam1Color(
               eventDetails.team1Color !== undefined ? eventDetails.team1Color : team1Color,
             );
