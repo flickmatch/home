@@ -1,5 +1,6 @@
 package com.flickmatch.platform.graphql.controller;
 
+import com.flickmatch.platform.dynamodb.model.User;
 import com.flickmatch.platform.graphql.builder.EventBuilder;
 import com.flickmatch.platform.graphql.input.CreateEventInput;
 import com.flickmatch.platform.graphql.input.JoinEventInput;
@@ -106,4 +107,19 @@ public class EventController {
                 .build();
     }
 
+    @QueryMapping(name="updateGameLinks")
+    public MutationResult getAllUsers() {
+        try {
+            eventBuilder.updateAllPlayersGameLinks();
+        }catch (Exception exception){
+            log.error(exception.getMessage());
+            return MutationResult.builder()
+                    .isSuccessful(false)
+                    .errorMessage(exception.getMessage())
+                    .build();
+        }
+        return MutationResult.builder()
+                .isSuccessful(true)
+                .build();
+    }
 }
