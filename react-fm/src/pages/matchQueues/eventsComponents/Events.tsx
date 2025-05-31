@@ -1,6 +1,7 @@
 import { type FC, useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { CurrencyRupeeSharp } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -63,6 +64,7 @@ export const EventsCard: FC<EventDetails> = ({
   team2Name,
 }) => {
   const isPortrait = useOrientation();
+  const navigate = useNavigate();
   const [, notificationsActions] = useNotifications();
   const [currencyCode, setCurrencyCode] = useState('INR');
 
@@ -76,7 +78,7 @@ export const EventsCard: FC<EventDetails> = ({
   const [teamBGoals, setTeamBGoals] = useState(team2Score);
   const [isEditable, setIsEditable] = useState(false);
 
-  // console.log(team1_color, team2_color, team_division);
+  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
 
   let whatsappGroupLink: string | undefined;
   switch (eventId) {
@@ -236,7 +238,7 @@ export const EventsCard: FC<EventDetails> = ({
   };
 
   const price = () => (
-    <Grid item xs={4} sm={4} md={3}>
+    <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
       <Typography className={styles.title}>
         Price{' '}
         <span>
@@ -297,13 +299,13 @@ export const EventsCard: FC<EventDetails> = ({
 
   const numberOfPlayers = () =>
     isPast ? (
-      <Grid item xs={4} sm={4} md={3}>
+      <Grid item xs={4} sm={4} md={3} style={{ position: 'relative' }}>
         <Typography className={styles.title}>
           Number of Players <span>{reservedPlayersCount}</span>
         </Typography>
       </Grid>
     ) : (
-      <Grid item xs={4} sm={4} md={4}>
+      <Grid item xs={4} sm={4} md={4} style={{ position: 'relative' }}>
         <Typography className={styles.title}>
           Number of Players <span>{reservedPlayersCount}</span>
         </Typography>
@@ -341,7 +343,6 @@ export const EventsCard: FC<EventDetails> = ({
     showSuccessNotification();
   };
 
-  const isAdmin = userState.login.isAdmin && userState.login.isLoggedIn;
   const score = () =>
     isPast ? (
       <Grid item xs={12} sm={8} md={12}>
@@ -402,7 +403,7 @@ export const EventsCard: FC<EventDetails> = ({
     ) : null;
 
   const gameLink = () => (
-    <Grid item xs={4} sm={5} md={3}>
+    <Grid item xs={4} sm={5} md={4}>
       <Typography className={styles.title} onClick={copyLink}>
         {/* Game Link <span className={styles.gameLink}>{fullEventLink}</span> */}
         Game Invite{' '}
@@ -414,6 +415,14 @@ export const EventsCard: FC<EventDetails> = ({
         >
           Share
         </Button>
+        {isAdmin ? (
+          <Button
+            className={styles.updatePrice}
+            onClick={() => navigate(`/updateEvent/${uniqueEventId}`)}
+          >
+            update
+          </Button>
+        ) : null}
       </Typography>
     </Grid>
   );

@@ -27,6 +27,8 @@ type EventDetails = {
   reservedPlayersCount: number;
   reservedPlayersList: ReservedPlayerDetails[];
   time: string;
+  startTime?: string;
+  endTime?: string;
   venueLocationLink: string;
   venuePinCode?: string;
   team_division?: boolean;
