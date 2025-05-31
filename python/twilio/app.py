@@ -50,13 +50,15 @@ def send_message():
     data = request.get_json()
     from_number = data.get("from")
     to_number = data.get("to")
-    message = data.get("message")
+    sid = data.get("sid")
+    first_name = data.get("first_name")
 
-    if not all([from_number, to_number, message]):
+    if not all([from_number, to_number, sid, first_name]):
         return jsonify({"isSuccessful": False, "errorMessage": "Missing required fields: 'from', 'to', and 'message'"}), 400
 
     try:
-        sid = message_builder.send_message(from_number, to_number, message)
+        sid = message_builder.send_message(
+            from_number, to_number, sid, first_name)
         return jsonify({"isSuccessful": True, "sid": sid}), 200
     except Exception as e:
         logger.error(f"Error sending message: {str(e)}")
